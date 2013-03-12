@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class Config {
 
-	public static final String CONFIG = "config.properties";
+	public static final String CONFIG = "etc/config.properties";
 	
 	/**
 	 * Schnorr's parameters are fixed and don't change.
