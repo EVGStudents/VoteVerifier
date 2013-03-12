@@ -10,7 +10,7 @@ public class Config {
 	public static final String CONFIG = "etc/config.properties";
 	
 	/**
-	 * Schnorr's parameters are fixed and don't change.
+	 * Schnorr's parameters are fixed and don't change over the time.
 	 */
 	public static BigInteger p;
 	public static BigInteger q;
