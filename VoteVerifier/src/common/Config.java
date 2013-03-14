@@ -20,6 +20,7 @@ public class Config {
 	public static BigInteger p;
 	public static BigInteger q;
 	public static BigInteger g;
+	public static String hashAlgorithm;
 	
 	static{
 		Properties prop = new Properties();
@@ -30,6 +31,7 @@ public class Config {
 			p = new BigInteger(prop.getProperty("schnorr_p"));
 			q = new BigInteger(prop.getProperty("schnorr_q"));
 			g = new BigInteger(prop.getProperty("schnorr_g"));
+			hashAlgorithm = prop.getProperty("hash_function");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
