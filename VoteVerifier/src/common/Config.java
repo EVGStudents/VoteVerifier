@@ -10,6 +10,11 @@ public class Config {
 	public static final String CONFIG = "etc/config.properties";
 	
 	/**
+	 * Tells whether we are working in debug mode
+	 */
+	public static final boolean DEBUG_MODE = true;
+	
+	/**
 	 * Schnorr's parameters are fixed and don't change over the time.
 	 */
 	public static BigInteger p;
