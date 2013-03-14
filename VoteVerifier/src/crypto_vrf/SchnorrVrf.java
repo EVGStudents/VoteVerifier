@@ -10,25 +10,14 @@ import common.Config;
 
 public class SchnorrVrf {
 	
-	private SchnorrSignature signature;
-	private BigInteger message;
 	private BigInteger publicKey = SchnorrGenerator.publicKey;
 
-	/**
-	 * Construct a verificator for the Schnorr's signature
-	 * @param s SchnorrSignature the signature (a,b)
-	 * @param m BigInteger the message used to compute the signature
-	 */
-	public SchnorrVrf(SchnorrSignature s, BigInteger m){
-		signature = s;
-		message = m;
-	}
-	
+
 	/**
 	 * Verify the given signature
 	 * @return boolean return true if the signature is verified correctly, false otherwise
 	 */
-	public boolean isSchnorrVerified(){
+	public boolean verifySchnorrSignature(SchnorrSignature signature, BigInteger message){
 		
 		if(Config.DEBUG_MODE)
 			System.out.println("The received signature is: " + signature.getA() + ", " + signature.getB() );

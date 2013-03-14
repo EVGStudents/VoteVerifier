@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.math.BigInteger;
 
-import org.junit.BeforeClass;
+
 import org.junit.Test;
 
 import crypto_vrf.SchnorrSignature;
@@ -15,8 +15,7 @@ import utils.SchnorrGenerator;
 public class SchnorrTest {
 
 	SchnorrGenerator sg = new SchnorrGenerator();
-	SchnorrVrf sv;
-	
+	SchnorrVrf sv = new SchnorrVrf();
 	
 	@Test
 	public void singleSignatureVerification() {
@@ -27,17 +26,13 @@ public class SchnorrTest {
 		//generate the signature
 		SchnorrSignature ss = sg.signatureGeneration(message);
 		
-		//Verify signature
-		sv = new SchnorrVrf(ss, message);
-		
-		assertTrue(sv.isSchnorrVerified());
+		//Verify signature		
+		assertTrue(sv.verifySchnorrSignature(ss, message));
 	}
-
 	
 	@Test
 	public void multipleSignatureVerification(){
-		int numberOfVerifications = 100;
-		
+		int numberOfVerifications = 10000;
 		
 		for(int i = 0; i < numberOfVerifications ; i++){
 			String bfh = "667072";
@@ -45,11 +40,8 @@ public class SchnorrTest {
 			
 			//generate the signature
 			SchnorrSignature ss = sg.signatureGeneration(message);
-			
-			//Verify signature
-			sv = new SchnorrVrf(ss, message);
-			
-			assertTrue(sv.isSchnorrVerified());
+						
+			assertTrue(sv.verifySchnorrSignature(ss, message));
 		}
 		
 	}
