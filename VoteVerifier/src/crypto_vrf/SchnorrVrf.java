@@ -4,50 +4,15 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import utils.SchnorrGenerator;
+
 import common.Config;
 
 public class SchnorrVrf {
 	
-	/**
-	 * Inner class used to represent the Schnorr's signature
-	 * @author snake
-	 *
-	 */
-	public class SchnorrSignature{
-		BigInteger a;
-		BigInteger b;
-		
-		/**
-		 * Construct a new Schnorr's Signature using the previously computed a and b
-		 * @param a first parameter of Schnorr's signature, the hash value
-		 * @param b second parameter
-		 */
-		public SchnorrSignature(BigInteger a, BigInteger b){
-			this.a = a;
-			this.b = b;
-		}
-		
-		/**
-		 * Get the first value of the signature
-		 * @return BigInteger the first value
-		 */
-		public BigInteger getA(){
-			return a;
-		}
-		
-		/**
-		 * Get the second value of the signautre
-		 * @return BigInteger the second value
-		 */
-		public BigInteger getB(){
-			return b;
-		}
-	}
-	
-	
 	private SchnorrSignature signature;
 	private BigInteger message;
-	private BigInteger publicKey;
+	private BigInteger publicKey = SchnorrGenerator.publicKey;
 
 	/**
 	 * Construct a verificator for the Schnorr's signature
@@ -64,17 +29,17 @@ public class SchnorrVrf {
 	 * @return boolean return true if the signature is verified correctly, false otherwise
 	 */
 	public boolean isSchnorrVerified(){
-		//compute the value to be concatenated to m
-		BigInteger concatValue = 
-		Config.g.modPow(signature.getA(), Config.p).multiply(publicKey.modPow(signature.getB(), Config.p)).mod(Config.p);
-
-		//temporary string to store the concatenation m||g^a*publicKey^b
-		String concatenation = message.toString() + concatValue.toString();
 		
-		BigInteger hashParameter = new BigInteger(concatenation);
+		if(Config.DEBUG_MODE)
+			System.out.println("The received signature is: " + signature.getA() + ", " + signature.getB() );
 		
-		//verify the signature: a must be equal to hash(hashParameter)
-		return hashParameter.equals(sha(hashParameter));
+		BigInteger concat = Config.g.modPow(signature.getB(), Config.p).multiply(publicKey.modPow(signature.getA(), Config.p)).mod(Config.p);
+		
+		BigInteger hashResult = sha(new BigInteger(message.toString() + concat.toString()));
+		
+		boolean res = hashResult.equals(signature.getA());
+		
+		return res;
 	}
 	
 	

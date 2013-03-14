@@ -1,5 +1,7 @@
 package common;
 
+
+
 public class MainTemp {
 
 	/**
@@ -10,6 +12,8 @@ public class MainTemp {
 		System.out.println(Config.p.toString());
 		System.out.println(Config.q.toString());
 		System.out.println(Config.g.toString());
+		
+
 	}
 
 }
