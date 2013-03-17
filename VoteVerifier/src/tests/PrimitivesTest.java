@@ -33,4 +33,9 @@ public class PrimitivesTest {
 		assertTrue(pVrf.isPSafePrime());
 	}
 	
+	@Test
+	public void generator(){
+		assertTrue(pVrf.isGenerator());
+	}
+	
 }
