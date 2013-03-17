@@ -10,6 +10,9 @@ import common.Config;
 
 public class SchnorrVrf {
 	
+	/**
+	 * Temp
+	 */
 	private BigInteger publicKey = SchnorrGenerator.publicKey;
 
 
