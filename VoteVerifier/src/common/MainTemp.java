@@ -1,5 +1,7 @@
 package common;
 
+import java.math.BigInteger;
+
 
 
 public class MainTemp {
@@ -13,7 +15,6 @@ public class MainTemp {
 		System.out.println(Config.q.toString());
 		System.out.println(Config.g.toString());
 		
-
 	}
 
 }

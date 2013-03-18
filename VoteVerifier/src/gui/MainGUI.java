@@ -1,13 +1,12 @@
+package gui;
 
-public class NIZKPrunner {
+public class MainGUI {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-	
-		NIZKP nizkp = new NIZKP();
-		nizkp.start();
+		// TODO Auto-generated method stub
 
 	}
 
