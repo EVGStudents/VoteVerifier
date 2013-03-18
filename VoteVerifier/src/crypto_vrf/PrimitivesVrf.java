@@ -2,20 +2,35 @@ package crypto_vrf;
 
 import java.math.BigInteger;
 
-import common.Config;
-
 public class PrimitivesVrf {
-
+	
+	private BigInteger p;
+	private BigInteger q;
+	private BigInteger g;
+	
+	/**
+	 * Contruct a PrimitivesVrf object used to check
+	 * the p,q and g values
+	 * @param p BigInteger the prime number p
+	 * @param q BigInteger the prime number q
+	 * @param g BigInteger the prime number g
+	 */
+	public PrimitivesVrf(BigInteger p, BigInteger q, BigInteger g){
+		this.p = p;
+		this.q = q;
+		this.g = g;
+	}
+	
 	/**
 	 * Check if the parameters for the Schnorr's signature scheme 
 	 * are corrects by reading them from the configuration file
 	 * @return boolean true if the parameters are correct, false otherwise
 	 */
-	public boolean areParametersLength(){
+	public boolean areParametersLength(int pLength, int qLength, int gLength){
 			
-		if(Config.p.bitLength() == Config.pLength){
-			if(Config.q.bitLength() == Config.qLength){
-				if(Config.g.bitLength() == Config.gLength){
+		if(p.bitLength() == pLength){
+			if(q.bitLength() == qLength){
+				if(g.bitLength() == gLength){
 					return true;
 				}
 			}
@@ -28,16 +43,16 @@ public class PrimitivesVrf {
 	 * Check if p is a prime number
 	 * @return true if p is prime, false otherwise
 	 */
-	public boolean isSchnorrPPrime(){
-		return Config.p.isProbablePrime(100);
+	public boolean isPPrime(){
+		return p.isProbablePrime(100);
 	}
 	
 	/**
 	 * Check if q is a prime number
 	 * @return true if q is a prime number, false otherwise
 	 */
-	public boolean isSchnorrQPrime(){
-		return Config.q.isProbablePrime(100);
+	public boolean isQPrime(){
+		return q.isProbablePrime(100);
 	}
 	
 	/**
@@ -45,11 +60,11 @@ public class PrimitivesVrf {
 	 * @return true if p is a safe prime, false otherwise
 	 */
 	public boolean isPSafePrime(){
-		BigInteger multiple = Config.p.subtract(BigInteger.valueOf(1)).divide(Config.q);
+		BigInteger multiple = p.subtract(BigInteger.valueOf(1)).divide(q);
 		
 		System.out.println(multiple);
 		
-		if(multiple.multiply(Config.q).add(BigInteger.valueOf(1)).equals(Config.p)){
+		if(multiple.multiply(q).add(BigInteger.valueOf(1)).equals(p)){
 			return true;
 		}
 		
@@ -62,7 +77,7 @@ public class PrimitivesVrf {
 	 * @return
 	 */
 	public boolean isGenerator(){
-		BigInteger res = Config.g.modPow(Config.q, Config.p);
+		BigInteger res = g.modPow(q, p);
 		
 		if(res.equals(BigInteger.valueOf(1))){
 			return true;

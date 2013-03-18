@@ -46,5 +46,19 @@ public class SchnorrTest {
 		
 	}
 	
+	@Test
+	public void incorrectSignature(){
+		//BFH encoded as 66 | 70 | 72
+		String bfh = "667072";
+		BigInteger message = new BigInteger(bfh);
+		
+		BigInteger falseMessage = new BigInteger("12345");
+		
+		//generate the signature
+		SchnorrSignature ss = sg.signatureGeneration(message);
+		
+		//Verify signature		
+		assertTrue(sv.verifySchnorrSignature(ss, message));
+	}
 
 }
