@@ -4,11 +4,11 @@ import java.util.Random;
 
 public class NIZKP {
 
-	BigInteger q = new BigInteger("100000001");
-	BigInteger p = new BigInteger("100000001");
-	BigInteger g = new BigInteger("1000009001");
+	BigInteger q = new BigInteger("11");
+	BigInteger p = new BigInteger("23");
+	BigInteger g = new BigInteger("2");
 //	BigInteger sk = new BigInteger("8OB6dJsxNeRphDa21h2JO=x43Rwx0AI9OTbZz0QdntT");
-	BigInteger sk = new BigInteger("a");
+	BigInteger sk = new BigInteger("4");
 	BigInteger w;
 	
 	
