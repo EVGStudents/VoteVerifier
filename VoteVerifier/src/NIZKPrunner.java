@@ -7,7 +7,7 @@ public class NIZKPrunner {
 	public static void main(String[] args) {
 	
 		NIZKP nizkp = new NIZKP();
-		nizkp.test();
+		nizkp.start();
 
 	}
 
