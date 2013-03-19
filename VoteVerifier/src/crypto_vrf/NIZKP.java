@@ -19,9 +19,21 @@ public class NIZKP {
 	
 	
 	class Proof{
+		
+		String name;
 		BigInteger t;
 		BigInteger c;
 		BigInteger s;
+		
+		public Proof(){}
+		public Proof(String s){
+			this.name =s;
+		}
+	
+		@Override
+		public String toString(){
+			return "\t"+this.name+"\n\tProof t= "+this.t+"   Proof c= "+ this.c +"   Proof s= "+this.s;
+		}
 	}
 
 	public void start(){
@@ -30,17 +42,25 @@ public class NIZKP {
 		System.out.println("The proof is valid : " + validProof);
 	}
 
+	/**
+	 * Generate a mock Proof object to use to test the verification method
+	 */
 	public Proof generateProofMock(){
-		Proof prfMock = new Proof();
+		Proof prfMock = new Proof("Mock Proof for testing");
 		//Compute t = g ^ w mod p
 		prfMock.t = g.modPow(w, p);
 		// here the addition is imitating the hash value that will come
 		prfMock.c = vk.add(prfMock.t).mod(q);
 		prfMock.s = w.add(prfMock.c.multiply(sk).mod(q));
-		printProof(prfMock, "Mock Proof Generated");
+		System.out.println(prfMock);
 		return prfMock;
 	}
 	
+	/**
+	 * verify a Non-Interactive Zero Knowledge Proof
+	 * @param proof and helper class object with fields t,c,s corresponding to a ZKP
+	 * @return true if the proof is correct
+	 */
 	public boolean verifyProof(Proof prf){
 //		check that c = H(VKi||t||Vi) mod q
 //		Compute v = g^s mod p
@@ -64,9 +84,6 @@ public class NIZKP {
 		return 0==validProof;
 	}
 	
-	public void printProof(Proof p, String s){
-		System.out.println(s);
-		System.out.println("Proof t= "+p.t+"   Proof c= "+ p.c +"   Proof s= "+p.s);
-	}
+
 
 }
