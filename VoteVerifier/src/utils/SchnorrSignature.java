@@ -1,4 +1,4 @@
-package crypto_vrf;
+package utils;
 
 import java.math.BigInteger;
 

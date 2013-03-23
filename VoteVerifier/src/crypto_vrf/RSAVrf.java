@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.util.Random;
 import common.Config;
 
-public class RSAvrf {
+public class RSAVrf {
 
 
 	Random r = new Random();
@@ -17,7 +17,7 @@ public class RSAvrf {
 	BigInteger e ;
 	BigInteger d ;
 
-	public RSAvrf(){
+	public RSAVrf(){
 		//setVarsSmall();
 		setVarsRealistic();
 	}
@@ -65,7 +65,7 @@ public class RSAvrf {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		RSAvrf rsa = new RSAvrf();
+		RSAVrf rsa = new RSAVrf();
 		rsa.start();
 	}
 

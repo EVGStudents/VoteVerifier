@@ -4,7 +4,9 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import utils.CryptoUtils;
 import utils.SchnorrGenerator;
+import utils.SchnorrSignature;
 
 import common.Config;
 
@@ -27,7 +29,7 @@ public class SchnorrVrf {
 		
 		BigInteger concat = Config.g.modPow(signature.getB(), Config.p).multiply(publicKey.modPow(signature.getA(), Config.p)).mod(Config.p);
 		
-		BigInteger hashResult = sha(new BigInteger(message.toString() + concat.toString()));
+		BigInteger hashResult = CryptoUtils.sha(new BigInteger(message.toString() + concat.toString()));
 		
 		boolean res = hashResult.equals(signature.getA());
 		
@@ -35,24 +37,5 @@ public class SchnorrVrf {
 	}
 	
 	
-	/**
-	 * Compute the hash of a number and then put it into a BigInteger. 
-	 * Change the value in the configuration file to chose the appropriate hash algorithm
-	 * @param val BigInteger the value used to compute the hash
-	 * @return BigInteger the hash as BigInteger representation
-	 */
-	public static BigInteger sha(BigInteger val){
-		BigInteger result = null;
-
-		try {
-			MessageDigest md = MessageDigest.getInstance(Config.hashAlgorithm);
-			md.update(val.toByteArray());
-			result = new BigInteger(md.digest()).mod(Config.q);
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return result;
-	}
+	
 }

@@ -5,7 +5,6 @@ import java.util.Random;
 import java.math.BigInteger;
 
 import common.Config;
-import crypto_vrf.SchnorrSignature;
 public class SchnorrGenerator {
 
 

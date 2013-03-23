@@ -7,10 +7,10 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
-import crypto_vrf.SchnorrSignature;
 import crypto_vrf.SchnorrVrf;
 
 import utils.SchnorrGenerator;
+import utils.SchnorrSignature;
 
 public class SchnorrTest {
 
@@ -32,7 +32,7 @@ public class SchnorrTest {
 	
 	@Test
 	public void multipleSignatureVerification(){
-		int numberOfVerifications = 10000;
+		int numberOfVerifications = 100;
 		
 		for(int i = 0; i < numberOfVerifications ; i++){
 			String bfh = "667072";
@@ -58,7 +58,7 @@ public class SchnorrTest {
 		SchnorrSignature ss = sg.signatureGeneration(message);
 		
 		//Verify signature		
-		assertTrue(sv.verifySchnorrSignature(ss, message));
+		assertFalse(sv.verifySchnorrSignature(ss, falseMessage));
 	}
 
 }
