@@ -2,7 +2,8 @@ package crypto_vrf;
 
 import java.math.BigInteger;
 
-import utils.Verification;
+import common.Verification;
+
 
 public class PrimitivesVrf {
 	

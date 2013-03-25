@@ -1,4 +1,4 @@
-package utils;
+package common;
 
 public enum Verification {
 	PRIMITIVE_P_IS_PRIME(100),
