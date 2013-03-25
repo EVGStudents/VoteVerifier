@@ -44,6 +44,7 @@ public class VerifyManager {
 		
 		setupResults.put(Verification.PRIMITIVE_P_IS_SAFE_PRIME, setup.isPSafePrime());
 		
+		//--------- BEGIN TEST -----------
 		//only for test, here probably we have to call the observer and send the data to the gui
 		//pay attention to the order of the verification
 		@SuppressWarnings("rawtypes")
@@ -70,6 +71,7 @@ public class VerifyManager {
 			Thread.sleep(1000);
 			
 		}
+		//--------- END TEST -----------
 	}
 	
 }
