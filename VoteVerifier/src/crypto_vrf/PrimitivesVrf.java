@@ -64,9 +64,7 @@ public class PrimitivesVrf {
 	 */
 	public boolean isPSafePrime(){
 		BigInteger multiple = p.subtract(BigInteger.valueOf(1)).divide(q);
-		
-		System.out.println(multiple);
-		
+				
 		if(multiple.multiply(q).add(BigInteger.valueOf(1)).equals(p)){
 			return true;
 		}
