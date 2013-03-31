@@ -2,6 +2,9 @@ package common;
 
 import java.io.FileNotFoundException;
 
+import proxy.Subject;
+import proxy.VerificatorProxy;
+
 import crypto_vrf.VerifyManager;
 
 
@@ -26,6 +29,13 @@ public class MainTemp {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		//Test of the proxy
+		Subject myProxy = new VerificatorProxy();
+		
+		myProxy.getElectionData(1);
+		myProxy.getElectionData(1);
+		
 		
 	}
 
