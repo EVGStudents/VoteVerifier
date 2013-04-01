@@ -27,8 +27,6 @@ public class NIZKP {
 		if (validProof!=0) System.out.println("FAILED: prf.c == vk.add(prf.t).mod(p)");
 		
 		BigInteger v = prf.g.modPow(prf.s, prf.p);
-//		BigInteger w = (prf.t.multiply(prf.vk.pow(prf.c.intValue()))).mod(prf.p);
-//		BigInteger w = (prf.t.multiply(prf.vk.modPow(prf.c,BigInteger.ONE))).mod(prf.p);
 		BigInteger w = (prf.t.multiply(prf.vk.modPow(prf.c,prf.p))).mod(prf.p);
 //		System.out.println("v: "+v+ "  w "+w);
 		validProof  += (v.compareTo(w));
