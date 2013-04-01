@@ -38,4 +38,24 @@ public class CryptoUtils {
 	public static String concatenation(String one, String two){
 		return "";
 	}
+	
+	
+	/**
+	 * Concatenates n given BigInteger values into a string and pads them with 
+	 * the arbitrary string 001100
+	 * @param c an array of BigInteger values
+	 * @return and String value of the concatenated contents of the array
+	 */
+	public static BigInteger concatArrayContents(BigInteger[] c){
+		//TODO the calls to this method from NIZKP need to also send the Vi Voter ID?
+//		BigInteger bigConcat=  BigInteger.ZERO;
+		String concat="";
+		for(BigInteger ci:c){
+			//001100 similates padding
+			concat += ci.toString() +"001100";
+		}
+		return CryptoUtils.sha(new BigInteger(concat));
+		
+	}
+	
 }

@@ -23,7 +23,7 @@ public class RSASignature {
 	public BigInteger e ;
 	public BigInteger d ;
 	public  BigInteger sig;
-	
+
 	/**
 	 * sets the class variables to small static parameters for 
 	 * testings the RSA methods
@@ -35,8 +35,9 @@ public class RSASignature {
 		m = new BigInteger("4");
 		e = new BigInteger("3");
 		d = new BigInteger("7");
+		phi = calculatePhi();
 	}
-	
+
 	/**
 	 * sets the class variables to small parameters for 
 	 * testings the RSA methods
@@ -45,7 +46,7 @@ public class RSASignature {
 		this.p = BigInteger.valueOf(p);
 		this.q = BigInteger.valueOf(q);
 		n = this.p.multiply(this.q);
-		phi = this.p.subtract(new BigInteger("1")).multiply(this.q.subtract(new BigInteger("1")));
+		phi = calculatePhi();
 		m = mIn;
 		setKeyPair();
 	}
@@ -60,13 +61,13 @@ public class RSASignature {
 		p = Config.p;
 		q = Config.q;
 		n = p.multiply(q);
-		phi = p.subtract(new BigInteger("1")).multiply(q.subtract(new BigInteger("1")));
-		
-//			int moduloLen = n.bitCount();
-//			m = new BigInteger(moduloLen, r);
-//		
-			m = mIn;
-			setKeyPair();
+		phi = calculatePhi();
+
+		//int moduloLen = n.bitCount();
+		//m = new BigInteger(moduloLen, r);
+	
+		m = mIn;
+		setKeyPair();
 	}
 
 	/**
@@ -91,9 +92,13 @@ public class RSASignature {
 				//e.printStackTrace();
 			}
 			if (!error) {foundIversible=true;
-			System.out.println("public key e: " + e + "\nprivate key d: "+d);
+			//			System.out.println("public key e: " + e + "\nprivate key d: "+d);
 			}
 		}
+	}
+	
+	public BigInteger calculatePhi(){
+		return p.subtract(new BigInteger("1")).multiply(q.subtract(new BigInteger("1")));
 	}
 
 	/**
@@ -103,16 +108,16 @@ public class RSASignature {
 	 */
 	public void sign(BigInteger msgInput){
 		sig= msgInput.modPow(d, n);
-		System.out.println("msg input data: " + msgInput + "  signature: " + sig);
+		//		System.out.println("msg input data: " + msgInput + "  signature: " + sig);
 	}
 
-	
-	
+
+
 	@Override
 	public String toString(){
 		String s="\n\t n= "+this.n+"    p= "+ this.p +"    q= "+this.q  +"    phi= "+this.phi;
 		s+="\n\t m= "+this.m+"    sig= "+ this.sig +"    d= "+this.d +"    e= "+this.e;
 		return s;
 	}
-	
+
 }

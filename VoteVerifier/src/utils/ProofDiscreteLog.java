@@ -56,8 +56,9 @@ public class ProofDiscreteLog {
 		this.name="Mock Proof with small values for testing";
 		//Compute t = g ^ w mod p
 		this.t = g.modPow(w, p);
-		// the addition is imitating the hash value that will come
-		this.c = vk.add(this.t).mod(q);
+		// the concatenation is currently rudimentary
+		BigInteger[] concatB = {vk,t};
+		this.c = CryptoUtils.concatArrayContents(concatB);
 		this.s = w.add(this.c.multiply(sk).mod(q));
 		System.out.println(this);
 		return this;
@@ -74,7 +75,7 @@ public class ProofDiscreteLog {
 		 g = Config.g;
 		
 		//set private and public verification key
-		 BigInteger sk = new BigInteger("5");
+		 BigInteger sk = new BigInteger("4");
 		 vk = g.modPow(sk, p);
 
 		//calculate the proof
@@ -82,11 +83,13 @@ public class ProofDiscreteLog {
 		//BigInteger w= new BigInteger (String.valueOf(r.nextInt()));
 		BigInteger w = new BigInteger("3");
 
-		this.name="Mock Proof with small values for testing";
+		this.name="Mock Proof with real values for testing";
 		//Compute t = g ^ w mod p
 		this.t = g.modPow(w, p);
-		// the addition is imitating the hash value that will come
-		this.c = vk.add(this.t).mod(q);
+		
+		BigInteger[] concatB = {vk,t};
+		this.c = CryptoUtils.concatArrayContents(concatB);
+
 		this.s = w.add(this.c.multiply(sk).mod(q));
 		System.out.println(this);
 		return this;
