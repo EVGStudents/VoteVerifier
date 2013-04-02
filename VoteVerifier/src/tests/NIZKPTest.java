@@ -1,17 +1,11 @@
 package tests;
 
 import static org.junit.Assert.*;
-
-import java.math.BigInteger;
 import org.junit.Before;
 import org.junit.Test;
-
 import utils.ProofDiscreteLog;
-
-import common.Config;
-
 import crypto_vrf.NIZKP;
-import crypto_vrf.PrimitivesVrf;
+
 
 public class NIZKPTest {
 
@@ -34,7 +28,7 @@ public class NIZKPTest {
 	}
 	
 	/**
-	 * Tests valid proof with small values
+	 * Tests valid proof with large values
 	 */
 	@Test
 	public void validProofLargeValues(){	
