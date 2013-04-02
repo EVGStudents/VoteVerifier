@@ -12,13 +12,13 @@ public class VerificatorProxy implements Subject {
 		
 		System.out.println("Inside the proxy");
 		
-		//if the data are already downloaded, return the object
+		
 		if(list == null){
 			list = rs.getElectionData(id);
 			System.out.println("Data is not chached.");
 			return list;
 			}
-		else{
+		else{ //if the data are already downloaded, return the object
 			System.out.println("Data is chached.");
 			return list;
 		}
