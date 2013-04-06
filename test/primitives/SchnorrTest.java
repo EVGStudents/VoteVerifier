@@ -31,7 +31,7 @@ public class SchnorrTest {
 	
 	@Test
 	public void multipleSignatureVerification(){
-		int numberOfVerifications = 100;
+		int numberOfVerifications = 10000;
 		
 		for(int i = 0; i < numberOfVerifications ; i++){
 			String bfh = "667072";
