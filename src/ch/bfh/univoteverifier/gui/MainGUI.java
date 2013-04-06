@@ -1,5 +1,7 @@
 package ch.bfh.univoteverifier.gui;
 
+import javax.swing.JFrame;
+
 public class MainGUI {
 
 	/**
@@ -7,7 +9,8 @@ public class MainGUI {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+            JFrame frame = new JFrame();
+            
 	}
 
 }
