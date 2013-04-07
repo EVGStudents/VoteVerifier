@@ -120,13 +120,72 @@ public class MainGUI {
         innerPanel.setPreferredSize(new Dimension(600, 500));
         innerPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         
-        
+        JPanel sysSetupPanel = new VrfPanel("System Setup");
+        innerPanel.add(sysSetupPanel);
+        JPanel electSetupPanel = new VrfPanel("Election Setup");
+        innerPanel.add(electSetupPanel);
+        JPanel elecPrepPanel = new VrfPanel("Election Preparation");
+        innerPanel.add(elecPrepPanel);
+        JPanel elecPeriodPanel = new VrfPanel("Election Period Parameters");
+        innerPanel.add(elecPeriodPanel);
+        JPanel mixerTallierPanel = new VrfPanel("Mixer and Tallier Parameters");
+        innerPanel.add(mixerTallierPanel);
         
         
         panel.add(innerPanel);
         return panel;
     }
-            public JPanel getNorthPanel() {
+    
+    public class VrfPanel extends JPanel {
+
+        String name;
+        JPanel titlePanel, contentPanel, dummyEllipsePanel;
+        JLabel label;
+
+        VrfPanel(String s) {
+            super();
+            name = s;
+//            dummyEllipsePanel = createDummyEllipsePanel();
+            generatePanel();
+        }
+        
+        public void generatePanel() {
+            this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            
+            label = new JLabel(name);
+            this.add(label);
+
+            titlePanel = getBoxPanel();
+//            titlePanel.add(label);
+//            
+//            contentPanel = getBoxPanel();
+//            contentPanel.add(dummyEllipsePanel);
+//            contentPanel.add(dummyEllipsePanel);
+            
+//            this.add(titlePanel);
+//            this.add(contentPanel);
+        }
+     
+
+        public JPanel getContentPanel() {
+            return this.contentPanel;
+        }
+        
+        public JPanel createDummyEllipsePanel(){
+             JPanel panel = getBoxPanel();
+             JLabel ellipseContent = new JLabel("Some criteria.................................... TRUE");
+             panel.add(ellipseContent);
+             return panel;
+        }
+        
+        public JPanel getBoxPanel(){
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); 
+            return panel;
+        }
+    }
+
+    public JPanel getNorthPanel() {
         JPanel panel = new JPanel();
         panel.setBackground(Color.WHITE);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
