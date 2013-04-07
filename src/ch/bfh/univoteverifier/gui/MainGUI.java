@@ -2,6 +2,7 @@ package ch.bfh.univoteverifier.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,6 +13,7 @@ import java.awt.event.ComponentListener;
 import java.awt.geom.AffineTransform;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,6 +31,7 @@ public class MainGUI {
     JFrame frame;
     JPanel northPanel, southPanel, masterPanel;
     JTextArea statusText;
+    Color grey, darkGrey;
 
     /**
      * @param args
@@ -39,6 +42,9 @@ public class MainGUI {
     }
 
     public void start() {
+        grey = new Color(190, 190, 190);
+        darkGrey = new Color(140, 140, 140);
+
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -69,7 +75,7 @@ public class MainGUI {
     public JPanel getStatusPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 1));
-        panel.setBackground(Color.DARK_GRAY);
+        panel.setBackground(darkGrey);
         panel.setVisible(true);
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -83,7 +89,7 @@ public class MainGUI {
 
         JScrollPane scrollPane = new JScrollPane(statusText);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//        scrollEventPane.setPreferredSize(new Dimension(300, 100));
+        scrollPane.setPreferredSize(new Dimension(400, 150));
 
         panel.add(scrollPane);
         return panel;
@@ -105,9 +111,43 @@ public class MainGUI {
 
     public JPanel getNorthPanel() {
         JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         JLabel titleLabel = new JLabel("Independent UniVote Verifier");
         panel.add(titleLabel);
+
+        JPanel whiteHR = new JPanel();
+        JPanel greyHR = new JPanel();
+        JPanel darkGreyHR = new JPanel();
+
+        whiteHR.setBackground(Color.white);
+        whiteHR.add(getTitleImage());
+        greyHR.setBackground(grey);
+        darkGreyHR.setBackground(darkGrey);
+
+        panel.add(whiteHR);
+        panel.add(greyHR);
+        panel.add(darkGreyHR);
         return panel;
+    }
+
+    /**
+     * Draw the panel with the image
+     *
+     * @return a JPanel with the logo of monopoly
+     */
+    private JPanel getTitleImage() {
+        JPanel img = new JPanel();
+        java.net.URL urlImg = getClass().getResource("/ch/bfh/univoteverifier/resources/univoteTitle.jpeg");
+        if (urlImg != null) {
+            ImageIcon logo = new ImageIcon(urlImg);
+            JLabel imgLab = new JLabel(logo);
+            img.setMaximumSize(new Dimension(300, 114));
+            img.add(imgLab);
+            img.setAlignmentX(Component.LEFT_ALIGNMENT);
+        } else {
+            System.out.println("IMAGE NOT FOUND");
+        }
+        return img;
     }
 
     class ResizableTextField extends JTextField implements ComponentListener {
