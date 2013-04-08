@@ -52,15 +52,17 @@ public class MainGUI {
 
     JFrame frame;
     JPanel northPanel, southPanel, masterPanel;
+    VrfPanel sysSetupPanel, electSetupPanel, elecPrepPanel, elecPeriodPanel, mixerTallierPanel;
     JTextArea statusText;
     Color grey, darkGrey;
     MainController mc;
     StatusListener sl;
-    private final String descUni ="Verify the results of an entire election.  Data is downloaded from a public election board.";   
-    private final String descInd = "Verify that a given ballot has been received and the certificate is valid.  A QR Code is required.";
-    private final String descDefault = "Please select the type of verification to make";
-    JLabel vrfDescLabel; 
-    
+    private String descDefault = "Please select the type of verification to make";
+    JLabel vrfDescLabel;
+    VrfButton btnInd, btnUni;
+    VrfButton[] btns={btnInd,btnUni};
+    JButton btnStart;
+
     /**
      * @param args
      */
@@ -70,9 +72,9 @@ public class MainGUI {
     }
 
     public void start() {
-         mc = new MainController();
-         sl = new StatusUpdate();
-         
+        mc = new MainController();
+        sl = new StatusUpdate();
+
         grey = new Color(190, 190, 190);
         darkGrey = new Color(140, 140, 140);
 
@@ -99,7 +101,7 @@ public class MainGUI {
         return panel;
     }
 
-        public JPanel getNorthPanel() {
+    public JPanel getNorthPanel() {
         JPanel panel = new JPanel();
         panel.setBackground(Color.WHITE);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -112,28 +114,27 @@ public class MainGUI {
         titlePanel.add(getTitleImage());
         titlePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-        
+
         //button panel with two buttons and grey background
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(grey);
-     
+
         JButton btnUniVrf = createUniVrfButton();
         JButton btnIndVrf = createIndVrfButton();
         JButton btnStart = createStartButton();
-        
+
         buttonPanel.add(btnUniVrf);
         buttonPanel.add(btnIndVrf);
         buttonPanel.add(btnStart);
 
-        
+
         //description panel.  button in above panel changes text in this panel
         //contains button to start verification
         JPanel vrfDescPanel = new JPanel();
         vrfDescPanel.setLayout(new GridLayout(1, 1));
         vrfDescPanel.setBackground(darkGrey);
         vrfDescLabel = new JLabel(descDefault);
-        vrfDescLabel.setHorizontalAlignment( SwingConstants.CENTER );
-        vrfDescPanel.setBackground(Color.CYAN);
+        vrfDescLabel.setHorizontalAlignment(SwingConstants.CENTER);
         vrfDescPanel.add(vrfDescLabel);
 
         panel.add(titlePanel);
@@ -141,46 +142,43 @@ public class MainGUI {
         panel.add(vrfDescPanel);
         return panel;
     }
-        
 
     public JPanel getVrfPanel() {
         JPanel panel = new JPanel();
 //       panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setLayout(new GridLayout(1, 1));
         panel.setBackground(Color.WHITE);
-        
+
         panel.setPreferredSize(new Dimension(696, 450));
         panel.setBorder(new EmptyBorder(10, 30, 10, 30)); //top left bottom right
-        
+
         JPanel innerPanel = new JPanel();
-        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
+//        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
+        innerPanel.setLayout(new GridLayout(5, 1));
+
         innerPanel.setBackground(grey);
-        innerPanel.setPreferredSize(new Dimension(600, 500));
+        innerPanel.setPreferredSize(new Dimension(500, 300));
 //        innerPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        JPanel sysSetupPanel = new VrfPanel("System Setup");
+        sysSetupPanel = new VrfPanel("System Setup");
         innerPanel.add(sysSetupPanel);
-        JPanel electSetupPanel = new VrfPanel("Election Setup");
+        electSetupPanel = new VrfPanel("Election Setup");
         innerPanel.add(electSetupPanel);
-        JPanel elecPrepPanel = new VrfPanel("Election Preparation");
+        elecPrepPanel = new VrfPanel("Election Preparation");
         innerPanel.add(elecPrepPanel);
-        JPanel elecPeriodPanel = new VrfPanel("Election Period Parameters");
+        elecPeriodPanel = new VrfPanel("Election Period Parameters");
         innerPanel.add(elecPeriodPanel);
-        JPanel mixerTallierPanel = new VrfPanel("Mixer and Tallier Parameters");
+        mixerTallierPanel = new VrfPanel("Mixer and Tallier Parameters");
         innerPanel.add(mixerTallierPanel);
 
-        innerPanel.add(new JLabel("This is a label inside innerPanel"));
-       
         JScrollPane vrfScrollPanel = new JScrollPane(innerPanel);
         vrfScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        vrfScrollPanel.setBackground(Color.CYAN);
-//        vrfScrollPanel.setPreferredSize(new Dimension(300, 150));
-        
+
         panel.add(vrfScrollPanel);
         return panel;
     }
 
-      public JPanel getStatusPanel() {
+    public JPanel getStatusPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 1));
         panel.setBackground(darkGrey);
@@ -208,7 +206,7 @@ public class MainGUI {
         statusText.setText(nextText);
         return statusText;
     }
-    
+
     public class VrfPanel extends JPanel {
 
         String name;
@@ -223,133 +221,114 @@ public class MainGUI {
         }
 
         public void generatePanel() {
+            this.setPreferredSize(new Dimension(600, 100));
+            this.setBorder(new EmptyBorder(10, 10, 10, 10));
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 //            this.setBorder
             label = new JLabel(name);
-            this.add(label);
+            label.setFont(new Font("Serif", Font.PLAIN, 16));
 
             titlePanel = getBoxPanel();
-//            titlePanel.add(label);
-//            
-//            contentPanel = getBoxPanel();
-//            contentPanel.add(dummyEllipsePanel);
-//            contentPanel.add(dummyEllipsePanel);
+            titlePanel.add(label);
 
-//            this.add(titlePanel);
-//            this.add(contentPanel);
+
+            contentPanel = getBoxPanel();
+            contentPanel.add(createDummyResultPanel());
+            contentPanel.add(createDummyResultPanel());
+
+            this.add(titlePanel);
+            this.add(contentPanel);
         }
 
         public JPanel getContentPanel() {
             return this.contentPanel;
         }
 
-        public JPanel createDummyEllipsePanel() {
+        public JPanel createDummyResultPanel() {
             JPanel panel = getBoxPanel();
-            JLabel ellipseContent = new JLabel("Some criteria.................................... TRUE");
+            panel.setBorder(new EmptyBorder(2, 20, 2, 10));
+            JLabel ellipseContent = new JLabel("Some criteria........................................... TRUE");
+            ellipseContent.setFont(new Font("Serif", Font.PLAIN, 12));
             panel.add(ellipseContent);
             return panel;
         }
 
+        public void addResultPanel(String s, Boolean b) {
+            JLabel vrfResults = new JLabel(s + "........................................... " + b);
+            vrfResults.setFont(new Font("Serif", Font.PLAIN, 12));
+            contentPanel.add(vrfResults);
+        }
+
         public JPanel getBoxPanel() {
             JPanel panel = new JPanel();
-            panel.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
             return panel;
         }
     }
 
-
-
     public JButton createUniVrfButton() {
 
-
-        JButton b = new JButton("Universal Verification");
-        b.addMouseListener(
+        final String descUni = "Verify the results of an entire election.  Data is downloaded from a public election board.";
+        btnUni = new VrfButton("Universal Verification", descUni);
+        
+        btnUni.addMouseListener(
                 new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-              
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-               
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-              
+                mc.testObserverPattern();
+                descDefault = descUni;
+                btnInd.depress();
+                btnUni.press();
+                statusText.setText("Universal Verification");
+                statusText.setFont(new Font("Serif", Font.PLAIN, 32));
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                 vrfDescLabel.setText(descUni);
+                vrfDescLabel.setText(descUni);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
- vrfDescLabel.setText(descDefault);
+                vrfDescLabel.setText(descDefault);
             }
         });
 
-        return b;
+        return btnUni;
     }
-    
-    
-     public JButton createIndVrfButton() {
+
+    public JButton createIndVrfButton() {
 
 
-        JButton b = new JButton("Individual Verification");
-        b.addMouseListener(
+        final String descInd = "Verify that a given ballot has been received and the certificate is valid.  A QR Code is required.";
+        btnInd = new VrfButton("Individual Verification", descInd);
+      
+        btnInd.addMouseListener(
                 new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-              
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-               
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-               mc.testObserverPattern();
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                vrfDescLabel.setText(descInd);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-vrfDescLabel.setText(descDefault);
-            }
-        });
-
-        return b;
-    }
-
-     
-      public JButton createStartButton() {
-
-
-        JButton b = new JButton("START");
-        b.addMouseListener(
-                new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-              
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-               
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-               mc.runUniversal();
+                mc.testObserverPattern();
+                descDefault = descInd;
+                btnUni.depress();
+                btnInd.press();
+                statusText.setText("Individual Verification");
+                statusText.setFont(new Font("Serif", Font.PLAIN, 32));
             }
 
             @Override
@@ -359,18 +338,70 @@ vrfDescLabel.setText(descDefault);
 
             @Override
             public void mouseExited(MouseEvent e) {
-vrfDescLabel.setText(descDefault);
+                vrfDescLabel.setText(descDefault);
             }
         });
 
-        return b;
+        return btnInd;
     }
-         
-         
+
+    public JButton createStartButton() {
+
+        btnStart = new JButton("START");
+        btnStart.setBackground(new Color(110, 110, 254));
+        btnStart.addMouseListener(
+                new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                
+                statusText.setText("Beginning verification...");
+                statusText.setFont(new Font("Monospaced", Font.PLAIN, 15));
+                mc.runUniversal();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+
+        return btnStart;
+    }
+
+    private class VrfButton extends JButton {
+
+        String description;
+
+        public VrfButton(String name, String description) {
+            super(name);
+            this.setBackground(grey);
+            this.setFocusPainted(false);
+        }
+
+        public void depress() {
+            this.setBackground(grey);
+        }
+
+        public void press() {
+            this.setBackground(darkGrey);
+        }
+    }
+
     /**
      * Draw the panel with the image
      *
-     * @return a JPanel title image 
+     * @return a JPanel title image
      */
     private JPanel getTitleImage() {
         JPanel imgPanel = new JPanel();
@@ -399,15 +430,21 @@ vrfDescLabel.setText(descDefault);
         @Override
         public void updateStatus(StatusEvent se) {
 
-          
+
             switch (se.getStatusMessage()) {
                 case VRF_RESULT:
-                   ArrayList<VerificationResult> results= (ArrayList<VerificationResult>)se.getVerificationResult();
-                    for (VerificationResult e: results){
+                    ArrayList<VerificationResult> results = (ArrayList<VerificationResult>) se.getVerificationResult();
+                    for (VerificationResult e : results) {
+
+                        //Add to console
                         Boolean result = e.getResult();
-                        int code =e.getVerification().getID();
+                        int code = e.getVerification().getID();
                         String vrfType = getTextFromVrfCode(code);
                         statusText.append("\n" + vrfType + " ............. " + result);
+
+                        //add to GUI verification area
+                        sysSetupPanel.addResultPanel(vrfType, result);
+
                     }
                     break;
                 case VRF_STATUS:
@@ -418,18 +455,15 @@ vrfDescLabel.setText(descDefault);
             }
         }
     }
-    
-    
-    private  final Properties prop = new Properties();
-	
-	public String getTextFromVrfCode(int code){
-		try {
-			prop.load(new FileInputStream("src/ch/bfh/univoteverifier/resources/messages.properties"));
-		} catch (IOException ex) {
-			Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
-		}
-                
-              return (String)prop.getProperty(String.valueOf(code));
-	}
+    private final Properties prop = new Properties();
 
+    public String getTextFromVrfCode(int code) {
+        try {
+            prop.load(new FileInputStream("src/ch/bfh/univoteverifier/resources/messages.properties"));
+        } catch (IOException ex) {
+            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return (String) prop.getProperty(String.valueOf(code));
+    }
 }
