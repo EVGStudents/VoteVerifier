@@ -4,7 +4,7 @@ import java.math.BigInteger;
 
 
 
-public class PrimitivesVrf {
+public class SchnorrParam {
 	
 	private BigInteger p;
 	private BigInteger q;
@@ -17,7 +17,7 @@ public class PrimitivesVrf {
 	 * @param q BigInteger the prime number q
 	 * @param g BigInteger the prime number g
 	 */
-	public PrimitivesVrf(BigInteger p, BigInteger q, BigInteger g){
+	public SchnorrParam(BigInteger p, BigInteger q, BigInteger g){
 		this.p = p;
 		this.q = q;
 		this.g = g;
@@ -28,7 +28,7 @@ public class PrimitivesVrf {
 	 * are corrects by reading them from the configuration file
 	 * @return boolean true if the parameters are correct, false otherwise
 	 */
-	public boolean areParametersLength(int pLength, int qLength, int gLength){
+	public boolean areParametersLength(BigInteger p, BigInteger q, BigInteger g,int pLength, int qLength, int gLength){
 			
 		if(p.bitLength() == pLength){
 			if(q.bitLength() == qLength){
@@ -45,7 +45,7 @@ public class PrimitivesVrf {
 	 * Check if p is a prime number
 	 * @return true if p is prime, false otherwise
 	 */
-	public boolean isPPrime(){
+	public boolean isPPrime(BigInteger p){
 		return p.isProbablePrime(100);
 	}
 	
@@ -53,7 +53,7 @@ public class PrimitivesVrf {
 	 * Check if q is a prime number
 	 * @return true if q is a prime number, false otherwise
 	 */
-	public boolean isQPrime(){
+	public boolean isQPrime(BigInteger q){
 		return q.isProbablePrime(100);
 	}
 	
@@ -61,7 +61,7 @@ public class PrimitivesVrf {
 	 * Check if p is a safe prime (p = k*q + 1) 
 	 * @return true if p is a safe prime, false otherwise
 	 */
-	public boolean isPSafePrime(){
+	public boolean isPSafePrime(BigInteger p, BigInteger q){
 		BigInteger multiple = p.subtract(BigInteger.valueOf(1)).divide(q);
 				
 		if(multiple.multiply(q).add(BigInteger.valueOf(1)).equals(p)){
@@ -76,7 +76,7 @@ public class PrimitivesVrf {
 	 * Check if g is a generator of a subgroup H_q 
 	 * @return
 	 */
-	public boolean isGenerator(){
+	public boolean isGenerator(BigInteger g, BigInteger q, BigInteger p){
 		BigInteger res = g.modPow(q, p);
 		
 		if(res.equals(BigInteger.valueOf(1))){

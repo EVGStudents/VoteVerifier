@@ -1,13 +1,9 @@
 package primitives;
 
 import ch.bfh.univoteverifier.common.Config;
-import ch.bfh.univoteverifier.primitives.PrimitivesVrf;
-import static org.junit.Assert.*;
-
-
+import ch.bfh.univoteverifier.primitives.PrimitivesVerifier;
 import java.math.BigInteger;
-
-import org.junit.Before;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 
@@ -15,48 +11,36 @@ import org.junit.Test;
 public class PrimitivesTest {
 	
 	
-	PrimitivesVrf pVrf;
-	PrimitivesVrf pVrfTwo;
+	PrimitivesVerifier pVrf = new PrimitivesVerifier();
 	
 	
-	@Before
-	public void setup(){
-		//Used to control the class PrimitivesVrf with good values
-		pVrf = new PrimitivesVrf(Config.p, Config.q, Config.g);
-		
-		//Used to control that the class PrimitivesVrf does a good job with erroneous numbers
-		pVrfTwo = new PrimitivesVrf(Config.p.add(BigInteger.valueOf(1)), 
-				Config.q.add(BigInteger.valueOf(1)), Config.g);
-	}
-	
-
 	/**
 	 * Tests used to check the class with good  values
 	 */
 	
 	@Test
 	public void primeP(){	
-		assertTrue(pVrf.isPPrime());
+		assertTrue(pVrf.vrfPrimeNumber(Config.p));
 	}
 	
 	@Test
 	public void primeQ(){
-		assertTrue(pVrf.isQPrime());
+		assertTrue(pVrf.vrfPrimeNumber(Config.q));
 	}
 
 	@Test
 	public void paramLength(){
-		assertTrue(pVrf.areParametersLength(Config.pLength, Config.qLength, Config.gLength));
+		assertTrue(pVrf.vrfParamLen(Config.p, Config.q, Config.g, Config.pLength, Config.qLength, Config.gLength));
 	}
 	
 	@Test
 	public void pSafePrime(){		
-		assertTrue(pVrf.isPSafePrime());
+		assertTrue(pVrf.vrfSafePrime(Config.p, Config.q));
 	}
 	
 	@Test
 	public void generator(){		
-		assertTrue(pVrf.isGenerator());
+		assertTrue(pVrf.vrfGenerator(Config.g, Config.p, Config.q));
 	}
 	
 	/**
@@ -66,26 +50,27 @@ public class PrimitivesTest {
 	
 	@Test
 	public void notPrimeP(){	
-		assertFalse(pVrfTwo.isPPrime());
+		assertFalse(pVrf.vrfPrimeNumber(Config.p.add(new BigInteger("1"))));
 	}
 	
 	@Test
 	public void notPrimeQ(){
-		assertFalse(pVrfTwo.isQPrime());
+		assertFalse(pVrf.vrfPrimeNumber(Config.q.add(new BigInteger("1"))));
 	}
 	
 	@Test
 	public void notSafePrime(){
-		assertFalse(pVrfTwo.isPSafePrime());
+		assertFalse(pVrf.vrfSafePrime(Config.p.add(new BigInteger("1")),Config.q.add(new BigInteger("1"))));
 	}
 	
 	@Test
 	public void notGenerator(){
-		assertFalse(pVrfTwo.isGenerator());
+		assertFalse(pVrf.vrfGenerator(Config.g.add(new BigInteger("1")), Config.p, Config.q));
 	}
-	
+
+	@Test
 	public void notParamLength(){
-		assertFalse(pVrfTwo.areParametersLength(1025, 257, 1023));
+		assertFalse(pVrf.vrfParamLen(Config.p, Config.q, Config.g, 1025, 257, 1023));
 	}
 	
 }

@@ -1,6 +1,6 @@
 package primitives;
 
-import ch.bfh.univoteverifier.primitives.SchnorrVrf;
+import ch.bfh.univoteverifier.primitives.PrimitivesVerifier;
 import ch.bfh.univoteverifier.utils.SchnorrGenerator;
 import ch.bfh.univoteverifier.utils.SchnorrSignature;
 import static org.junit.Assert.*;
@@ -14,7 +14,7 @@ import org.junit.Test;
 public class SchnorrTest {
 
 	SchnorrGenerator sg = new SchnorrGenerator();
-	SchnorrVrf sv = new SchnorrVrf();
+	PrimitivesVerifier sv = new PrimitivesVerifier();
 	
 	@Test
 	public void singleSignatureVerification() {
@@ -26,7 +26,7 @@ public class SchnorrTest {
 		SchnorrSignature ss = sg.signatureGeneration(message);
 		
 		//Verify signature		
-		assertTrue(sv.verifySchnorrSignature(ss, message));
+		assertTrue(sv.vrfSchnorrSign(ss, message, SchnorrGenerator.publicKey));
 	}
 	
 	@Test
@@ -40,7 +40,7 @@ public class SchnorrTest {
 			//generate the signature
 			SchnorrSignature ss = sg.signatureGeneration(message);
 						
-			assertTrue(sv.verifySchnorrSignature(ss, message));
+			assertTrue(sv.vrfSchnorrSign(ss, message, SchnorrGenerator.publicKey));
 		}
 		
 	}
@@ -57,7 +57,7 @@ public class SchnorrTest {
 		SchnorrSignature ss = sg.signatureGeneration(message);
 		
 		//Verify signature		
-		assertFalse(sv.verifySchnorrSignature(ss, falseMessage));
+		assertFalse(sv.vrfSchnorrSign(ss, falseMessage, SchnorrGenerator.publicKey));
 	}
 
 }
