@@ -4,11 +4,6 @@ import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.utils.ElectionProxy;
 
 
-
-
-
-
-
 public class MainTemp {
 
 	/**
