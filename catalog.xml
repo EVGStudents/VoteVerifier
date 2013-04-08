@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/home/snake/Download/ElectionBoardService.wsdl" uri="xml-resources/web-service-references/ElectionBoardService/wsdl/ElectionBoardService.wsdl"/>
+    <system systemId="http://www.univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=2" uri="xml-resources/web-service-references/ElectionBoardService/wsdl/www.univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.xsd_2.xsd"/>
+    <system systemId="http://www.univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=1" uri="xml-resources/web-service-references/ElectionBoardService/wsdl/www.univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.xsd_1.xsd"/>
+</catalog>

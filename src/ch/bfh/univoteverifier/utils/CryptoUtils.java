@@ -1,6 +1,8 @@
 package ch.bfh.univoteverifier.utils;
 
 import ch.bfh.univoteverifier.common.Config;
+import ch.bfh.univoteverifier.verification.Verification;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -59,6 +61,10 @@ public class CryptoUtils {
 		}
 		return CryptoUtils.sha(new BigInteger(concat));
 		
+	}
+
+	public static VerificationResult getVrfRes(Verification v, boolean res){
+		return new VerificationResult(v, res);
 	}
 	
 }
