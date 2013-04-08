@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="12.0">
+  <zoom_level>6</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>552</x>
+      <y>498</y>
+      <w>204</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+MixerTallierVerifier
+--
+-ep: ElectionProxy
+--
++vrfMixingEncryption(): List&lt;VerificationResult&gt;
++vrfDecryptingVotes(): List&lt;VerificationResult&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>768</x>
+      <y>60</y>
+      <w>174</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>bg=gray
+_CryptoUtils_
+--
++sha(value): BigInteger
++concatenate(strOne,strTwo): String
++readQrCode(qrcode): Result</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>552</x>
+      <y>426</y>
+      <w>210</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+ElectionPeriodVerifier
+--
+-ep: ElectionProxy
+--
++vrfLateRegistration(): List&lt;VerificationResult&gt;
++vrfLateRenewal(): List&lt;VerificationResult&gt;
++vrfClosingElectionUrn(): List&lt;VerificationResult&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>324</x>
+      <y>216</y>
+      <w>198</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+UniversalVerification
+--
+-eID: String
+-sysSetup : SystemSetupRunner
+-eSetup : ElectionSetupRunner
+-ePreparation : ElectionPreparationRunner
+-ePeriod : ElectionPeriodRunner
+-mixTal : MixerTallierRunner
+-ep: ElectionProxy
+--
++runUniversal(): boolean
+-startSysSetup(): boolean
+-startESetup(): boolean
+-startEPreparation(): boolean
+-startEPeriod(): boolean
+-startMixTal(): boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>552</x>
+      <y>186</y>
+      <w>198</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+SystemSetupVerifier
+--
+-ep: ElectionProxy
+--
++vrfSignParam(): List&lt;VerificationResult&gt;
++vrfEMCert() : List&lt;VerificationResult&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>324</x>
+      <y>390</y>
+      <w>198</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+IndividualVerification
+--
+-eID: String
+-sysSetup : SystemSetupRunner
+-qrcode: Result
+-ebp: ElectionProxy
+--
++runIndividual(): boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>588</x>
+      <y>60</y>
+      <w>156</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>bg=gray
+VerificationResult
+--
+-v: Verification
+-r: boolean
+--
++getVerification(): Verification
++getResult(): boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>0</x>
+      <y>354</y>
+      <w>126</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>bg=magenta
+GUI
+--
+-mainCtrl: MainController
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>552</x>
+      <y>336</y>
+      <w>204</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+ElectionPreparationVerifier
+--
+-ep: ElectionProxy
+--
++vrfElectionOptions(): List&lt;VerificationResult&gt;
++vrfElectionData(): List&lt;VerificationResult&gt;
++vrfElectoralRollPrep(): List&lt;VerificationResult&gt;
++vrfMixPubVerKey(): List&lt;VerificationResult&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Note</type>
+    <coordinates>
+      <x>132</x>
+      <y>84</y>
+      <w>132</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>bg=red
+ToDO
+
+- ElectionProxy : how?
+- IndividualVerification: how?</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1020</x>
+      <y>132</y>
+      <w>144</w>
+      <h>546</h>
+    </coordinates>
+    <panel_attributes>bg=blue
+&lt;&lt;enumeration&gt;&gt;
+Verification
+--
+P_IS_PRIME
+Q_IS_PRIME
+G_IS_GENERATOR
+PARAM_LEN
+P_IS_SAFE_PRIME
+EM_CERT
+EA_CERT
+EA_CERT_SIGN
+EL_DEF_PARAM
+T_CERT
+M_CERT
+T_M_CERT_SIGN
+ENC_PARAM
+ENC_PARAM_SIGN
+KEY_SHARE
+KEY_SHARE_SIGN
+ENC_KEY
+ENC_KEY_SIGN
+BLIND_GEN_PROOF
+BLIND_GEN_PROOF_SIGN
+ANON_GEN
+ANON_GEN_SIGN
+OPT_SIGN
+EL_DATA_SIGN
+ELIG_VOT_SIGN
+ELIG_VOT_CERT_SIGN
+ELIG_VOT_CERT
+PUB_VER_KEY
+PUB_VER_KEY_SIGN
+PUB_KEY_CORRECT
+PUB_KEY_CORRECT_SIGN
+LATE_CERT
+LATE_CERT_SIGN
+LATE_KEYS_MIX_PROOF
+LATE_KEYS_MIX_PROOF_SIGN
+LATE_KEY_BELONG
+LATE_KEY_BELONG_SIGN
+M_VER_KEY_PROOF
+M_VER_KEY_PROOF_SIGN
+LATE_REN_PUB_KEY
+LATE_REN_PUB_KEY_SIGN
+BALLOT
+BALLOT_SIGN
+MIX_ENC_PROOF
+MIX_ENC_PROOF_SIGN
+ENC_SHUF_SIGN
+DEC_VOTE_PROOF
+DEC_VOTE_PROOF_SIGN
+PLAINTEXT_CHECK
+PLAINTEXT_SIGN
+--
++getID(): int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>552</x>
+      <y>252</y>
+      <w>198</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+ElectionSetupVerifier
+--
+-ep: ElectionProxy
+--
++vrfInitialization(): List&lt;VerificationResult&gt;
++vrfElectionDefs(): List&lt;VerificationResult&gt;
++vrfEncParam(): List&lt;VerificationResult&gt;
++vrfDistKeyGen(): List&lt;VerificationResult&gt;
++vrfElectionGen(): List&lt;VerificationResult&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>156</x>
+      <y>330</y>
+      <w>138</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>bg=green
+MainController
+--
+-uniVrf: UniversalVerification
+-indiVrf: IndividualVerification
+--
++universalVrf(eID)
++individualVrf(QRcode)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>420</x>
+      <y>66</y>
+      <w>144</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>bg=gray
+ElectionProxy
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>780</x>
+      <y>294</y>
+      <w>228</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+PrimitivesVrf
+--
++vrfSchnorrSign(cData,sData,pubKey) : boolean
++vrfRSASign(cData,sData,pubKey) : boolean
++vrfCert(cert,pubKey): boolean
++vrfNIZKP(t,c,s): boolean
++vrfPrimeNumber(p): boolean
++vrfGenerator(g)
++vrfSafePrime(p): boolean
++vrfParamLen(): boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
