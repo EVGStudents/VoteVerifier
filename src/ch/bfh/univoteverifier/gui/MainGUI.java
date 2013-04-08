@@ -42,6 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.SimpleAttributeSet;
@@ -85,7 +86,6 @@ public class MainGUI {
         frame.setTitle("Independent UniVote Verifier");
         frame.pack();
         frame.setVisible(true);
-        
         mc.getUniversalStatusSubject().addListener(sl);
         mc.getIndividualStatusSubject().addListener(sl);
     }
@@ -99,7 +99,88 @@ public class MainGUI {
         return panel;
     }
 
-    public JPanel getStatusPanel() {
+        public JPanel getNorthPanel() {
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.WHITE);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+
+        //title panel with white background and image
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new GridLayout(1, 1));
+        titlePanel.setBackground(Color.white);
+        titlePanel.add(getTitleImage());
+        titlePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+
+        
+        //button panel with two buttons and grey background
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(grey);
+     
+        JButton btnUniVrf = createUniVrfButton();
+        JButton btnIndVrf = createIndVrfButton();
+        JButton btnStart = createStartButton();
+        
+        buttonPanel.add(btnUniVrf);
+        buttonPanel.add(btnIndVrf);
+        buttonPanel.add(btnStart);
+
+        
+        //description panel.  button in above panel changes text in this panel
+        //contains button to start verification
+        JPanel vrfDescPanel = new JPanel();
+        vrfDescPanel.setLayout(new GridLayout(1, 1));
+        vrfDescPanel.setBackground(darkGrey);
+        vrfDescLabel = new JLabel(descDefault);
+        vrfDescLabel.setHorizontalAlignment( SwingConstants.CENTER );
+        vrfDescPanel.setBackground(Color.CYAN);
+        vrfDescPanel.add(vrfDescLabel);
+
+        panel.add(titlePanel);
+        panel.add(buttonPanel);
+        panel.add(vrfDescPanel);
+        return panel;
+    }
+        
+
+    public JPanel getVrfPanel() {
+        JPanel panel = new JPanel();
+//       panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setLayout(new GridLayout(1, 1));
+        panel.setBackground(Color.WHITE);
+        
+        panel.setPreferredSize(new Dimension(696, 450));
+        panel.setBorder(new EmptyBorder(10, 30, 10, 30)); //top left bottom right
+        
+        JPanel innerPanel = new JPanel();
+        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
+        innerPanel.setBackground(grey);
+        innerPanel.setPreferredSize(new Dimension(600, 500));
+//        innerPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        JPanel sysSetupPanel = new VrfPanel("System Setup");
+        innerPanel.add(sysSetupPanel);
+        JPanel electSetupPanel = new VrfPanel("Election Setup");
+        innerPanel.add(electSetupPanel);
+        JPanel elecPrepPanel = new VrfPanel("Election Preparation");
+        innerPanel.add(elecPrepPanel);
+        JPanel elecPeriodPanel = new VrfPanel("Election Period Parameters");
+        innerPanel.add(elecPeriodPanel);
+        JPanel mixerTallierPanel = new VrfPanel("Mixer and Tallier Parameters");
+        innerPanel.add(mixerTallierPanel);
+
+        innerPanel.add(new JLabel("This is a label inside innerPanel"));
+       
+        JScrollPane vrfScrollPanel = new JScrollPane(innerPanel);
+        vrfScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        vrfScrollPanel.setBackground(Color.CYAN);
+//        vrfScrollPanel.setPreferredSize(new Dimension(300, 150));
+        
+        panel.add(vrfScrollPanel);
+        return panel;
+    }
+
+      public JPanel getStatusPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 1));
         panel.setBackground(darkGrey);
@@ -127,34 +208,7 @@ public class MainGUI {
         statusText.setText(nextText);
         return statusText;
     }
-
-    public JPanel getVrfPanel() {
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.WHITE);
-        panel.setPreferredSize(new Dimension(696, 450));
-
-        JPanel innerPanel = new JPanel();
-        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
-        innerPanel.setBackground(grey);
-        innerPanel.setPreferredSize(new Dimension(600, 500));
-        innerPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-
-        JPanel sysSetupPanel = new VrfPanel("System Setup");
-        innerPanel.add(sysSetupPanel);
-        JPanel electSetupPanel = new VrfPanel("Election Setup");
-        innerPanel.add(electSetupPanel);
-        JPanel elecPrepPanel = new VrfPanel("Election Preparation");
-        innerPanel.add(elecPrepPanel);
-        JPanel elecPeriodPanel = new VrfPanel("Election Period Parameters");
-        innerPanel.add(elecPeriodPanel);
-        JPanel mixerTallierPanel = new VrfPanel("Mixer and Tallier Parameters");
-        innerPanel.add(mixerTallierPanel);
-
-
-        panel.add(innerPanel);
-        return panel;
-    }
-
+    
     public class VrfPanel extends JPanel {
 
         String name;
@@ -203,43 +257,7 @@ public class MainGUI {
         }
     }
 
-    public JPanel getNorthPanel() {
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.WHITE);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JPanel titlePanel = new JPanel();
-        JPanel buttonPanel = new JPanel();
-        JPanel vrfDescPanel = new JPanel();
-
-        //title panel with white background and image
-        titlePanel.setLayout(new GridLayout(1, 1));
-        titlePanel.setBackground(Color.white);
-        titlePanel.add(getTitleImage());
-//        whiteHR.setMaximumSize(new Dimension(696, 30));
-        titlePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
-
-        //button panel with two buttons and grey background
-        buttonPanel.setBackground(grey);
-        JButton btnUniVrf = createUniVrfButton();
-        JButton btnIndVrf = createIndVrfButton();
-        JButton btnStart = createStartButton();
-        
-        buttonPanel.add(btnUniVrf);
-        buttonPanel.add(btnIndVrf);
-        buttonPanel.add(btnStart);
-
-        //description panel.  button in above panel changes text in this panel
-        //contains button to start verification
-        vrfDescPanel.setBackground(darkGrey);
-        vrfDescLabel = new JLabel(descDefault);
-        vrfDescPanel.add(vrfDescLabel);
-
-        panel.add(titlePanel);
-        panel.add(buttonPanel);
-        panel.add(vrfDescPanel);
-        return panel;
-    }
 
     public JButton createUniVrfButton() {
 
@@ -352,7 +370,7 @@ vrfDescLabel.setText(descDefault);
     /**
      * Draw the panel with the image
      *
-     * @return a JPanel with the logo of monopoly
+     * @return a JPanel title image 
      */
     private JPanel getTitleImage() {
         JPanel imgPanel = new JPanel();
