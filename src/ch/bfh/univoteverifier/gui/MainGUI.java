@@ -2,6 +2,7 @@ package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.common.MainTemp;
+import ch.bfh.univoteverifier.verification.Verification;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -158,7 +159,7 @@ public class MainGUI {
 
         public void generatePanel() {
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
+//            this.setBorder
             label = new JLabel(name);
             this.add(label);
 
@@ -332,7 +333,7 @@ vrfDescLabel.setText(descDefault);
           
             switch (se.getStatusMessage()) {
                 case VRF_RESULT:
-
+                    for (VerificationResults)
                     break;
                 case VRF_STATUS:
                     statusText.append("\n" + se.message);
