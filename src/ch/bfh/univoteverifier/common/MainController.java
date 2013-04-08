@@ -6,19 +6,21 @@ public class MainController {
 
     UniversalVerification uv;
     IndividualVerification iv;
-    
-    public MainController(){}
-    
-    public StatusSubject getUniversalStatusSubject(){
+
+    public MainController() {
+        uv = new UniversalVerification();
+        iv = new IndividualVerification();
+    }
+
+    public StatusSubject getUniversalStatusSubject() {
         return uv.getStatusSubject();
     }
 
-    public StatusSubject getIndividualStatusSubject(){
-       return  iv.getStatusSubject();
-    }
-    
-    public void testObserverPattern(){
-        uv.testObserverPattern();
+    public StatusSubject getIndividualStatusSubject() {
+        return iv.getStatusSubject();
     }
 
+    public void testObserverPattern() {
+        uv.testObserverPattern();
+    }
 }

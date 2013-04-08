@@ -19,7 +19,7 @@ public class UniversalVerification extends AbstractVerification{
     }
     
        public void testObserverPattern(){
-        StatusEvent se = new StatusEvent(StatusMessage.VRF_STATUS, "This is a message through the observer pattern");
+        StatusEvent se = new StatusEvent(StatusMessage.VRF_STATUS, "This is a message sent through the observer pattern");
         ss.notifyListeners(se);
     }
 }

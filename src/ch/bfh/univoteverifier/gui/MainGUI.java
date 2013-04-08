@@ -1,5 +1,6 @@
 package ch.bfh.univoteverifier.gui;
 
+import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.common.MainTemp;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -40,7 +41,13 @@ public class MainGUI {
     JPanel northPanel, southPanel, masterPanel;
     JTextArea statusText;
     Color grey, darkGrey;
-
+    MainController mc;
+    StatusListener sl;
+    private final String descUni ="Verify the results of an entire election.  Data is downloaded from a public election board.";   
+    private final String descInd = "Verify that a given ballot has been received and the certificate is valid.  A QR Code is required.";
+    private final String descDefault = "Please select the type of verification to make";
+    JLabel vrfDescLabel; 
+    
     /**
      * @param args
      */
@@ -50,6 +57,9 @@ public class MainGUI {
     }
 
     public void start() {
+         mc = new MainController();
+         sl = new StatusUpdate();
+         
         grey = new Color(190, 190, 190);
         darkGrey = new Color(140, 140, 140);
 
@@ -63,6 +73,9 @@ public class MainGUI {
         frame.setTitle("Independent UniVote Verifier");
         frame.pack();
         frame.setVisible(true);
+        
+        mc.getUniversalStatusSubject().addListener(sl);
+        mc.getIndividualStatusSubject().addListener(sl);
     }
 
     public JPanel createUI() {
@@ -183,65 +196,101 @@ public class MainGUI {
         panel.setBackground(Color.WHITE);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JPanel whiteHR = new JPanel();
-        JPanel greyHR = new JPanel();
-        JPanel darkGreyHR = new JPanel();
+        JPanel titlePanel = new JPanel();
+        JPanel buttonPanel = new JPanel();
+        JPanel vrfDescPanel = new JPanel();
 
         //title panel with white background and image
-        whiteHR.setLayout(new GridLayout(1, 1));
-        whiteHR.setBackground(Color.white);
-        whiteHR.add(getTitleImage());
+        titlePanel.setLayout(new GridLayout(1, 1));
+        titlePanel.setBackground(Color.white);
+        titlePanel.add(getTitleImage());
 //        whiteHR.setMaximumSize(new Dimension(696, 30));
-        whiteHR.setBorder(new EmptyBorder(0, 0, 0, 0));
+        titlePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         //button panel with two buttons and grey background
-        greyHR.setBackground(grey);
+        buttonPanel.setBackground(grey);
         JButton btnUniVrf = createUniVrfButton();
-
-
-        JButton btnIndVrf = new JButton("Individual Verification");
-        greyHR.add(btnUniVrf);
-        greyHR.add(btnIndVrf);
+        JButton btnIndVrf = createIndVrfButton();
+        buttonPanel.add(btnUniVrf);
+        buttonPanel.add(btnIndVrf);
 
         //description panel.  button in above panel changes text in this panel
         //contains button to start verification
-        darkGreyHR.setBackground(darkGrey);
+        vrfDescPanel.setBackground(darkGrey);
+        vrfDescLabel = new JLabel(descDefault);
+        vrfDescPanel.add(vrfDescLabel);
 
-        panel.add(whiteHR);
-        panel.add(greyHR);
-        panel.add(darkGreyHR);
+        panel.add(titlePanel);
+        panel.add(buttonPanel);
+        panel.add(vrfDescPanel);
         return panel;
     }
 
     public JButton createUniVrfButton() {
 
 
-        JButton b = new JButton("Universal Verification");;
+        JButton b = new JButton("Universal Verification");
         b.addMouseListener(
                 new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+              
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+               
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+              
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                 vrfDescLabel.setText(descUni);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+ vrfDescLabel.setText(descDefault);
+            }
+        });
+
+        return b;
+    }
+    
+    
+     public JButton createIndVrfButton() {
+
+
+        JButton b = new JButton("Individual Verification");
+        b.addMouseListener(
+                new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+              
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+               
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+               mc.testObserverPattern();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                vrfDescLabel.setText(descInd);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+vrfDescLabel.setText(descDefault);
             }
         });
 
@@ -257,9 +306,7 @@ public class MainGUI {
         JPanel imgPanel = new JPanel();
         java.net.URL img = MainTemp.class
                 .getResource("/ch/bfh/univoteverifier/resources/univoteTitle.jpeg");
-
-        if (img
-                != null) {
+        if (img != null) {
             ImageIcon logo = new ImageIcon(img);
             JLabel imgLab = new JLabel(logo);
             imgPanel.setMaximumSize(new Dimension(300, 114));
@@ -282,13 +329,14 @@ public class MainGUI {
         @Override
         public void updateStatus(StatusEvent se) {
 
-
+          
             switch (se.getStatusMessage()) {
                 case VRF_RESULT:
 
                     break;
                 case VRF_STATUS:
-                    statusText.append(se.message);
+                    statusText.append("\n" + se.message);
+                    statusText.setCaretPosition(statusText.getText().length());
                     break;
 
             }

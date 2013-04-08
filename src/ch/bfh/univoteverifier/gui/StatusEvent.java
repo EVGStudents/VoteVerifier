@@ -15,7 +15,7 @@ public class StatusEvent {
     
     public StatusEvent(StatusMessage sm, String message ){
       this.message = message;
-      this.statusMessage =statusMessage;
+      this.statusMessage =sm;
      
     }
     
