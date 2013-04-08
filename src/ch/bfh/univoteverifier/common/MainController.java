@@ -14,6 +14,10 @@ public class MainController {
         iv = new IndividualVerification();
     }
 
+    public void runUniversal(){
+	    uv.runUniversal();
+    }
+
     public StatusSubject getUniversalStatusSubject() {
         return uv.getStatusSubject();
     }

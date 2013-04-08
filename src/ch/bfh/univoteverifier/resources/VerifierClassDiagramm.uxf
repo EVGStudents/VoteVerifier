@@ -182,7 +182,7 @@ GUI
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>774</x>
+      <x>768</x>
       <y>276</y>
       <w>228</w>
       <h>120</h>
@@ -203,8 +203,8 @@ PrimitivesVrf
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>420</x>
-      <y>42</y>
+      <x>366</x>
+      <y>48</y>
       <w>144</w>
       <h>78</h>
     </coordinates>
@@ -265,8 +265,8 @@ ElectionSetupVerifier
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1020</x>
-      <y>114</y>
+      <x>1008</x>
+      <y>96</y>
       <w>144</w>
       <h>546</h>
     </coordinates>
