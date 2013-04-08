@@ -1,8 +1,11 @@
 package ch.bfh.univoteverifier.gui;
 
+import ch.bfh.univoteverifier.common.Config;
+import static ch.bfh.univoteverifier.common.Config.CONFIG;
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.common.MainTemp;
 import ch.bfh.univoteverifier.verification.Verification;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -19,6 +22,14 @@ import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -212,8 +223,11 @@ public class MainGUI {
         buttonPanel.setBackground(grey);
         JButton btnUniVrf = createUniVrfButton();
         JButton btnIndVrf = createIndVrfButton();
+        JButton btnStart = createStartButton();
+        
         buttonPanel.add(btnUniVrf);
         buttonPanel.add(btnIndVrf);
+        buttonPanel.add(btnStart);
 
         //description panel.  button in above panel changes text in this panel
         //contains button to start verification
@@ -298,6 +312,43 @@ vrfDescLabel.setText(descDefault);
         return b;
     }
 
+     
+      public JButton createStartButton() {
+
+
+        JButton b = new JButton("START");
+        b.addMouseListener(
+                new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+              
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+               
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+               mc.runUniversal();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                vrfDescLabel.setText(descInd);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+vrfDescLabel.setText(descDefault);
+            }
+        });
+
+        return b;
+    }
+         
+         
     /**
      * Draw the panel with the image
      *
@@ -333,7 +384,13 @@ vrfDescLabel.setText(descDefault);
           
             switch (se.getStatusMessage()) {
                 case VRF_RESULT:
-                    for (VerificationResults)
+                   ArrayList<VerificationResult> results= (ArrayList<VerificationResult>)se.getVerificationResult();
+                    for (VerificationResult e: results){
+                        Boolean result = e.getResult();
+                        int code =e.getVerification().getID();
+                        String vrfType = getTextFromVrfCode(code);
+                        statusText.append("\n" + vrfType + " ............. " + result);
+                    }
                     break;
                 case VRF_STATUS:
                     statusText.append("\n" + se.message);
@@ -343,4 +400,18 @@ vrfDescLabel.setText(descDefault);
             }
         }
     }
+    
+    
+    private  final Properties prop = new Properties();
+	
+	public String getTextFromVrfCode(int code){
+		try {
+			prop.load(new FileInputStream(CONFIG));
+		} catch (IOException ex) {
+			Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+		}
+                
+              return (String)prop.get(code);
+	}
+
 }

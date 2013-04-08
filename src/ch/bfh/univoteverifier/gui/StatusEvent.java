@@ -4,7 +4,9 @@
  */
 package ch.bfh.univoteverifier.gui;
 
-import java.awt.List;
+import ch.bfh.univoteverifier.verification.VerificationResult;
+import java.util.List;
+
 
 /**
  *
@@ -14,19 +16,24 @@ public class StatusEvent {
     
     String message;
     StatusMessage statusMessage;
-    List l;
+    List vr;
     
     public StatusEvent(StatusMessage sm, String message ){
       this.message = message;
       this.statusMessage =sm;
      
     }
+//    
+//    public StatusEvent(StatusMessage sm, List l){
+//        this.statusMessage = sm;
+//        this.l = l;     
+//    }
     
-    public StatusEvent(StatusMessage sm, List l){
+   public StatusEvent(StatusMessage sm, List vr){
         this.statusMessage = sm;
-        this.l = l;
-            
+        this.vr = vr;     
     }
+        
     
     public StatusMessage getStatusMessage(){
         return statusMessage;
@@ -34,4 +41,12 @@ public class StatusEvent {
     public String getMessage(){
     return message;
     }
+
+    public List getVerificationResult() {
+        return vr;
+    }
+    
+    
 }
+
+

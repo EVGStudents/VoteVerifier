@@ -20,7 +20,7 @@ public class VerificationResult {
         this.result=result;
     }
     
-        public Verification getV() {
+        public Verification getVerification() {
         return v;
     }
 
