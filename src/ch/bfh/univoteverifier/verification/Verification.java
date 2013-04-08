@@ -1,4 +1,4 @@
-package ch.bfh.univoteverifier.common;
+package ch.bfh.univoteverifier.verification;
 
 public enum Verification {
 	PRIMITIVE_P_IS_PRIME(100),

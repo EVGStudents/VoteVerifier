@@ -1,7 +1,7 @@
 package primitives;
 
 import ch.bfh.univoteverifier.common.Config;
-import ch.bfh.univoteverifier.primitives.PrimitivesVerifier;
+import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
 import java.math.BigInteger;
 import static org.junit.Assert.*;
 import org.junit.Test;

@@ -1,8 +1,7 @@
 package primitives;
 
 
-import ch.bfh.univoteverifier.primitives.PrimitivesVerifier;
-import ch.bfh.univoteverifier.primitives.RSAVrf;
+import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
 import ch.bfh.univoteverifier.utils.RSASignature;
 import static org.junit.Assert.*;
 import java.math.BigInteger;
