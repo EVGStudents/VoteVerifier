@@ -4,10 +4,22 @@
  */
 package ch.bfh.univoteverifier.common;
 
+import ch.bfh.univoteverifier.gui.StatusEvent;
+import ch.bfh.univoteverifier.gui.StatusMessage;
+
+
 /**
  *
- * @author snake
+ * @author snake and prinstin
  */
-public class UniversalVerification {
-	
+public class UniversalVerification extends AbstractVerification{
+ 
+    public UniversalVerification(){
+
+    }
+    
+       public void testObserverPattern(){
+        StatusEvent se = new StatusEvent(StatusMessage.VRF_STATUS, "This is a message through the observer pattern");
+        ss.notifyListeners(se);
+    }
 }
