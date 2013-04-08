@@ -406,12 +406,12 @@ vrfDescLabel.setText(descDefault);
 	
 	public String getTextFromVrfCode(int code){
 		try {
-			prop.load(new FileInputStream(CONFIG));
+			prop.load(new FileInputStream("src/ch/bfh/univoteverifier/resources/messages.properties"));
 		} catch (IOException ex) {
 			Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
 		}
                 
-              return (String)prop.get(code);
+              return (String)prop.getProperty(String.valueOf(code));
 	}
 
 }
