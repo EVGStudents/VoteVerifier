@@ -1,7 +1,7 @@
 package primitives;
 
-import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
 import ch.bfh.univoteverifier.utils.ProofDiscreteLog;
+import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
 import static org.junit.Assert.*;
 import org.junit.Test;
 

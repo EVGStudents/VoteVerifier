@@ -1,28 +1,28 @@
 //package ch.bfh.univoteverifier.utils;
-//
-///*
-// * // * To change this template, choose Tools | Templates
-// * // * and open the template in the editor.
-// * // */
 ////
+/////*
+//// * // * To change this template, choose Tools | Templates
+//// * // * and open the template in the editor.
+//// * // */
+//////
 //import ch.bfh.univote.common.ElectionData;
 //import ch.bfh.univote.election.ElectionBoardServiceFault;
 //import ch.bfh.univoteverifier.common.Config;
-//
-///**
-// * // *
-// * // * @author snake
-// * // */
+////
+/////**
+//// * // *
+//// * // * @author snake
+//// * // */
 //public class ElectionProxy {
-//	
+////	
 //	private ElectionData ed = null;
 //	private String eID;
-//	
+////	
 //	public ElectionProxy(String eID){
 //		this.eID = eID;
 //	}
-//	
-//	
+////	
+////	
 //	public ElectionData getElectionData() throws ElectionBoardServiceFault{
 //		long currentTimeMillis = System.currentTimeMillis();
 //		
@@ -37,6 +37,7 @@
 //		return ed;
 //		
 //	}
+//
 //	private static ElectionData getElectionData(java.lang.String electionId) throws ElectionBoardServiceFault {
 //		ch.bfh.univote.election.ElectionBoardService service = new ch.bfh.univote.election.ElectionBoardService();
 //		ch.bfh.univote.election.ElectionBoard port = service.getElectionBoardPort();

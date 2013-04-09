@@ -12,7 +12,7 @@ public class Config {
 	/**
 	 * Configuration file path
 	 */
-	public static final String CONFIG = "src/ch/bfh/univoteverifier/resources/config.properties";
+	public static final String CONFIG = "src/main/java/ch/bfh/univoteverifier/resources/config.properties";
 	
 	/**
 	 * Tells whether we are working in debug mode

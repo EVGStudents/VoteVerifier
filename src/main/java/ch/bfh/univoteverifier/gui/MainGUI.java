@@ -3,7 +3,6 @@ package ch.bfh.univoteverifier.gui;
 import ch.bfh.univoteverifier.common.Config;
 import static ch.bfh.univoteverifier.common.Config.CONFIG;
 import ch.bfh.univoteverifier.common.MainController;
-import ch.bfh.univoteverifier.common.MainTemp;
 import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.awt.BorderLayout;
@@ -405,7 +404,7 @@ public class MainGUI {
      */
     private JPanel getTitleImage() {
         JPanel imgPanel = new JPanel();
-        java.net.URL img = MainTemp.class
+        java.net.URL img = MainGUI.class
                 .getResource("/ch/bfh/univoteverifier/resources/univoteTitle.jpeg");
         if (img != null) {
             ImageIcon logo = new ImageIcon(img);
@@ -459,7 +458,7 @@ public class MainGUI {
 
     public String getTextFromVrfCode(int code) {
         try {
-            prop.load(new FileInputStream("src/ch/bfh/univoteverifier/resources/messages.properties"));
+            prop.load(new FileInputStream("src/main/java/ch/bfh/univoteverifier/resources/messages.properties"));
         } catch (IOException ex) {
             Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
         }
