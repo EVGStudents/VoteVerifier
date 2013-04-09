@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class UniversalVerification extends AbstractVerification{
 	
-	private SystemSetupRunner ssv = new SystemSetupRunner();
+	private final SystemSetupRunner ssv = new SystemSetupRunner();
 	private final String eID; 
 	private static final Logger LOGGER = Logger.getLogger(UniversalVerification.class.getName());
 

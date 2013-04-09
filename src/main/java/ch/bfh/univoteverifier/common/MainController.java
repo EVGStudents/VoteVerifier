@@ -35,7 +35,7 @@ public class MainController {
     }
 
     public StatusSubject getIndividualStatusSubject() {
-        return uv.getStatusSubject();
+        return iv.getStatusSubject();
     }
 
     /**
