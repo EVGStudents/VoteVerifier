@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author snake
  */
-public class SystemSetupVerifier {
+public class SystemSetupRunner {
 
 	private final PrimitivesVerifier prmVrf = new PrimitivesVerifier();
 	

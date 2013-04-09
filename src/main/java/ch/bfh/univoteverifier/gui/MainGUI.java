@@ -363,7 +363,7 @@ public class MainGUI {
                 
                 statusText.setText("Beginning verification...");
                 statusText.setFont(new Font("Monospaced", Font.PLAIN, 15));
-                mc.runUniversal();
+                mc.universalVerification("vsbfh-2013");;
             }
 
             @Override

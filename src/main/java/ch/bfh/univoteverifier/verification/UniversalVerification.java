@@ -11,14 +11,24 @@ import java.util.logging.Logger;
 
 
 /**
- *
+ * This class is used to represent an UniversalVerification
  * @author snake and prinstin
  */
 public class UniversalVerification extends AbstractVerification{
 	
-	SystemSetupVerifier ssv = new SystemSetupVerifier();
+	private SystemSetupRunner ssv = new SystemSetupRunner();
+	private final String eID; 
 	private static final Logger LOGGER = Logger.getLogger(UniversalVerification.class.getName());
+
+	/**
+	 * Construct a new UniversalVerification with a given election ID
+	 * @param eID String the ID of the election
+	 */
+	public UniversalVerification(String eID){
+		this.eID = eID;	
+	}
 	
+	//ToDO - Remove
 	public void testObserverPattern(){
 		StatusEvent se = new StatusEvent(StatusMessage.VRF_STATUS, "This is a message through the observer pattern");
 		ss.notifyListeners(se);

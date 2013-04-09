@@ -4,18 +4,30 @@ import ch.bfh.univoteverifier.verification.IndividualVerification;
 import ch.bfh.univoteverifier.verification.UniversalVerification;
 import ch.bfh.univoteverifier.gui.StatusSubject;
 
+/**
+ * This class is the controller who is responsible for the communication between
+ * the GUI and the internal infrastructure
+ * @author snake
+ */
 public class MainController {
 
     UniversalVerification uv;
     IndividualVerification iv;
 
-    public MainController() {
-        uv = new UniversalVerification();
-        iv = new IndividualVerification();
+    /**
+     * Run an universal verification
+     * @param eID String the ID of a election
+     */
+    public void universalVerification(String eID){
+	    this.uv = new UniversalVerification(eID);
+	    uv.runUniversal();
     }
 
-    public void runUniversal(){
-	    uv.runUniversal();
+    /**
+     * Run an individual verification
+     */
+    public void individualVerification(){
+	   this.iv = new IndividualVerification();
     }
 
     public StatusSubject getUniversalStatusSubject() {
@@ -23,9 +35,12 @@ public class MainController {
     }
 
     public StatusSubject getIndividualStatusSubject() {
-        return iv.getStatusSubject();
+        return uv.getStatusSubject();
     }
 
+    /**
+     * ToDO -- Remove
+     */ 
     public void testObserverPattern() {
         uv.testObserverPattern();
     }

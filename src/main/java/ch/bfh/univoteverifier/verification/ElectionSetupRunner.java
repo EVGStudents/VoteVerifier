@@ -8,6 +8,6 @@ package ch.bfh.univoteverifier.verification;
  *
  * @author snake
  */
-public class ElectionPeriodVerifier {
+public class ElectionSetupRunner {
 	
 }
