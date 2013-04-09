@@ -1,5 +1,10 @@
 package ch.bfh.univoteverifier.verification;
 
+/**
+ * This enumeration is used to define the type of verifications
+ * to perform.
+ * @author snake
+ */
 public enum Verification {
 	SETUP_P_IS_PRIME(100),
 	SETUP_Q_IS_PRIME(110),
@@ -9,7 +14,7 @@ public enum Verification {
 	
 	
 	//the ID of the verification
-	private int code;
+	private final int code;
 	
 	/**
 	 * Construct a Verification object

@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class SystemSetupVerifier {
 
-	private PrimitivesVerifier prmVrf = new PrimitivesVerifier();
+	private final PrimitivesVerifier prmVrf = new PrimitivesVerifier();
 	
 	/**
 	 * Verify the parameters of the Schnorr's signature

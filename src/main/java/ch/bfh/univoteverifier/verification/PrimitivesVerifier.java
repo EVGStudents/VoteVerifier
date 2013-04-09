@@ -10,6 +10,8 @@ import ch.bfh.univoteverifier.utils.ProofDiscreteLog;
 import ch.bfh.univoteverifier.utils.RSASignature;
 import ch.bfh.univoteverifier.utils.SchnorrSignature;
 import java.math.BigInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class is able to perform all the verification of the
@@ -17,6 +19,8 @@ import java.math.BigInteger;
  * @author snake
  */
 public class PrimitivesVerifier {
+
+	private static final Logger LOGGER = Logger.getLogger(PrimitivesVerifier.class.getName());
 	
 	/**
 	 * verify a Non-Interactive Zero Knowledge Proof of Discrete Logs
@@ -32,16 +36,14 @@ public class PrimitivesVerifier {
 		c2 = CryptoUtils.concatArrayContents(concatB);
 		
 		validProof += c2.compareTo(prf.c);
-		
-		if(Config.DEBUG_MODE == true && validProof != 0)
-			System.out.println("FAILED: prf.c == vk.add(prf.t).mod(p)");
+	
+		LOGGER.log(Level.SEVERE, "Proof FAILED: prf.c == vk.add(prf.t).mod(p)");
 		
 		BigInteger v = prf.g.modPow(prf.s, prf.p);
 		BigInteger w = (prf.t.multiply(prf.vk.modPow(prf.c,prf.p))).mod(prf.p);
 		validProof  += (v.compareTo(w));
 		
-		if(Config.DEBUG_MODE == true)
-			if (validProof!=0)System.out.println("FAILED: Second Part");
+		LOGGER.log(Level.SEVERE, "Proof FAILED: Second part");
 		
 		boolean results = 0==validProof;
 		
@@ -58,9 +60,8 @@ public class PrimitivesVerifier {
 		BigInteger ver = s.sig.modPow(s.e, s.n);
 		
 		boolean result = ver.equals(mIn);
-		
-		if(Config.DEBUG_MODE == true)
-			System.out.println(result);
+
+		LOGGER.log(Level.SEVERE, "RSA Verification failed");
 		
 		return result;
 	}
@@ -118,8 +119,7 @@ public class PrimitivesVerifier {
 	 */
 	public boolean vrfSchnorrSign(SchnorrSignature signature, BigInteger message, BigInteger publicKey){
 		
-		if(Config.DEBUG_MODE)
-			System.out.println("The received signature is: " + signature.getA() + ", " + signature.getB() );
+			LOGGER.log(Level.INFO, "The received signature is: {0}, {1}", new Object[]{signature.getA(), signature.getB()});
 		
 		BigInteger concat = Config.g.modPow(signature.getB(), Config.p).multiply(publicKey.modPow(signature.getA(), Config.p)).mod(Config.p);
 		

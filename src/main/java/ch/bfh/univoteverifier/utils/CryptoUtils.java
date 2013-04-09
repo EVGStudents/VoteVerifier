@@ -10,7 +10,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class CryptoUtils {
+public  class CryptoUtils {
+
+	private static final Logger LOGGER = Logger.getLogger(CryptoUtils.class.getName());
 	
 	/**
 	 * Compute the hash of a number and then put it into a BigInteger.
@@ -21,14 +23,14 @@ public class CryptoUtils {
 	public static BigInteger sha(BigInteger val){
 
 		BigInteger result = null;
+		
 		try {
-			
 			MessageDigest md = MessageDigest.getInstance(Config.hashAlgorithm);
 			md.update(val.toByteArray());
 			result = new BigInteger(md.digest()).mod(Config.q);
 			
 		} catch (NoSuchAlgorithmException ex) {
-			Logger.getLogger(CryptoUtils.class.getName()).log(Level.SEVERE, null, ex);
+			LOGGER.log(Level.SEVERE, null, ex);
 		}
 
 		return result;
