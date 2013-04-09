@@ -7,6 +7,10 @@ package ch.bfh.univoteverifier.verification;
 
 import ch.bfh.univoteverifier.gui.StatusEvent;
 import ch.bfh.univoteverifier.gui.StatusMessage;
+import ch.bfh.univoteverifier.runner.Runner;
+import ch.bfh.univoteverifier.runner.SystemSetupRunner;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -16,16 +20,21 @@ import java.util.logging.Logger;
  */
 public class UniversalVerification extends AbstractVerification{
 	
-	private final SystemSetupRunner ssv = new SystemSetupRunner();
-	private final String eID; 
+	private final List<Runner> runners = new ArrayList<>();
+	private final String eID;
 	private static final Logger LOGGER = Logger.getLogger(UniversalVerification.class.getName());
-
+	
 	/**
 	 * Construct a new UniversalVerification with a given election ID
 	 * @param eID String the ID of the election
 	 */
 	public UniversalVerification(String eID){
-		this.eID = eID;	
+		this.eID = eID;
+		
+		//TODO - CHeck that the electionID is correct and does not contain strange things.
+		
+		//create the necessary runner for the universal verification
+		runners.add(new SystemSetupRunner(eID));
 	}
 	
 	//ToDO - Remove
@@ -33,13 +42,19 @@ public class UniversalVerification extends AbstractVerification{
 		StatusEvent se = new StatusEvent(StatusMessage.VRF_STATUS, "This is a message through the observer pattern");
 		ss.notifyListeners(se);
 	}
-	
+
+	/**
+	 * Execute the different steps of an universal verification and get a result
+	 */
 	public void runUniversal(){
-		startSystemSetup();
+	
+		//run the runners and get results
+		for(Runner r : runners){
+			List<VerificationResult> res = r.run();
+			StatusEvent se = new StatusEvent(StatusMessage.VRF_RESULT, res);
+			ss.notifyListeners(se);
+		}
+		
 	}
 	
-	private void startSystemSetup(){
-		StatusEvent se = new StatusEvent(StatusMessage.VRF_RESULT, ssv.vrfSignParam());
-		ss.notifyListeners(se);
-	}
 }
