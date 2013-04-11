@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class UniversalVerification extends AbstractVerification{
 	
-	private final List<Runner> runners = new ArrayList<>();
+	private final List<Runner> runners = new ArrayList<Runner>();
 	private final String eID;
 	private static final Logger LOGGER = Logger.getLogger(UniversalVerification.class.getName());
 	

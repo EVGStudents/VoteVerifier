@@ -21,6 +21,9 @@ import java.util.logging.Logger;
 public class PrimitivesVerifier {
 
 	private static final Logger LOGGER = Logger.getLogger(PrimitivesVerifier.class.getName());
+	private static final int P_LENGTH = 1024; 
+	private static final int Q_LENGTH = 256; 
+	private static final int G_LENGTH = 1024; 
 	
 	/**
 	 * verify a Non-Interactive Zero Knowledge Proof of Discrete Logs
@@ -71,8 +74,8 @@ public class PrimitivesVerifier {
 	 * are corrects by reading them from the configuration file
 	 * @return boolean true if the parameters are correct, false otherwise
 	 */
-	public boolean vrfParamLen(BigInteger p, BigInteger q, BigInteger g,int pLength, int qLength, int gLength){
-		return p.bitLength() == pLength && q.bitLength() == qLength && g.bitLength() == gLength;
+	public boolean vrfParamLen(int pLen, int qLen, int gLen){
+		return pLen == P_LENGTH && qLen == Q_LENGTH && gLen == G_LENGTH;
 	}
 	
 	/**

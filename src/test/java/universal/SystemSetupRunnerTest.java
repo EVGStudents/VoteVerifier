@@ -22,11 +22,11 @@ import static org.junit.Assert.*;
  *
  * @author snake
  */
-public class RunnerTest {
+public class SystemSetupRunnerTest {
 	
 	Runner r;
 	
-	public RunnerTest() {
+	public SystemSetupRunnerTest() {
 		String eID = "vshbfh-2013";
 		this.r = new SystemSetupRunner(eID);
 	}

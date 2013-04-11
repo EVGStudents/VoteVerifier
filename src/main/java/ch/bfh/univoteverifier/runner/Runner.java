@@ -22,7 +22,7 @@ public abstract class Runner {
 
 	public Runner(String eID) {
 		this.ebp = new ElectionBoardProxy(eID);
-		this.result = new ArrayList<>();
+		this.result = new ArrayList<VerificationResult>();
 		this.prmVrf = new PrimitivesVerifier();
 	}
 

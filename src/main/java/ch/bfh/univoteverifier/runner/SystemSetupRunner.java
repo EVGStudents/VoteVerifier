@@ -33,7 +33,7 @@ public class SystemSetupRunner extends Runner{
 	
 		result.add(CryptoUtils.getVrfRes(Verification.SETUP_P_IS_SAFE_PRIME, prmVrf.vrfSafePrime(Config.p, Config.q)));
 		
-		result.add(CryptoUtils.getVrfRes(Verification.SETUP_PARAM_LEN, prmVrf.vrfParamLen(Config.p, Config.q, Config.g, 1024, 256, 1024)));
+		result.add(CryptoUtils.getVrfRes(Verification.SETUP_PARAM_LEN, prmVrf.vrfParamLen(Config.p.bitLength(), Config.q.bitLength(), Config.g.bitLength())));
 		
 	}
 

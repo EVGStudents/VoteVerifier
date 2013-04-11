@@ -30,7 +30,7 @@ public class PrimitivesTest {
 
 	@Test
 	public void paramLength(){
-		assertTrue(pVrf.vrfParamLen(Config.p, Config.q, Config.g, Config.pLength, Config.qLength, Config.gLength));
+		assertTrue(pVrf.vrfParamLen(Config.p.bitLength(), Config.q.bitLength(), Config.g.bitLength()));
 	}
 	
 	@Test
@@ -70,7 +70,7 @@ public class PrimitivesTest {
 
 	@Test
 	public void notParamLength(){
-		assertFalse(pVrf.vrfParamLen(Config.p, Config.q, Config.g, 1025, 257, 1023));
+		assertFalse(pVrf.vrfParamLen(Config.q.bitLength(), Config.g.bitLength(), Config.q.bitLength()));
 	}
 	
 }
