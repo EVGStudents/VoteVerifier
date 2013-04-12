@@ -57,7 +57,7 @@
 			<version>1.4</version>
 			<scope>compile</scope>
 		</dependency>
-		<!--		<dependency>
+<!--		<dependency>
 			<groupId>ch.bfh.univoteverifier</groupId>
 			<artifactId>verifier</artifactId>
 			<version>1.0-SNAPSHOT</version>
@@ -78,7 +78,11 @@
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
-			</resource>
+                        </resource>
+                        <resource>
+                            <directory>src/main/java/ch/bfh/univoteverifier/resources</directory>
+                        </resource>
+   
 		</resources>
 		<pluginManagement>
 			<plugins>

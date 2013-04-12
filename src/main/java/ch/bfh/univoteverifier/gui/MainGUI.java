@@ -2,6 +2,7 @@ package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.common.Config;
 import static ch.bfh.univoteverifier.common.Config.CONFIG;
+import  ch.bfh.univoteverifier.common.*;
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -13,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -61,6 +63,8 @@ public class MainGUI {
     VrfButton btnInd, btnUni;
     VrfButton[] btns={btnInd,btnUni};
     JButton btnStart;
+    boolean uniVrfSelected=false;
+    String eID="vsbfh-2013";
 
     /**
      * @param args
@@ -87,8 +91,7 @@ public class MainGUI {
         frame.setTitle("Independent UniVote Verifier");
         frame.pack();
         frame.setVisible(true);
-        mc.getUniversalStatusSubject().addListener(sl);
-        mc.getIndividualStatusSubject().addListener(sl);
+
     }
 
     public JPanel createUI() {
@@ -282,7 +285,7 @@ public class MainGUI {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                mc.testObserverPattern();
+              uniVrfSelected=true;
                 descDefault = descUni;
                 btnInd.depress();
                 btnUni.press();
@@ -322,7 +325,7 @@ public class MainGUI {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                mc.testObserverPattern();
+                 uniVrfSelected=false;
                 descDefault = descInd;
                 btnUni.depress();
                 btnInd.press();
@@ -360,10 +363,22 @@ public class MainGUI {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                
                 statusText.setText("Beginning verification...");
                 statusText.setFont(new Font("Monospaced", Font.PLAIN, 15));
-                mc.universalVerification("vsbfh-2013");
+                
+                if (uniVrfSelected){
+                     mc.universalVerification(eID);
+                    mc.getUniversalStatusSubject().addListener(sl);
+                      
+                }
+                else{
+                      mc.individualVerification();
+                    mc.getIndividualStatusSubject().addListener(sl);
+                  
+                }
+        
+                
+
             }
 
             @Override
@@ -405,7 +420,13 @@ public class MainGUI {
     private JPanel getTitleImage() {
         JPanel imgPanel = new JPanel();
         java.net.URL img = MainGUI.class
-                .getResource("/ch/bfh/univoteverifier/resources/univoteTitle.jpeg");
+                .getResource("/univoteTitle.jpeg");
+//        ImageIcon img = new ImageIcon(this.getClass()
+//                .getResource("/src/main/java/ch/bfh/univoteverifier/resources/univoteTitle.jpeg"));
+//        System.out.println(Thread.currentThread().getContextClassLoader());
+//        System.out.println(this.getClass().getClassLoader());
+        
+        
         if (img != null) {
             ImageIcon logo = new ImageIcon(img);
             JLabel imgLab = new JLabel(logo);
