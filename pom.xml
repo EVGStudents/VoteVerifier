@@ -121,12 +121,12 @@
 						</goals>
 						<configuration>
 							<wsdlFiles>
-								<wsdlFile>ElectionBoardService.wsdl</wsdlFile>
+								<wsdlFile>univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.wsdl</wsdlFile>
 							</wsdlFiles>
-							<wsdlLocation>${basedir}/src/wsdl/ElectionBoardService.wsdl</wsdlLocation>
-							<staleFile>${project.build.directory}/jaxws/stale/ElectionBoardService.stale</staleFile>
+							<wsdlLocation>http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?wsdl</wsdlLocation>
+							<staleFile>${project.build.directory}/jaxws/stale/ElectionBoardServiceImpl.stale</staleFile>
 						</configuration>
-						<id>wsimport-generate-ElectionBoardService</id>
+						<id>wsimport-generate-ElectionBoardServiceImpl</id>
 						<phase>generate-sources</phase>
 					</execution>
 				</executions>
@@ -144,6 +144,25 @@
 					<extension>true</extension>
 					<catalog>${basedir}/src/jax-ws-catalog.xml</catalog>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/jaxws-import/</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

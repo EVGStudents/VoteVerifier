@@ -14,7 +14,7 @@
 
 	<types>
 		<xsd:schema>
-			<xsd:import namespace="http://univote.bfh.ch/election" schemaLocation="http://www.univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=2"/>
+			<xsd:import namespace="http://univote.bfh.ch/election" schemaLocation="http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=2"/>
 		</xsd:schema>
 	</types>
 
@@ -637,7 +637,7 @@
 
 	<service name="ElectionBoardService">
 		<port name="ElectionBoardPort" binding="tns:ElectionBoardPortBinding">
-			<soap:address location="http://www.univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl"/>
+			<soap:address location="http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl"/>
 		</port>
 	</service>
 
