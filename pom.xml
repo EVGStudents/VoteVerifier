@@ -119,7 +119,7 @@
 							<wsdlFiles>
 								<wsdlFile>ElectionBoardService.wsdl</wsdlFile>
 							</wsdlFiles>
-							<wsdlLocation>file:/home/snake/Download/ElectionBoardService.wsdl</wsdlLocation>
+							<wsdlLocation>${basedir}/src/wsdl/ElectionBoardService.wsdl</wsdlLocation>
 							<staleFile>${project.build.directory}/jaxws/stale/ElectionBoardService.stale</staleFile>
 						</configuration>
 						<id>wsimport-generate-ElectionBoardService</id>
@@ -134,7 +134,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<sourceDestDir>${project.build.directory}/generated-sources/jaxws-wsimport</sourceDestDir>
+					<sourceDestDir>${project.build.directory}/generated-sources/jaxws-import/</sourceDestDir>
 					<xnocompile>true</xnocompile>
 					<verbose>true</verbose>
 					<extension>true</extension>
@@ -142,8 +142,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
-		
 	</build>
 	<reporting>
 		<plugins>
