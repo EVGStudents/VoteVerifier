@@ -2,7 +2,7 @@ package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.common.Config;
 import static ch.bfh.univoteverifier.common.Config.CONFIG;
-import  ch.bfh.univoteverifier.common.*;
+import ch.bfh.univoteverifier.common.*;
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -36,6 +36,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -52,19 +53,20 @@ import javax.swing.text.StyleConstants;
 public class MainGUI {
 
     JFrame frame;
-    JPanel northPanel, southPanel, masterPanel;
+    JPanel northPanel, southPanel, masterPanel, vrfDescPanel, dynamicChoicePanel;
     VrfPanel sysSetupPanel, electSetupPanel, elecPrepPanel, elecPeriodPanel, mixerTallierPanel;
     JTextArea statusText;
     Color grey, darkGrey;
     MainController mc;
     StatusListener sl;
     private String descDefault = "Please select the type of verification to make";
-    JLabel vrfDescLabel;
+    JLabel vrfDescLabel, choiceDescLabel;
     VrfButton btnInd, btnUni;
-    VrfButton[] btns={btnInd,btnUni};
-    JButton btnStart;
-    boolean uniVrfSelected=false;
-    String eID="vsbfh-2013";
+    VrfButton[] btns = {btnInd, btnUni};
+    JButton btnStart, btnFileSelector;
+    boolean uniVrfSelected = false, selectionMade = false;
+    JComboBox comboBox;
+    String[] eIDlist = {"vsbfh-2013", "bbbbbb", "ccccc", "dddddd", "eeeeee"};
 
     /**
      * @param args
@@ -104,9 +106,9 @@ public class MainGUI {
     }
 
     public JPanel getNorthPanel() {
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.WHITE);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        northPanel = new JPanel();
+        northPanel.setBackground(Color.WHITE);
+        northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
 
 
         //title panel with white background and image
@@ -132,22 +134,45 @@ public class MainGUI {
 
         //description panel.  button in above panel changes text in this panel
         //contains button to start verification
-        JPanel vrfDescPanel = new JPanel();
+        vrfDescPanel = new JPanel();
         vrfDescPanel.setLayout(new GridLayout(1, 1));
+//        vrfDescPanel.setLayout(new BoxLayout(vrfDescPanel, BoxLayout.X_AXIS));
         vrfDescPanel.setBackground(darkGrey);
+
+
         vrfDescLabel = new JLabel(descDefault);
         vrfDescLabel.setHorizontalAlignment(SwingConstants.CENTER);
         vrfDescPanel.add(vrfDescLabel);
+        createComboBox();
 
-        panel.add(titlePanel);
-        panel.add(buttonPanel);
-        panel.add(vrfDescPanel);
-        return panel;
+
+        dynamicChoicePanel = new JPanel();
+//        vrfDescPanel.setLayout(new GridLayout(1, 2));
+        dynamicChoicePanel.setLayout(new GridLayout(1, 1));
+        dynamicChoicePanel.setBackground(grey);
+
+
+        choiceDescLabel = new JLabel("here the combobox and file selector are shown when selection is made");
+        choiceDescLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        dynamicChoicePanel.add(choiceDescLabel);
+
+        northPanel.add(titlePanel);
+        northPanel.add(buttonPanel);
+        northPanel.add(vrfDescPanel);
+
+        return northPanel;
+    }
+
+    public void createComboBox() {
+        comboBox = new JComboBox(eIDlist);
+        comboBox.setEditable(true);
+        comboBox.setSelectedIndex(2);
+        comboBox.setSize(30, 50);
+        comboBox.setFont(new Font("Serif", Font.PLAIN, 10));
     }
 
     public JPanel getVrfPanel() {
         JPanel panel = new JPanel();
-//       panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setLayout(new GridLayout(1, 1));
         panel.setBackground(Color.WHITE);
 
@@ -155,12 +180,10 @@ public class MainGUI {
         panel.setBorder(new EmptyBorder(10, 30, 10, 30)); //top left bottom right
 
         JPanel innerPanel = new JPanel();
-//        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
         innerPanel.setLayout(new GridLayout(5, 1));
 
         innerPanel.setBackground(grey);
         innerPanel.setPreferredSize(new Dimension(500, 300));
-//        innerPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         sysSetupPanel = new VrfPanel("System Setup");
         innerPanel.add(sysSetupPanel);
@@ -270,9 +293,9 @@ public class MainGUI {
 
     public JButton createUniVrfButton() {
 
-        final String descUni = "Verify the results of an entire election.  Data is downloaded from a public election board.";
+        final String descUni = "Verify the results of an entire election.  Enter an election ID:";
         btnUni = new VrfButton("Universal Verification", descUni);
-        
+
         btnUni.addMouseListener(
                 new MouseListener() {
             @Override
@@ -285,7 +308,12 @@ public class MainGUI {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-              uniVrfSelected=true;
+                northPanel.add(dynamicChoicePanel);
+                
+                uniVrfSelected = true;
+                dynamicChoicePanel.remove(btnFileSelector);
+                dynamicChoicePanel.add(comboBox);
+                   choiceDescLabel.setText("Type or select an election ID: ");
                 descDefault = descUni;
                 btnInd.depress();
                 btnUni.press();
@@ -309,10 +337,12 @@ public class MainGUI {
 
     public JButton createIndVrfButton() {
 
+        btnFileSelector = new JButton("select file");
+
 
         final String descInd = "Verify that a given ballot has been received and the certificate is valid.  A QR Code is required.";
         btnInd = new VrfButton("Individual Verification", descInd);
-      
+
         btnInd.addMouseListener(
                 new MouseListener() {
             @Override
@@ -325,7 +355,11 @@ public class MainGUI {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                 uniVrfSelected=false;
+                 northPanel.add(dynamicChoicePanel);
+                dynamicChoicePanel.remove(comboBox);
+                dynamicChoicePanel.add(btnFileSelector);
+                choiceDescLabel.setText("Please drag a QR code into the space below, or select a file:");
+                uniVrfSelected = false;
                 descDefault = descInd;
                 btnUni.depress();
                 btnInd.press();
@@ -363,21 +397,22 @@ public class MainGUI {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                statusText.setText("Beginning verification...");
-                statusText.setFont(new Font("Monospaced", Font.PLAIN, 15));
-                
-                if (uniVrfSelected){
-                     mc.universalVerification(eID);
+                String eID = (String) comboBox.getSelectedItem();
+                statusText.setText("Beginning verification for election ID: " + eID);
+                statusText.setFont(new Font("Monospaced", Font.PLAIN, 16));
+
+                if (uniVrfSelected) {
+                    mc.universalVerification(eID);
                     mc.getUniversalStatusSubject().addListener(sl);
                       
                 }
                 else{
                       mc.individualVerification(eID);
                     mc.getIndividualStatusSubject().addListener(sl);
-                  
+
                 }
-        
-                
+
+
 
             }
 
@@ -421,12 +456,8 @@ public class MainGUI {
         JPanel imgPanel = new JPanel();
         java.net.URL img = MainGUI.class
                 .getResource("/univoteTitle.jpeg");
-//        ImageIcon img = new ImageIcon(this.getClass()
-//                .getResource("/src/main/java/ch/bfh/univoteverifier/resources/univoteTitle.jpeg"));
-//        System.out.println(Thread.currentThread().getContextClassLoader());
-//        System.out.println(this.getClass().getClassLoader());
-        
-        
+
+
         if (img != null) {
             ImageIcon logo = new ImageIcon(img);
             JLabel imgLab = new JLabel(logo);
