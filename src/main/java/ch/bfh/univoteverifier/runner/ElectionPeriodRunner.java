@@ -13,9 +13,6 @@ import java.util.List;
  */
 public class ElectionPeriodRunner extends Runner {
 
-	public ElectionPeriodRunner(String eID) {
-		super(eID);
-	}
 
 	@Override
 	public List<VerificationResult> run() {

@@ -372,7 +372,7 @@ public class MainGUI {
                       
                 }
                 else{
-                      mc.individualVerification();
+                      mc.individualVerification(eID);
                     mc.getIndividualStatusSubject().addListener(sl);
                   
                 }

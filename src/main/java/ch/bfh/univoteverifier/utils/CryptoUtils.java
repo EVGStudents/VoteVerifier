@@ -10,6 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+/**
+ *
+ * @author snake
+ */
 public  class CryptoUtils {
 
 	private static final Logger LOGGER = Logger.getLogger(CryptoUtils.class.getName());
@@ -65,6 +69,12 @@ public  class CryptoUtils {
 		
 	}
 
+	/**
+	 *
+	 * @param v
+	 * @param res
+	 * @return
+	 */
 	public static VerificationResult getVrfRes(Verification v, boolean res){
 		return new VerificationResult(v, res);
 	}

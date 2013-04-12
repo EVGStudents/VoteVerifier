@@ -13,9 +13,6 @@ import java.util.List;
  */
 public class ElectionPreparationRunner extends Runner {
 
-	public ElectionPreparationRunner(String eID) {
-		super(eID);
-	}
 
 	@Override
 	public List<VerificationResult> run() {

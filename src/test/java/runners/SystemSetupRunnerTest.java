@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package universal;
+package runners;
 
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
@@ -28,7 +28,8 @@ public class SystemSetupRunnerTest {
 	
 	public SystemSetupRunnerTest() {
 		String eID = "vshbfh-2013";
-		this.r = new SystemSetupRunner(eID);
+		this.r = new SystemSetupRunner();
+		this.r.seteID(eID);
 	}
 	
 	@BeforeClass

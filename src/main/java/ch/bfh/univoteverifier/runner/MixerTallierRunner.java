@@ -13,9 +13,6 @@ import java.util.List;
  */
 public class MixerTallierRunner extends Runner {
 
-	public MixerTallierRunner(String eID) {
-		super(eID);
-	}
 
 	@Override
 	public List<VerificationResult> run() {
