@@ -6,6 +6,7 @@ import ch.bfh.univoteverifier.common.*;
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.verification.VerificationResult;
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -16,6 +17,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -30,6 +33,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -38,6 +43,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -53,7 +59,7 @@ import javax.swing.text.StyleConstants;
 public class MainGUI {
 
     JFrame frame;
-    JPanel northPanel, southPanel, masterPanel, vrfDescPanel, dynamicChoicePanel;
+    JPanel northPanel, southPanel, masterPanel, vrfDescPanel, dynamicChoicePanel, innerPanel;
     VrfPanel sysSetupPanel, electSetupPanel, elecPrepPanel, elecPeriodPanel, mixerTallierPanel;
     JTextArea statusText;
     Color grey, darkGrey;
@@ -66,8 +72,9 @@ public class MainGUI {
     JButton btnStart, btnFileSelector;
     boolean uniVrfSelected = false, selectionMade = false;
     JComboBox comboBox;
-    String[] eIDlist = {"vsbfh-2013", "bbbbbb", "ccccc", "dddddd", "eeeeee"};
-
+    String[] eIDlist; //= {"vsbfh-2013", "bbbbbb", "ccccc", "dddddd", "eeeeee"};
+    String rawEIDlist;
+    Preferences prefs ;
     /**
      * @param args
      */
@@ -77,6 +84,11 @@ public class MainGUI {
     }
 
     public void start() {
+        prefs = Preferences.userNodeForPackage(MainGUI.class);
+        rawEIDlist = prefs.get("eIDList", "Bern Zurich vsbfh-2013");
+        Pattern pattern = Pattern.compile("\\s");
+        eIDlist = pattern.split(rawEIDlist);
+        
         mc = new MainController();
         sl = new StatusUpdate();
 
@@ -110,7 +122,6 @@ public class MainGUI {
         northPanel.setBackground(Color.WHITE);
         northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
 
-
         //title panel with white background and image
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new GridLayout(1, 1));
@@ -125,42 +136,39 @@ public class MainGUI {
 
         JButton btnUniVrf = createUniVrfButton();
         JButton btnIndVrf = createIndVrfButton();
-        JButton btnStart = createStartButton();
+        btnStart = createStartButton();
 
         buttonPanel.add(btnUniVrf);
         buttonPanel.add(btnIndVrf);
         buttonPanel.add(btnStart);
 
-
         //description panel.  button in above panel changes text in this panel
         //contains button to start verification
         vrfDescPanel = new JPanel();
         vrfDescPanel.setLayout(new GridLayout(1, 1));
-//        vrfDescPanel.setLayout(new BoxLayout(vrfDescPanel, BoxLayout.X_AXIS));
         vrfDescPanel.setBackground(darkGrey);
-
-
         vrfDescLabel = new JLabel(descDefault);
         vrfDescLabel.setHorizontalAlignment(SwingConstants.CENTER);
         vrfDescPanel.add(vrfDescLabel);
+
         createComboBox();
-
-
-        dynamicChoicePanel = new JPanel();
-//        vrfDescPanel.setLayout(new GridLayout(1, 2));
-        dynamicChoicePanel.setLayout(new GridLayout(1, 1));
-        dynamicChoicePanel.setBackground(grey);
-
-
-        choiceDescLabel = new JLabel("here the combobox and file selector are shown when selection is made");
-        choiceDescLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        dynamicChoicePanel.add(choiceDescLabel);
+        createDynamicChoicePanel();
 
         northPanel.add(titlePanel);
         northPanel.add(buttonPanel);
         northPanel.add(vrfDescPanel);
 
         return northPanel;
+    }
+
+    public void createDynamicChoicePanel() {
+        dynamicChoicePanel = new JPanel();
+        dynamicChoicePanel.setBackground(darkGrey);
+        dynamicChoicePanel.setPreferredSize(new Dimension(300, 40));
+
+        choiceDescLabel = new JLabel();
+        choiceDescLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        dynamicChoicePanel.add(choiceDescLabel);
     }
 
     public void createComboBox() {
@@ -179,28 +187,44 @@ public class MainGUI {
         panel.setPreferredSize(new Dimension(696, 450));
         panel.setBorder(new EmptyBorder(10, 30, 10, 30)); //top left bottom right
 
-        JPanel innerPanel = new JPanel();
-        innerPanel.setLayout(new GridLayout(5, 1));
+        innerPanel = new JPanel();
+        innerPanelInitialize();
 
-        innerPanel.setBackground(grey);
-        innerPanel.setPreferredSize(new Dimension(500, 300));
-
-        sysSetupPanel = new VrfPanel("System Setup");
-        innerPanel.add(sysSetupPanel);
-        electSetupPanel = new VrfPanel("Election Setup");
-        innerPanel.add(electSetupPanel);
-        elecPrepPanel = new VrfPanel("Election Preparation");
-        innerPanel.add(elecPrepPanel);
-        elecPeriodPanel = new VrfPanel("Election Period Parameters");
-        innerPanel.add(elecPeriodPanel);
-        mixerTallierPanel = new VrfPanel("Mixer and Tallier Parameters");
-        innerPanel.add(mixerTallierPanel);
 
         JScrollPane vrfScrollPanel = new JScrollPane(innerPanel);
         vrfScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         panel.add(vrfScrollPanel);
         return panel;
+    }
+
+    public void innerPanelInitialize() {
+        innerPanel.removeAll();
+        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
+        innerPanel.setBackground(grey);
+        innerPanel.setPreferredSize(new Dimension(500, 300));
+    }
+
+    public void innerPanelBeginVrf() {
+        innerPanel.removeAll();
+        innerPanel.setLayout(new GridLayout(5, 1));
+
+        innerPanel.setBackground(grey);
+        innerPanel.setPreferredSize(new Dimension(500, 300));
+
+        sysSetupPanel = new VrfPanel("System Setup");
+        electSetupPanel = new VrfPanel("Election Setup");
+        elecPrepPanel = new VrfPanel("Election Preparation");
+        elecPeriodPanel = new VrfPanel("Election Period Parameters");
+        mixerTallierPanel = new VrfPanel("Mixer and Tallier Parameters");
+
+        innerPanel.add(sysSetupPanel);
+        innerPanel.add(electSetupPanel);
+        innerPanel.add(elecPrepPanel);
+        innerPanel.add(elecPeriodPanel);
+        innerPanel.add(mixerTallierPanel);
+
+        innerPanel.repaint();
     }
 
     public JPanel getStatusPanel() {
@@ -308,12 +332,13 @@ public class MainGUI {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                northPanel.add(dynamicChoicePanel);
-                
-                uniVrfSelected = true;
-                dynamicChoicePanel.remove(btnFileSelector);
+                primeDescPanel();
                 dynamicChoicePanel.add(comboBox);
-                   choiceDescLabel.setText("Type or select an election ID: ");
+                choiceDescLabel.setText("Type or select an election ID: ");
+                innerPanel.repaint();
+
+
+                uniVrfSelected = true;
                 descDefault = descUni;
                 btnInd.depress();
                 btnUni.press();
@@ -338,6 +363,23 @@ public class MainGUI {
     public JButton createIndVrfButton() {
 
         btnFileSelector = new JButton("select file");
+        btnFileSelector.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showDialog(innerPanel, "Select");
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+                    File file = fc.getSelectedFile();
+                    if (file == null) {
+                        statusText.append("File invalid");
+                    } else {
+                        statusText.append("\n" + file.getPath());
+                    }
+                }
+            }
+        });
 
 
         final String descInd = "Verify that a given ballot has been received and the certificate is valid.  A QR Code is required.";
@@ -355,10 +397,13 @@ public class MainGUI {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                 northPanel.add(dynamicChoicePanel);
-                dynamicChoicePanel.remove(comboBox);
-                dynamicChoicePanel.add(btnFileSelector);
+                primeDescPanel();
                 choiceDescLabel.setText("Please drag a QR code into the space below, or select a file:");
+                dynamicChoicePanel.add(btnFileSelector);
+
+                innerPanel.repaint();
+
+
                 uniVrfSelected = false;
                 descDefault = descInd;
                 btnUni.depress();
@@ -381,6 +426,19 @@ public class MainGUI {
         return btnInd;
     }
 
+    public void primeDescPanel() {
+        if (!selectionMade) {
+            innerPanel.add(dynamicChoicePanel);
+        }
+        selectionMade = true;
+
+        dynamicChoicePanel.removeAll();
+        dynamicChoicePanel.add(choiceDescLabel);
+    }
+
+    public void postDescPanel() {
+    }
+
     public JButton createStartButton() {
 
         btnStart = new JButton("START");
@@ -397,20 +455,29 @@ public class MainGUI {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                String eID = (String) comboBox.getSelectedItem();
-                statusText.setText("Beginning verification for election ID: " + eID);
+                
+                innerPanelBeginVrf();
+                btnInd.setEnabled(false);
+                btnUni.setEnabled(false);
+                
+                String msg = "Beginning verification for ";
                 statusText.setFont(new Font("Monospaced", Font.PLAIN, 16));
 
                 if (uniVrfSelected) {
+                    String eID = (String) comboBox.getSelectedItem();
+                    msg = msg + "the election id " + eID;
+                    rawEIDlist= rawEIDlist + " " + eID;
+                    prefs.put("eIDList", rawEIDlist);
                     mc.universalVerification(eID);
                     mc.getUniversalStatusSubject().addListener(sl);
 
                 } else {
+                    msg += "the provided ballot receipt.";
                     mc.individualVerification();
                     mc.getIndividualStatusSubject().addListener(sl);
 
                 }
-
+                statusText.setText(msg);
 
 
             }
