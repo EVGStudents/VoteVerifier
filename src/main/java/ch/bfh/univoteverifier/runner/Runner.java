@@ -6,9 +6,6 @@ package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.utils.ElectionBoardProxy;
 import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
-import ch.bfh.univoteverifier.verification.VerificationResult;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class represent a Runner. A runner is used to perform the verifications
@@ -16,45 +13,23 @@ import java.util.List;
  * @author snake
  */
 public abstract class Runner {
-	/**
-	 * Election ID
-	 */
-	protected String eID;
-	/**
-	 * Primitive Verifier 
-	 */
-	protected PrimitivesVerifier prmVrf;
-	/**
-	 * The list with all the results for this runner
-	 */
-	protected List<VerificationResult> result;
+	
 	/**
 	 * The election board proxy
 	 */
-	protected ElectionBoardProxy ebproxy;
+	private ElectionBoardProxy ebproxy;
 
 	/**
-	 * Construct a runner
+	 * 
 	 */
-	public Runner() {
-		this.result = new ArrayList<>();
-		this.prmVrf = new PrimitivesVerifier();
-	}
-
+	protected PrimitivesVerifier prmVrf;
+	
 	/**
 	 * Start this runner, it will perform the verification 
 	 * implemented
 	 * @return the list of results
 	 */
-	public abstract List<VerificationResult> run();
-
-	/**
-	 * Set the election ID for this runner
-	 * @param eID the election ID
-	 */
-	public void seteID(String eID) {
-		this.eID = eID;
-	}
+	public abstract void run();
 
 	/**
 	 * Set the election board proxy for this runner
@@ -62,5 +37,13 @@ public abstract class Runner {
 	 */
 	public void setElectionBoardProxy(ElectionBoardProxy ebproxy){
 		this.ebproxy = ebproxy;
+	}
+
+	/**
+	 * Set the primitives verifier for this runner
+	 * @param prmVrf the primitives verifier
+	 */
+	public void setPrimitivesVerifier(PrimitivesVerifier prmVrf){
+		this.prmVrf = prmVrf;
 	}
 }

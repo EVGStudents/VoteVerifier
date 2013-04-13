@@ -15,7 +15,7 @@ public class ElectionSetupRunner extends Runner{
 
 
 	@Override
-	public List<VerificationResult> run() {
+	public void run() {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 	

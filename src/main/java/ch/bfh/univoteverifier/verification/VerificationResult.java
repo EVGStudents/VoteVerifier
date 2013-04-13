@@ -11,7 +11,7 @@ package ch.bfh.univoteverifier.verification;
  */
 public class VerificationResult {
 	
-	private final Verification v;
+	private final VerificationEnum v;
 	private final boolean result;
 	
 	
@@ -20,7 +20,7 @@ public class VerificationResult {
 	 * @param v Verification The type of verification
 	 * @param result boolean
 	 */
-	public VerificationResult(Verification v, boolean result) {
+	public VerificationResult(VerificationEnum v, boolean result) {
 		this.v=v;
 		this.result=result;
 	}
@@ -29,7 +29,7 @@ public class VerificationResult {
 	 * Get the verification type for this VerificationResult
 	 * @return the verification type
 	 */
-	public Verification getVerification() {
+	public VerificationEnum getVerification() {
 		return v;
 	}
 

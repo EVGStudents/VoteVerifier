@@ -7,10 +7,9 @@ package runners;
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.utils.CryptoUtils;
-import ch.bfh.univoteverifier.verification.Verification;
+import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
+import ch.bfh.univoteverifier.verification.VerificationEnum;
 import ch.bfh.univoteverifier.verification.VerificationResult;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -24,12 +23,12 @@ import static org.junit.Assert.*;
  */
 public class SystemSetupRunnerTest {
 	
-	Runner r;
+	SystemSetupRunner r;
+	VerificationResult vr;
 	
 	public SystemSetupRunnerTest() {
-		String eID = "vshbfh-2013";
 		this.r = new SystemSetupRunner();
-		this.r.seteID(eID);
+		this.r.setPrimitivesVerifier(new PrimitivesVerifier());
 	}
 	
 	@BeforeClass
@@ -53,32 +52,45 @@ public class SystemSetupRunnerTest {
 	// @Test
 	// public void hello() {}
 	
+
 	@Test
-	public void SystemSetupRunnerVerCount(){
-		List<VerificationResult> vr = r.run();
-		
-		assertEquals(vr.size(), 6);
+	public void testSignParamP(){
+		vr = r.vrfSignParamP();
+
+		assertEquals(VerificationEnum.SETUP_P_IS_PRIME, vr.getVerification());
+		assertEquals(true, vr.getResult());
 	}
 
 	@Test
-	public void SystemSetupRunnerResult(){
-		List<VerificationResult> res = new ArrayList<>();
+	public void testSignParamQ(){
+		vr = r.vrfSignParamQ();
 		
-		res.add(CryptoUtils.getVrfRes(Verification.SETUP_P_IS_PRIME, true));
-		res.add(CryptoUtils.getVrfRes(Verification.SETUP_Q_IS_PRIME, true));
-		res.add(CryptoUtils.getVrfRes(Verification.SETUP_G_IS_GENERATOR, true));
-		res.add(CryptoUtils.getVrfRes(Verification.SETUP_P_IS_SAFE_PRIME, true));
-		res.add(CryptoUtils.getVrfRes(Verification.SETUP_PARAM_LEN, true));
-		res.add(CryptoUtils.getVrfRes(Verification.SETUP_EM_CERT, true));
-	
-		List<VerificationResult> trueRes = r.run();
-		
-		for(int i = 0 ; i < res.size() ; i++){
-			assertEquals(res.get(i).getVerification(),trueRes.get(i).getVerification());
-			assertEquals(res.get(i).getResult(), trueRes.get(i).getResult());
-		}
-		
+		assertEquals(VerificationEnum.SETUP_Q_IS_PRIME, vr.getVerification());
+		assertEquals(true, vr.getResult());
 	}
 	
+	@Test
+	public void testSignParamG(){
+		vr = r.vrfSignParamG();
+		
+		assertEquals(VerificationEnum.SETUP_G_IS_GENERATOR, vr.getVerification());
+		assertEquals(true, vr.getResult());
+	}
+	
+	@Test
+	public void testSignParamLen(){
+		vr = r.vrfSignParamLen();
+		
+		assertEquals(VerificationEnum.SETUP_PARAM_LEN, vr.getVerification());
+		assertEquals(true, vr.getResult());
+	}
+	
+	@Test
+	public void testSignParamSafePrime(){
+		vr = r.vrfSignParamSafePrime();
+		
+		assertEquals(VerificationEnum.SETUP_P_IS_SAFE_PRIME, vr.getVerification());
+		assertEquals(true, vr.getResult());
+	}
 	
 }

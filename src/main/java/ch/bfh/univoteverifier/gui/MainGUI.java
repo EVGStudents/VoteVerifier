@@ -4,7 +4,7 @@ import ch.bfh.univoteverifier.common.Config;
 import static ch.bfh.univoteverifier.common.Config.CONFIG;
 import ch.bfh.univoteverifier.common.*;
 import ch.bfh.univoteverifier.common.MainController;
-import ch.bfh.univoteverifier.verification.Verification;
+import ch.bfh.univoteverifier.verification.VerificationEnum;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 import java.awt.BorderLayout;

@@ -1,7 +1,7 @@
 package ch.bfh.univoteverifier.utils;
 
 import ch.bfh.univoteverifier.common.Config;
-import ch.bfh.univoteverifier.verification.Verification;
+import ch.bfh.univoteverifier.verification.VerificationEnum;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -75,7 +75,7 @@ public  class CryptoUtils {
 	 * @param res
 	 * @return
 	 */
-	public static VerificationResult getVrfRes(Verification v, boolean res){
+	public static VerificationResult getVrfRes(VerificationEnum v, boolean res){
 		return new VerificationResult(v, res);
 	}
 	

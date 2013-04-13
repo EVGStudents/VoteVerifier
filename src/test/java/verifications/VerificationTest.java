@@ -6,9 +6,8 @@ package verifications;
 
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
-import ch.bfh.univoteverifier.utils.ElectionBoardProxy;
-import ch.bfh.univoteverifier.verification.AbstractVerification;
-import ch.bfh.univoteverifier.verification.UniversalVerification;
+import ch.bfh.univoteverifier.verification.Verification;
+import ch.bfh.univoteverifier.verification.VerificationEnum;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,13 +19,15 @@ import static org.junit.Assert.*;
  *
  * @author snake
  */
-public class UniversalVerificationTest {
+public class VerificationTest {
 	
-	AbstractVerification av;
+	Verification vU;
+	Verification vI;
 	String eID = "test-2013";
 	
-	public UniversalVerificationTest() {
-		av = new UniversalVerification(eID);
+	public VerificationTest() {
+		v = new Verification(eID,VerificationEnum.UNIVERSAL);
+		vI = new Verification(eID, VerificationEnum.INDIVIDUAL);
 	}
 	
 	@BeforeClass
@@ -52,19 +53,29 @@ public class UniversalVerificationTest {
 	
 	@Test
 	public void testElectionID(){
-		assertEquals(eID, av.geteID());
+		assertEquals(eID, vU.geteID());
 	}
 	
 	@Test
 	public void testRunnerAddition(){
 		Runner r = new SystemSetupRunner();
 		
-		assertTrue(av.addRunner(r));
+		assertTrue(vU.addRunner(r));
 	}
 
 	@Test
 	public void testElectionBoardProxy(){
-		assertNotNull(av.getEbproxy());
+		assertNotNull(vU.getEbproxy());
+	}
+
+	@Test
+	public void testVerificationTypeIndividual(){
+		assertEquals(vI.getVerificationType(), VerificationEnum.INDIVIDUAL),
+	}
+	
+	@Test
+	public void testVerificationTypeUniversal(){
+		assertEquals(vU.getVerificationType(), VerificationEnum.UNIVERSAL),
 	}
 	
 }
