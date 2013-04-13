@@ -26,7 +26,7 @@ public class VerificationTest {
 	String eID = "test-2013";
 	
 	public VerificationTest() {
-		v = new Verification(eID,VerificationEnum.UNIVERSAL);
+		vU = new Verification(eID,VerificationEnum.UNIVERSAL);
 		vI = new Verification(eID, VerificationEnum.INDIVIDUAL);
 	}
 	
@@ -70,12 +70,12 @@ public class VerificationTest {
 
 	@Test
 	public void testVerificationTypeIndividual(){
-		assertEquals(vI.getVerificationType(), VerificationEnum.INDIVIDUAL),
+		assertEquals(vI.getVerificationType(), VerificationEnum.INDIVIDUAL);
 	}
 	
 	@Test
 	public void testVerificationTypeUniversal(){
-		assertEquals(vU.getVerificationType(), VerificationEnum.UNIVERSAL),
+		assertEquals(vU.getVerificationType(), VerificationEnum.UNIVERSAL);
 	}
 	
 }
