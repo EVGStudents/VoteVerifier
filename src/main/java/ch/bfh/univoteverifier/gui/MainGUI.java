@@ -35,7 +35,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
-
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -203,6 +202,10 @@ public class MainGUI {
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
         innerPanel.setBackground(grey);
         innerPanel.setPreferredSize(new Dimension(500, 300));
+        QRCode qr = new QRCode();
+          JLabel innerLabelImage = new JLabel(qr.testQRCode());
+        innerPanel.add(innerLabelImage);
+        
     }
 
     public void innerPanelBeginVrf() {
@@ -457,6 +460,7 @@ public class MainGUI {
             public void mouseReleased(MouseEvent e) {
                 
                 innerPanelBeginVrf();
+                innerPanel.repaint();
                 btnInd.setEnabled(false);
                 btnUni.setEnabled(false);
                 
@@ -473,7 +477,7 @@ public class MainGUI {
 
                 } else {
                     msg += "the provided ballot receipt.";
-                    mc.individualVerification();
+                    mc.individualVerification(msg);
                     mc.getIndividualStatusSubject().addListener(sl);
 
                 }
@@ -583,4 +587,8 @@ public class MainGUI {
 
         return (String) prop.getProperty(String.valueOf(code));
     }
+    
+   
+  
+   
 }
