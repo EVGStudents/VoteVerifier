@@ -473,7 +473,7 @@ public class MainGUI {
 
                 } else {
                     msg += "the provided ballot receipt.";
-                    mc.individualVerification();
+                    mc.individualVerification(eIDlist[0]);
                     mc.getIndividualStatusSubject().addListener(sl);
 
                 }
