@@ -40,16 +40,6 @@ public  class CryptoUtils {
 		return result;
 	}
 	
-	/**
-	 * ToDO
-	 * @param one
-	 * @param two
-	 * @return
-	 */
-	public static String concatenation(String one, String two){
-		return "";
-	}
-	
 	
 	/**
 	 * Concatenates n given BigInteger values into a string and pads them with

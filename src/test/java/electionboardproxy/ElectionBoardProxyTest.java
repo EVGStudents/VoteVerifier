@@ -6,6 +6,7 @@ package electionboardproxy;
 
 import ch.bfh.univote.common.ElectionData;
 import ch.bfh.univote.common.ElectionSystemInfo;
+import ch.bfh.univote.common.SignatureParameters;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.utils.ElectionBoardProxy;
 import org.junit.After;
@@ -60,6 +61,14 @@ public class ElectionBoardProxyTest {
 	public void testElectionSystemInfo() throws ElectionBoardServiceFault{
 		ElectionSystemInfo esi = ebp.getElectionSystemInfo();
 		assertNotNull(esi);
+	}
+
+	@Test 
+		public void testSignatureParameters() throws ElectionBoardServiceFault{
+		SignatureParameters signp = ebp.getSignatureParameters();
+		assertNotNull(signp);
+
+		System.out.println(signp.getGenerator());
 	}
 
 }
