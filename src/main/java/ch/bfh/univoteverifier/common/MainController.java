@@ -3,6 +3,7 @@ package ch.bfh.univoteverifier.common;
 import ch.bfh.univoteverifier.verification.IndividualVerification;
 import ch.bfh.univoteverifier.verification.UniversalVerification;
 import ch.bfh.univoteverifier.gui.StatusSubject;
+import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.verification.AbstractVerification;
 
 /**
@@ -12,42 +13,45 @@ import ch.bfh.univoteverifier.verification.AbstractVerification;
  */
 public class MainController {
 
-    UniversalVerification uv;
-    IndividualVerification iv;
-    AbstractVerification selectedVerifier;
-
-
-
+   private AbstractVerification av;
     
     /**
      * Run an universal verification
      * @param eID String the ID of a election
      */
     public void universalVerification(String eID){
-	    this.uv = new UniversalVerification(eID);
-	    uv.runUniversal();
+	    this.av = new UniversalVerification(eID);
+
+	    //add some runners
+	    av.addRunner(new SystemSetupRunner());
+
+
+	    av.runVerification();
     }
 
 
     /**
      * Run an individual verification
+     * @param eID 
      */
-    public void individualVerification(){
-	   this.iv = new IndividualVerification();
+    public void individualVerification(String eID){
+	   this.av = new IndividualVerification(eID);
     }
 
-    public StatusSubject getUniversalStatusSubject() {
-        return uv.getStatusSubject();
+    	/**
+	 *
+	 * @return
+	 */
+	public StatusSubject getUniversalStatusSubject() {
+        return av.getStatusSubject();
     }
 
-    public StatusSubject getIndividualStatusSubject() {
-        return iv.getStatusSubject();
+    	/**
+	 *
+	 * @return
+	 */
+	public StatusSubject getIndividualStatusSubject() {
+        return av.getStatusSubject();
     }
 
-    /**
-     * ToDO -- Remove
-     */ 
-    public void testObserverPattern() {
-        uv.testObserverPattern();
-    }
 }

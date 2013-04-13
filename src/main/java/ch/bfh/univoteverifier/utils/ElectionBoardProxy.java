@@ -121,6 +121,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the signature parameters
 	 * @return the signature parameters
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public SignatureParameters getSignatureParameters() throws ElectionBoardServiceFault {
 		if(signParam == null)
@@ -132,6 +133,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the root certificate
 	 * @return the root certificate
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public Certificate getRootCertificate() throws ElectionBoardServiceFault {
 		if(rootCert == null)
@@ -143,6 +145,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the election system information
 	 * @return the election system information
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public ElectionSystemInfo getElectionSystemInfo() throws ElectionBoardServiceFault {
 		if(sysInfo == null)
@@ -154,6 +157,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the election definition
 	 * @return the election definition
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public ElectionDefinition getElectionDefinition() throws ElectionBoardServiceFault {
 		if(elDef == null)
@@ -165,6 +169,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the encryption parameters
 	 * @return the encryption parameters
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  EncryptionParameters getEncryptionParameters() throws ElectionBoardServiceFault {
 		if(encParam == null)
@@ -175,7 +180,9 @@ public class ElectionBoardProxy {
 	
 	/**
 	 * Get the encryption key share of tallierID
+	 * @param tallierID 
 	 * @return the encryption key share of tallierID
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  EncryptionKeyShare getEncryptionKeyShare(String tallierID) throws ElectionBoardServiceFault {
 		if(encKeyShare == null)
@@ -187,6 +194,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the encryption key
 	 * @return the encryption key
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  EncryptionKey getEncryptionKey() throws ElectionBoardServiceFault {
 		if(encKey == null)
@@ -197,7 +205,9 @@ public class ElectionBoardProxy {
 	
 	/**
 	 * Get the blinded generator of a given mixerID
+	 * @param mixerID 
 	 * @return the blinded generator of mixerID
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  BlindedGenerator getBlindedGenerator(String mixerID) throws ElectionBoardServiceFault {
 		if(blindGen == null)
@@ -209,6 +219,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the election generator
 	 * @return the election generator
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  ElectionGenerator getElectionGenerator() throws ElectionBoardServiceFault {
 		if(elGen == null)
@@ -220,6 +231,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the election option
 	 * @return the election option
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  ElectionOptions getElectionOptions() throws ElectionBoardServiceFault {
 		if(elOpt == null)
@@ -231,6 +243,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the election data
 	 * @return the election data
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  ElectionData getElectionData() throws ElectionBoardServiceFault {
 		if(elData == null)
@@ -242,6 +255,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the electoral roll
 	 * @return the electoral roll
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  ElectoralRoll getElectoralRoll() throws ElectionBoardServiceFault {
 		if(elRoll == null)
@@ -253,6 +267,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the voter certificates
 	 * @return the voter certificates
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  VoterCertificates getVoterCerts() throws ElectionBoardServiceFault {
 		if(voterCerts == null)
@@ -262,7 +277,9 @@ public class ElectionBoardProxy {
 	}
 	
 	/**
+	 * @param mixerID 
 	 * @return the mixVerKeyBy
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  MixedVerificationKeys getMixedVerificationKeysBy(String mixerID) throws ElectionBoardServiceFault {
 		if(mixVerKeyBy == null)
@@ -274,6 +291,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the mixed verification keys
 	 * @return the mixed verification keys
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  MixedVerificationKeys getMixedVerificationKeys() throws ElectionBoardServiceFault {
 		if(mixVerKey == null)
@@ -285,6 +303,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the lately registered voter certificate
 	 * @return the lately registered voter certificate
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  List<VoterCertificate> getLatelyRegisteredVoterCerts() throws ElectionBoardServiceFault {
 		if(latelyRegVoteCerts == null)
@@ -297,6 +316,7 @@ public class ElectionBoardProxy {
 	 * Get the lately mixed verification key mixed by mixerID
 	 * @param mixerID the ID of a given mixer
 	 * @return the lately mixed verification key of mixerID
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  List<MixedVerificationKey> getLatelyMixedVerificationKeysBy(String mixerID) throws ElectionBoardServiceFault {
 		if(latelyMixVerKeyBy == null)
@@ -308,6 +328,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the lately mixed verification key
 	 * @return the lately mixed verification key
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  List<MixedVerificationKey> getLateyMixedVerificationKeys() throws ElectionBoardServiceFault {
 		if(latelyMixVerKey == null)
@@ -319,6 +340,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the ballots
 	 * @return the ballots
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  Ballots getBallots() throws ElectionBoardServiceFault {
 		if(ballots == null)
@@ -331,6 +353,7 @@ public class ElectionBoardProxy {
 	 * Get the mixed encrypted votes by a given mixer
 	 * @param mixerID the ID of a given mixer
 	 * @return the mixed encrypted votes of the given mixer
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  MixedEncryptedVotes getMixedEncryptedVotesBy(String mixerID) throws ElectionBoardServiceFault {
 		if(mixEncVotesBy == null)
@@ -342,6 +365,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the mixed encrypted votes
 	 * @return the mixed encrypted votes
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  MixedEncryptedVotes getMixedEncryptedVotes() throws ElectionBoardServiceFault {
 		if(mixEncVotes == null)
@@ -352,8 +376,9 @@ public class ElectionBoardProxy {
 	
 	/**
 	 * Get the partially decrypted votes
-	 * @param taillierID the ID of a given tallier
+	 * @param tallierID 
 	 * @return the partially decrypted votes
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  PartiallyDecryptedVotes getPartiallyDecryptedVotes(String tallierID) throws ElectionBoardServiceFault {
 		if(parDecVotes == null)
@@ -365,6 +390,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the decrypted votes
 	 * @return the decrypted votes
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  DecryptedVotes getDecryptedVotes() throws ElectionBoardServiceFault {
 		if(decryptedVotes == null)
@@ -376,6 +402,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the decoded votes
 	 * @return the decoded votes
+	 * @throws ElectionBoardServiceFault  
 	 */
 	public  DecodedVotes getDecodedVotes() throws ElectionBoardServiceFault {
 		if(decodedVotes == null)

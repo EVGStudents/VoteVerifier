@@ -27,7 +27,7 @@ public class PrimitivesVerifier {
 	
 	/**
 	 * verify a Non-Interactive Zero Knowledge Proof of Discrete Logs
-	 * @param proof and helper class object with fields t,c,s corresponding to a ZKP
+	 * @param prf 
 	 * @return true if the proof is correct
 	 */
 	public boolean vrfNIZKP(ProofDiscreteLog prf){
@@ -72,6 +72,9 @@ public class PrimitivesVerifier {
 	/**
 	 * Check if the parameters for the Schnorr's signature scheme
 	 * are corrects by reading them from the configuration file
+	 * @param pLen 
+	 * @param qLen 
+	 * @param gLen 
 	 * @return boolean true if the parameters are correct, false otherwise
 	 */
 	public boolean vrfParamLen(int pLen, int qLen, int gLen){
@@ -80,6 +83,7 @@ public class PrimitivesVerifier {
 	
 	/**
 	 * Check if p is a prime number
+	 * @param p 
 	 * @return true if p is prime, false otherwise
 	 */
 	public boolean vrfPrimeNumber(BigInteger p){
@@ -88,6 +92,8 @@ public class PrimitivesVerifier {
 	
 	/**
 	 * Check if p is a safe prime (p = k*q + 1)
+	 * @param p 
+	 * @param q 
 	 * @return true if p is a safe prime, false otherwise
 	 */
 	public boolean vrfSafePrime(BigInteger p, BigInteger q){
@@ -99,6 +105,9 @@ public class PrimitivesVerifier {
 	
 	/**
 	 * Check if g is a generator of a subgroup H_q
+	 * @param g 
+	 * @param p 
+	 * @param q 
 	 * @return
 	 */
 	public boolean vrfGenerator(BigInteger g, BigInteger p, BigInteger q){
@@ -118,6 +127,9 @@ public class PrimitivesVerifier {
 	
 	/**
 	 * Verify the given signature
+	 * @param signature 
+	 * @param message 
+	 * @param publicKey 
 	 * @return boolean return true if the signature is verified correctly, false otherwise
 	 */
 	public boolean vrfSchnorrSign(SchnorrSignature signature, BigInteger message, BigInteger publicKey){
