@@ -6,7 +6,7 @@ package ch.bfh.univoteverifier.runner;
  */
 import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.Config;
-import ch.bfh.univoteverifier.utils.CryptoUtils;
+import ch.bfh.univoteverifier.common.CryptoFunc;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -23,7 +23,7 @@ public class SystemSetupRunner extends Runner{
 	 * @return
 	 */
 	public VerificationResult vrfEMCert(){
-		return CryptoUtils.getVrfRes(VerificationEnum.SETUP_EM_CERT, true);
+		return CryptoFunc.getVrfRes(VerificationEnum.SETUP_EM_CERT, true);
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class SystemSetupRunner extends Runner{
 	 * @return 
 	 */
 	public VerificationResult vrfSignParamP(){
-		return CryptoUtils.getVrfRes(VerificationEnum.SETUP_P_IS_PRIME, prmVrf.vrfPrimeNumber(Config.p));
+		return CryptoFunc.getVrfRes(VerificationEnum.SETUP_P_IS_PRIME, prmVrf.vrfPrimeNumber(Config.p));
 	}
 
 	/**
@@ -39,11 +39,11 @@ public class SystemSetupRunner extends Runner{
 	 * @return 
 	 */
 	public VerificationResult vrfSignParamQ(){
-		return CryptoUtils.getVrfRes(VerificationEnum.SETUP_Q_IS_PRIME, prmVrf.vrfPrimeNumber(Config.q));
+		return CryptoFunc.getVrfRes(VerificationEnum.SETUP_Q_IS_PRIME, prmVrf.vrfPrimeNumber(Config.q));
 	}
 
 	public VerificationResult vrfSignParamG(){
-		return CryptoUtils.getVrfRes(VerificationEnum.SETUP_G_IS_GENERATOR, prmVrf.vrfGenerator(Config.g, Config.p, Config.q));
+		return CryptoFunc.getVrfRes(VerificationEnum.SETUP_G_IS_GENERATOR, prmVrf.vrfGenerator(Config.g, Config.p, Config.q));
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class SystemSetupRunner extends Runner{
 	 * @return 
 	 */
 	public VerificationResult vrfSignParamLen(){
-		return CryptoUtils.getVrfRes(VerificationEnum.SETUP_PARAM_LEN, prmVrf.vrfParamLen(Config.pLength, Config.qLength, Config.gLength));
+		return CryptoFunc.getVrfRes(VerificationEnum.SETUP_PARAM_LEN, prmVrf.vrfParamLen(Config.pLength, Config.qLength, Config.gLength));
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class SystemSetupRunner extends Runner{
 	 * @return 
 	 */
 	public VerificationResult vrfSignParamSafePrime(){
-		return CryptoUtils.getVrfRes(VerificationEnum.SETUP_P_IS_SAFE_PRIME, prmVrf.vrfSafePrime(Config.p, Config.q));
+		return CryptoFunc.getVrfRes(VerificationEnum.SETUP_P_IS_SAFE_PRIME, prmVrf.vrfSafePrime(Config.p, Config.q));
 	}
 	
 	@Override

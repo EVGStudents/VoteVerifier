@@ -5,7 +5,7 @@
 package ch.bfh.univoteverifier.verification;
 
 import ch.bfh.univoteverifier.common.Config;
-import ch.bfh.univoteverifier.utils.CryptoUtils;
+import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.utils.ProofDiscreteLog;
 import ch.bfh.univoteverifier.utils.RSASignature;
 import ch.bfh.univoteverifier.utils.SchnorrSignature;
@@ -36,7 +36,7 @@ public class PrimitivesVerifier {
 		int validProof = 0;
 		
 		BigInteger[] concatB = {prf.vk,prf.t};
-		c2 = CryptoUtils.concatArrayContents(concatB);
+		c2 = CryptoFunc.concatArrayContents(concatB);
 		
 		validProof += c2.compareTo(prf.c);
 	
@@ -138,7 +138,7 @@ public class PrimitivesVerifier {
 		
 		BigInteger concat = Config.g.modPow(signature.getB(), Config.p).multiply(publicKey.modPow(signature.getA(), Config.p)).mod(Config.p);
 		
-		BigInteger hashResult = CryptoUtils.sha(new BigInteger(message.toString() + concat.toString()));
+		BigInteger hashResult = CryptoFunc.sha(new BigInteger(message.toString() + concat.toString()));
 		
 		boolean res = hashResult.equals(signature.getA());
 		

@@ -6,7 +6,7 @@ package runners;
 
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
-import ch.bfh.univoteverifier.utils.CryptoUtils;
+import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
 import ch.bfh.univoteverifier.verification.VerificationEnum;
 import ch.bfh.univoteverifier.verification.VerificationResult;

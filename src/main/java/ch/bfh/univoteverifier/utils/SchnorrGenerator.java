@@ -1,5 +1,6 @@
 package ch.bfh.univoteverifier.utils;
 
+import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.Config;
 import java.util.Random;
 import java.math.BigInteger;
@@ -34,7 +35,7 @@ public class SchnorrGenerator {
 	    
 	    BigInteger hashVal = new BigInteger(message.toString() + concatVal.toString());
 	    
-	    BigInteger a = CryptoUtils.sha(hashVal);
+	    BigInteger a = CryptoFunc.sha(hashVal);
 	    	    
 	    BigInteger b = r.subtract(privateKey.multiply(a)).mod(Config.q);
 	    

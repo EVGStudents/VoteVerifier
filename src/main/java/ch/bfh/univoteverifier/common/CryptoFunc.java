@@ -1,4 +1,4 @@
-package ch.bfh.univoteverifier.utils;
+package ch.bfh.univoteverifier.common;
 
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.verification.VerificationEnum;
@@ -14,9 +14,9 @@ import java.util.logging.Logger;
  *
  * @author snake
  */
-public  class CryptoUtils {
+public  class CryptoFunc {
 
-	private static final Logger LOGGER = Logger.getLogger(CryptoUtils.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(CryptoFunc.class.getName());
 	
 	/**
 	 * Compute the hash of a number and then put it into a BigInteger.
@@ -55,7 +55,7 @@ public  class CryptoUtils {
 			//001100 similates padding
 			concat += ci.toString() +"001100";
 		}
-		return CryptoUtils.sha(new BigInteger(concat));
+		return CryptoFunc.sha(new BigInteger(concat));
 		
 	}
 

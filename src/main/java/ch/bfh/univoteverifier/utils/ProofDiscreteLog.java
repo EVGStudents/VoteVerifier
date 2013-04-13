@@ -1,5 +1,6 @@
 package ch.bfh.univoteverifier.utils;
 
+import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.Config;
 import java.math.BigInteger;
 
@@ -57,7 +58,7 @@ public class ProofDiscreteLog {
 		this.t = g.modPow(w, p);
 		// the concatenation is currently rudimentary
 		BigInteger[] concatB = {vk,t};
-		this.c = CryptoUtils.concatArrayContents(concatB);
+		this.c = CryptoFunc.concatArrayContents(concatB);
 		this.s = w.add(this.c.multiply(sk).mod(q));
 		System.out.println(this);
 		return this;
@@ -87,7 +88,7 @@ public class ProofDiscreteLog {
 		this.t = g.modPow(w, p);
 		
 		BigInteger[] concatB = {vk,t};
-		this.c = CryptoUtils.concatArrayContents(concatB);
+		this.c = CryptoFunc.concatArrayContents(concatB);
 
 		this.s = w.add(this.c.multiply(sk).mod(q));
 		System.out.println(this);
