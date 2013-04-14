@@ -42,6 +42,7 @@ public  class CryptoFunc {
 	
 	
 	/**
+	 * ToDO - probably useless
 	 * Concatenates n given BigInteger values into a string and pads them with
 	 * the arbitrary string 001100
 	 * @param c an array of BigInteger values
