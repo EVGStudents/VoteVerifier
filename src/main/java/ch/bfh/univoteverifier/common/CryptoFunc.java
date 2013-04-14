@@ -60,10 +60,10 @@ public  class CryptoFunc {
 	}
 
 	/**
-	 *
-	 * @param v
-	 * @param res
-	 * @return
+	 * Get a verification result
+	 * @param v the verification type from the enumeration
+	 * @param res the result of a possible verification
+	 * @return a verification result
 	 */
 	public static VerificationResult getVrfRes(VerificationEnum v, boolean res){
 		return new VerificationResult(v, res);

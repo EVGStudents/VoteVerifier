@@ -118,11 +118,9 @@ public class StringConcatenatorTest {
 		bi.add(new BigInteger("9879879134536454634534"));
 	
 		sc.pushList(bi, true);
-		System.out.println(new BigInteger("9879879134536454634534").toString());
 
 		String res = sc.pullAll();
 
-		System.out.println(res);
 					
 		assertEquals("(134536454634534|454634534|134536534|634534|579485769845|678549|13565565756134536454634534|9879879134536454634534)", res);
 	}
@@ -161,5 +159,16 @@ public class StringConcatenatorTest {
 		assertEquals("", sc.pullAll());
 
 		
+	}
+
+	@Test
+	public void pushListWithoutSeparators(){
+		List<BigInteger> bi = new ArrayList<>();
+		bi.add(new BigInteger("8458347593847978797879871"));
+		bi.add(new BigInteger("445363641"));
+
+		sc.pushList(bi, false);
+
+		assertEquals("8458347593847978797879871445363641", sc.pullAll());
 	}
 }
