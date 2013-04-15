@@ -42,8 +42,6 @@ public class Verification {
 		runners = new ArrayList<>();
 		prmVrf = new PrimitivesVerifier();
 		this.verificationType = verificationType;
-		
-
 	}
 	
 	/**
@@ -109,8 +107,6 @@ public class Verification {
 	 * Run a verification
 	 */
 	public void runVerification(){
-		LOGGER.log(Level.INFO, "Running verificaton.....");
-		
 		if(runners.isEmpty())
 			LOGGER.log(Level.INFO, "There aren't runners. The verification will not run.");
 		
