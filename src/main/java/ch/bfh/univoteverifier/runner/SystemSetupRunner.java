@@ -7,7 +7,6 @@ package ch.bfh.univoteverifier.runner;
 import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.CryptoFunc;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**

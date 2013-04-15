@@ -10,6 +10,7 @@ import ch.bfh.univoteverifier.utils.ProofDiscreteLog;
 import ch.bfh.univoteverifier.utils.RSASignature;
 import ch.bfh.univoteverifier.utils.SchnorrSignature;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +31,7 @@ public class PrimitivesVerifier {
 	 * @param prf 
 	 * @return true if the proof is correct
 	 */
-	public boolean vrfNIZKP(ProofDiscreteLog prf){
+	public boolean vrfNIZKP(ProofDiscreteLog prf) throws NoSuchAlgorithmException {
 		BigInteger c2;
 		
 		int validProof = 0;
@@ -132,13 +133,13 @@ public class PrimitivesVerifier {
 	 * @param publicKey 
 	 * @return boolean return true if the signature is verified correctly, false otherwise
 	 */
-	public boolean vrfSchnorrSign(SchnorrSignature signature, BigInteger message, BigInteger publicKey){
+	public boolean vrfSchnorrSign(SchnorrSignature signature, BigInteger message, BigInteger publicKey) throws NoSuchAlgorithmException{
 		
 			LOGGER.log(Level.INFO, "The received signature is: {0}, {1}", new Object[]{signature.getA(), signature.getB()});
 		
 		BigInteger concat = Config.g.modPow(signature.getB(), Config.p).multiply(publicKey.modPow(signature.getA(), Config.p)).mod(Config.p);
 		
-		BigInteger hashResult = CryptoFunc.sha(new BigInteger(message.toString() + concat.toString()));
+		BigInteger hashResult = CryptoFunc.sha(new BigInteger(message.toString() + concat.toString()), Config.q);
 		
 		boolean res = hashResult.equals(signature.getA());
 		

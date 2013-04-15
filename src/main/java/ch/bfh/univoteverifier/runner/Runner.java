@@ -4,7 +4,7 @@
  */
 package ch.bfh.univoteverifier.runner;
 
-import ch.bfh.univoteverifier.utils.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
 
 /**
@@ -20,7 +20,7 @@ public abstract class Runner {
 	private ElectionBoardProxy ebproxy;
 
 	/**
-	 * 
+	 * The primitive verifier
 	 */
 	protected PrimitivesVerifier prmVrf;
 	

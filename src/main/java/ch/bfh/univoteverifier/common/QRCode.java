@@ -12,6 +12,7 @@ import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.*;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;

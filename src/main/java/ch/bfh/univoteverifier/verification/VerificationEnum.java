@@ -8,33 +8,15 @@ package ch.bfh.univoteverifier.verification;
 public enum VerificationEnum {
 
 	UNIVERSAL(10),
-
 	INDIVIDUAL(20),
-	
-	/**
-	 *
-	 */
 	SETUP_P_IS_PRIME(100),
-	/**
-	 *
-	 */
 	SETUP_Q_IS_PRIME(110),
-	/**
-	 *
-	 */
 	SETUP_G_IS_GENERATOR(120),
-	/**
-	 *
-	 */
 	SETUP_PARAM_LEN(130),
-	/**
-	 *
-	 */
 	SETUP_P_IS_SAFE_PRIME(140),
-	/**
-	 *
-	 */
 	SETUP_EM_CERT(150);
+
+
 	
 	
 	//the ID of the verification
