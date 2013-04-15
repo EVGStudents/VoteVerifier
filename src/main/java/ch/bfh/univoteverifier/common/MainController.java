@@ -19,8 +19,9 @@ import java.util.logging.Logger;
 public class MainController {
 	
 	private Verification v;
-<<<<<<< HEAD
-	
+        private GUIMessenger msgr;
+
+
 	public MainController(){
 		
 		//initialize the root logger - maybe this should be placed into the main method
@@ -36,10 +37,7 @@ public class MainController {
 		
 	}
 	
-=======
-        private GUIMessenger msgr;
         
->>>>>>> 347dd2d5487094c8beb0fcb2b955f4c219df6318
 	/**
 	 * Run an universal verification
 	 * @param eID String the ID of a election
@@ -70,7 +68,6 @@ public class MainController {
 	 * @return
 	 */
 	public StatusSubject getStatusSubject() {
-<<<<<<< HEAD
 		return v.getStatusSubject();
 	}
 	
@@ -80,15 +77,6 @@ public class MainController {
 		//            String decodedStr = qr.decode(filepath);
 		return "";
 	}
-=======
-        return msgr.getStatusSubject();
-    }
 
         
-        public String decodeQRCode(File filepath){
-            QRCode qr = new QRCode();
-//            String decodedStr = qr.decode(filepath);
-            return "";
-        }
->>>>>>> 347dd2d5487094c8beb0fcb2b955f4c219df6318
 }
