@@ -4,6 +4,7 @@ import ch.bfh.univoteverifier.gui.StatusSubject;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.verification.VerificationEnum;
+import java.io.File;
 
 /**
  * This class is the controller who is responsible for the communication between
@@ -45,4 +46,10 @@ public class MainController {
         return v.getStatusSubject();
     }
 
+        
+        public String decodeQRCode(File filepath){
+            QRCode qr = new QRCode();
+//            String decodedStr = qr.decode(filepath);
+            return "";
+        }
 }
