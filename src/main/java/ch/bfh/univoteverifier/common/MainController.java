@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 public class MainController {
 	
 	private Verification v;
+<<<<<<< HEAD
 	
 	public MainController(){
 		
@@ -35,13 +36,17 @@ public class MainController {
 		
 	}
 	
+=======
+        private GUIMessenger msgr;
+        
+>>>>>>> 347dd2d5487094c8beb0fcb2b955f4c219df6318
 	/**
 	 * Run an universal verification
 	 * @param eID String the ID of a election
 	 */
 	public void universalVerification(String eID){
 		this.v = new Verification(eID, VerificationEnum.UNIVERSAL);
-		
+		this.msgr = new GUIMessenger();
 		//add some runners
 		v.addRunner(new SystemSetupRunner());
 		
@@ -65,6 +70,7 @@ public class MainController {
 	 * @return
 	 */
 	public StatusSubject getStatusSubject() {
+<<<<<<< HEAD
 		return v.getStatusSubject();
 	}
 	
@@ -74,4 +80,15 @@ public class MainController {
 		//            String decodedStr = qr.decode(filepath);
 		return "";
 	}
+=======
+        return msgr.getStatusSubject();
+    }
+
+        
+        public String decodeQRCode(File filepath){
+            QRCode qr = new QRCode();
+//            String decodedStr = qr.decode(filepath);
+            return "";
+        }
+>>>>>>> 347dd2d5487094c8beb0fcb2b955f4c219df6318
 }
