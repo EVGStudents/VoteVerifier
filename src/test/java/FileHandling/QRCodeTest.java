@@ -5,7 +5,7 @@
 package FileHandling;
 
 import ch.bfh.univoteverifier.gui.MainGUI;
-import ch.bfh.univoteverifier.gui.QRCode;
+import ch.bfh.univoteverifier.common.QRCode;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;

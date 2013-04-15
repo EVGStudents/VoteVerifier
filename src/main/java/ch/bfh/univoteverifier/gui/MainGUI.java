@@ -1,5 +1,6 @@
 package ch.bfh.univoteverifier.gui;
 
+import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.common.Config;
 import static ch.bfh.univoteverifier.common.Config.CONFIG;
 import ch.bfh.univoteverifier.common.*;
@@ -55,6 +56,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+/**
+ * Creates the main window of the GUI and generates the components needed to see
+ * the GUI and operate the program
+ *
+ * @author prinstin
+ */
 public class MainGUI {
 
     JFrame frame;
@@ -73,7 +80,8 @@ public class MainGUI {
     JComboBox comboBox;
     String[] eIDlist; //= {"vsbfh-2013", "bbbbbb", "ccccc", "dddddd", "eeeeee"};
     String rawEIDlist;
-    Preferences prefs ;
+    Preferences prefs;
+
     /**
      * @param args
      */
@@ -82,12 +90,16 @@ public class MainGUI {
         gui.start();
     }
 
+    /**
+     * instantiates the basic building blocks of the program such as the
+     * controllers and displays the window of the GUI.
+     */
     public void start() {
         prefs = Preferences.userNodeForPackage(MainGUI.class);
         rawEIDlist = prefs.get("eIDList", "Bern Zurich vsbfh-2013");
         Pattern pattern = Pattern.compile("\\s");
         eIDlist = pattern.split(rawEIDlist);
-        
+
         mc = new MainController();
         sl = new StatusUpdate();
 
@@ -107,6 +119,10 @@ public class MainGUI {
 
     }
 
+    /**
+     *creates the main components of the main window.  The main window is divided into three parts: northPanel, and in the middle hte verification panel (vrfPanel) and at the bottom the statusPanel
+     * @return a JPanel which will be set as the main content panel of the frame
+     */
     public JPanel createUI() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -116,6 +132,10 @@ public class MainGUI {
         return panel;
     }
 
+    /**
+     * create the components necessary to display the northPanel
+     * @return a JPanel which contains other components to be shown in the main window
+     */
     public JPanel getNorthPanel() {
         northPanel = new JPanel();
         northPanel.setBackground(Color.WHITE);
@@ -134,6 +154,7 @@ public class MainGUI {
         buttonPanel.setBackground(grey);
 
         JButton btnUniVrf = createUniVrfButton();
+        createFileSelectButton();
         JButton btnIndVrf = createIndVrfButton();
         btnStart = createStartButton();
 
@@ -160,6 +181,11 @@ public class MainGUI {
         return northPanel;
     }
 
+    /**
+     * Creates a panel that whose contents are changed based on selections made
+     * by the user. This panel will be displayed in the verification area
+     * (middle) of the GUI
+     */
     public void createDynamicChoicePanel() {
         dynamicChoicePanel = new JPanel();
         dynamicChoicePanel.setBackground(darkGrey);
@@ -170,6 +196,9 @@ public class MainGUI {
         dynamicChoicePanel.add(choiceDescLabel);
     }
 
+    /**
+     * creates the comboBox that allows new election IDs to be inputed as well as the selection of previously used election IDs
+     */
     public void createComboBox() {
         comboBox = new JComboBox(eIDlist);
         comboBox.setEditable(true);
@@ -178,17 +207,19 @@ public class MainGUI {
         comboBox.setFont(new Font("Serif", Font.PLAIN, 10));
     }
 
+    /**
+     * creates the JPanel which is displayed in the middle of the GUI and contains either input options for the user or displays the results of the verification process.
+     * @return a JPanel which is one of the three main container/structure panels
+     */
     public JPanel getVrfPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 1));
         panel.setBackground(Color.WHITE);
-
         panel.setPreferredSize(new Dimension(696, 450));
         panel.setBorder(new EmptyBorder(10, 30, 10, 30)); //top left bottom right
-
+        
         innerPanel = new JPanel();
         innerPanelInitialize();
-
 
         JScrollPane vrfScrollPanel = new JScrollPane(innerPanel);
         vrfScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -197,24 +228,22 @@ public class MainGUI {
         return panel;
     }
 
+    /**
+     * initializes the inner panel of the verification panel (middle panel)
+     */
     public void innerPanelInitialize() {
         innerPanel.removeAll();
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
         innerPanel.setBackground(grey);
         innerPanel.setPreferredSize(new Dimension(500, 300));
-        
-//        QRCode qr = new QRCode();
-//          JLabel innerLabelImage = new JLabel(qr.testQRCode());
-//        innerPanel.add(innerLabelImage);
-        
     }
 
+    /**
+     * removes content of the inner panel and prepares the panel to display verification results.
+     * Meaning it creates the 5 smaller panels where results are shown according to their types
+     */
     public void innerPanelBeginVrf() {
-        innerPanel.removeAll();
-        innerPanel.setLayout(new GridLayout(5, 1));
-
-        innerPanel.setBackground(grey);
-        innerPanel.setPreferredSize(new Dimension(500, 300));
+        innerPanelInitialize();
 
         sysSetupPanel = new VrfPanel("System Setup");
         electSetupPanel = new VrfPanel("Election Setup");
@@ -231,6 +260,10 @@ public class MainGUI {
         innerPanel.repaint();
     }
 
+    /**
+     * creates that status panel which is shown at the bottom of hte GUI and contains a console-like message area
+     * @return a JPanel which is one of the three main container/structure panels
+     */
     public JPanel getStatusPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 1));
@@ -248,6 +281,10 @@ public class MainGUI {
         return panel;
     }
 
+    /**
+     * create the textBox that is used as the console-like message area at the bottom of the GUI
+     * @return a JTextArea with scroll bar, non editable
+     */
     public JTextArea getStatusTextBox() {
         statusText = new JTextArea();
         statusText.setWrapStyleWord(true);
@@ -260,6 +297,10 @@ public class MainGUI {
         return statusText;
     }
 
+    
+    /**
+     * A JPanel that is used to show the verification results in the verification panel.
+     */
     public class VrfPanel extends JPanel {
 
         String name;
@@ -273,6 +314,9 @@ public class MainGUI {
             generatePanel();
         }
 
+          /**
+     * creates and structures the panel
+     */
         public void generatePanel() {
             this.setPreferredSize(new Dimension(600, 100));
             this.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -293,10 +337,16 @@ public class MainGUI {
             this.add(contentPanel);
         }
 
+          /**
+     * returns the panel responsible for showing the verification results
+     */
         public JPanel getContentPanel() {
             return this.contentPanel;
         }
 
+          /**
+     * for visualization purposes before real content is available to be shown, this method will create content
+     */
         public JPanel createDummyResultPanel() {
             JPanel panel = getBoxPanel();
             panel.setBorder(new EmptyBorder(2, 20, 2, 10));
@@ -306,12 +356,18 @@ public class MainGUI {
             return panel;
         }
 
+                 /**
+     *  When real content arrives in the form of a message to the GUI, this method will process it and create the visualization of the verification results
+     */
         public void addResultPanel(String s, Boolean b) {
             JLabel vrfResults = new JLabel(s + "........................................... " + b);
             vrfResults.setFont(new Font("Serif", Font.PLAIN, 12));
             contentPanel.add(vrfResults);
         }
 
+                 /**
+     * generate a uniform panel for this class
+     */
         public JPanel getBoxPanel() {
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -319,6 +375,10 @@ public class MainGUI {
         }
     }
 
+    /**
+     * create the button that shows the information and buttons needed to start universal verification
+     * @return
+     */
     public JButton createUniVrfButton() {
 
         final String descUni = "Verify the results of an entire election.  Enter an election ID:";
@@ -364,36 +424,11 @@ public class MainGUI {
         return btnUni;
     }
 
+        /**
+     * create the button that shows the information and buttons needed to start individual verification
+     * @return JButton with a grey background and focusedPaint 
+     */
     public JButton createIndVrfButton() {
-
-        btnFileSelector = new JButton("select file");
-        btnFileSelector.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String decodeResults="nothing";
-                final JFileChooser fc = new JFileChooser();
-                int returnVal = fc.showDialog(innerPanel, "Select");
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-                    File file = fc.getSelectedFile();
-                    if (file == null) {
-                        statusText.append("File invalid");
-                    } else {
-                        
-                        statusText.append("\n" + file.getPath());
-                        QRCode qr = new QRCode();
-                        try {
-                            qr.decode(file);
-                        } catch (IOException ex) {
-                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                            statusText.append("The file could not be read, please try again.");
-                        }
-                    }
-                }
-            }
-        });
-
 
         final String descInd = "Verify that a given ballot has been received and the certificate is valid.  A QR Code is required.";
         btnInd = new VrfButton("Individual Verification", descInd);
@@ -438,6 +473,35 @@ public class MainGUI {
 
         return btnInd;
     }
+    
+    public void createFileSelectButton(){
+    btnFileSelector = new JButton("select file");
+        btnFileSelector.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String decodeResults = "nothing";
+                final JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showDialog(innerPanel, "Select");
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+                    File file = fc.getSelectedFile();
+                    if (file == null) {
+                        statusText.append("File invalid");
+                    } else {
+
+                        statusText.append("\n" + file.getPath());
+                        QRCode qr = new QRCode();
+                        try {
+                            qr.decode(file);
+                        } catch (IOException ex) {
+                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                            statusText.append("The file could not be read, please try again.");
+                        }
+                    }
+                }
+            }
+        });
+    }
 
     public void primeDescPanel() {
         if (!selectionMade) {
@@ -468,19 +532,19 @@ public class MainGUI {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                
+
                 innerPanelBeginVrf();
                 innerPanel.repaint();
                 btnInd.setEnabled(false);
                 btnUni.setEnabled(false);
-                
+
                 String msg = "Beginning verification for ";
                 statusText.setFont(new Font("Monospaced", Font.PLAIN, 16));
                 mc.getStatusSubject().addListener(sl);
                 if (uniVrfSelected) {
                     String eID = (String) comboBox.getSelectedItem();
                     msg = msg + "the election id " + eID;
-                    rawEIDlist= rawEIDlist + " " + eID;
+                    rawEIDlist = rawEIDlist + " " + eID;
                     prefs.put("eIDList", rawEIDlist);
                     mc.universalVerification(eID);
                 } else {
@@ -593,8 +657,4 @@ public class MainGUI {
 
         return (String) prop.getProperty(String.valueOf(code));
     }
-    
-   
-  
-   
 }
