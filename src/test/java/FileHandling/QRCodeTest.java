@@ -8,6 +8,8 @@ import ch.bfh.univoteverifier.gui.MainGUI;
 import ch.bfh.univoteverifier.gui.QRCode;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -73,4 +75,6 @@ public class QRCodeTest {
         Logger.getLogger(QRCodeTest.class.getName()).log(Level.SEVERE, "QRCode decoded to: {0}", resultStr);
         assertTrue(0 == correctDecode.compareTo(resultStr));
     }
+    
+
 }

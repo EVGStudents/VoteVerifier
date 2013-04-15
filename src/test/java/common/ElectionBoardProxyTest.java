@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package electionboardproxy;
+package common;
 
 import ch.bfh.univote.common.ElectionData;
 import ch.bfh.univote.common.ElectionSystemInfo;

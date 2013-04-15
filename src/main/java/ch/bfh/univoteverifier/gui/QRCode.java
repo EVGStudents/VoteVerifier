@@ -34,18 +34,16 @@ public class QRCode {
     public QRCode() {
     }
 
-    public ImageIcon testQRCode() {
+    public ImageIcon createQRCode() {
         QRCodeWriter writer = new QRCodeWriter();
         BitMatrix bitMatrix = null;
         BufferedImage img = null;
+        String str = "http://www.osgate.org/";
         try {
-            bitMatrix = writer.encode("http://www.osgate.org/", BarcodeFormat.QR_CODE, 300, 300);
-//            MatrixToImageWriter.writeToFile(bitMatrix, "gif", new File("C:\\output.gif"));
+            bitMatrix = writer.encode(str, BarcodeFormat.QR_CODE, 300, 300);
             img = MatrixToImageWriter.toBufferedImage(bitMatrix);
         } catch (WriterException e) {
             e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
         }
         ImageIcon imgIcn = new ImageIcon(img);
         return imgIcn;
@@ -59,14 +57,15 @@ public class QRCode {
         } catch (NotFoundException | FileNotFoundException ex) {
             Logger.getLogger(QRCode.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        String returnStr="error";
-        if (result != null) 
+
+        String returnStr = "error";
+        if (result != null) {
             returnStr = result.toString();
+        }
         return returnStr;
     }
-    
-    public ElectionReceipt decodeReceipt(){
-    
+
+    public ElectionReceipt decodeReceipt() {
+        return new ElectionReceipt();
     }
 }
