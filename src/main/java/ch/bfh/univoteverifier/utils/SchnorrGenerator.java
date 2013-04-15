@@ -4,6 +4,7 @@ import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.Config;
 import java.util.Random;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
 
 public class SchnorrGenerator {
 
@@ -21,7 +22,7 @@ public class SchnorrGenerator {
 	 * @param String message the message to sign
 	 * @return SchnorrPair the result of the signature (s,e)
 	 */
-	public SchnorrSignature signatureGeneration(BigInteger message){
+	public SchnorrSignature signatureGeneration(BigInteger message) throws NoSuchAlgorithmException{
 	
 		int randInt = randGen.nextInt(Config.q.intValue());
 
@@ -35,7 +36,7 @@ public class SchnorrGenerator {
 	    
 	    BigInteger hashVal = new BigInteger(message.toString() + concatVal.toString());
 	    
-	    BigInteger a = CryptoFunc.sha(hashVal);
+	    BigInteger a = CryptoFunc.sha(hashVal, Config.q);
 	    	    
 	    BigInteger b = r.subtract(privateKey.multiply(a)).mod(Config.q);
 	    

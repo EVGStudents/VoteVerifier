@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ch.bfh.univoteverifier.utils;
+package ch.bfh.univoteverifier.common;
 
 import ch.bfh.univote.common.Ballot;
 import ch.bfh.univote.common.Ballots;
@@ -29,10 +29,17 @@ import ch.bfh.univote.common.VoterCertificates;
 import ch.bfh.univote.election.ElectionBoard;
 import ch.bfh.univote.election.ElectionBoardService;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAPublicKey;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,30 +54,36 @@ public class ElectionBoardProxy {
 	private URL wsdlURL;
 	private static final Logger LOGGER = Logger.getLogger(ElectionBoardProxy.class.getName());
 	
-	private static SignatureParameters signParam;
-	private static Certificate rootCert;
-	private static ElectionSystemInfo sysInfo;
-	private static ElectionDefinition elDef;
-	private static EncryptionParameters encParam;
-	private static EncryptionKeyShare encKeyShare;
-	private static EncryptionKey encKey;
-	private static BlindedGenerator blindGen;
-	private static ElectionGenerator elGen;
-	private static ElectionOptions elOpt;
-	private static ElectionData elData;
-	private static ElectoralRoll elRoll;
-	private static VoterCertificates voterCerts;
-	private static MixedVerificationKeys mixVerKeyBy;
-	private static MixedVerificationKeys mixVerKey;
-	private static List<VoterCertificate> latelyRegVoteCerts;
-	private static List<MixedVerificationKey> latelyMixVerKeyBy;
-	private static List<MixedVerificationKey> latelyMixVerKey;
-	private static Ballots ballots;
-	private static MixedEncryptedVotes mixEncVotesBy;
-	private static MixedEncryptedVotes mixEncVotes;
-	private static PartiallyDecryptedVotes parDecVotes;
-	private static DecryptedVotes decryptedVotes;
-	private static DecodedVotes decodedVotes;
+	private SignatureParameters signParam;
+	private Certificate rootCert;
+	private ElectionSystemInfo sysInfo;
+	private ElectionDefinition elDef;
+	private EncryptionParameters encParam;
+	private EncryptionKeyShare encKeyShare;
+	private EncryptionKey encKey;
+	private BlindedGenerator blindGen;
+	private ElectionGenerator elGen;
+	private ElectionOptions elOpt;
+	private ElectionData elData;
+	private ElectoralRoll elRoll;
+	private VoterCertificates voterCerts;
+	private MixedVerificationKeys mixVerKeyBy;
+	private MixedVerificationKeys mixVerKey;
+	private List<VoterCertificate> latelyRegVoteCerts;
+	private List<MixedVerificationKey> latelyMixVerKeyBy;
+	private List<MixedVerificationKey> latelyMixVerKey;
+	private Ballots ballots;
+	private MixedEncryptedVotes mixEncVotesBy;
+	private MixedEncryptedVotes mixEncVotes;
+	private PartiallyDecryptedVotes parDecVotes;
+	private DecryptedVotes decryptedVotes;
+	private DecodedVotes decodedVotes;
+	
+	private RSAPublicKey CAPubKey;
+	private RSAPublicKey EMPubKey;
+	private RSAPublicKey EAPubKey;
+	private Map<String, RSAPublicKey> talliersPubKeys;
+	private Map<String, RSAPublicKey> mixersPubKeys;	
 	
 	private ElectionBoard eb;
 	
@@ -150,7 +163,7 @@ public class ElectionBoardProxy {
 	public ElectionSystemInfo getElectionSystemInfo() throws ElectionBoardServiceFault {
 		if(sysInfo == null)
 			sysInfo = eb.getElectionSystemInfo();
-		
+			
 		return sysInfo;
 	}
 	
@@ -413,12 +426,14 @@ public class ElectionBoardProxy {
 	
 	/**
 	 * Get a ballot
-	 * @param verificationKey the verification key for this ballor
+	 * @param verificationKey the verification key for this ballot
 	 * @return the ballot
 	 * @throws ElectionBoardServiceFault
 	 */
 	public Ballot getBallot(BigInteger verificationKey) throws ElectionBoardServiceFault{
 		return eb.getBallot(eID, verificationKey);
 	}
+
+	
 	
 }

@@ -3,6 +3,7 @@ package ch.bfh.univoteverifier.utils;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.Config;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
 
 
 public class ProofDiscreteLog {
@@ -38,7 +39,7 @@ public class ProofDiscreteLog {
 	 * Generate a mock Proof object to use to test the verification method
 	 * the values in the proof are small 
 	 */
-	public ProofDiscreteLog getProofSmall(){
+	public ProofDiscreteLog getProofSmall() throws NoSuchAlgorithmException{
 		//set public parameters
 		 q = new BigInteger("11");
 		 p = new BigInteger("23");
@@ -68,7 +69,7 @@ public class ProofDiscreteLog {
 	 * Generate a mock Proof object to use to test the verification method
 	 * the values in the proof are small 
 	 */
-	public ProofDiscreteLog getProofLarge(){
+	public ProofDiscreteLog getProofLarge() throws NoSuchAlgorithmException{
 		//set public parameters
 		 q = Config.q;
 		 p = Config.q;

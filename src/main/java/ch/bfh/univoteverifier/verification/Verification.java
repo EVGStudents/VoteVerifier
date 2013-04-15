@@ -8,9 +8,11 @@ import ch.bfh.univoteverifier.gui.StatusEvent;
 import ch.bfh.univoteverifier.gui.StatusListener;
 import ch.bfh.univoteverifier.gui.StatusSubject;
 import ch.bfh.univoteverifier.runner.Runner;
-import ch.bfh.univoteverifier.utils.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +42,8 @@ public class Verification {
 		runners = new ArrayList<>();
 		prmVrf = new PrimitivesVerifier();
 		this.verificationType = verificationType;
+		
+
 	}
 	
 	/**
@@ -63,7 +67,7 @@ public class Verification {
 	public String geteID() {
 		return eID;
 	}
-
+	
 	/**
 	 * @return the Verification type
 	 */
@@ -105,6 +109,8 @@ public class Verification {
 	 * Run a verification
 	 */
 	public void runVerification(){
+		LOGGER.log(Level.INFO, "Running verificaton.....");
+		
 		if(runners.isEmpty())
 			LOGGER.log(Level.INFO, "There aren't runners. The verification will not run.");
 		

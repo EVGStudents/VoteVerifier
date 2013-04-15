@@ -4,7 +4,7 @@
  */
 package utils;
 
-import ch.bfh.univoteverifier.utils.StringConcatenator;
+import ch.bfh.univoteverifier.common.StringConcatenator;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;

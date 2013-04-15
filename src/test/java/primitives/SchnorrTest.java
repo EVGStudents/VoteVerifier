@@ -6,6 +6,7 @@ import ch.bfh.univoteverifier.utils.SchnorrSignature;
 import static org.junit.Assert.*;
 
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
 
 
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class SchnorrTest {
 	PrimitivesVerifier sv = new PrimitivesVerifier();
 	
 	@Test
-	public void singleSignatureVerification() {
+	public void singleSignatureVerification() throws NoSuchAlgorithmException {
 		//BFH encoded as 66 | 70 | 72
 		String bfh = "667072";
 		BigInteger message = new BigInteger(bfh);
@@ -30,7 +31,7 @@ public class SchnorrTest {
 	}
 	
 	@Test
-	public void multipleSignatureVerification(){
+	public void multipleSignatureVerification() throws NoSuchAlgorithmException{
 		int numberOfVerifications = 1000;
 		
 		for(int i = 0; i < numberOfVerifications ; i++){
@@ -46,7 +47,7 @@ public class SchnorrTest {
 	}
 	
 	@Test
-	public void incorrectSignature(){
+	public void incorrectSignature() throws NoSuchAlgorithmException{
 		//BFH encoded as 66 | 70 | 72
 		String bfh = "667072";
 		BigInteger message = new BigInteger(bfh);

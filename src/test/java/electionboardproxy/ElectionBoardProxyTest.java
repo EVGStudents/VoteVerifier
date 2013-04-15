@@ -8,7 +8,7 @@ import ch.bfh.univote.common.ElectionData;
 import ch.bfh.univote.common.ElectionSystemInfo;
 import ch.bfh.univote.common.SignatureParameters;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
-import ch.bfh.univoteverifier.utils.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
