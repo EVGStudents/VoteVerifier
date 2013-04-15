@@ -202,9 +202,10 @@ public class MainGUI {
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
         innerPanel.setBackground(grey);
         innerPanel.setPreferredSize(new Dimension(500, 300));
-        QRCode qr = new QRCode();
-          JLabel innerLabelImage = new JLabel(qr.testQRCode());
-        innerPanel.add(innerLabelImage);
+        
+//        QRCode qr = new QRCode();
+//          JLabel innerLabelImage = new JLabel(qr.testQRCode());
+//        innerPanel.add(innerLabelImage);
         
     }
 
@@ -370,6 +371,7 @@ public class MainGUI {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                String decodeResults="nothing";
                 final JFileChooser fc = new JFileChooser();
                 int returnVal = fc.showDialog(innerPanel, "Select");
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -378,7 +380,15 @@ public class MainGUI {
                     if (file == null) {
                         statusText.append("File invalid");
                     } else {
+                        
                         statusText.append("\n" + file.getPath());
+                        QRCode qr = new QRCode();
+                        try {
+                            qr.decode(file);
+                        } catch (IOException ex) {
+                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                            statusText.append("The file could not be read, please try again.");
+                        }
                     }
                 }
             }
@@ -466,20 +476,16 @@ public class MainGUI {
                 
                 String msg = "Beginning verification for ";
                 statusText.setFont(new Font("Monospaced", Font.PLAIN, 16));
-
+                mc.getStatusSubject().addListener(sl);
                 if (uniVrfSelected) {
                     String eID = (String) comboBox.getSelectedItem();
                     msg = msg + "the election id " + eID;
                     rawEIDlist= rawEIDlist + " " + eID;
                     prefs.put("eIDList", rawEIDlist);
                     mc.universalVerification(eID);
-                    mc.getUniversalStatusSubject().addListener(sl);
-
                 } else {
                     msg += "the provided ballot receipt.";
                     mc.individualVerification(eIDlist[0]);
-                    mc.getIndividualStatusSubject().addListener(sl);
-
                 }
                 statusText.setText(msg);
 

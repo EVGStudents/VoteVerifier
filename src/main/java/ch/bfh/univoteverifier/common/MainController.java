@@ -41,15 +41,7 @@ public class MainController {
 	 *
 	 * @return
 	 */
-	public StatusSubject getUniversalStatusSubject() {
-        return v.getStatusSubject();
-    }
-
-    	/**
-	 *
-	 * @return
-	 */
-	public StatusSubject getIndividualStatusSubject() {
+	public StatusSubject getStatusSubject() {
         return v.getStatusSubject();
     }
 
