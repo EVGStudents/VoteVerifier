@@ -17,7 +17,7 @@ public abstract class Runner {
 	/**
 	 * The election board proxy
 	 */
-	private ElectionBoardProxy ebproxy;
+	protected ElectionBoardProxy ebproxy;
 
 	/**
 	 * The primitive verifier

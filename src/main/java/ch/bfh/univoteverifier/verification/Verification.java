@@ -9,10 +9,8 @@ import ch.bfh.univoteverifier.gui.StatusListener;
 import ch.bfh.univoteverifier.gui.StatusSubject;
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,7 +21,7 @@ import java.util.logging.Logger;
 public class Verification {
 	
 	
-	private static final Logger LOGGER = Logger.getLogger(VerificationEnum.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(Verification.class.getName());
 	private final StatusSubject ss;
 	private final String eID;
 	private final VerificationEnum verificationType;
@@ -42,6 +40,8 @@ public class Verification {
 		runners = new ArrayList<>();
 		prmVrf = new PrimitivesVerifier();
 		this.verificationType = verificationType;
+		LOGGER.setUseParentHandlers(true);
+		LOGGER.log(Level.INFO, "Creating a verification");
 	}
 	
 	/**

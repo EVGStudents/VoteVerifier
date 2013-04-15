@@ -11,6 +11,8 @@ import ch.bfh.univoteverifier.utils.RSASignature;
 import ch.bfh.univoteverifier.utils.SchnorrSignature;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAPublicKey;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -122,7 +124,7 @@ public class PrimitivesVerifier {
 	 * ToDO
 	 * @return
 	 */
-	public boolean vrfCert(){
+	public boolean vrfCert(X509Certificate c, RSAPublicKey pk){
 		return false;
 	}
 	
