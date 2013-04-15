@@ -13,7 +13,8 @@ package ch.bfh.univoteverifier.gui;
 public enum StatusMessage {
 
 VRF_STATUS(0),  //used to send errors to the console
-VRF_RESULT(10)  //  for hte verification results
+VRF_RESULT(10),  //  for hte verification results
+ERROR(100)
 
 ;
 

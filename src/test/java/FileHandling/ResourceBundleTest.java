@@ -4,6 +4,7 @@
  */
 package FileHandling;
 
+import ch.bfh.univoteverifier.common.GUIMessenger;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import org.junit.After;
@@ -49,5 +50,27 @@ public class ResourceBundleTest {
         String resultStr = rb.getString("filenotfound");
 //      Logger.getLogger(QRCodeTest.class.getName()).log(Level.INFO, "OUTPUT: {0} ", resultStr);
         assertTrue(0 == "The file was not found.".compareTo(resultStr));
+    }
+    
+        /**
+     * Tests that class GUI Messenger returns appropriate value for a given key
+     */
+    @Test
+    public void GUIMessengerGetsKeyValue() {
+        GUIMessenger msrg = new GUIMessenger();
+        String resultStr = msrg.getMessageForKey("filenotfound");
+        assertTrue(0 == "The file was not found.".compareTo(resultStr));
+    }
+    
+           /**
+     * Tests that class GUI Messenger returns appropriate value for a given key
+     * even if the locale is changed
+     */
+    @Test
+    public void GUIMessengerGetsKeyValueIfLocaleChanged() {
+        GUIMessenger msrg = new GUIMessenger();
+        msrg.changeLocale("de");
+        String resultStr = msrg.getMessageForKey("filenotfound");
+        assertTrue(0 == "Der Datei wurde nicht gefunden.".compareTo(resultStr));
     }
 }

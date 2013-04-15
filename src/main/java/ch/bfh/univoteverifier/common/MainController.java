@@ -14,14 +14,15 @@ import java.io.File;
 public class MainController {
 	
 	private Verification v;
-
+        private GUIMessenger msgr;
+        
 	/**
 	 * Run an universal verification
 	 * @param eID String the ID of a election
 	 */
 	public void universalVerification(String eID){
 		this.v = new Verification(eID, VerificationEnum.UNIVERSAL);
-		
+		this.msgr = new GUIMessenger();
 		//add some runners
 		v.addRunner(new SystemSetupRunner());
 		
@@ -43,7 +44,7 @@ public class MainController {
 	 * @return
 	 */
 	public StatusSubject getStatusSubject() {
-        return v.getStatusSubject();
+        return msgr.getStatusSubject();
     }
 
         
