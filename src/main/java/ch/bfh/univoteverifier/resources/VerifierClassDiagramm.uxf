@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="12.0">
+<diagram program="umlet" version="11.5.1">
   <zoom_level>6</zoom_level>
   <element>
     <type>com.umlet.element.Note</type>
     <coordinates>
       <x>456</x>
-      <y>456</y>
+      <y>408</y>
       <w>144</w>
       <h>102</h>
     </coordinates>
@@ -27,7 +27,7 @@ every single ballot.
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>162</x>
-      <y>1026</y>
+      <y>978</y>
       <w>60</w>
       <h>30</h>
     </coordinates>
@@ -38,7 +38,7 @@ every single ballot.
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>546</x>
-      <y>822</y>
+      <y>774</y>
       <w>180</w>
       <h>204</h>
     </coordinates>
@@ -49,7 +49,7 @@ every single ballot.
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>504</x>
-      <y>1014</y>
+      <y>966</y>
       <w>126</w>
       <h>174</h>
     </coordinates>
@@ -72,7 +72,7 @@ ElectionPreparationRunner
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>684</x>
-      <y>378</y>
+      <y>330</y>
       <w>54</w>
       <h>84</h>
     </coordinates>
@@ -86,7 +86,7 @@ m2= 1</panel_attributes>
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>636</x>
-      <y>1014</y>
+      <y>966</y>
       <w>174</w>
       <h>174</h>
     </coordinates>
@@ -114,7 +114,7 @@ ElectionPeriodRunner
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>210</x>
-      <y>1014</y>
+      <y>966</y>
       <w>126</w>
       <h>174</h>
     </coordinates>
@@ -136,7 +136,7 @@ SystemSetupRunner
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>1026</x>
-      <y>348</y>
+      <y>300</y>
       <w>150</w>
       <h>90</h>
     </coordinates>
@@ -152,7 +152,7 @@ _CryptoUtils_
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>648</x>
-      <y>348</y>
+      <y>300</y>
       <w>126</w>
       <h>48</h>
     </coordinates>
@@ -168,7 +168,7 @@ GUI
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>642</x>
-      <y>450</y>
+      <y>402</y>
       <w>138</w>
       <h>102</h>
     </coordinates>
@@ -186,7 +186,7 @@ MainController
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>966</x>
-      <y>732</y>
+      <y>684</y>
       <w>168</w>
       <h>528</h>
     </coordinates>
@@ -255,7 +255,7 @@ MT_PLAINTEXT_SIGN
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>708</x>
-      <y>822</y>
+      <y>774</y>
       <w>198</w>
       <h>204</h>
     </coordinates>
@@ -266,7 +266,7 @@ MT_PLAINTEXT_SIGN
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>864</x>
-      <y>348</y>
+      <y>300</y>
       <w>156</w>
       <h>90</h>
     </coordinates>
@@ -287,12 +287,19 @@ ConcatString
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>636</x>
-      <y>594</y>
+      <y>528</y>
       <w>162</w>
-      <h>102</h>
+      <h>144</h>
     </coordinates>
     <panel_attributes>bg=yellow
 Verification
+{innerclass
+StatusSubject
+--
+addListener()
+removeListener()
+notifyListener()
+innerclass}
 --
 -eID: String
 -verificationType: VerificationEnum
@@ -309,35 +316,35 @@ Verification
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>684</x>
-      <y>534</y>
+      <y>486</y>
       <w>58</w>
-      <h>72</h>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=-
 runs&gt;
 m1= 1
 m2= 1</panel_attributes>
-    <additional_attributes>30;60;30;18</additional_attributes>
+    <additional_attributes>30;42;30;18</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>684</x>
-      <y>678</y>
+      <y>654</y>
       <w>54</w>
-      <h>90</h>
+      <h>66</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=*
 m2= 1
 runs &lt;</panel_attributes>
-    <additional_attributes>30;78;30;18</additional_attributes>
+    <additional_attributes>30;54;30;18</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>90</x>
-      <y>390</y>
+      <y>342</y>
       <w>324</w>
       <h>528</h>
     </coordinates>
@@ -403,7 +410,7 @@ ElectionBoardProxy
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>780</x>
-      <y>618</y>
+      <y>570</y>
       <w>102</w>
       <h>42</h>
     </coordinates>
@@ -417,7 +424,7 @@ has &gt;</panel_attributes>
     <type>com.umlet.element.Note</type>
     <coordinates>
       <x>876</x>
-      <y>246</y>
+      <y>198</y>
       <w>120</w>
       <h>36</h>
     </coordinates>
@@ -433,7 +440,7 @@ or 4 getter.
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>342</x>
-      <y>1014</y>
+      <y>966</y>
       <w>156</w>
       <h>174</h>
     </coordinates>
@@ -455,7 +462,7 @@ MixerTallierRunner
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>636</x>
-      <y>756</y>
+      <y>708</y>
       <w>162</w>
       <h>84</h>
     </coordinates>
@@ -474,7 +481,7 @@ MixerTallierRunner
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>402</x>
-      <y>822</y>
+      <y>774</y>
       <w>312</w>
       <h>204</h>
     </coordinates>
@@ -485,7 +492,7 @@ MixerTallierRunner
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>396</x>
-      <y>504</y>
+      <y>456</y>
       <w>72</w>
       <h>30</h>
     </coordinates>
@@ -496,7 +503,7 @@ MixerTallierRunner
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>918</x>
-      <y>264</y>
+      <y>216</y>
       <w>30</w>
       <h>96</h>
     </coordinates>
@@ -507,7 +514,7 @@ MixerTallierRunner
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>702</x>
-      <y>822</y>
+      <y>774</y>
       <w>30</w>
       <h>210</h>
     </coordinates>
@@ -518,7 +525,7 @@ MixerTallierRunner
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>252</x>
-      <y>822</y>
+      <y>774</y>
       <w>444</w>
       <h>204</h>
     </coordinates>
@@ -529,7 +536,7 @@ MixerTallierRunner
     <type>com.umlet.element.Note</type>
     <coordinates>
       <x>276</x>
-      <y>48</y>
+      <y>0</y>
       <w>360</w>
       <h>222</h>
     </coordinates>
@@ -555,7 +562,7 @@ the handler for the log file.
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>816</x>
-      <y>1014</y>
+      <y>966</y>
       <w>144</w>
       <h>174</h>
     </coordinates>
@@ -584,7 +591,7 @@ ElectionSetupRunner
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>864</x>
-      <y>444</y>
+      <y>396</y>
       <w>156</w>
       <h>90</h>
     </coordinates>
@@ -603,7 +610,7 @@ VerificationResult
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>396</x>
-      <y>594</y>
+      <y>546</y>
       <w>252</w>
       <h>42</h>
     </coordinates>
@@ -617,7 +624,7 @@ has a &lt;</panel_attributes>
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>870</x>
-      <y>594</y>
+      <y>546</y>
       <w>210</w>
       <h>120</h>
     </coordinates>
@@ -638,7 +645,7 @@ PrimitivesVrf
     <type>com.umlet.element.Note</type>
     <coordinates>
       <x>0</x>
-      <y>996</y>
+      <y>948</y>
       <w>180</w>
       <h>54</h>
     </coordinates>
@@ -646,6 +653,63 @@ PrimitivesVrf
 Each of these methods in these
 5 classes, return a VerificationResult
 
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>444</x>
+      <y>612</y>
+      <w>90</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>«Interface» Listener
+--
+--
+update method
+bg=yellow
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>396</x>
+      <y>612</y>
+      <w>60</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>18;18;48;18</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>516</x>
+      <y>600</y>
+      <w>132</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;
+m1=*
+m2=1
+observer pattern</panel_attributes>
+    <additional_attributes>18;30;120;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>540</x>
+      <y>642</y>
+      <w>78</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>StatusEvent
+--
+--
+accessor methods
+bg=cyan
 </panel_attributes>
     <additional_attributes/>
   </element>
