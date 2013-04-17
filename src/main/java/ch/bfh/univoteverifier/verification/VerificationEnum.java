@@ -7,8 +7,9 @@ package ch.bfh.univoteverifier.verification;
  */
 public enum VerificationEnum {
 
-	UNIVERSAL(10),
-	INDIVIDUAL(20),
+	ORDER_BY_ENTITES(10),
+	ORDER_BY_SPEC(20),
+	
 	SETUP_P_IS_PRIME(100),
 	SETUP_Q_IS_PRIME(110),
 	SETUP_G_IS_GENERATOR(120),

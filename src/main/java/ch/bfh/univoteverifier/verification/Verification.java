@@ -10,6 +10,7 @@ import ch.bfh.univoteverifier.gui.StatusSubject;
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,30 +19,42 @@ import java.util.logging.Logger;
  *
  * @author prinstin
  */
-public class Verification {
+public abstract class Verification {
 	
 	
 	private static final Logger LOGGER = Logger.getLogger(Verification.class.getName());
 	private final StatusSubject ss;
 	private final String eID;
-	private final VerificationEnum verificationType;
-	private final List<Runner> runners;
-	private final ElectionBoardProxy ebproxy;
-	private final PrimitivesVerifier prmVrf;
+	protected final List<Runner> runners;
+	protected final ElectionBoardProxy ebproxy;
+	protected VerificationEnum displayType = VerificationEnum.ORDER_BY_SPEC;
+
+	//used to store the results of a verification
+	protected List<VerificationResult> res = new ArrayList<>();
 	
 	/**
 	 * Construct a new abstract verification with a given election ID
 	 * @param eID the ID of an election
 	 */
-	public Verification(String eID, VerificationEnum verificationType) {
+	public Verification(String eID) {
 		this.eID = eID;
 		this.ebproxy = new ElectionBoardProxy(eID);
 		ss = new ConcreteSubject();
 		runners = new ArrayList<>();
-		prmVrf = new PrimitivesVerifier();
-		this.verificationType = verificationType;
 		LOGGER.setUseParentHandlers(true);
-		LOGGER.log(Level.INFO, "Creating a verification");
+	}
+
+	/**
+	 * Set the view type for the verification
+	 * @param t the verification view
+	 */
+	public void setViewType(VerificationEnum t){
+		if(t != VerificationEnum.ORDER_BY_ENTITES || t != VerificationEnum.ORDER_BY_SPEC){
+			LOGGER.log(Level.WARNING, "View type not specified, falling back to specification view");
+			displayType = VerificationEnum.ORDER_BY_SPEC;
+		}
+		else
+			displayType = t;
 	}
 	
 	/**
@@ -53,24 +66,10 @@ public class Verification {
 	}
 	
 	/**
-	 * @return the ebproxy
-	 */
-	public ElectionBoardProxy getEbproxy() {
-		return ebproxy;
-	}
-	
-	/**
 	 * @return the eID
 	 */
 	public String geteID() {
 		return eID;
-	}
-	
-	/**
-	 * @return the Verification type
-	 */
-	public VerificationEnum getVerificationType(){
-		return verificationType;
 	}
 	
 	/**
@@ -110,21 +109,22 @@ public class Verification {
 		if(runners.isEmpty())
 			LOGGER.log(Level.INFO, "There aren't runners. The verification will not run.");
 		
-		//run the runners and get results
+		//run the runners 
 		for(Runner r : runners){
-			r.run();
+			List<VerificationResult> l = r.run();
+			Collections.copy(res, l);
 		}
 	}
-	
+
 	/**
-	 * Add a runner to this verification
-	 * @param r a runner
-	 * @return true if the runner has been successfully added to the list
+	 * Get the results when the verification is finished
+	 * @return an ordered list with the results
 	 */
-	public boolean addRunner(Runner r){
-		r.setElectionBoardProxy(ebproxy);
-		r.setPrimitivesVerifier(prmVrf);
-		
-		return this.runners.add(r);
+	public List getResults(){
+		return Collections.unmodifiableList(res);
 	}
+	
+	protected abstract void createRunnerBySpec();
+	protected abstract void createRunnerByEntities();
+
 }

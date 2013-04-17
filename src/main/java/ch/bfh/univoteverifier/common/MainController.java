@@ -1,9 +1,9 @@
 package ch.bfh.univoteverifier.common;
 
 import ch.bfh.univoteverifier.gui.StatusSubject;
-import ch.bfh.univoteverifier.runner.SystemSetupRunner;
+import ch.bfh.univoteverifier.verification.IndividualVerification;
+import ch.bfh.univoteverifier.verification.UniversalVerification;
 import ch.bfh.univoteverifier.verification.Verification;
-import ch.bfh.univoteverifier.verification.VerificationEnum;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
@@ -43,11 +43,8 @@ public class MainController {
 	 * @param eID String the ID of a election
 	 */
 	public void universalVerification(String eID){
-		this.v = new Verification(eID, VerificationEnum.UNIVERSAL);
+		this.v = new UniversalVerification(eID);
 		this.msgr = new GUIMessenger();
-		//add some runners
-		v.addRunner(new SystemSetupRunner());
-		
 		v.runVerification();
 	}
 	
@@ -57,10 +54,7 @@ public class MainController {
 	 * @param eID
 	 */
 	public void individualVerification(String eID){
-		
-		
-		
-		this.v = new Verification(eID, VerificationEnum.INDIVIDUAL);
+		this.v = new IndividualVerification(eID);
 	}
 	
 	/**

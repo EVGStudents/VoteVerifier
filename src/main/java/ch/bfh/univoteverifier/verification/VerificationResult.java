@@ -13,7 +13,7 @@ public class VerificationResult {
 	
 	private final VerificationEnum v;
 	private final boolean result;
-	
+	private final boolean impl;
 	
 	/**
 	 * Create a new verification results
@@ -23,8 +23,21 @@ public class VerificationResult {
 	public VerificationResult(VerificationEnum v, boolean result) {
 		this.v=v;
 		this.result=result;
+		this.impl = true;
 	}
 
+	/**
+	 * Create a new verification results
+	 * @param v Verification The type of verification
+	 * @param result boolean
+	 * @þaram impl if the test implied in this result is implemented or not
+	 */
+	public VerificationResult(VerificationEnum v, boolean result, boolean impl){
+		this.v=v;
+		this.result=result;
+		this.impl = impl;
+	}
+	
 	/**
 	 * Get the verification type for this VerificationResult
 	 * @return the verification type
@@ -32,13 +45,17 @@ public class VerificationResult {
 	public VerificationEnum getVerification() {
 		return v;
 	}
-
+	
 	/**
 	 * Get the result for this VerificationResult
-	 * @return 
+	 * @return
 	 */
-	public Boolean getResult() {
+	public boolean getResult() {
 		return result;
+	}
+	
+	public boolean isImplemented(){
+		return impl;
 	}
 	
 }

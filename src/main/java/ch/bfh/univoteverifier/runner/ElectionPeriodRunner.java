@@ -4,6 +4,10 @@
  */
 package ch.bfh.univoteverifier.runner;
 
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.verification.VerificationResult;
+import java.util.List;
+
 
 /**
  *
@@ -11,10 +15,16 @@ package ch.bfh.univoteverifier.runner;
  */
 public class ElectionPeriodRunner extends Runner {
 
+	public ElectionPeriodRunner(ElectionBoardProxy ebp) {
+		super(ebp);
+	}
+
 
 	@Override
-	public void run() {
+	public List<VerificationResult> run() {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
+
+
 	
 }

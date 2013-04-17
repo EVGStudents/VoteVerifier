@@ -5,7 +5,9 @@
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
+import ch.bfh.univoteverifier.verification.VerificationResult;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represent a Runner. A runner is used to perform the verifications
@@ -14,36 +16,20 @@ import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
  */
 public abstract class Runner {
 	
-	/**
-	 * The election board proxy
-	 */
-	protected ElectionBoardProxy ebproxy;
 
-	/**
-	 * The primitive verifier
-	 */
-	protected PrimitivesVerifier prmVrf;
+	protected List<VerificationResult> partialResults;
+	protected ElectionBoardProxy ebp;
+
+	public Runner(ElectionBoardProxy ebp){
+		this.ebp = ebp;
+		this.partialResults = new ArrayList<>();
+	}
 	
 	/**
 	 * Start this runner, it will perform the verification 
 	 * implemented
 	 * @return the list of results
 	 */
-	public abstract void run();
+	public abstract List<VerificationResult> run();
 
-	/**
-	 * Set the election board proxy for this runner
-	 * @param ebproxy the election board proxy
-	 */
-	public void setElectionBoardProxy(ElectionBoardProxy ebproxy){
-		this.ebproxy = ebproxy;
-	}
-
-	/**
-	 * Set the primitives verifier for this runner
-	 * @param prmVrf the primitives verifier
-	 */
-	public void setPrimitivesVerifier(PrimitivesVerifier prmVrf){
-		this.prmVrf = prmVrf;
-	}
 }
