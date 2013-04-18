@@ -52,7 +52,7 @@ public class SystemSetupRunner extends Runner{
 		//name
 		for(VerificationResult vr : partialResults){
 			vr.setSectionName(sne);
-			gm.
+			gm.sendVrfMsg(vr);
 			//notify observer
 		}
 		
