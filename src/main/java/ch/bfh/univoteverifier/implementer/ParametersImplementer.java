@@ -2,21 +2,23 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ch.bfh.univoteverifier.verification;
+package ch.bfh.univoteverifier.implementer;
 
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.verification.VerificationEnum;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.math.BigInteger;
 
 /**
  *
  * @author snake
  */
-public class ParametersVerification {
+public class ParametersImplementer {
 
 	private final ElectionBoardProxy ebp;
 
-	public ParametersVerification(ElectionBoardProxy ebp){
+	public ParametersImplementer(ElectionBoardProxy ebp){
 		this.ebp = ebp;	
 	}
 
@@ -40,7 +42,7 @@ public class ParametersVerification {
 	 */
 	public VerificationResult vrfPrimeP(){
 		boolean r = Config.p.isProbablePrime(100);
-		return new VerificationResult(VerificationEnum.SETUP_PARAM_LEN, r);
+		return new VerificationResult(VerificationEnum.SETUP_P_IS_PRIME, r);
 	}
 		
 	/**
@@ -49,7 +51,7 @@ public class ParametersVerification {
 	 */
 	public VerificationResult vrfPrimeQ(){
 		boolean r = Config.q.isProbablePrime(100);
-		return new VerificationResult(VerificationEnum.SETUP_PARAM_LEN, r);
+		return new VerificationResult(VerificationEnum.SETUP_Q_IS_PRIME, r);
 	}
 
 	/**
@@ -60,7 +62,7 @@ public class ParametersVerification {
 		BigInteger multiple = Config.p.subtract(BigInteger.valueOf(1)).divide(Config.q);
 		
 		boolean r = multiple.multiply(Config.q).add(BigInteger.valueOf(1)).equals(Config.p);
-		return new VerificationResult(VerificationEnum.SETUP_PARAM_LEN, r);
+		return new VerificationResult(VerificationEnum.SETUP_P_IS_SAFE_PRIME, r);
 	}
 	
 	
@@ -72,7 +74,7 @@ public class ParametersVerification {
 		BigInteger res = Config.g.modPow(Config.q, Config.p);
 		
 		boolean r = res.equals(BigInteger.valueOf(1));
-		return new VerificationResult(VerificationEnum.SETUP_PARAM_LEN, r);
+		return new VerificationResult(VerificationEnum.SETUP_G_IS_GENERATOR, r);
 	}
 	
 }

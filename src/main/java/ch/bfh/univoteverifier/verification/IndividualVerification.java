@@ -14,13 +14,11 @@ public class IndividualVerification extends Verification{
 		super(eID);
 	}
 
-	@Override
-	protected void createRunnerBySpec() {
+	private void createRunnerBySpec() {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
-	@Override
-	protected void createRunnerByEntities() {
+	private void createRunnerByEntities() {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 

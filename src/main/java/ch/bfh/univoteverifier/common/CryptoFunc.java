@@ -1,7 +1,5 @@
 package ch.bfh.univoteverifier.common;
 
-import ch.bfh.univoteverifier.verification.VerificationEnum;
-import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,7 +13,6 @@ import java.util.logging.Logger;
 public class CryptoFunc {
 	
 	private static final Logger LOGGER = Logger.getLogger(CryptoFunc.class.getName());
-	private static final String HASH_ALGORITHM = "SHA-256";
 	
 	
 	/**
@@ -25,14 +22,14 @@ public class CryptoFunc {
 	 * @return BigInteger the hash as BigInteger representation
 	 * @throws NoSuchAlgorithmException
 	 */
-	public static BigInteger sha(BigInteger val, BigInteger modValue) throws NoSuchAlgorithmException{
+	public static BigInteger sha(BigInteger val) throws NoSuchAlgorithmException{
 		BigInteger result;
 		
-		MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
+		MessageDigest md = MessageDigest.getInstance(Config.hashAlgorithm);
 		
 		md.update(val.toByteArray());
 		
-		result = new BigInteger(md.digest()).mod(modValue);
+		result = new BigInteger(md.digest()).mod(Config.q);
 		
 		return result;
 	}
@@ -53,18 +50,9 @@ public class CryptoFunc {
 			//001100 similates padding
 			concat += ci.toString() +"001100";
 		}
-		return CryptoFunc.sha(new BigInteger(concat), Config.q);
+		return CryptoFunc.sha(new BigInteger(concat));
 		
 	}
 	
-	/**
-	 * Get a verification result
-	 * @param v the verification type from the enumeration
-	 * @param res the result of a possible verification
-	 * @return a verification result
-	 */
-	public static VerificationResult getVrfRes(VerificationEnum v, boolean res){
-		return new VerificationResult(v, res);
-	}
 	
 }

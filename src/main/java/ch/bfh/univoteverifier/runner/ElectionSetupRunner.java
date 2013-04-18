@@ -14,14 +14,14 @@ import java.util.List;
  */
 public class ElectionSetupRunner extends Runner{
 
-	public ElectionSetupRunner(ElectionBoardProxy ebp) {
-		super(ebp);
+	public ElectionSetupRunner(ElectionBoardProxy ebp,String name) {
+		super(ebp, name);
 	}
 
 
 	@Override
 	public List<VerificationResult> run() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return null;
 	}
 
 

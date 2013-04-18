@@ -141,7 +141,7 @@ public class PrimitivesVerifier {
 		
 		BigInteger concat = Config.g.modPow(signature.getB(), Config.p).multiply(publicKey.modPow(signature.getA(), Config.p)).mod(Config.p);
 		
-		BigInteger hashResult = CryptoFunc.sha(new BigInteger(message.toString() + concat.toString()), Config.q);
+		BigInteger hashResult = CryptoFunc.sha(new BigInteger(message.toString() + concat.toString()));
 		
 		boolean res = hashResult.equals(signature.getA());
 		

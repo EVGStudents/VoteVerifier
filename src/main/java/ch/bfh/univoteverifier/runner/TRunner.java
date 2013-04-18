@@ -8,23 +8,19 @@ import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.List;
 
-
 /**
  *
  * @author snake
  */
-public class ElectionPeriodRunner extends Runner {
+public class TRunner extends Runner {
 
-	public ElectionPeriodRunner(ElectionBoardProxy ebp, String name) {
-		super(ebp, name);
+	public TRunner(ElectionBoardProxy ebp, String runnerName) {
+		super(ebp, runnerName);
 	}
-
 
 	@Override
 	public List<VerificationResult> run() {
-		return null;
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
-
-
 	
 }

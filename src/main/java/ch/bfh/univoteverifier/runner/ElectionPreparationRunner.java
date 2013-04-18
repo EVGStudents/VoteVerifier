@@ -18,14 +18,14 @@ public class ElectionPreparationRunner extends Runner {
 
 	private static final Logger logger = Logger.getLogger(SystemSetupRunner.class.getName());
 
-	public ElectionPreparationRunner(ElectionBoardProxy ebp) {
-		super(ebp);
+	public ElectionPreparationRunner(ElectionBoardProxy ebp, String name) {
+		super(ebp, name);
 	}
 
 
 	@Override
 	public List<VerificationResult> run() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return null;
 	}
 
 	

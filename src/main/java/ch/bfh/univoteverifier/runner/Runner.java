@@ -19,10 +19,16 @@ public abstract class Runner {
 
 	protected List<VerificationResult> partialResults;
 	protected ElectionBoardProxy ebp;
+	private String runnerName;
 
-	public Runner(ElectionBoardProxy ebp){
+	public Runner(ElectionBoardProxy ebp, String runnerName){
 		this.ebp = ebp;
+		this.runnerName = runnerName;
 		this.partialResults = new ArrayList<>();
+	}
+
+	public String getRunnerName(){
+		return runnerName;
 	}
 	
 	/**
