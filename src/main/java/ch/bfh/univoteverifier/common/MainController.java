@@ -54,6 +54,7 @@ public class MainController {
 	 * @param eID
 	 */
 	public void individualVerification(String eID){
+            this.msgr = new GUIMessenger();
 		this.v = new IndividualVerification(eID);
 	}
 	
@@ -67,6 +68,7 @@ public class MainController {
 	
 	
         public void testMsgSystem(){
+            this.msgr = new GUIMessenger();
             msgr.sendErrorMsg("Test to make sure obsever pattern is up and running");
         }
         
