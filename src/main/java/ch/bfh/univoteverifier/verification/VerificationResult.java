@@ -12,6 +12,7 @@ package ch.bfh.univoteverifier.verification;
 public class VerificationResult {
 	
 	private final VerificationEnum v;
+	private SectionNameEnum sectionName;
 	private final boolean result;
 	private final boolean impl;
 	
@@ -24,6 +25,7 @@ public class VerificationResult {
 		this.v=v;
 		this.result=result;
 		this.impl = true;
+		this.sectionName = null;
 	}
 
 	/**
@@ -36,6 +38,7 @@ public class VerificationResult {
 		this.v=v;
 		this.result=result;
 		this.impl = impl;
+		this.sectionName = null;
 	}
 	
 	/**
@@ -53,9 +56,30 @@ public class VerificationResult {
 	public boolean getResult() {
 		return result;
 	}
-	
+
+	/**
+	 * Get the section name of this result
+	 * @return the name of the section
+	 */
+	public SectionNameEnum getSectionName(){
+		return sectionName;
+	}
+
+	/**
+	 * To know if the verification associated with this
+	 * result is implemented
+	 * @return 
+	 */
 	public boolean isImplemented(){
 		return impl;
+	}
+
+	/**
+	 * Set the section name for this result
+	 * @param s the name of the section
+	 */
+	public void setSectionName(SectionNameEnum s){
+	 	sectionName = 	s;
 	}
 	
 }

@@ -15,14 +15,14 @@ import java.util.List;
  */
 public class ElectionPeriodRunner extends Runner {
 
-	public ElectionPeriodRunner(ElectionBoardProxy ebp) {
-		super(ebp);
+	public ElectionPeriodRunner(ElectionBoardProxy ebp, String name) {
+		super(ebp, name);
 	}
 
 
 	@Override
 	public List<VerificationResult> run() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return null;
 	}
 
 

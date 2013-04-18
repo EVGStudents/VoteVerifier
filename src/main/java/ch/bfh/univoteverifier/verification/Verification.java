@@ -30,7 +30,7 @@ public abstract class Verification {
 	protected VerificationEnum displayType = VerificationEnum.ORDER_BY_SPEC;
 
 	//used to store the results of a verification
-	protected List<VerificationResult> res = new ArrayList<>();
+	protected List<VerificationResult> res;
 	
 	/**
 	 * Construct a new abstract verification with a given election ID
@@ -41,6 +41,9 @@ public abstract class Verification {
 		this.ebproxy = new ElectionBoardProxy(eID);
 		ss = new ConcreteSubject();
 		runners = new ArrayList<>();
+		res = new ArrayList<>();
+
+		//ToDo check if is correct
 		LOGGER.setUseParentHandlers(true);
 	}
 
@@ -105,26 +108,24 @@ public abstract class Verification {
 	/**
 	 * Run a verification
 	 */
-	public void runVerification(){
+	public List<VerificationResult> runVerification(){
 		if(runners.isEmpty())
 			LOGGER.log(Level.INFO, "There aren't runners. The verification will not run.");
 		
-		//run the runners 
+		//run the runners  and get the results
 		for(Runner r : runners){
 			List<VerificationResult> l = r.run();
-			Collections.copy(res, l);
-		}
-	}
 
-	/**
-	 * Get the results when the verification is finished
-	 * @return an ordered list with the results
-	 */
-	public List getResults(){
+			//check that a list isn't empty
+			if(l != null){
+				res.addAll(l);
+			}
+			else{
+				LOGGER.log(Level.INFO, "The runner " + r.getRunnerName() + "does not contain and verification.");
+			}
+		}
+
 		return Collections.unmodifiableList(res);
 	}
-	
-	protected abstract void createRunnerBySpec();
-	protected abstract void createRunnerByEntities();
 
 }

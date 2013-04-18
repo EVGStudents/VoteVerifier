@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class MixerTallierRunner extends Runner {
 
-	public MixerTallierRunner(ElectionBoardProxy ebp) {
-		super(ebp);
+	public MixerTallierRunner(ElectionBoardProxy ebp, String name) {
+		super(ebp, name);
 	}
 
 
@@ -23,7 +23,7 @@ public class MixerTallierRunner extends Runner {
 
 	@Override
 	public List<VerificationResult> run() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return null;
 	}
 	
 }
