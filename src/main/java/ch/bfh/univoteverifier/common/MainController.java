@@ -23,7 +23,7 @@ public class MainController {
 
 
 	public MainController(){
-		
+		this.msgr = new GUIMessenger();
 		//initialize the root logger - maybe this should be placed into the main method
 		Handler h;
 		
@@ -44,7 +44,7 @@ public class MainController {
 	 */
 	public void universalVerification(String eID){
 		this.v = new UniversalVerification(eID);
-		this.msgr = new GUIMessenger();
+		
 		v.runVerification();
 	}
 	
@@ -54,7 +54,7 @@ public class MainController {
 	 * @param eID
 	 */
 	public void individualVerification(String eID){
-            this.msgr = new GUIMessenger();
+            
 		this.v = new IndividualVerification(eID);
 	}
 	
