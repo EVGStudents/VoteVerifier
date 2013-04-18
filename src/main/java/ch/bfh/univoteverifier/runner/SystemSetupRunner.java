@@ -7,6 +7,7 @@ package ch.bfh.univoteverifier.runner;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.GUIMessenger;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -20,12 +21,14 @@ public class SystemSetupRunner extends Runner{
 	private static final Logger logger = Logger.getLogger(SystemSetupRunner.class.getName());
 	private final ParametersImplementer prmVrf;
 	private final SectionNameEnum sne = SectionNameEnum.SYSTEM_SETUP;
-
+	private GUIMessenger gm;
+	
 	public SystemSetupRunner(ElectionBoardProxy ebp, String name) {
 		super(ebp, name);
-
+		
 		//create the verification classes we want
 		prmVrf = new ParametersImplementer(ebp);
+		gm = new GUIMessenger();
 	}
 	
 	@Override
@@ -49,6 +52,7 @@ public class SystemSetupRunner extends Runner{
 		//name
 		for(VerificationResult vr : partialResults){
 			vr.setSectionName(sne);
+			gm.
 			//notify observer
 		}
 		
