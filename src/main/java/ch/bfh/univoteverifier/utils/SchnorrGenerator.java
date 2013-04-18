@@ -36,7 +36,7 @@ public class SchnorrGenerator {
 	    
 	    BigInteger hashVal = new BigInteger(message.toString() + concatVal.toString());
 	    
-	    BigInteger a = CryptoFunc.sha(hashVal, Config.q);
+	    BigInteger a = CryptoFunc.sha(hashVal);
 	    	    
 	    BigInteger b = r.subtract(privateKey.multiply(a)).mod(Config.q);
 	    

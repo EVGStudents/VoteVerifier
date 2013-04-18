@@ -4,6 +4,7 @@ package ch.bfh.univoteverifier.runner;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import java.util.Collections;
@@ -17,14 +18,14 @@ import java.util.logging.Logger;
 public class SystemSetupRunner extends Runner{
 	
 	private static final Logger logger = Logger.getLogger(SystemSetupRunner.class.getName());
-	private final ParametersVerification prmVrf;
+	private final ParametersImplementer prmVrf;
 	private final SectionNameEnum sne = SectionNameEnum.SYSTEM_SETUP;
 
 	public SystemSetupRunner(ElectionBoardProxy ebp, String name) {
 		super(ebp, name);
 
 		//create the verification classes we want
-		prmVrf = new ParametersVerification(ebp);
+		prmVrf = new ParametersImplementer(ebp);
 	}
 	
 	@Override

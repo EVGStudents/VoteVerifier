@@ -2,21 +2,23 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ch.bfh.univoteverifier.verification;
+package ch.bfh.univoteverifier.implementer;
 
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.verification.VerificationEnum;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.math.BigInteger;
 
 /**
  *
  * @author snake
  */
-public class ParametersVerification {
+public class ParametersImplementer {
 
 	private final ElectionBoardProxy ebp;
 
-	public ParametersVerification(ElectionBoardProxy ebp){
+	public ParametersImplementer(ElectionBoardProxy ebp){
 		this.ebp = ebp;	
 	}
 
