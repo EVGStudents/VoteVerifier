@@ -66,6 +66,10 @@ public class MainController {
 	}
 	
 	
+        public void testMsgSystem(){
+            msgr.sendErrorMsg("Test to make sure obsever pattern is up and running");
+        }
+        
 	public String decodeQRCode(File filepath){
 		QRCode qr = new QRCode();
 		//            String decodedStr = qr.decode(filepath);

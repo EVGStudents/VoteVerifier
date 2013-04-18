@@ -483,8 +483,9 @@ public class MainGUI {
                 descDefault = descInd;
                 btnUni.depress();
                 btnInd.press();
-                statusText.setText("Individual Verification");
-                statusText.setFont(new Font("Serif", Font.PLAIN, 32));
+//                statusText.setText("Individual Verification");
+//                statusText.setFont(new Font("Serif", Font.PLAIN, 32));
+                mc.testMsgSystem();
             }
 
             @Override
@@ -678,6 +679,11 @@ public class MainGUI {
                 case VRF_STATUS:
                     statusText.append("\n" + se.message);
                     statusText.setCaretPosition(statusText.getText().length());
+                    break;
+                case ERROR:
+                    statusText.append("\n" + se.message);
+                    statusText.setCaretPosition(statusText.getText().length());
+
                     break;
 
             }
