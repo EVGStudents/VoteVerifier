@@ -62,7 +62,7 @@ public class MainController {
 	 * @return
 	 */
 	public StatusSubject getStatusSubject() {
-		return v.getStatusSubject();
+		return msgr.getStatusSubject();
 	}
 	
 	

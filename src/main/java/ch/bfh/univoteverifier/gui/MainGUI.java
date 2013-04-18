@@ -120,7 +120,10 @@ public class MainGUI {
     }
 
     /**
-     *creates the main components of the main window.  The main window is divided into three parts: northPanel, and in the middle hte verification panel (vrfPanel) and at the bottom the statusPanel
+     * creates the main components of the main window. The main window is
+     * divided into three parts: northPanel, and in the middle hte verification
+     * panel (vrfPanel) and at the bottom the statusPanel
+     *
      * @return a JPanel which will be set as the main content panel of the frame
      */
     public JPanel createUI() {
@@ -134,7 +137,9 @@ public class MainGUI {
 
     /**
      * create the components necessary to display the northPanel
-     * @return a JPanel which contains other components to be shown in the main window
+     *
+     * @return a JPanel which contains other components to be shown in the main
+     * window
      */
     public JPanel getNorthPanel() {
         northPanel = new JPanel();
@@ -197,7 +202,8 @@ public class MainGUI {
     }
 
     /**
-     * creates the comboBox that allows new election IDs to be inputed as well as the selection of previously used election IDs
+     * creates the comboBox that allows new election IDs to be inputed as well
+     * as the selection of previously used election IDs
      */
     public void createComboBox() {
         comboBox = new JComboBox(eIDlist);
@@ -208,8 +214,12 @@ public class MainGUI {
     }
 
     /**
-     * creates the JPanel which is displayed in the middle of the GUI and contains either input options for the user or displays the results of the verification process.
-     * @return a JPanel which is one of the three main container/structure panels
+     * creates the JPanel which is displayed in the middle of the GUI and
+     * contains either input options for the user or displays the results of the
+     * verification process.
+     *
+     * @return a JPanel which is one of the three main container/structure
+     * panels
      */
     public JPanel getVrfPanel() {
         JPanel panel = new JPanel();
@@ -217,7 +227,7 @@ public class MainGUI {
         panel.setBackground(Color.WHITE);
         panel.setPreferredSize(new Dimension(696, 450));
         panel.setBorder(new EmptyBorder(10, 30, 10, 30)); //top left bottom right
-        
+
         innerPanel = new JPanel();
         innerPanelInitialize();
 
@@ -239,11 +249,16 @@ public class MainGUI {
     }
 
     /**
-     * removes content of the inner panel and prepares the panel to display verification results.
-     * Meaning it creates the 5 smaller panels where results are shown according to their types
+     * removes content of the inner panel and prepares the panel to display
+     * verification results. Meaning it creates the 5 smaller panels where
+     * results are shown according to their types
      */
     public void innerPanelBeginVrf() {
-        innerPanelInitialize();
+
+        innerPanel.removeAll();
+        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
+        innerPanel.setBackground(grey);
+        innerPanel.setPreferredSize(new Dimension(500, 300));
 
         sysSetupPanel = new VrfPanel("System Setup");
         electSetupPanel = new VrfPanel("Election Setup");
@@ -261,8 +276,11 @@ public class MainGUI {
     }
 
     /**
-     * creates that status panel which is shown at the bottom of hte GUI and contains a console-like message area
-     * @return a JPanel which is one of the three main container/structure panels
+     * creates that status panel which is shown at the bottom of hte GUI and
+     * contains a console-like message area
+     *
+     * @return a JPanel which is one of the three main container/structure
+     * panels
      */
     public JPanel getStatusPanel() {
         JPanel panel = new JPanel();
@@ -282,7 +300,9 @@ public class MainGUI {
     }
 
     /**
-     * create the textBox that is used as the console-like message area at the bottom of the GUI
+     * create the textBox that is used as the console-like message area at the
+     * bottom of the GUI
+     *
      * @return a JTextArea with scroll bar, non editable
      */
     public JTextArea getStatusTextBox() {
@@ -297,9 +317,9 @@ public class MainGUI {
         return statusText;
     }
 
-    
     /**
-     * A JPanel that is used to show the verification results in the verification panel.
+     * A JPanel that is used to show the verification results in the
+     * verification panel.
      */
     public class VrfPanel extends JPanel {
 
@@ -314,9 +334,9 @@ public class MainGUI {
             generatePanel();
         }
 
-          /**
-     * creates and structures the panel
-     */
+        /**
+         * creates and structures the panel
+         */
         public void generatePanel() {
             this.setPreferredSize(new Dimension(600, 100));
             this.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -337,16 +357,17 @@ public class MainGUI {
             this.add(contentPanel);
         }
 
-          /**
-     * returns the panel responsible for showing the verification results
-     */
+        /**
+         * returns the panel responsible for showing the verification results
+         */
         public JPanel getContentPanel() {
             return this.contentPanel;
         }
 
-          /**
-     * for visualization purposes before real content is available to be shown, this method will create content
-     */
+        /**
+         * for visualization purposes before real content is available to be
+         * shown, this method will create content
+         */
         public JPanel createDummyResultPanel() {
             JPanel panel = getBoxPanel();
             panel.setBorder(new EmptyBorder(2, 20, 2, 10));
@@ -356,18 +377,20 @@ public class MainGUI {
             return panel;
         }
 
-                 /**
-     *  When real content arrives in the form of a message to the GUI, this method will process it and create the visualization of the verification results
-     */
+        /**
+         * When real content arrives in the form of a message to the GUI, this
+         * method will process it and create the visualization of the
+         * verification results
+         */
         public void addResultPanel(String s, Boolean b) {
             JLabel vrfResults = new JLabel(s + "........................................... " + b);
             vrfResults.setFont(new Font("Serif", Font.PLAIN, 12));
             contentPanel.add(vrfResults);
         }
 
-                 /**
-     * generate a uniform panel for this class
-     */
+        /**
+         * generate a uniform panel for this class
+         */
         public JPanel getBoxPanel() {
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -376,7 +399,9 @@ public class MainGUI {
     }
 
     /**
-     * create the button that shows the information and buttons needed to start universal verification
+     * create the button that shows the information and buttons needed to start
+     * universal verification
+     *
      * @return
      */
     public JButton createUniVrfButton() {
@@ -424,9 +449,11 @@ public class MainGUI {
         return btnUni;
     }
 
-        /**
-     * create the button that shows the information and buttons needed to start individual verification
-     * @return JButton with a grey background and focusedPaint 
+    /**
+     * create the button that shows the information and buttons needed to start
+     * individual verification
+     *
+     * @return JButton with a grey background and focusedPaint
      */
     public JButton createIndVrfButton() {
 
@@ -473,9 +500,9 @@ public class MainGUI {
 
         return btnInd;
     }
-    
-    public void createFileSelectButton(){
-    btnFileSelector = new JButton("select file");
+
+    public void createFileSelectButton() {
+        btnFileSelector = new JButton("select file");
         btnFileSelector.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -624,19 +651,29 @@ public class MainGUI {
 
             switch (se.getStatusMessage()) {
                 case VRF_RESULT:
-                    ArrayList<VerificationResult> results = (ArrayList<VerificationResult>) se.getVerificationResult();
-                    for (VerificationResult e : results) {
+//                    ArrayList<VerificationResult> results = (ArrayList<VerificationResult>) se.getVerificationResult();
+//                    for (VerificationResult e : results) {
+//
+//                        //Add to console
+//                        Boolean result = e.getResult();
+//                        int code = e.getVerification().getID();
+//                        String vrfType = getTextFromVrfCode(code);
+//                        statusText.append("\n" + vrfType + " ............. " + result);
+//
+//                        //add to GUI verification area
+//                        sysSetupPanel.addResultPanel(vrfType, result);
+//
+//                    }
+                    VerificationResult e = se.getVerificationResult();
+                    Boolean result = e.getResult();
+                    int code = e.getVerification().getID();
+                    String vrfType = getTextFromVrfCode(code);
+                    statusText.append("\n" + vrfType + " ............. " + result);
 
-                        //Add to console
-                        Boolean result = e.getResult();
-                        int code = e.getVerification().getID();
-                        String vrfType = getTextFromVrfCode(code);
-                        statusText.append("\n" + vrfType + " ............. " + result);
+                    //add to GUI verification area
+                    sysSetupPanel.addResultPanel(vrfType, result);
 
-                        //add to GUI verification area
-                        sysSetupPanel.addResultPanel(vrfType, result);
 
-                    }
                     break;
                 case VRF_STATUS:
                     statusText.append("\n" + se.message);

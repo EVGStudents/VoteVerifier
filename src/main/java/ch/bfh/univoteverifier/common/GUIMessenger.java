@@ -8,6 +8,7 @@ import ch.bfh.univoteverifier.gui.StatusEvent;
 import ch.bfh.univoteverifier.gui.StatusListener;
 import ch.bfh.univoteverifier.gui.StatusMessage;
 import ch.bfh.univoteverifier.gui.StatusSubject;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -27,6 +28,12 @@ public class GUIMessenger {
     
     public void sendErrorMsg(String str){
         StatusEvent se = new StatusEvent(StatusMessage.ERROR, str);
+        ss.notifyListeners(se);
+    }
+    
+    
+   public void sendVrfMsg(VerificationResult vr){
+        StatusEvent se = new StatusEvent(StatusMessage.VRF_RESULT, vr);
         ss.notifyListeners(se);
     }
     
