@@ -14,12 +14,6 @@ public class Config {
 	 */
 	public static final String CONFIG = "src/main/java/ch/bfh/univoteverifier/resources/config.properties";
 	
-	/**
-	 * Tells whether we are working in debug mode
-	 */
-	public static final boolean DEBUG_MODE = true;
-	
-	
 	private static final Properties prop = new Properties();
 	
 	static {
@@ -37,9 +31,4 @@ public class Config {
 	public static final BigInteger q= new BigInteger(prop.getProperty("schnorr_q"));
 	public static final BigInteger g= new BigInteger(prop.getProperty("schnorr_g"));
 	public static final String hashAlgorithm= prop.getProperty("hash_function");
-	public static final int pLength= Integer.parseInt(prop.getProperty("p_length"));
-	public static final int qLength= Integer.parseInt(prop.getProperty("q_length"));
-	public static final int gLength= Integer.parseInt(prop.getProperty("g_length"));
-	
-	
 }
