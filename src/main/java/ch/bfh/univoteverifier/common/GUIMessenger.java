@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 public class GUIMessenger {
     
     ResourceBundle rb;
-    StatusSubject ss;
+    static StatusSubject ss;
     public GUIMessenger(){
         ss = new ConcreteSubject();
         instantiateRB("en");
