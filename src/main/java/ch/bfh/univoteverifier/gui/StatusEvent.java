@@ -16,7 +16,7 @@ public class StatusEvent {
     
     String message;
     StatusMessage statusMessage;
-    List vr;
+    VerificationResult vr;
     
     public StatusEvent(StatusMessage sm, String message ){
       this.message = message;
@@ -29,10 +29,11 @@ public class StatusEvent {
 //        this.l = l;     
 //    }
     
-   public StatusEvent(StatusMessage sm, List vr){
+   public StatusEvent(StatusMessage sm, VerificationResult vr){
         this.statusMessage = sm;
         this.vr = vr;     
     }
+   
         
     
     public StatusMessage getStatusMessage(){
@@ -42,7 +43,7 @@ public class StatusEvent {
     return message;
     }
 
-    public List getVerificationResult() {
+    public VerificationResult getVerificationResult() {
         return vr;
     }
     
