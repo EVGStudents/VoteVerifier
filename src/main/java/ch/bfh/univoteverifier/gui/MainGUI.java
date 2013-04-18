@@ -102,6 +102,7 @@ public class MainGUI {
 
         mc = new MainController();
         sl = new StatusUpdate();
+        mc.getStatusSubject().addListener(sl);
 
         grey = new Color(190, 190, 190);
         darkGrey = new Color(140, 140, 140);
@@ -568,7 +569,6 @@ public class MainGUI {
 
                 String msg = "Beginning verification for ";
                 statusText.setFont(new Font("Monospaced", Font.PLAIN, 16));
-                mc.getStatusSubject().addListener(sl);
                 if (uniVrfSelected) {
                     String eID = (String) comboBox.getSelectedItem();
                     msg = msg + "the election id " + eID;
