@@ -19,7 +19,7 @@ public abstract class Runner {
 
 	protected List<VerificationResult> partialResults;
 	protected ElectionBoardProxy ebp;
-	private String runnerName;
+	private final String runnerName;
 
 	public Runner(ElectionBoardProxy ebp, String runnerName){
 		this.ebp = ebp;
