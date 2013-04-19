@@ -23,7 +23,7 @@ public class MainController {
 
 
 	public MainController(){
-		
+		this.msgr = new GUIMessenger();
 		//initialize the root logger - maybe this should be placed into the main method
 		Handler h;
 		
@@ -44,7 +44,7 @@ public class MainController {
 	 */
 	public void universalVerification(String eID){
 		this.v = new UniversalVerification(eID);
-		this.msgr = new GUIMessenger();
+		
 		v.runVerification();
 	}
 	
@@ -54,6 +54,7 @@ public class MainController {
 	 * @param eID
 	 */
 	public void individualVerification(String eID){
+            
 		this.v = new IndividualVerification(eID);
 	}
 	
@@ -66,6 +67,11 @@ public class MainController {
 	}
 	
 	
+        public void testMsgSystem(){
+            this.msgr = new GUIMessenger();
+            msgr.sendErrorMsg("Test to make sure obsever pattern is up and running");
+        }
+        
 	public String decodeQRCode(File filepath){
 		QRCode qr = new QRCode();
 		//            String decodedStr = qr.decode(filepath);
