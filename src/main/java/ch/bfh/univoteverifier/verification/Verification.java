@@ -9,6 +9,7 @@ import ch.bfh.univoteverifier.gui.StatusListener;
 import ch.bfh.univoteverifier.gui.StatusSubject;
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.GUIMessenger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,11 +17,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This abstract class represent a verification 
  * @author prinstin
  */
 public abstract class Verification {
-	
 	
 	private static final Logger LOGGER = Logger.getLogger(Verification.class.getName());
 	private final StatusSubject ss;
@@ -28,6 +28,7 @@ public abstract class Verification {
 	protected final List<Runner> runners;
 	protected final ElectionBoardProxy ebproxy;
 	protected VerificationEnum displayType = VerificationEnum.ORDER_BY_SPEC;
+	protected GUIMessenger gm;
 
 	//used to store the results of a verification
 	protected List<VerificationResult> res;
@@ -36,12 +37,13 @@ public abstract class Verification {
 	 * Construct a new abstract verification with a given election ID
 	 * @param eID the ID of an election
 	 */
-	public Verification(String eID) {
+	public Verification(String eID, GUIMessenger gm) {
 		this.eID = eID;
 		this.ebproxy = new ElectionBoardProxy(eID);
 		ss = new ConcreteSubject();
 		runners = new ArrayList<>();
 		res = new ArrayList<>();
+		this.gm = gm;
 
 		//ToDo check if is correct
 		LOGGER.setUseParentHandlers(true);
@@ -53,7 +55,8 @@ public abstract class Verification {
 	 */
 	public void setViewType(VerificationEnum t){
 		if(t != VerificationEnum.ORDER_BY_ENTITES || t != VerificationEnum.ORDER_BY_SPEC){
-			LOGGER.log(Level.WARNING, "View type not specified, falling back to specification view");
+			LOGGER.log(Level.INFO, "View type not specified, falling back to specification view");
+			
 			displayType = VerificationEnum.ORDER_BY_SPEC;
 		}
 		else

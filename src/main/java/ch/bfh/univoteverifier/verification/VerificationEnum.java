@@ -19,9 +19,6 @@ public enum VerificationEnum {
 	SETUP_CA_CERT(160), 
 	SETUP_SIGN_PARAM_SIGN(170);
 
-
-	
-	
 	//the ID of the verification
 	private final int code;
 	

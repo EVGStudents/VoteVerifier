@@ -1,7 +1,7 @@
 package primitives;
 
+import ch.bfh.univoteverifier.implementer.ProofImplementer;
 import ch.bfh.univoteverifier.utils.ProofDiscreteLog;
-import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
 import java.security.NoSuchAlgorithmException;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class NIZKPTest {
 
-	PrimitivesVerifier prfVrf = new PrimitivesVerifier();
+	ProofImplementer prfVrf = new ProofImplementer();
 	
 
 	/**

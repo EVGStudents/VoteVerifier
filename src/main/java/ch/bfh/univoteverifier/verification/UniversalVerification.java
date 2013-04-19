@@ -4,6 +4,7 @@
  */
 package ch.bfh.univoteverifier.verification;
 
+import ch.bfh.univoteverifier.common.GUIMessenger;
 import ch.bfh.univoteverifier.runner.ElectionPeriodRunner;
 import ch.bfh.univoteverifier.runner.ElectionPreparationRunner;
 import ch.bfh.univoteverifier.runner.ElectionSetupRunner;
@@ -16,8 +17,14 @@ import ch.bfh.univoteverifier.runner.SystemSetupRunner;
  */
 public class UniversalVerification extends Verification{
 
-	public UniversalVerification(String eID) {
-		super(eID);
+
+	/**
+	 * Construct a universal verification with an election id
+	 * @param eID the ID of the election
+	 * @param gm the entity used to exchange messages with the GUI
+	 */	
+	public UniversalVerification(String eID, GUIMessenger gm) {
+		super(eID,gm);
 
 		//initialize the runners based on the order 
 		if(VerificationEnum.ORDER_BY_ENTITES == displayType){
@@ -29,7 +36,7 @@ public class UniversalVerification extends Verification{
 	}
 
 	private void createRunnerBySpec() {
-		SystemSetupRunner ssr = new SystemSetupRunner(ebproxy, "system setup runner");
+		SystemSetupRunner ssr = new SystemSetupRunner(ebproxy, "system setup runner",gm);
 		ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy, "election setup runner");
 		ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy, "election preparation runner");
 		ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy, "elecrion period runner");

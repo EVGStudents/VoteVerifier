@@ -1,6 +1,7 @@
 package primitives;
 
-import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.implementer.SchnorrImplementer;
 import ch.bfh.univoteverifier.utils.SchnorrGenerator;
 import ch.bfh.univoteverifier.utils.SchnorrSignature;
 import static org.junit.Assert.*;
@@ -9,15 +10,19 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 
 
-import org.junit.Test;
 
 
 public class SchnorrTest {
 
-	SchnorrGenerator sg = new SchnorrGenerator();
-	PrimitivesVerifier sv = new PrimitivesVerifier();
+	SchnorrGenerator sg;
+	SchnorrImplementer sv;
+
+	public SchnorrTest() {
+		this.sg = new SchnorrGenerator();
+		this.sv = new SchnorrImplementer(new ElectionBoardProxy("sub-2013"));
+	}
 	
-	@Test
+	//@Test
 	public void singleSignatureVerification() throws NoSuchAlgorithmException {
 		//BFH encoded as 66 | 70 | 72
 		String bfh = "667072";
@@ -30,7 +35,7 @@ public class SchnorrTest {
 		assertTrue(sv.vrfSchnorrSign(ss, message, SchnorrGenerator.publicKey));
 	}
 	
-	@Test
+	//@Test
 	public void multipleSignatureVerification() throws NoSuchAlgorithmException{
 		int numberOfVerifications = 1000;
 		
@@ -46,7 +51,7 @@ public class SchnorrTest {
 		
 	}
 	
-	@Test
+	//@Test
 	public void incorrectSignature() throws NoSuchAlgorithmException{
 		//BFH encoded as 66 | 70 | 72
 		String bfh = "667072";

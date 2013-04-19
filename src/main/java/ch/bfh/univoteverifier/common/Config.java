@@ -7,6 +7,10 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * This class contains all the variables for the configuration
+ * @author snake
+ */
 public class Config {
 
 	/**
@@ -31,4 +35,10 @@ public class Config {
 	public static final BigInteger q= new BigInteger(prop.getProperty("schnorr_q"));
 	public static final BigInteger g= new BigInteger(prop.getProperty("schnorr_g"));
 	public static final String hashAlgorithm= prop.getProperty("hash_function");
+	
+	/**
+	 * URL of the WSDL
+	 */
+	public static final String wsdlLocation = prop.getProperty("wsdl_url");
+	
 }

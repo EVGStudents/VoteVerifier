@@ -5,11 +5,11 @@
 package ch.bfh.univoteverifier.verification;
 
 /**
- *
+ * This enumeration specify the name of the sections 
+ * for the verification results
  * @author snake
  */
 public enum SectionNameEnum {
-
 	SYSTEM_SETUP,
 	ELECTION_SETUP,
 	ELECTION_PREPARATION,

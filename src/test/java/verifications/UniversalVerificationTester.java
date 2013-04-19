@@ -4,6 +4,7 @@
  */
 package verifications;
 
+import ch.bfh.univoteverifier.common.GUIMessenger;
 import ch.bfh.univoteverifier.verification.SectionNameEnum;
 import ch.bfh.univoteverifier.verification.UniversalVerification;
 import ch.bfh.univoteverifier.verification.Verification;
@@ -25,12 +26,13 @@ public class UniversalVerificationTester {
 	List<VerificationResult> mockList;
 	List<VerificationResult> realList;
 	String eID = "sub-2013";
+	GUIMessenger gm;
 	
 	public UniversalVerificationTester() {
-		v = new UniversalVerification(eID);
+		gm = new GUIMessenger();
+		v = new UniversalVerification(eID,gm);
 		realList = v.runVerification();
 		
-	
 		mockList = new ArrayList<>();
 		mockList.add(new VerificationResult(VerificationEnum.SETUP_P_IS_PRIME, true));
 		mockList.add(new VerificationResult(VerificationEnum.SETUP_Q_IS_PRIME, true));
