@@ -43,7 +43,7 @@ public class MainController {
 	 * @param eID String the ID of a election
 	 */
 	public void universalVerification(String eID){
-		this.v = new UniversalVerification(eID);
+		this.v = new UniversalVerification(eID,msgr);
 		
 		v.runVerification();
 	}
@@ -55,7 +55,7 @@ public class MainController {
 	 */
 	public void individualVerification(String eID){
             
-		this.v = new IndividualVerification(eID);
+		this.v = new IndividualVerification(eID,msgr);
 	}
 	
 	/**
