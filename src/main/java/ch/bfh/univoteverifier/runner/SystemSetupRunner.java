@@ -6,7 +6,6 @@ import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.GUIMessenger;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -15,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class SystemSetupRunner extends Runner{
 	
-	private static final Logger logger = Logger.getLogger(SystemSetupRunner.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(SystemSetupRunner.class.getName());
 	private final ParametersImplementer prmVrf;
 	private final GUIMessenger gm;
 	
@@ -46,22 +45,12 @@ public class SystemSetupRunner extends Runner{
 		gm.sendVrfMsg(v5);
 
 		//cache the results	
-//		partialResults.add(v1);
-//		partialResults.add(v2);
-//		partialResults.add(v3);
-//		partialResults.add(v4);
-//		partialResults.add(v5);
+		partialResults.add(v1);
+		partialResults.add(v2);
+		partialResults.add(v3);
+		partialResults.add(v4);
+		partialResults.add(v5);
 		
-		//set the section name and notify the observer
-		//maybe pay attention: if something goes wrong before we don't have the section
-		//name
-//		for(VerificationResult vr : partialResults){
-//			vr.setSectionName(SectionNameEnum.SYSTEM_SETUP);
-//			
-//			//notify observer
-//			gm.sendVrfMsg(vr);
-//		}
-//		
 		return Collections.unmodifiableList(partialResults);
 	}
 }
