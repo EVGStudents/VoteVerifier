@@ -22,7 +22,7 @@ public enum SectionNameEnum {
 	MIXER("Mixer"),
 	TALLIER("Tallier");
 
-	private String name;
+	private final String name;
 	
 	private SectionNameEnum(String name){
 		this.name = name;	

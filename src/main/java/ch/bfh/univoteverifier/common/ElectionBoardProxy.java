@@ -74,13 +74,6 @@ public class ElectionBoardProxy {
 	private DecryptedVotes decryptedVotes;
 	private DecodedVotes decodedVotes;
 
-	//ToDo probably these variables should be removed
-	private RSAPublicKey CAPubKey;
-	private RSAPublicKey EMPubKey;
-	private RSAPublicKey EAPubKey;
-	private Map<String, RSAPublicKey> talliersPubKeys;
-	private Map<String, RSAPublicKey> mixersPubKeys;	
-	
 	private ElectionBoard eb;
 	
 	/**

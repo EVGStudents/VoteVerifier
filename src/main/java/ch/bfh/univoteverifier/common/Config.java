@@ -3,6 +3,8 @@ package ch.bfh.univoteverifier.common;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.interfaces.RSAPublicKey;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,5 +42,17 @@ public class Config {
 	 * URL of the WSDL
 	 */
 	public static final String wsdlLocation = prop.getProperty("wsdl_url");
+
+	/**
+	 * These values are initialized when we run a verification 
+	 * so that they are available through the whole system
+	 */
+	public static RSAPublicKey ca;
+	public static RSAPublicKey ea;
+	public static RSAPublicKey em;
+	public static Map<String, RSAPublicKey> talliersPubKeys;
+	public static Map<String, RSAPublicKey> mixersPubKeys;
+	public static int tallierCount;
+	public static int mixerCount;
 	
 }

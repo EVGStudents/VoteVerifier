@@ -17,7 +17,10 @@ public enum VerificationEnum {
 	SETUP_P_IS_SAFE_PRIME(140),
 	SETUP_EM_CERT(150),
 	SETUP_CA_CERT(160), 
-	SETUP_SIGN_PARAM_SIGN(170);
+	SETUP_SIGN_PARAM_SIGN(170),
+	
+	EL_SETUP_EA_CERT(200),
+	EL_SETUP_EA_CERT_SIGN(210);
 
 	//the ID of the verification
 	private final int code;
