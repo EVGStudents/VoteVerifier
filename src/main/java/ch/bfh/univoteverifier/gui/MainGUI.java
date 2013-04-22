@@ -641,7 +641,7 @@ public class MainGUI {
         @Override
         public void updateStatus(StatusEvent se) {
 
-            Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "status event received.  Type:{0}", se.getStatusMessage());
+            Logger.getLogger(MainGUI.class.getName()).log(Level.INFO, "status event received.  Type:{0}", se.getStatusMessage());
             switch (se.getStatusMessage()) {
                 case VRF_RESULT:
 //                    ArrayList<VerificationResult> results = (ArrayList<VerificationResult>) se.getVerificationResult();
@@ -661,8 +661,9 @@ public class MainGUI {
                     Boolean result = e.getResult();
                     int code = e.getVerification().getID();
                     String vrfType = getTextFromVrfCode(code);
-                    statusText.append("\n" + vrfType + " ............. " + result);
-
+                    String outputText = "\n" + vrfType + " ............. " + result;
+                    statusText.append(outputText);
+                    Logger.getLogger(MainGUI.class.getName()).log(Level.INFO, "Console output created.  Type:{0}", outputText);
                     //add to GUI verification area
                     sysSetupPanel.addResultPanel(vrfType, result);
 
