@@ -6,6 +6,7 @@ import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.GUIMessenger;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -30,28 +31,37 @@ public class SystemSetupRunner extends Runner{
 	public List<VerificationResult> run() {
 		//perform the checks we want - pay attention to exceptions!
 		VerificationResult v1 = prmVrf.vrfPrimeP();
+		gm.sendVrfMsg(v1);
+		
 		VerificationResult v2 = prmVrf.vrfPrimeQ();
+		gm.sendVrfMsg(v2);
+
 		VerificationResult v3 = prmVrf.vrfGenerator();
+		gm.sendVrfMsg(v3);
+
 		VerificationResult v4 = prmVrf.vrfSafePrime();
+		gm.sendVrfMsg(v4);
+
 		VerificationResult v5 = prmVrf.vrfParamLen();
+		gm.sendVrfMsg(v5);
 
 		//cache the results	
-		partialResults.add(v1);
-		partialResults.add(v2);
-		partialResults.add(v3);
-		partialResults.add(v4);
-		partialResults.add(v5);
+//		partialResults.add(v1);
+//		partialResults.add(v2);
+//		partialResults.add(v3);
+//		partialResults.add(v4);
+//		partialResults.add(v5);
 		
 		//set the section name and notify the observer
 		//maybe pay attention: if something goes wrong before we don't have the section
 		//name
-		for(VerificationResult vr : partialResults){
-			vr.setSectionName(SectionNameEnum.SYSTEM_SETUP);
-			
-			//notify observer
-			gm.sendVrfMsg(vr);
-		}
-		
+//		for(VerificationResult vr : partialResults){
+//			vr.setSectionName(SectionNameEnum.SYSTEM_SETUP);
+//			
+//			//notify observer
+//			gm.sendVrfMsg(vr);
+//		}
+//		
 		return Collections.unmodifiableList(partialResults);
 	}
 }

@@ -353,6 +353,7 @@ public class MainGUI {
 
 
             contentPanel = getBoxPanel();
+	    
 //            contentPanel.add(createDummyResultPanel());
 //            contentPanel.add(createDummyResultPanel());
 
@@ -371,13 +372,13 @@ public class MainGUI {
          * add content to the results panel 
          * called if message received over observer pattern
          */
-        public JPanel addResultPanel(String str, boolean b) {
+        public void addResultPanel(String str, boolean b) {
             JPanel panel = getBoxPanel();
             panel.setBorder(new EmptyBorder(2, 20, 2, 10));
             JLabel ellipseContent = new JLabel(str + "........................................... "+ b);
             ellipseContent.setFont(new Font("Serif", Font.PLAIN, 12));
             panel.add(ellipseContent);
-            return panel;
+	    contentPanel.add(panel);
         }
 
 
@@ -541,6 +542,17 @@ public class MainGUI {
 
         btnStart = new JButton("START");
         btnStart.setBackground(new Color(110, 110, 254));
+	
+
+btnStart.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent ae) {
+        // Some code checked on some radio buttons
+               Runnable runnable = new ValidateThread();
+               Thread thread = new Thread(runnable);
+               thread.start();
+    }
+
+});
         btnStart.addMouseListener(
                 new MouseListener() {
             @Override
@@ -670,8 +682,7 @@ public class MainGUI {
                     //add to GUI verification area
 		    LOGGER.log(Level.INFO, "console output {0}", outputText);
                     sysSetupPanel.addResultPanel(vrfType, result);
-
-
+		    
                     break;
                 case VRF_STATUS:
                     statusText.append("\n" + se.message);
@@ -698,4 +709,10 @@ public class MainGUI {
 
         return (String) prop.getProperty(String.valueOf(code));
     }
+
+    class ValidateThread implements Runnable {
+    public void run() {
+        statusText.validate();
+    }
+}
 }
