@@ -351,20 +351,10 @@ public class MainGUI {
             titlePanel = getBoxPanel();
             titlePanel.add(label);
 
-
             contentPanel = getBoxPanel();
-//            contentPanel.add(createDummyResultPanel());
-//            contentPanel.add(createDummyResultPanel());
 
             this.add(titlePanel);
             this.add(contentPanel);
-        }
-
-        /**
-         * returns the panel responsible for showing the verification results
-         */
-        public JPanel getContentPanel() {
-            return this.contentPanel;
         }
 
         /**
@@ -372,15 +362,19 @@ public class MainGUI {
          * called if message received over observer pattern
          */
         public JPanel addResultPanel(String str, boolean b) {
-            JPanel panel = getBoxPanel();
+            JPanel panel = new JPanel();
             panel.setBorder(new EmptyBorder(2, 20, 2, 10));
-            JLabel ellipseContent = new JLabel(str + "........................................... "+ b);
+            JLabel ellipseContent = new JLabel(str + "........................................... "+b);
             ellipseContent.setFont(new Font("Serif", Font.PLAIN, 12));
             panel.add(ellipseContent);
+            if (b) {
+                ImageIcon imgCheck = new ImageIcon(MainGUI.class
+                        .getResource("/qrcodeGiu").getPath());
+                JLabel imgCheckLabel = new JLabel(imgCheck);
+                panel.add(imgCheckLabel);
+            }
             return panel;
         }
-
-
 
         /**
          * generate a uniform panel for this class
