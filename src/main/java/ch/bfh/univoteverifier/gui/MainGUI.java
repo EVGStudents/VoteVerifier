@@ -351,8 +351,8 @@ public class MainGUI {
 
 
             contentPanel = getBoxPanel();
-            contentPanel.add(createDummyResultPanel());
-            contentPanel.add(createDummyResultPanel());
+//            contentPanel.add(createDummyResultPanel());
+//            contentPanel.add(createDummyResultPanel());
 
             this.add(titlePanel);
             this.add(contentPanel);
@@ -366,28 +366,19 @@ public class MainGUI {
         }
 
         /**
-         * for visualization purposes before real content is available to be
-         * shown, this method will create content
+         * add content to the results panel 
+         * called if message received over observer pattern
          */
-        public JPanel createDummyResultPanel() {
+        public JPanel addResultPanel(String str, boolean b) {
             JPanel panel = getBoxPanel();
             panel.setBorder(new EmptyBorder(2, 20, 2, 10));
-            JLabel ellipseContent = new JLabel("Some criteria........................................... TRUE");
+            JLabel ellipseContent = new JLabel(str + "........................................... "+ b);
             ellipseContent.setFont(new Font("Serif", Font.PLAIN, 12));
             panel.add(ellipseContent);
             return panel;
         }
 
-        /**
-         * When real content arrives in the form of a message to the GUI, this
-         * method will process it and create the visualization of the
-         * verification results
-         */
-        public void addResultPanel(String s, Boolean b) {
-            JLabel vrfResults = new JLabel(s + "........................................... " + b);
-            vrfResults.setFont(new Font("Serif", Font.PLAIN, 12));
-            contentPanel.add(vrfResults);
-        }
+
 
         /**
          * generate a uniform panel for this class
@@ -649,7 +640,7 @@ public class MainGUI {
         @Override
         public void updateStatus(StatusEvent se) {
 
-
+            Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "status event received.  Type:{0}", se.getStatusMessage());
             switch (se.getStatusMessage()) {
                 case VRF_RESULT:
 //                    ArrayList<VerificationResult> results = (ArrayList<VerificationResult>) se.getVerificationResult();
@@ -681,6 +672,7 @@ public class MainGUI {
                     statusText.setCaretPosition(statusText.getText().length());
                     break;
                 case ERROR:
+                    
                     statusText.append("\n" + se.message);
                     statusText.setCaretPosition(statusText.getText().length());
 

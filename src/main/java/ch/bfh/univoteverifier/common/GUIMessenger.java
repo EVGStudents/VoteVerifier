@@ -12,6 +12,8 @@ import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,8 +22,10 @@ import java.util.ResourceBundle;
 public class GUIMessenger {
     
     ResourceBundle rb;
-    static StatusSubject ss;
+    StatusSubject ss;
+
     public GUIMessenger(){
+        Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "GUIMessenger instantiated");
         ss = new ConcreteSubject();
         instantiateRB("en");
     }
@@ -73,6 +77,7 @@ public class GUIMessenger {
 		
 		@Override
 		public void addListener(StatusListener sl) {
+                    Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "listener registered {0}",sl.getClass().getEnclosingClass());
 			listeners.add(sl);
 		}
 		
@@ -81,12 +86,14 @@ public class GUIMessenger {
 			listeners.remove(sl);
 		}
 		
-		@Override
-		public void notifyListeners(StatusEvent se) {
-			
-			for (StatusListener pl : listeners) {
-				pl.updateStatus(se);
-			}
-		}
-	}
+        @Override
+        public void notifyListeners(StatusEvent se) {
+            Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "notifyListeners called");
+            
+            for (StatusListener pl : listeners) {
+                Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "listener notified: {0}", pl.getClass().getEnclosingClass());
+                pl.updateStatus(se);
+            }
+        }
+    }
 }

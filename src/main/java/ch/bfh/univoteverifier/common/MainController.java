@@ -68,7 +68,7 @@ public class MainController {
 	
 	
         public void testMsgSystem(){
-            this.msgr = new GUIMessenger();
+          
             msgr.sendErrorMsg("Test to make sure obsever pattern is up and running");
         }
         
