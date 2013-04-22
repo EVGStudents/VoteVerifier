@@ -8,6 +8,7 @@ import ch.bfh.univoteverifier.gui.StatusEvent;
 import ch.bfh.univoteverifier.gui.StatusListener;
 import ch.bfh.univoteverifier.gui.StatusMessage;
 import ch.bfh.univoteverifier.gui.StatusSubject;
+import ch.bfh.univoteverifier.verification.SectionNameEnum;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -23,6 +24,7 @@ public class GUIMessenger {
     
     ResourceBundle rb;
     StatusSubject ss;
+    SectionNameEnum activeSection = SectionNameEnum.UNSET;
 
     public GUIMessenger(){
         Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "GUIMessenger instantiated");
@@ -37,6 +39,7 @@ public class GUIMessenger {
     
     
    public void sendVrfMsg(VerificationResult vr){
+       vr.setSection(activeSection);
         StatusEvent se = new StatusEvent(StatusMessage.VRF_RESULT, vr);
         ss.notifyListeners(se);
     }
@@ -50,6 +53,11 @@ public class GUIMessenger {
        Locale loc = new Locale(str);
         rb = ResourceBundle.getBundle("error", loc);
     }
+    
+    public void changeSection(SectionNameEnum s){
+        this.activeSection=s;
+    }
+    
     
     public String getMessageForKey(String key){
         String resultStr = rb.getString(key);

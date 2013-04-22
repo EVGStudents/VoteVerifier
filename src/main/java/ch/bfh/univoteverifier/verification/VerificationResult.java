@@ -14,7 +14,16 @@ public class VerificationResult {
 	private final VerificationEnum v;
 	private final boolean result;
 	private final boolean impl;
-	
+	private SectionNameEnum section;
+
+    public SectionNameEnum getSection() {
+        return section;
+    }
+
+    public void setSection(SectionNameEnum section) {
+        this.section = section;
+    }
+        
 	/**
 	 * Create a new verification results
 	 * @param v Verification The type of verification
