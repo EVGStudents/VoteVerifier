@@ -19,11 +19,9 @@ import java.util.logging.Logger;
 public class MainController {
 	
 	private Verification v;
-        private GUIMessenger msgr;
 
 
 	public MainController(){
-		this.msgr = new GUIMessenger();
 		//initialize the root logger - maybe this should be placed into the main method
 		Handler h;
 		
@@ -43,8 +41,10 @@ public class MainController {
 	 * @param eID String the ID of a election
 	 */
 	public void universalVerification(String eID){
-		this.v = new UniversalVerification(eID,msgr);
-		
+		this.v = new UniversalVerification(eID);
+	}
+
+	public void runVerifcation(){
 		v.runVerification();
 	}
 	
@@ -54,8 +54,7 @@ public class MainController {
 	 * @param eID
 	 */
 	public void individualVerification(String eID){
-            
-		this.v = new IndividualVerification(eID,msgr);
+		this.v = new IndividualVerification(eID);
 	}
 	
 	/**
@@ -63,15 +62,11 @@ public class MainController {
 	 * @return
 	 */
 	public StatusSubject getStatusSubject() {
-		return msgr.getStatusSubject();
+		return v.getStatusSubject();
+		
 	}
 	
 	
-        public void testMsgSystem(){
-          
-            msgr.sendErrorMsg("Test to make sure obsever pattern is up and running");
-        }
-        
 	public String decodeQRCode(File filepath){
 		QRCode qr = new QRCode();
 		//            String decodedStr = qr.decode(filepath);

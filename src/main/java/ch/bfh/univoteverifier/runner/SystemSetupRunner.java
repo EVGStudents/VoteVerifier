@@ -23,7 +23,7 @@ public class SystemSetupRunner extends Runner{
 		
 		//create the verification classes we want
 		prmVrf = new ParametersImplementer(ebp);
-		this.gm = new GUIMessenger();
+		this.gm = gm;
 	}
 	
 	@Override

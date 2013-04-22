@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 public abstract class Verification {
 	
 	private static final Logger LOGGER = Logger.getLogger(Verification.class.getName());
-	private final StatusSubject ss;
 	private final String eID;
 	protected final List<Runner> runners;
 	protected final ElectionBoardProxy ebproxy;
@@ -37,14 +36,13 @@ public abstract class Verification {
 	 * Construct a new abstract verification with a given election ID
 	 * @param eID the ID of an election
 	 */
-	public Verification(String eID, GUIMessenger gm) {
+	public Verification(String eID) {
 		this.eID = eID;
 		this.ebproxy = new ElectionBoardProxy(eID);
-		ss = new ConcreteSubject();
 		runners = new ArrayList<>();
 		res = new ArrayList<>();
-		this.gm = gm;
-
+		this.gm = new GUIMessenger();
+			
 		//ToDo check if is correct
 		LOGGER.setUseParentHandlers(true);
 	}
@@ -68,7 +66,7 @@ public abstract class Verification {
 	 * @return
 	 */
 	public StatusSubject getStatusSubject() {
-		return this.ss;
+		return this.gm.getStatusSubject();
 	}
 	
 	/**

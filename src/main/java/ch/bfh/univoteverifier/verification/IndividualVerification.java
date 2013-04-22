@@ -4,7 +4,6 @@
  */
 package ch.bfh.univoteverifier.verification;
 
-import ch.bfh.univoteverifier.common.GUIMessenger;
 
 /**
  *
@@ -12,8 +11,8 @@ import ch.bfh.univoteverifier.common.GUIMessenger;
  */
 public class IndividualVerification extends Verification{
 
-	public IndividualVerification(String eID, GUIMessenger gm) {
-		super(eID,gm);
+	public IndividualVerification(String eID) {
+		super(eID);
 	}
 
 	private void createRunnerBySpec() {

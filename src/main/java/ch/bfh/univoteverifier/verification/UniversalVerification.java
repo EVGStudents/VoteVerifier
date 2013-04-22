@@ -23,8 +23,8 @@ public class UniversalVerification extends Verification{
 	 * @param eID the ID of the election
 	 * @param gm the entity used to exchange messages with the GUI
 	 */	
-	public UniversalVerification(String eID, GUIMessenger gm) {
-		super(eID,gm);
+	public UniversalVerification(String eID) {
+		super(eID);
 
 		//initialize the runners based on the order 
 		if(VerificationEnum.ORDER_BY_ENTITES == displayType){
