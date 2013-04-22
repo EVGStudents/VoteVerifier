@@ -643,7 +643,7 @@ public class MainGUI {
         @Override
         public void updateStatus(StatusEvent se) {
 
-            Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "status event received.  Type:{0}", se.getStatusMessage());
+            Logger.getLogger(MainGUI.class.getName()).log(Level.INFO, "status event received.  Type:{0}", se.getStatusMessage());
             switch (se.getStatusMessage()) {
                 case VRF_RESULT:
 //                    ArrayList<VerificationResult> results = (ArrayList<VerificationResult>) se.getVerificationResult();
