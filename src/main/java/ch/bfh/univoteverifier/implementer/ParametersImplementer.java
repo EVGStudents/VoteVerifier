@@ -11,12 +11,13 @@ import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.math.BigInteger;
 
 /**
- *
+ * This class is used to check the validity of the parameters
  * @author snake
  */
 public class ParametersImplementer {
 
 	private final ElectionBoardProxy ebp;
+	private final int PRIME_NUMBER_CERTAINITY = 1000;
 
 	public ParametersImplementer(ElectionBoardProxy ebp){
 		this.ebp = ebp;	
@@ -41,7 +42,7 @@ public class ParametersImplementer {
 	 * @return true if p is prime, false otherwise
 	 */
 	public VerificationResult vrfPrimeP(){
-		boolean r = Config.p.isProbablePrime(100);
+		boolean r = Config.p.isProbablePrime(PRIME_NUMBER_CERTAINITY);
 		return new VerificationResult(VerificationEnum.SETUP_P_IS_PRIME, r);
 	}
 		
@@ -50,7 +51,7 @@ public class ParametersImplementer {
 	 * @return true if q is prime, false otherwise
 	 */
 	public VerificationResult vrfPrimeQ(){
-		boolean r = Config.q.isProbablePrime(100);
+		boolean r = Config.q.isProbablePrime(PRIME_NUMBER_CERTAINITY);
 		return new VerificationResult(VerificationEnum.SETUP_Q_IS_PRIME, r);
 	}
 

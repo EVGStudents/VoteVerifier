@@ -73,7 +73,8 @@ public class ElectionBoardProxy {
 	private PartiallyDecryptedVotes parDecVotes;
 	private DecryptedVotes decryptedVotes;
 	private DecodedVotes decodedVotes;
-	
+
+	//ToDo probably these variables should be removed
 	private RSAPublicKey CAPubKey;
 	private RSAPublicKey EMPubKey;
 	private RSAPublicKey EAPubKey;
@@ -90,7 +91,7 @@ public class ElectionBoardProxy {
 		this.eID = eID;
 		
 		try {
-			this.wsdlURL = new URL("http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?wsdl");
+			this.wsdlURL = new URL(Config.wsdlLocation);
 		} catch (MalformedURLException ex) {
 			LOGGER.log(Level.SEVERE, null, ex);
 		}

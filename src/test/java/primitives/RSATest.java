@@ -1,7 +1,8 @@
 package primitives;
 
 
-import ch.bfh.univoteverifier.verification.PrimitivesVerifier;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.implementer.RSAImplementer;
 import ch.bfh.univoteverifier.utils.RSASignature;
 import static org.junit.Assert.*;
 import java.math.BigInteger;
@@ -11,8 +12,12 @@ import org.junit.Test;
 
 public class RSATest {
 
-	PrimitivesVerifier prfVrf = new PrimitivesVerifier();
-
+	RSAImplementer prfVrf;
+	
+	
+	public RSATest(){
+		prfVrf = new RSAImplementer(new ElectionBoardProxy("sub-2013"));
+	}
 
 	/**
 	 * Tests valid signature with large values and large random message

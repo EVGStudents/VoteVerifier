@@ -4,14 +4,16 @@
  */
 package ch.bfh.univoteverifier.verification;
 
+import ch.bfh.univoteverifier.common.GUIMessenger;
+
 /**
  *
  * @author snake
  */
 public class IndividualVerification extends Verification{
 
-	public IndividualVerification(String eID) {
-		super(eID);
+	public IndividualVerification(String eID, GUIMessenger gm) {
+		super(eID,gm);
 	}
 
 	private void createRunnerBySpec() {

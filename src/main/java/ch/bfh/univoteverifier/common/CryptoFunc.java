@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 
 /**
- *
+ * This class contains some functions used by other classes
  * @author snake
  */
 public class CryptoFunc {
