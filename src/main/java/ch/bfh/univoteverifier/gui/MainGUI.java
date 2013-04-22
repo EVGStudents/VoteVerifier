@@ -1,6 +1,7 @@
 package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.common.QRCode;
+
 import ch.bfh.univoteverifier.common.Config;
 import static ch.bfh.univoteverifier.common.Config.CONFIG;
 import ch.bfh.univoteverifier.common.*;
