@@ -25,13 +25,13 @@ public class MainController {
 		//initialize the root logger - maybe this should be placed into the main method
 		Handler h;
 		
-		try {
-			h = new FileHandler("verification.log");
-			Logger.getLogger("").addHandler(h);
-			
-		} catch (	IOException | SecurityException ex) {
-			Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-		}
+//		try {
+//			h = new FileHandler("verification.log");
+//			Logger.getLogger("").addHandler(h);
+//			
+//		} catch (	IOException | SecurityException ex) {
+//			Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+//		}
 		
 	}
 	
