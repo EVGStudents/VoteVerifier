@@ -10,6 +10,7 @@ package ch.bfh.univoteverifier.verification;
  * @author snake
  */
 public enum SectionNameEnum {
+        UNSET,
 	SYSTEM_SETUP,
 	ELECTION_SETUP,
 	ELECTION_PREPARATION,

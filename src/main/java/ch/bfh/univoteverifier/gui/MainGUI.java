@@ -67,7 +67,7 @@ public class MainGUI {
 
     JFrame frame;
     JPanel northPanel, southPanel, masterPanel, vrfDescPanel, dynamicChoicePanel, innerPanel;
-    VrfPanel sysSetupPanel, electSetupPanel, elecPrepPanel, elecPeriodPanel, mixerTallierPanel;
+    VrfPanel sysSetupPanel, electSetupPanel, elecPrepPanel, elecPeriodPanel, mixerTallierPanel, activeVrfPanel;
     JTextArea statusText;
     Color grey, darkGrey;
     MainController mc;
@@ -82,6 +82,7 @@ public class MainGUI {
     String[] eIDlist; //= {"vsbfh-2013", "bbbbbb", "ccccc", "dddddd", "eeeeee"};
     String rawEIDlist;
     Preferences prefs;
+     JScrollPane vrfScrollPanel;
 
     	private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
 
@@ -234,7 +235,7 @@ public class MainGUI {
         innerPanel = new JPanel();
         innerPanelInitialize();
 
-        JScrollPane vrfScrollPanel = new JScrollPane(innerPanel);
+        vrfScrollPanel = new JScrollPane(innerPanel);
         vrfScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         panel.add(vrfScrollPanel);
@@ -248,7 +249,7 @@ public class MainGUI {
         innerPanel.removeAll();
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
         innerPanel.setBackground(grey);
-        innerPanel.setPreferredSize(new Dimension(500, 300));
+//        innerPanel.setPreferredSize(new Dimension(500, 300));
     }
 
     /**
@@ -263,17 +264,17 @@ public class MainGUI {
         innerPanel.setBackground(grey);
         innerPanel.setPreferredSize(new Dimension(500, 300));
 
-        sysSetupPanel = new VrfPanel("System Setup");
-        electSetupPanel = new VrfPanel("Election Setup");
-        elecPrepPanel = new VrfPanel("Election Preparation");
-        elecPeriodPanel = new VrfPanel("Election Period Parameters");
-        mixerTallierPanel = new VrfPanel("Mixer and Tallier Parameters");
-
-        innerPanel.add(sysSetupPanel);
-        innerPanel.add(electSetupPanel);
-        innerPanel.add(elecPrepPanel);
-        innerPanel.add(elecPeriodPanel);
-        innerPanel.add(mixerTallierPanel);
+//        sysSetupPanel = new VrfPanel("System Setup");
+//        electSetupPanel = new VrfPanel("Election Setup");
+//        elecPrepPanel = new VrfPanel("Election Preparation");
+//        elecPeriodPanel = new VrfPanel("Election Period Parameters");
+//        mixerTallierPanel = new VrfPanel("Mixer and Tallier Parameters");
+//
+//        innerPanel.add(sysSetupPanel);
+//        innerPanel.add(electSetupPanel);
+//        innerPanel.add(elecPrepPanel);
+//        innerPanel.add(elecPeriodPanel);
+//        innerPanel.add(mixerTallierPanel);
 
         innerPanel.repaint();
     }
@@ -326,7 +327,7 @@ public class MainGUI {
      */
     public class VrfPanel extends JPanel {
 
-        String name;
+        private String name;
         JPanel titlePanel, contentPanel, dummyEllipsePanel;
         JLabel label;
 
@@ -342,6 +343,7 @@ public class MainGUI {
          */
         public void generatePanel() {
             this.setPreferredSize(new Dimension(600, 100));
+            this.setBackground(grey);
             this.setBorder(new EmptyBorder(10, 10, 10, 10));
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 //            this.setBorder
@@ -353,7 +355,6 @@ public class MainGUI {
 
 
             contentPanel = getBoxPanel();
-	    
 //            contentPanel.add(createDummyResultPanel());
 //            contentPanel.add(createDummyResultPanel());
 
@@ -361,6 +362,10 @@ public class MainGUI {
             this.add(contentPanel);
         }
 
+        public String getName(){
+            return name;
+        }
+        
         /**
          * returns the panel responsible for showing the verification results
          */
@@ -373,12 +378,12 @@ public class MainGUI {
          * called if message received over observer pattern
          */
         public void addResultPanel(String str, boolean b) {
-            JPanel panel = getBoxPanel();
+            JPanel panel = new JPanel();
+            panel.setBackground(grey);
             panel.setBorder(new EmptyBorder(2, 20, 2, 10));
             JLabel ellipseContent = new JLabel(str + "........................................... "+ b);
             ellipseContent.setFont(new Font("Serif", Font.PLAIN, 12));
             panel.add(ellipseContent);
-            
             if (b) {
                 ImageIcon img = new ImageIcon(MainGUI.class
                 .getResource("/check.png").getPath());
@@ -387,6 +392,7 @@ public class MainGUI {
             }
 
 	    contentPanel.add(panel);
+              vrfScrollPanel.validate();
         }
 
 
@@ -666,6 +672,7 @@ btnStart.addActionListener(new ActionListener() {
             Logger.getLogger(MainGUI.class.getName()).log(Level.INFO, "status event received.  Type:{0}", se.getStatusMessage());
             switch (se.getStatusMessage()) {
                 case VRF_RESULT:
+                  
 //                    ArrayList<VerificationResult> results = (ArrayList<VerificationResult>) se.getVerificationResult();
 //                    for (VerificationResult e : results) {
 //
@@ -679,9 +686,19 @@ btnStart.addActionListener(new ActionListener() {
 //                        sysSetupPanel.addResultPanel(vrfType, result);
 //
 //                    }
-                    VerificationResult e = se.getVerificationResult();
-                    Boolean result = e.getResult();
-                    int code = e.getVerification().getID();
+                    VerificationResult vr = se.getVerificationResult();
+                    String sectionName = vr.getSection().toString();
+                    if (activeVrfPanel == null) {
+                        activeVrfPanel = new VrfPanel(sectionName);
+                        innerPanel.add(activeVrfPanel);
+                    } else if (!activeVrfPanel.getName().equals(sectionName)) {
+                        activeVrfPanel = new VrfPanel((sectionName));
+                        innerPanel.add(activeVrfPanel);
+                    }
+
+                    
+                    Boolean result = vr.getResult();
+                    int code = vr.getVerification().getID();
                     String vrfType = getTextFromVrfCode(code);
 		    String outputText = "\n" + vrfType + " ............. " + result;
                     //statusText.append(outputText);
@@ -689,7 +706,7 @@ btnStart.addActionListener(new ActionListener() {
 		    
                     //add to GUI verification area
 		    LOGGER.log(Level.INFO, "console output {0}", outputText);
-                    sysSetupPanel.addResultPanel(vrfType, result);
+                    activeVrfPanel.addResultPanel(vrfType, result);
 		    
                     break;
                 case VRF_STATUS:
