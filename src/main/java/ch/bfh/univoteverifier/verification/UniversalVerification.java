@@ -4,7 +4,6 @@
  */
 package ch.bfh.univoteverifier.verification;
 
-import ch.bfh.univoteverifier.common.GUIMessenger;
 import ch.bfh.univoteverifier.runner.ElectionPeriodRunner;
 import ch.bfh.univoteverifier.runner.ElectionPreparationRunner;
 import ch.bfh.univoteverifier.runner.ElectionSetupRunner;

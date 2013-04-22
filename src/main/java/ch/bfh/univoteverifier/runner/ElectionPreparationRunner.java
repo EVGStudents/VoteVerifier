@@ -1,18 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+///*
+// * To change this template, choose Tools | Templates
+// * and open the template in the editor.
+// */
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.List;
 import java.util.logging.Logger;
-
-/**
- *
- * @author snake
- */
+//
+///**
+// *
+// * @author snake
+// */
 public class ElectionPreparationRunner extends Runner {
 
 

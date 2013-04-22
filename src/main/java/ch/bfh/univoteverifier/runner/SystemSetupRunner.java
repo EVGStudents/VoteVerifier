@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class SystemSetupRunner extends Runner{
 	
-	private static final Logger logger = Logger.getLogger(SystemSetupRunner.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(SystemSetupRunner.class.getName());
 	private final ParametersImplementer prmVrf;
 	private final GUIMessenger gm;
 	
@@ -30,10 +30,19 @@ public class SystemSetupRunner extends Runner{
 	public List<VerificationResult> run() {
 		//perform the checks we want - pay attention to exceptions!
 		VerificationResult v1 = prmVrf.vrfPrimeP();
+		gm.sendVrfMsg(v1);
+		
 		VerificationResult v2 = prmVrf.vrfPrimeQ();
+		gm.sendVrfMsg(v2);
+
 		VerificationResult v3 = prmVrf.vrfGenerator();
+		gm.sendVrfMsg(v3);
+
 		VerificationResult v4 = prmVrf.vrfSafePrime();
+		gm.sendVrfMsg(v4);
+
 		VerificationResult v5 = prmVrf.vrfParamLen();
+		gm.sendVrfMsg(v5);
 
 		//cache the results	
 		partialResults.add(v1);
@@ -41,16 +50,6 @@ public class SystemSetupRunner extends Runner{
 		partialResults.add(v3);
 		partialResults.add(v4);
 		partialResults.add(v5);
-		
-		//set the section name and notify the observer
-		//maybe pay attention: if something goes wrong before we don't have the section
-		//name
-		for(VerificationResult vr : partialResults){
-			vr.setSectionName(SectionNameEnum.SYSTEM_SETUP);
-			
-			//notify observer
-			gm.sendVrfMsg(vr);
-		}
 		
 		return Collections.unmodifiableList(partialResults);
 	}

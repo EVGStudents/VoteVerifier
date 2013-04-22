@@ -60,7 +60,6 @@ public class UniversalVerificationTester {
 			if(i <= 5 ){
 				assertEquals(realList.get(i).getVerification(),mockList.get(i).getVerification());
 				assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
-				assertEquals(realList.get(i).getSectionName(), SectionNameEnum.SYSTEM_SETUP);
 				assertTrue(realList.get(i).isImplemented());
 			}
 		}
