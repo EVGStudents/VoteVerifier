@@ -49,7 +49,7 @@ public class StringConcatenator {
 	/**
 	 * Push a the elements of a  list in the same way as the push() method do.
 	 * @param l the list containing the elements
-	 * @param setDelimiter
+	 * @param setDelimiter if true the string will be concatenated using the delimiters otherwise no
 	 */
 	public void pushList(List l, boolean setDelimiter){
 	

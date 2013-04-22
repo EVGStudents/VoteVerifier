@@ -18,8 +18,8 @@ public class SystemSetupRunner extends Runner{
 	private final ParametersImplementer prmVrf;
 	private final GUIMessenger gm;
 	
-	public SystemSetupRunner(ElectionBoardProxy ebp, String name, GUIMessenger gm) {
-		super(ebp, name);
+	public SystemSetupRunner(ElectionBoardProxy ebp, GUIMessenger gm) {
+		super(ebp, SectionNameEnum.SYSTEM_SETUP);
 		
 		//create the verification classes we want
 		prmVrf = new ParametersImplementer(ebp);

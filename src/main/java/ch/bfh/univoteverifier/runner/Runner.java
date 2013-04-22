@@ -5,6 +5,7 @@
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.verification.SectionNameEnum;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +20,15 @@ public abstract class Runner {
 
 	protected List<VerificationResult> partialResults;
 	protected ElectionBoardProxy ebp;
-	private final String runnerName;
+	private final SectionNameEnum runnerName;
 
-	public Runner(ElectionBoardProxy ebp, String runnerName){
+	public Runner(ElectionBoardProxy ebp, SectionNameEnum runnerName){
 		this.ebp = ebp;
 		this.runnerName = runnerName;
 		this.partialResults = new ArrayList<>();
 	}
 
-	public String getRunnerName(){
+	public SectionNameEnum getRunnerName(){
 		return runnerName;
 	}
 	

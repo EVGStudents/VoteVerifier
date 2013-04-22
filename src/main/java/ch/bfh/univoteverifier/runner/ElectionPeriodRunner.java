@@ -5,6 +5,7 @@
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.verification.SectionNameEnum;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.List;
 //
@@ -15,8 +16,8 @@ import java.util.List;
 // */
 public class ElectionPeriodRunner extends Runner {
 
-	public ElectionPeriodRunner(ElectionBoardProxy ebp, String name) {
-		super(ebp, name);
+	public ElectionPeriodRunner(ElectionBoardProxy ebp) {
+		super(ebp, SectionNameEnum.ELECTION_PERIOD);
 	}
 
 

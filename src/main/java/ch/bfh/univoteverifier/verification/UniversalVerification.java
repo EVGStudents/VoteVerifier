@@ -35,17 +35,17 @@ public class UniversalVerification extends Verification{
 	}
 
 	private void createRunnerBySpec() {
-		SystemSetupRunner ssr = new SystemSetupRunner(ebproxy, "system setup runner",gm);
-		ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy, "election setup runner");
-		ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy, "election preparation runner");
-		ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy, "elecrion period runner");
-		MixerTallierRunner mtr = new MixerTallierRunner(ebproxy, "mixer and tallier runner");
+		SystemSetupRunner ssr = new SystemSetupRunner(ebproxy,gm);
+		ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy);
+		ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy);
+		ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy);
+		MixerTallierRunner mtr = new MixerTallierRunner(ebproxy);
 
 		runners.add(ssr);
-		runners.add(esr);
-		runners.add(epr);
-		runners.add(eperiodr);
-		runners.add(mtr);
+//		runners.add(esr);
+//		runners.add(epr);
+//		runners.add(eperiodr);
+//		runners.add(mtr);
 	}
 
 	private void createRunnerByEntities() {

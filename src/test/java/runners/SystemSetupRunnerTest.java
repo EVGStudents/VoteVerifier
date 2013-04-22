@@ -29,7 +29,7 @@ public class SystemSetupRunnerTest {
 	public SystemSetupRunnerTest() {
 		gm = new GUIMessenger();
 		ElectionBoardProxy ebp = new ElectionBoardProxy("sub-2013");
-		ssr = new SystemSetupRunner(ebp, "system setup runner",gm);
+		ssr = new SystemSetupRunner(ebp,gm);
 		realList = ssr.run();
 		mockList = new ArrayList<>();
 		
@@ -44,6 +44,11 @@ public class SystemSetupRunnerTest {
 	@Test
 	public void testSizeOfResults(){
 		assertEquals(mockList.size(), realList.size());
+	}
+
+	@Test
+	public void testRunnerType(){
+		assertEquals(ssr.getRunnerName(),SectionNameEnum.SYSTEM_SETUP);
 	}
 	
 	@Test

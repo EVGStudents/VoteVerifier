@@ -119,10 +119,12 @@ public abstract class Verification {
 
 			//check that a list isn't empty
 			if(l != null){
+
 				res.addAll(l);
 			}
 			else{
-				LOGGER.log(Level.INFO, "The runner " + r.getRunnerName() + "does not contain and verification.");
+				LOGGER.log(Level.INFO, "The runner " + r.getRunnerName() + " does not contain any verification.");
+				
 			}
 		}
 

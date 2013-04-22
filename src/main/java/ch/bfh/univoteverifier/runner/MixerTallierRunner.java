@@ -5,6 +5,7 @@
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.verification.SectionNameEnum;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.List;
 //
@@ -14,8 +15,8 @@ import java.util.List;
 // */
 public class MixerTallierRunner extends Runner {
 
-	public MixerTallierRunner(ElectionBoardProxy ebp, String name) {
-		super(ebp, name);
+	public MixerTallierRunner(ElectionBoardProxy ebp) {
+		super(ebp, SectionNameEnum.MIXING_TALLING);
 	}
 
 

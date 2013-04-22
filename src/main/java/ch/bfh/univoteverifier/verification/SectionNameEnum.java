@@ -10,14 +10,25 @@ package ch.bfh.univoteverifier.verification;
  * @author snake
  */
 public enum SectionNameEnum {
-	SYSTEM_SETUP,
-	ELECTION_SETUP,
-	ELECTION_PREPARATION,
-	ELECTION_PERIOD,
-	MIXING_TALLING,
-	CA,
-	EM,
-	EA,
-	MIXER,
-	TALLIER;
+	SYSTEM_SETUP("System Setup"),
+	ELECTION_SETUP("Election Setup"),
+	ELECTION_PREPARATION("Election Preparation"),
+	ELECTION_PERIOD("Election Period"),
+	MIXING_TALLING("Mixing and Talling"),
+	CA("Certificate Authority"),
+	EM("Election Manager"),
+	EA("Election Administrator"),
+	MIXER("Mixer"),
+	TALLIER("Tallier");
+
+	private String name;
+	
+	private SectionNameEnum(String name){
+		this.name = name;	
+	}
+
+	@Override
+	public String toString(){
+		return this.name;
+	}
 }
