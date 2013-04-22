@@ -112,19 +112,28 @@ public abstract class Verification {
 	public List<VerificationResult> runVerification(){
 		if(runners.isEmpty())
 			LOGGER.log(Level.INFO, "There aren't runners. The verification will not run.");
+	
+		Runner r = runners.get(0);
+		List<VerificationResult> l = r.run();
+
+		gm.sendVrfMsg(l.get(0));
+		gm.sendVrfMsg(l.get(1));
+		gm.sendVrfMsg(l.get(2));
+		gm.sendVrfMsg(l.get(3));
+		gm.sendVrfMsg(l.get(4));
 		
 		//run the runners  and get the results
-		for(Runner r : runners){
-			List<VerificationResult> l = r.run();
-
-			//check that a list isn't empty
-			if(l != null){
-				res.addAll(l);
-			}
-			else{
-				LOGGER.log(Level.INFO, "The runner " + r.getRunnerName() + "does not contain and verification.");
-			}
-		}
+//		for(Runner r : runners){
+//			List<VerificationResult> l = r.run();
+//
+//			//check that a list isn't empty
+//			if(l != null){
+//				res.addAll(l);
+//			}
+//			else{
+//				LOGGER.log(Level.INFO, "The runner " + r.getRunnerName() + "does not contain and verification.");
+//			}
+//		}
 
 		return Collections.unmodifiableList(res);
 	}

@@ -26,11 +26,9 @@ public class UniversalVerificationTester {
 	List<VerificationResult> mockList;
 	List<VerificationResult> realList;
 	String eID = "sub-2013";
-	GUIMessenger gm;
 	
 	public UniversalVerificationTester() {
-		gm = new GUIMessenger();
-		v = new UniversalVerification(eID,gm);
+		v = new UniversalVerification(eID);
 		realList = v.runVerification();
 		
 		mockList = new ArrayList<>();

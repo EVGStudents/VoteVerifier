@@ -83,6 +83,8 @@ public class MainGUI {
     String rawEIDlist;
     Preferences prefs;
 
+    	private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
+
     /**
      * @param args
      */
@@ -103,7 +105,6 @@ public class MainGUI {
 
         mc = new MainController();
         sl = new StatusUpdate();
-        mc.getStatusSubject().addListener(sl);
 
         grey = new Color(190, 190, 190);
         darkGrey = new Color(140, 140, 140);
@@ -478,7 +479,6 @@ public class MainGUI {
                 btnInd.press();
 //                statusText.setText("Individual Verification");
 //                statusText.setFont(new Font("Serif", Font.PLAIN, 32));
-                mc.testMsgSystem();
             }
 
             @Override
@@ -567,6 +567,8 @@ public class MainGUI {
                     rawEIDlist = rawEIDlist + " " + eID;
                     prefs.put("eIDList", rawEIDlist);
                     mc.universalVerification(eID);
+		    mc.getStatusSubject().addListener(sl);
+		    mc.runVerifcation();
                 } else {
                     msg += "the provided ballot receipt.";
                     mc.individualVerification(eIDlist[0]);
@@ -661,9 +663,12 @@ public class MainGUI {
                     Boolean result = e.getResult();
                     int code = e.getVerification().getID();
                     String vrfType = getTextFromVrfCode(code);
-                    statusText.append("\n" + vrfType + " ............. " + result);
-
+		    String outputText = "\n" + vrfType + " ............. " + result;
+                    //statusText.append(outputText);
+			statusText.setText(statusText.getText()+outputText);
+		    
                     //add to GUI verification area
+		    LOGGER.log(Level.INFO, "console output {0}", outputText);
                     sysSetupPanel.addResultPanel(vrfType, result);
 
 
