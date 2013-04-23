@@ -1,10 +1,15 @@
+/**
+*
+*  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+*   Bern University of Applied Sciences, Engineering and Information Technology,
+*   Research Institute for Security in the Information Society, E-Voting Group,
+*   Biel, Switzerland.
+*
+*   Project independent UniVoteVerifier.
+*
+*/
 package ch.bfh.univoteverifier.verification;
 
-/**
- * This enumeration is used to define the type of verifications
- * to perform.
- * @author snake
- */
 public enum VerificationEnum {
 
 	ORDER_BY_ENTITES(10),
@@ -17,7 +22,10 @@ public enum VerificationEnum {
 	SETUP_P_IS_SAFE_PRIME(140),
 	SETUP_EM_CERT(150),
 	SETUP_CA_CERT(160), 
-	SETUP_SIGN_PARAM_SIGN(170);
+	SETUP_SIGN_PARAM_SIGN(170),
+	
+	EL_SETUP_EA_CERT(200),
+	EL_SETUP_EA_CERT_SIGN(210);
 
 	//the ID of the verification
 	private final int code;

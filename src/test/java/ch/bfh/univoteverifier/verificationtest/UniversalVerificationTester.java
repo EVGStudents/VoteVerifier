@@ -1,11 +1,15 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package verifications;
+*
+*  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+*   Bern University of Applied Sciences, Engineering and Information Technology,
+*   Research Institute for Security in the Information Society, E-Voting Group,
+*   Biel, Switzerland.
+*
+*   Project independent UniVoteVerifier.
+*
+*/
+package ch.bfh.univoteverifier.verificationtest;
 
-import ch.bfh.univoteverifier.common.GUIMessenger;
-import ch.bfh.univoteverifier.verification.SectionNameEnum;
 import ch.bfh.univoteverifier.verification.UniversalVerification;
 import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.verification.VerificationEnum;
@@ -16,7 +20,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * This class test the behaviour of a UniversalVerification
  * @author snake
  */
 public class UniversalVerificationTester {
@@ -26,6 +30,7 @@ public class UniversalVerificationTester {
 	List<VerificationResult> mockList;
 	List<VerificationResult> realList;
 	String eID = "sub-2013";
+	final int RES_COUNT = 5;
 	
 	public UniversalVerificationTester() {
 		v = new UniversalVerification(eID);
@@ -39,22 +44,29 @@ public class UniversalVerificationTester {
 		mockList.add(new VerificationResult(VerificationEnum.SETUP_PARAM_LEN, true));
 		//ToDO add all the results
 	}
-	
+
+	/**
+	 * Test if the list contains all the results
+	 */
 	@Test
-	public void testEmptyList(){
-		assertEquals(5, realList.size());
+	public void testListSize(){
+		assertEquals(RES_COUNT, realList.size());
 	}
-	
+
+	/**
+	 * Test if the election contains the correct election ID
+	 */
 	@Test
 	public void testgetelectionID(){
 		assertEquals(eID, v.geteID());
 	}
 
+	/**
+	 * Test if the final result list is correct
+	 */
 	@Test
 	public void testFinalResultList(){
 		int i;
-		
-		System.out.println(mockList.size());
 		
 		for(i = 0 ; i < mockList.size() ; i++){
 			if(i <= 5 ){
