@@ -4,7 +4,7 @@
  */
 package common;
 
-import FileHandling.QRCodeTest;
+import fileHandling.QRCodeTest;
 import ch.bfh.univoteverifier.common.GUIMessenger;
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.gui.StatusEvent;

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package FileHandling;
+package fileHandling;
 
 import ch.bfh.univoteverifier.gui.MainGUI;
 import ch.bfh.univoteverifier.common.QRCode;

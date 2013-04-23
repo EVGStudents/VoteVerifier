@@ -12,11 +12,13 @@ package ch.bfh.univoteverifier.gui;
 */
 public enum StatusMessage {
 
-VRF_STATUS(0),  //used to send errors to the console
-VRF_RESULT(10),  //  for hte verification results
-ERROR(100)
-
-;
+    /**
+     * the type of StatusMessages possible. Used by the GUI to identify incoming
+     * messages and take the appropriate action
+     */
+    VRF_STATUS(0), //used to send errors to the console
+    VRF_RESULT(10), //  for hte verification results
+    ERROR(100);
 
 //The code of the message
 private int code;

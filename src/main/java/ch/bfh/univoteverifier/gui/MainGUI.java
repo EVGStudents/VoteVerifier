@@ -1,61 +1,48 @@
+/*
+ *
+ *  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+ *   Bern University of Applied Sciences, Engineering and Information Technology,
+ *   Research Institute for Security in the Information Society, E-Voting Group,
+ *   Biel, Switzerland.
+ *
+ *   Project independent UniVoteVerifier.
+ *
+ */
 package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.common.QRCode;
-
 import ch.bfh.univoteverifier.common.Config;
-import static ch.bfh.univoteverifier.common.Config.CONFIG;
-import ch.bfh.univoteverifier.common.*;
 import ch.bfh.univoteverifier.common.MainController;
-import ch.bfh.univoteverifier.verification.VerificationEnum;
 import ch.bfh.univoteverifier.verification.VerificationResult;
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 
 /**
  * Creates the main window of the GUI and generates the components needed to see
@@ -82,9 +69,9 @@ public class MainGUI {
     String[] eIDlist; //= {"vsbfh-2013", "bbbbbb", "ccccc", "dddddd", "eeeeee"};
     String rawEIDlist;
     Preferences prefs;
-     JScrollPane vrfScrollPanel;
-
-    	private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
+    JScrollPane vrfScrollPanel;
+    private final Properties prop = new Properties();
+    private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
 
     /**
      * @param args
@@ -258,24 +245,10 @@ public class MainGUI {
      * results are shown according to their types
      */
     public void innerPanelBeginVrf() {
-
         innerPanel.removeAll();
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
         innerPanel.setBackground(grey);
         innerPanel.setPreferredSize(new Dimension(500, 300));
-
-//        sysSetupPanel = new VrfPanel("System Setup");
-//        electSetupPanel = new VrfPanel("Election Setup");
-//        elecPrepPanel = new VrfPanel("Election Preparation");
-//        elecPeriodPanel = new VrfPanel("Election Period Parameters");
-//        mixerTallierPanel = new VrfPanel("Mixer and Tallier Parameters");
-//
-//        innerPanel.add(sysSetupPanel);
-//        innerPanel.add(electSetupPanel);
-//        innerPanel.add(elecPrepPanel);
-//        innerPanel.add(elecPeriodPanel);
-//        innerPanel.add(mixerTallierPanel);
-
         innerPanel.repaint();
     }
 
@@ -328,7 +301,7 @@ public class MainGUI {
     public class VrfPanel extends JPanel {
 
         private String name;
-        JPanel titlePanel, contentPanel, dummyEllipsePanel;
+        JPanel titlePanel, contentPanel;
         JLabel label;
 
         VrfPanel(String s) {
@@ -346,59 +319,57 @@ public class MainGUI {
             this.setBackground(grey);
             this.setBorder(new EmptyBorder(10, 10, 10, 10));
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//            this.setBorder
             label = new JLabel(name);
             label.setFont(new Font("Serif", Font.PLAIN, 16));
-
             titlePanel = getBoxPanel();
             titlePanel.add(label);
-
-
             contentPanel = getBoxPanel();
-//            contentPanel.add(createDummyResultPanel());
-//            contentPanel.add(createDummyResultPanel());
-
             this.add(titlePanel);
             this.add(contentPanel);
         }
 
-        public String getName(){
+        public String getName() {
             return name;
         }
-        
+
         /**
          * returns the panel responsible for showing the verification results
+         *
+         * @return the content panel for this instance
          */
         public JPanel getContentPanel() {
             return this.contentPanel;
         }
 
         /**
-         * add content to the results panel 
-         * called if message received over observer pattern
+         * add content to the results panel. This method is called if message
+         * received over observer pattern
+         *
+         * @param str the text for the verification result to be displayed to in
+         * the GUI
+         * @param b the result of the verification
          */
         public void addResultPanel(String str, boolean b) {
             JPanel panel = new JPanel();
             panel.setBackground(grey);
             panel.setBorder(new EmptyBorder(2, 20, 2, 10));
-            JLabel ellipseContent = new JLabel(str + "........................................... "+ b);
+            JLabel ellipseContent = new JLabel(str + "........................................... " + b);
             ellipseContent.setFont(new Font("Serif", Font.PLAIN, 12));
             panel.add(ellipseContent);
             if (b) {
                 ImageIcon img = new ImageIcon(MainGUI.class
-                .getResource("/check.png").getPath());
-                JLabel imgLabel= new JLabel (img);
+                        .getResource("/check.png").getPath());
+                JLabel imgLabel = new JLabel(img);
                 panel.add(imgLabel);
             }
-
-	    contentPanel.add(panel);
-              vrfScrollPanel.validate();
+            contentPanel.add(panel);
+            vrfScrollPanel.validate();
         }
 
-
-
         /**
-         * generate a uniform panel for this class
+         * generate a standard panel for this class
+         *
+         * @return an empty JPanel used by this class only
          */
         public JPanel getBoxPanel() {
             JPanel panel = new JPanel();
@@ -411,13 +382,12 @@ public class MainGUI {
      * create the button that shows the information and buttons needed to start
      * universal verification
      *
-     * @return
+     * @return button to choose universal verification a grey background and
+     * deactivated focused effects
      */
     public JButton createUniVrfButton() {
-
         final String descUni = "Verify the results of an entire election.  Enter an election ID:";
         btnUni = new VrfButton("Universal Verification", descUni);
-
         btnUni.addMouseListener(
                 new MouseListener() {
             @Override
@@ -434,8 +404,6 @@ public class MainGUI {
                 dynamicChoicePanel.add(comboBox);
                 choiceDescLabel.setText("Type or select an election ID: ");
                 innerPanel.repaint();
-
-
                 uniVrfSelected = true;
                 descDefault = descUni;
                 btnInd.depress();
@@ -454,7 +422,6 @@ public class MainGUI {
                 vrfDescLabel.setText(descDefault);
             }
         });
-
         return btnUni;
     }
 
@@ -462,7 +429,8 @@ public class MainGUI {
      * create the button that shows the information and buttons needed to start
      * individual verification
      *
-     * @return JButton with a grey background and focusedPaint
+     * @return JButton to choose individual verification a grey background and
+     * deactivated focused effects
      */
     public JButton createIndVrfButton() {
 
@@ -484,16 +452,11 @@ public class MainGUI {
                 primeDescPanel();
                 choiceDescLabel.setText("Please drag a QR code into the space below, or select a file:");
                 dynamicChoicePanel.add(btnFileSelector);
-
                 innerPanel.repaint();
-
-
                 uniVrfSelected = false;
                 descDefault = descInd;
                 btnUni.depress();
                 btnInd.press();
-//                statusText.setText("Individual Verification");
-//                statusText.setFont(new Font("Serif", Font.PLAIN, 32));
             }
 
             @Override
@@ -510,6 +473,10 @@ public class MainGUI {
         return btnInd;
     }
 
+    /**
+     * create the button that shows a pop-up file selection window so that the
+     * user can select a file which contains a QRCode image
+     */
     public void createFileSelectButton() {
         btnFileSelector = new JButton("select file");
         btnFileSelector.addActionListener(new ActionListener() {
@@ -539,6 +506,10 @@ public class MainGUI {
         });
     }
 
+    /**
+     * sets the content for the panel that changes when universal or individual
+     * buttons are pressed
+     */
     public void primeDescPanel() {
         if (!selectionMade) {
             innerPanel.add(dynamicChoicePanel);
@@ -549,24 +520,18 @@ public class MainGUI {
         dynamicChoicePanel.add(choiceDescLabel);
     }
 
-    public void postDescPanel() {
-    }
-
+    /**
+     * create the button that starts the verification process
+     *
+     * @return JButton the start button
+     */
     public JButton createStartButton() {
 
         btnStart = new JButton("START");
         btnStart.setBackground(new Color(110, 110, 254));
-	
 
-btnStart.addActionListener(new ActionListener() {
-    public void actionPerformed(ActionEvent ae) {
-        // Some code checked on some radio buttons
-               Runnable runnable = new ValidateThread();
-               Thread thread = new Thread(runnable);
-               thread.start();
-    }
 
-});
+
         btnStart.addMouseListener(
                 new MouseListener() {
             @Override
@@ -593,15 +558,13 @@ btnStart.addActionListener(new ActionListener() {
                     rawEIDlist = rawEIDlist + " " + eID;
                     prefs.put("eIDList", rawEIDlist);
                     mc.universalVerification(eID);
-		    mc.getStatusSubject().addListener(sl);
-		    mc.runVerifcation();
+                    mc.getStatusSubject().addListener(sl);
+                    mc.runVerifcation();
                 } else {
                     msg += "the provided ballot receipt.";
                     mc.individualVerification(eIDlist[0]);
                 }
                 statusText.setText(msg);
-
-
             }
 
             @Override
@@ -616,6 +579,9 @@ btnStart.addActionListener(new ActionListener() {
         return btnStart;
     }
 
+    /**
+     * a Button type that contains a description  and methods that changes its appearance
+     */
     private class VrfButton extends JButton {
 
         String description;
@@ -626,10 +592,18 @@ btnStart.addActionListener(new ActionListener() {
             this.setFocusPainted(false);
         }
 
+        /**
+         * called when another button is pressed set the color of the button to
+         * light grey
+         */
         public void depress() {
             this.setBackground(grey);
         }
 
+        /**
+         * called when the button is pressed set the color of the button to dark
+         * grey
+         */
         public void press() {
             this.setBackground(darkGrey);
         }
@@ -644,8 +618,6 @@ btnStart.addActionListener(new ActionListener() {
         JPanel imgPanel = new JPanel();
         java.net.URL img = MainGUI.class
                 .getResource("/univoteTitle.jpeg");
-
-
         if (img != null) {
             ImageIcon logo = new ImageIcon(img);
             JLabel imgLab = new JLabel(logo);
@@ -672,20 +644,6 @@ btnStart.addActionListener(new ActionListener() {
             Logger.getLogger(MainGUI.class.getName()).log(Level.INFO, "status event received.  Type:{0}", se.getStatusMessage());
             switch (se.getStatusMessage()) {
                 case VRF_RESULT:
-                  
-//                    ArrayList<VerificationResult> results = (ArrayList<VerificationResult>) se.getVerificationResult();
-//                    for (VerificationResult e : results) {
-//
-//                        //Add to console
-//                        Boolean result = e.getResult();
-//                        int code = e.getVerification().getID();
-//                        String vrfType = getTextFromVrfCode(code);
-//                        statusText.append("\n" + vrfType + " ............. " + result);
-//
-//                        //add to GUI verification area
-//                        sysSetupPanel.addResultPanel(vrfType, result);
-//
-//                    }
                     VerificationResult vr = se.getVerificationResult();
                     String sectionName = vr.getSection().toString();
                     if (activeVrfPanel == null) {
@@ -696,35 +654,36 @@ btnStart.addActionListener(new ActionListener() {
                         innerPanel.add(activeVrfPanel);
                     }
 
-                    
                     Boolean result = vr.getResult();
                     int code = vr.getVerification().getID();
                     String vrfType = getTextFromVrfCode(code);
-		    String outputText = "\n" + vrfType + " ............. " + result;
+                    String outputText = "\n" + vrfType + " ............. " + result;
                     //statusText.append(outputText);
-			statusText.setText(statusText.getText()+outputText);
-		    
+                    statusText.setText(statusText.getText() + outputText);
+
                     //add to GUI verification area
-		    LOGGER.log(Level.INFO, "console output {0}", outputText);
+                    LOGGER.log(Level.INFO, "console output {0}", outputText);
                     activeVrfPanel.addResultPanel(vrfType, result);
-		    
+
                     break;
                 case VRF_STATUS:
                     statusText.append("\n" + se.message);
                     statusText.setCaretPosition(statusText.getText().length());
                     break;
                 case ERROR:
-                    
                     statusText.append("\n" + se.message);
                     statusText.setCaretPosition(statusText.getText().length());
-
                     break;
-
             }
         }
     }
-    private final Properties prop = new Properties();
 
+    /**
+     * turns the vrfCode into a text string that is shown in the GUI
+     *
+     * @param code int value which corresponds to a verification type
+     * @return the user-friendly text the describes a verification step
+     */
     public String getTextFromVrfCode(int code) {
         try {
             prop.load(new FileInputStream("src/main/java/ch/bfh/univoteverifier/resources/messages.properties"));
@@ -734,10 +693,4 @@ btnStart.addActionListener(new ActionListener() {
 
         return (String) prop.getProperty(String.valueOf(code));
     }
-
-    class ValidateThread implements Runnable {
-    public void run() {
-        statusText.validate();
-    }
-}
 }

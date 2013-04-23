@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package FileHandling;
+package fileHandling;
 
 import ch.bfh.univoteverifier.common.GUIMessenger;
 import java.util.Locale;

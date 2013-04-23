@@ -12,7 +12,6 @@ import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.*;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.google.zxing.qrcode.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,13 +28,16 @@ import javax.swing.ImageIcon;
  */
 public class QRCode {
 
+    /**
+     * instantiate the class
+     */
     public QRCode() {
     }
 
     
     /**
      * Creates the QRCode for a given text.  This method is used for testing purposes
-     * @param String from which a QR Code should be generated
+     * @param str the string from which a QRCode shall be created
      * @return the image of a QRcode
      */
     public ImageIcon createQRCode(String str) {
@@ -53,6 +55,12 @@ public class QRCode {
         return imgIcn;
     }
 
+    /**
+     * decodes a QRCode into a String value
+     * @param filename the File object containing the path to the QRcode image
+     * @return a string of the value represented by the QRCode
+     * @throws IOException if the file cannot be opened, an exception is thrown
+     */
     public String decode(File filename) throws IOException {
         Result result = null;
         try {
@@ -69,6 +77,11 @@ public class QRCode {
         return returnStr;
     }
 
+    /**
+     * decode the QRCode from an election receipt and pack the info in to a helper class
+     * @param filename the File object containing the path to the QRcode image
+     * @return the ElectionReceipt helper class with the information packed into it
+     */
     public ElectionReceipt decodeReceipt(File filename) {
         return new ElectionReceipt();
     }
