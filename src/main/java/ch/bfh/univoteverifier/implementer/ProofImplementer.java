@@ -35,15 +35,15 @@ public class ProofImplementer {
 		
 		int validProof = 0;
 		
-		BigInteger[] concatB = {prf.vk,prf.t};
+		BigInteger[] concatB = {prf.getVk(),prf.getT()};
 		c2 = CryptoFunc.concatArrayContents(concatB);
 		
-		validProof += c2.compareTo(prf.c);
+		validProof += c2.compareTo(prf.getC());
 		
 		LOGGER.log(Level.SEVERE, "Proof FAILED: prf.c == vk.add(prf.t).mod(p)");
 		
-		BigInteger v = prf.g.modPow(prf.s, prf.p);
-		BigInteger w = (prf.t.multiply(prf.vk.modPow(prf.c,prf.p))).mod(prf.p);
+		BigInteger v = prf.getG().modPow(prf.getS(), prf.getP());
+		BigInteger w = (prf.getT().multiply(prf.getVk().modPow(prf.getC(),prf.getP()))).mod(prf.getP());
 		validProof  += (v.compareTo(w));
 		
 		LOGGER.log(Level.SEVERE, "Proof FAILED: Second part");

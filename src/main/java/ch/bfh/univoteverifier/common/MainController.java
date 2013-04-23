@@ -30,7 +30,10 @@ public class MainController {
 	
 	private Verification v;
 
-
+/**
+ * create a instance of the main controller.
+ * Only 1 is needed and is created by the GUI
+ */
 	public MainController(){
 		//initialize the root logger - maybe this should be placed into the main method
 		Handler h;

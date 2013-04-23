@@ -50,7 +50,7 @@ public class RSAImplementer {
 	 * @return
 	 */
 	public boolean vrfRSASign(RSASignature s, BigInteger mIn){
-		BigInteger ver = s.sig.modPow(s.e, s.n);
+		BigInteger ver = s.getSig().modPow(s.getE(), s.getN());
 		
 		boolean result = ver.equals(mIn);
 		

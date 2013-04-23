@@ -47,7 +47,6 @@ public class GUIMessenger {
      * to be used in the case of an exception encountered by the program which 
      * the GUI will most likely diplay in the "console" or as a pop-up message
      */
-
     public void sendErrorMsg(String str) {
         StatusEvent se = new StatusEvent(StatusMessage.ERROR, str);
         ss.notifyListeners(se);
