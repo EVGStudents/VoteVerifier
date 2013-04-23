@@ -18,10 +18,14 @@ import static org.junit.Assert.*;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
+import org.junit.Test;
 
 
 
-
+/**
+ * Test the schnorr signature verifier
+ * @author snake
+ */
 public class SchnorrTest {
 
 	SchnorrGenerator sg;
@@ -31,8 +35,12 @@ public class SchnorrTest {
 		this.sg = new SchnorrGenerator();
 		this.sv = new SchnorrImplementer(new ElectionBoardProxy("sub-2013"));
 	}
-	
-	//@Test
+
+	/**
+	 * Test a single schnorr's signature
+	 * @throws NoSuchAlgorithmException 
+	 */
+	@Test
 	public void singleSignatureVerification() throws NoSuchAlgorithmException {
 		//BFH encoded as 66 | 70 | 72
 		String bfh = "667072";
@@ -44,10 +52,14 @@ public class SchnorrTest {
 		//Verify signature		
 		assertTrue(sv.vrfSchnorrSign(ss, message, SchnorrGenerator.publicKey));
 	}
-	
-	//@Test
+
+	/**
+	 * Test multiples signatures, so we are sure that all should work fine
+	 * @throws NoSuchAlgorithmException 
+	 */
+	@Test
 	public void multipleSignatureVerification() throws NoSuchAlgorithmException{
-		int numberOfVerifications = 1000;
+		int numberOfVerifications = 100;
 		
 		for(int i = 0; i < numberOfVerifications ; i++){
 			String bfh = "667072";
@@ -60,8 +72,12 @@ public class SchnorrTest {
 		}
 		
 	}
-	
-	//@Test
+
+	/**
+	 * Test if an incorrect signature give  false result
+	 * @throws NoSuchAlgorithmException 
+	 */
+	@Test
 	public void incorrectSignature() throws NoSuchAlgorithmException{
 		//BFH encoded as 66 | 70 | 72
 		String bfh = "667072";

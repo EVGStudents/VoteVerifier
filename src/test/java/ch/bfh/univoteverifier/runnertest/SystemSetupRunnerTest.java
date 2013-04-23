@@ -22,7 +22,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Test the runner of the system setup
  * @author snake
  */
 public class SystemSetupRunnerTest {
@@ -46,17 +46,26 @@ public class SystemSetupRunnerTest {
 		mockList.add(new VerificationResult(VerificationEnum.SETUP_PARAM_LEN, true));
 
 	}
-	
+
+	/**
+	 * Test if the size of the result list correspond
+	 */
 	@Test
 	public void testSizeOfResults(){
 		assertEquals(mockList.size(), realList.size());
 	}
 
+	/**
+	 * Test if the runner name correspond
+	 */
 	@Test
 	public void testRunnerType(){
 		assertEquals(ssr.getRunnerName(),SectionNameEnum.SYSTEM_SETUP);
 	}
-	
+
+	/**
+	 * Test if the result list correspond with the one we have built
+	 */
 	@Test
 	public void testResultList(){
 		int i;

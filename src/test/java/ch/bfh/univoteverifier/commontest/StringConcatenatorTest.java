@@ -18,7 +18,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Test the string concatenator used to concatenate the strings 
  * @author snake
  */
 public class StringConcatenatorTest {
@@ -28,7 +28,10 @@ public class StringConcatenatorTest {
 	public StringConcatenatorTest() {
 		this.sc = new StringConcatenator();
 	}
-	
+
+	/**
+	 * Test if the pull works
+	 */
 	@Test
 	public  void pullConcatenation(){
 		sc.pushObject("string");
@@ -42,7 +45,9 @@ public class StringConcatenatorTest {
 		
 	}
 
-	
+	/**
+	 * Test a simple concatenation
+	 */	
 	@Test
 	public void simpleConcatenation(){
 		String one = "first";
@@ -58,7 +63,10 @@ public class StringConcatenatorTest {
 
 
 	}
-	
+
+	/**
+	 * Test a concatenation with an array inside
+	 */
 	@Test
 	public void simpleConcatenationTwo(){
 		String first = "first";
@@ -86,6 +94,9 @@ public class StringConcatenatorTest {
 		
 	}
 
+	/**
+	 * Test a concatenation with some BigInteger objects
+	 */
 	@Test
 	public void pushListObject(){
 		List<BigInteger> bi = new ArrayList<>();
@@ -106,6 +117,9 @@ public class StringConcatenatorTest {
 		assertEquals("(134536454634534|454634534|134536534|634534|579485769845|678549|13565565756134536454634534|9879879134536454634534)", res);
 	}
 
+	/**
+	 * Push a list with one element
+	 */
 	@Test
 	public void pushListSimple(){
 		List<BigInteger> bi = new ArrayList<>();
@@ -117,7 +131,10 @@ public class StringConcatenatorTest {
 
 		
 	}
-	
+
+	/**
+	 * Push a list with two elements
+	 */
 	@Test
 	public void pushListObjectTwo(){
 		List<BigInteger> bi = new ArrayList<>();
@@ -131,6 +148,9 @@ public class StringConcatenatorTest {
 		
 	}
 
+	/**
+	 * Push an empty list
+	 */
 	@Test
 	public void pushListObjectEmpty(){
 		List<BigInteger> bi = new ArrayList<>();
@@ -142,6 +162,9 @@ public class StringConcatenatorTest {
 		
 	}
 
+	/**
+	 * Push two object without separators
+	 */
 	@Test
 	public void pushListWithoutSeparators(){
 		List<BigInteger> bi = new ArrayList<>();
