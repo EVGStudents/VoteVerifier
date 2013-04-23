@@ -1,7 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/**
+*
+*  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+*   Bern University of Applied Sciences, Engineering and Information Technology,
+*   Research Institute for Security in the Information Society, E-Voting Group,
+*   Biel, Switzerland.
+*
+*   Project independent UniVoteVerifier.
+*
+*/
 package ch.bfh.univoteverifier.implementer;
 
 import ch.bfh.univote.election.ElectionBoardServiceFault;
@@ -79,9 +85,12 @@ public class RSAImplementer {
 		//get the certificte as a string
 		String eaCertStr = CryptoFunc.getX509Certificate(ebp.getElectionSystemInfo().getElectionAdministration().getValue()).toString();
 		String eID = ebp.getElectionDefinition().getElectionId();
-		
+	
+		sc.pushObject(StringConcatenator.LEFT_DELIMITER);
 		sc.pushObject(eID);
+		sc.pushObject(StringConcatenator.INNER_DELIMITER);
 		sc.pushObject(eaCertStr);
+		sc.pushObject(StringConcatenator.RIGHT_DELIMITER);
 		
 		String strRes = sc.pullAll();
 		BigInteger bi = new BigInteger(strRes.getBytes());

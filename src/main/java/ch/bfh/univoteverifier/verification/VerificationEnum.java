@@ -1,10 +1,15 @@
+/**
+*
+*  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+*   Bern University of Applied Sciences, Engineering and Information Technology,
+*   Research Institute for Security in the Information Society, E-Voting Group,
+*   Biel, Switzerland.
+*
+*   Project independent UniVoteVerifier.
+*
+*/
 package ch.bfh.univoteverifier.verification;
 
-/**
- * This enumeration is used to define the type of verifications
- * to perform.
- * @author snake
- */
 public enum VerificationEnum {
 
 	ORDER_BY_ENTITES(10),
