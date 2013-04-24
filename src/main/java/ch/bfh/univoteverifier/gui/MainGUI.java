@@ -616,8 +616,7 @@ public class MainGUI {
      */
     private JPanel getTitleImage() {
         JPanel imgPanel = new JPanel();
-        java.net.URL img = MainGUI.class
-                .getResource("/univoteTitle.jpeg");
+        java.net.URL img = MainGUI.class.getResource("/univoteTitle.jpeg");
         if (img != null) {
             ImageIcon logo = new ImageIcon(img);
             JLabel imgLab = new JLabel(logo);
@@ -625,7 +624,7 @@ public class MainGUI {
             imgPanel.add(imgLab);
             imgPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         } else {
-            System.out.println("IMAGE NOT FOUND");
+            LOGGER.log(Level.INFO, "IMAGE NOT FOUND");
         }
         return imgPanel;
     }
@@ -641,7 +640,7 @@ public class MainGUI {
         @Override
         public void updateStatus(StatusEvent se) {
 
-            Logger.getLogger(MainGUI.class.getName()).log(Level.INFO, "status event received.  Type:{0}", se.getStatusMessage());
+            Logger.getLogger(StatusUpdate.class.getName()).log(Level.INFO, "status event received.  Type:{0}", se.getStatusMessage());
             switch (se.getStatusMessage()) {
                 case VRF_RESULT:
                     VerificationResult vr = se.getVerificationResult();
@@ -662,7 +661,7 @@ public class MainGUI {
                     statusText.setText(statusText.getText() + outputText);
 
                     //add to GUI verification area
-                    LOGGER.log(Level.INFO, "console output {0}", outputText);
+                     Logger.getLogger(StatusUpdate.class.getName()).log(Level.INFO, "console output {0}", outputText);
                     activeVrfPanel.addResultPanel(vrfType, result);
 
                     break;

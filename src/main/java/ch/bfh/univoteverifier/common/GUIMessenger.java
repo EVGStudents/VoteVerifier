@@ -42,10 +42,12 @@ public class GUIMessenger {
         ss = new ConcreteSubject();
         instantiateRB("en");
     }
+    
     /*
      * send an error message to the GUI
      * to be used in the case of an exception encountered by the program which 
      * the GUI will most likely diplay in the "console" or as a pop-up message
+     * @param str the message to send to the GUI to be displayed as an error in the console
      */
     public void sendErrorMsg(String str) {
         StatusEvent se = new StatusEvent(StatusMessage.ERROR, str);

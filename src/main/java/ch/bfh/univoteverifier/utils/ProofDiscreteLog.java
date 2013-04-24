@@ -22,12 +22,10 @@ import java.security.NoSuchAlgorithmException;
  */
 public class ProofDiscreteLog {
 
-    //Proof parameters
     private String name;
     private BigInteger t;
     private BigInteger c;
     private BigInteger s;
-    //private parameters
     private BigInteger vk;
     private BigInteger q;
     private BigInteger p;
@@ -71,7 +69,7 @@ public class ProofDiscreteLog {
         vk = g.modPow(sk, p);
 
         //calculate the proof
-//		Random r = new Random();
+        //Random r = new Random();
         //BigInteger w= new BigInteger (String.valueOf(r.nextInt()));
         BigInteger w = new BigInteger("3");
 
@@ -82,7 +80,6 @@ public class ProofDiscreteLog {
         BigInteger[] concatB = {vk, t};
         this.c = CryptoFunc.concatArrayContents(concatB);
         this.s = w.add(this.c.multiply(sk).mod(q));
-        System.out.println(this);
         return this;
     }
 
@@ -107,7 +104,7 @@ public class ProofDiscreteLog {
         vk = g.modPow(sk, p);
 
         //calculate the proof
-//		Random r = new Random();
+        //Random r = new Random();
         //BigInteger w= new BigInteger (String.valueOf(r.nextInt()));
         BigInteger w = new BigInteger("3");
 
@@ -119,7 +116,6 @@ public class ProofDiscreteLog {
         this.c = CryptoFunc.concatArrayContents(concatB);
 
         this.s = w.add(this.c.multiply(sk).mod(q));
-        System.out.println(this);
         return this;
     }
 
