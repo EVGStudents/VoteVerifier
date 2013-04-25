@@ -16,6 +16,10 @@ import java.util.Random;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * This class generates a Schnorr's signature
+ * @author snake
+ */
 public class SchnorrGenerator {
 	
 	

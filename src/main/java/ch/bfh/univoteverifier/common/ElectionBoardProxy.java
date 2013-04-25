@@ -1,12 +1,11 @@
 /**
-*
-*  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
-*   Bern University of Applied Sciences, Engineering and Information Technology,
-*   Research Institute for Security in the Information Society, E-Voting Group,
-*   Biel, Switzerland.
-*
-*   Project independent UniVoteVerifier.
-*
+ *
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
+ * Applied Sciences, Engineering and Information Technology, Research Institute
+ * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ * 
+* Project independent UniVoteVerifier.
+ * 
 */
 package ch.bfh.univoteverifier.common;
 
@@ -38,23 +37,20 @@ import ch.bfh.univote.election.ElectionBoardServiceFault;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.interfaces.RSAPublicKey;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
  * This class is used as a proxy for the ElectionBoard of UniVote.
+ *
  * @author snake
  */
 public class ElectionBoardProxy {
-	
+
 	private final String eID;
 	private URL wsdlURL;
 	private static final Logger LOGGER = Logger.getLogger(ElectionBoardProxy.class.getName());
-	
 	private SignatureParameters signParam;
 	private Certificate rootCert;
 	private ElectionSystemInfo sysInfo;
@@ -79,356 +75,417 @@ public class ElectionBoardProxy {
 	private PartiallyDecryptedVotes parDecVotes;
 	private DecryptedVotes decryptedVotes;
 	private DecodedVotes decodedVotes;
-
 	private ElectionBoard eb;
-	
+
 	/**
 	 * Construct an ElectionBoardProxy with a given election id
+	 *
 	 * @param eID the ID of the election
 	 */
-	public ElectionBoardProxy(String eID){
+	public ElectionBoardProxy(String eID) {
 		this.eID = eID;
-		
+
 		try {
 			this.wsdlURL = new URL(Config.wsdlLocation);
 		} catch (MalformedURLException ex) {
 			LOGGER.log(Level.SEVERE, null, ex);
 		}
-		
+
 		getElectionBoard();
 	}
-	
+
 	/**
-	 * Construct an ElectionBoardProxy with a given election id
-	 * and a URL as a source of the web services.
+	 * Construct an ElectionBoardProxy with a given election id and a URL as
+	 * a source of the web services.
+	 *
 	 * @param eID the ID of the election
 	 * @param wsdlURL the URL of the WSDL file
 	 */
-	public ElectionBoardProxy(String eID, String wsdlURL){
+	public ElectionBoardProxy(String eID, String wsdlURL) {
 		this.eID = eID;
-		
+
 		try {
 			this.wsdlURL = new URL(wsdlURL);
 		} catch (MalformedURLException ex) {
 			LOGGER.log(Level.SEVERE, null, ex);
 		}
-		
+
 		getElectionBoard();
 	}
-	
-	
+
 	/**
-	 * Used to instantiate the ElectionBoardPort from where we
-	 * get the data of an election
+	 * Construct an ElectionBoardPeoxy with a given election ID. This must
+	 * be used only for the tests
+	 *
+	 * @param eID the ID of the election
+	 * @param localData if true, the election board proxy will use some
+	 * local data save previously
 	 */
-	private void getElectionBoard(){
+	public ElectionBoardProxy(String eID, boolean localData) {
+		this.eID = eID;
+
+
+		//read the object from a file
+		//ToDo
+	}
+
+	/**
+	 * Used to instantiate the ElectionBoardPort from where we get the data
+	 * of an election
+	 */
+	private void getElectionBoard() {
 		ElectionBoardService ebs = new ElectionBoardService(wsdlURL);
 		eb = ebs.getElectionBoardPort();
 	}
-	
+
 	/**
 	 * Get the signature parameters
+	 *
 	 * @return the signature parameters
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
 	public SignatureParameters getSignatureParameters() throws ElectionBoardServiceFault {
-		if(signParam == null)
+		if (signParam == null) {
 			signParam = eb.getSignatureParameters();
-		
+		}
+
 		return signParam;
 	}
-	
+
 	/**
 	 * Get the root certificate
+	 *
 	 * @return the root certificate
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
 	public Certificate getRootCertificate() throws ElectionBoardServiceFault {
-		if(rootCert == null)
+		if (rootCert == null) {
 			rootCert = eb.getRootCertificate();
-		
+		}
+
 		return rootCert;
 	}
-	
+
 	/**
 	 * Get the election system information
+	 *
 	 * @return the election system information
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
 	public ElectionSystemInfo getElectionSystemInfo() throws ElectionBoardServiceFault {
-		if(sysInfo == null)
+		if (sysInfo == null) {
 			sysInfo = eb.getElectionSystemInfo();
-			
+		}
+
 		return sysInfo;
 	}
-	
+
 	/**
 	 * Get the election definition
+	 *
 	 * @return the election definition
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
 	public ElectionDefinition getElectionDefinition() throws ElectionBoardServiceFault {
-		if(elDef == null)
+		if (elDef == null) {
 			elDef = eb.getElectionDefinition(eID);
-		
+		}
+
 		return elDef;
 	}
-	
+
 	/**
 	 * Get the encryption parameters
+	 *
 	 * @return the encryption parameters
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  EncryptionParameters getEncryptionParameters() throws ElectionBoardServiceFault {
-		if(encParam == null)
+	public EncryptionParameters getEncryptionParameters() throws ElectionBoardServiceFault {
+		if (encParam == null) {
 			encParam = eb.getEncryptionParameters(eID);
-		
+		}
+
 		return encParam;
 	}
-	
+
 	/**
 	 * Get the encryption key share of tallierID
-	 * @param tallierID 
+	 *
+	 * @param tallierID
 	 * @return the encryption key share of tallierID
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  EncryptionKeyShare getEncryptionKeyShare(String tallierID) throws ElectionBoardServiceFault {
-		if(encKeyShare == null)
+	public EncryptionKeyShare getEncryptionKeyShare(String tallierID) throws ElectionBoardServiceFault {
+		if (encKeyShare == null) {
 			encKeyShare = eb.getEncryptionKeyShare(eID, tallierID);
-		
+		}
+
 		return encKeyShare;
 	}
-	
+
 	/**
 	 * Get the encryption key
+	 *
 	 * @return the encryption key
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  EncryptionKey getEncryptionKey() throws ElectionBoardServiceFault {
-		if(encKey == null)
+	public EncryptionKey getEncryptionKey() throws ElectionBoardServiceFault {
+		if (encKey == null) {
 			encKey = eb.getEncryptionKey(eID);
-		
+		}
+
 		return encKey;
 	}
-	
+
 	/**
 	 * Get the blinded generator of a given mixerID
-	 * @param mixerID 
+	 *
+	 * @param mixerID
 	 * @return the blinded generator of mixerID
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  BlindedGenerator getBlindedGenerator(String mixerID) throws ElectionBoardServiceFault {
-		if(blindGen == null)
+	public BlindedGenerator getBlindedGenerator(String mixerID) throws ElectionBoardServiceFault {
+		if (blindGen == null) {
 			blindGen = eb.getBlindedGenerator(eID, mixerID);
-		
+		}
+
 		return blindGen;
 	}
-	
+
 	/**
 	 * Get the election generator
+	 *
 	 * @return the election generator
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  ElectionGenerator getElectionGenerator() throws ElectionBoardServiceFault {
-		if(elGen == null)
+	public ElectionGenerator getElectionGenerator() throws ElectionBoardServiceFault {
+		if (elGen == null) {
 			elGen = eb.getElectionGenerator(eID);
-		
+		}
+
 		return elGen;
 	}
-	
+
 	/**
 	 * Get the election option
+	 *
 	 * @return the election option
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  ElectionOptions getElectionOptions() throws ElectionBoardServiceFault {
-		if(elOpt == null)
+	public ElectionOptions getElectionOptions() throws ElectionBoardServiceFault {
+		if (elOpt == null) {
 			elOpt = eb.getElectionOptions(eID);
-		
+		}
+
 		return elOpt;
 	}
-	
+
 	/**
 	 * Get the election data
+	 *
 	 * @return the election data
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  ElectionData getElectionData() throws ElectionBoardServiceFault {
-		if(elData == null)
+	public ElectionData getElectionData() throws ElectionBoardServiceFault {
+		if (elData == null) {
 			elData = eb.getElectionData(eID);
-		
+		}
+
 		return elData;
 	}
-	
+
 	/**
 	 * Get the electoral roll
+	 *
 	 * @return the electoral roll
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  ElectoralRoll getElectoralRoll() throws ElectionBoardServiceFault {
-		if(elRoll == null)
+	public ElectoralRoll getElectoralRoll() throws ElectionBoardServiceFault {
+		if (elRoll == null) {
 			elRoll = eb.getElectoralRoll(eID);
-		
+		}
+
 		return elRoll;
 	}
-	
+
 	/**
 	 * Get the voter certificates
+	 *
 	 * @return the voter certificates
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  VoterCertificates getVoterCerts() throws ElectionBoardServiceFault {
-		if(voterCerts == null)
+	public VoterCertificates getVoterCerts() throws ElectionBoardServiceFault {
+		if (voterCerts == null) {
 			voterCerts = eb.getVoterCertificates(eID);
-		
+		}
+
 		return voterCerts;
 	}
-	
+
 	/**
-	 * @param mixerID 
+	 * @param mixerID
 	 * @return the mixVerKeyBy
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  MixedVerificationKeys getMixedVerificationKeysBy(String mixerID) throws ElectionBoardServiceFault {
-		if(mixVerKeyBy == null)
+	public MixedVerificationKeys getMixedVerificationKeysBy(String mixerID) throws ElectionBoardServiceFault {
+		if (mixVerKeyBy == null) {
 			mixVerKeyBy = eb.getVerificationKeysMixedBy(eID, mixerID);
-		
+		}
+
 		return mixVerKeyBy;
 	}
-	
+
 	/**
 	 * Get the mixed verification keys
+	 *
 	 * @return the mixed verification keys
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  MixedVerificationKeys getMixedVerificationKeys() throws ElectionBoardServiceFault {
-		if(mixVerKey == null)
+	public MixedVerificationKeys getMixedVerificationKeys() throws ElectionBoardServiceFault {
+		if (mixVerKey == null) {
 			mixVerKey = eb.getMixedVerificationKeys(eID);
-		
+		}
+
 		return mixVerKey;
 	}
-	
+
 	/**
 	 * Get the lately registered voter certificate
+	 *
 	 * @return the lately registered voter certificate
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  List<VoterCertificate> getLatelyRegisteredVoterCerts() throws ElectionBoardServiceFault {
-		if(latelyRegVoteCerts == null)
+	public List<VoterCertificate> getLatelyRegisteredVoterCerts() throws ElectionBoardServiceFault {
+		if (latelyRegVoteCerts == null) {
 			latelyRegVoteCerts = eb.getLatelyRegisteredVoterCertificates(eID);
-		
+		}
+
 		return latelyRegVoteCerts;
 	}
-	
+
 	/**
 	 * Get the lately mixed verification key mixed by mixerID
+	 *
 	 * @param mixerID the ID of a given mixer
 	 * @return the lately mixed verification key of mixerID
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  List<MixedVerificationKey> getLatelyMixedVerificationKeysBy(String mixerID) throws ElectionBoardServiceFault {
-		if(latelyMixVerKeyBy == null)
+	public List<MixedVerificationKey> getLatelyMixedVerificationKeysBy(String mixerID) throws ElectionBoardServiceFault {
+		if (latelyMixVerKeyBy == null) {
 			latelyMixVerKeyBy = eb.getVerificationKeysLatelyMixedBy(eID, mixerID);
-		
+		}
+
 		return latelyMixVerKeyBy;
 	}
-	
+
 	/**
 	 * Get the lately mixed verification key
+	 *
 	 * @return the lately mixed verification key
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  List<MixedVerificationKey> getLateyMixedVerificationKeys() throws ElectionBoardServiceFault {
-		if(latelyMixVerKey == null)
+	public List<MixedVerificationKey> getLateyMixedVerificationKeys() throws ElectionBoardServiceFault {
+		if (latelyMixVerKey == null) {
 			latelyMixVerKey = eb.getLatelyMixedVerificationKeys(eID);
-		
+		}
+
 		return latelyMixVerKey;
 	}
-	
+
 	/**
 	 * Get the ballots
+	 *
 	 * @return the ballots
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  Ballots getBallots() throws ElectionBoardServiceFault {
-		if(ballots == null)
+	public Ballots getBallots() throws ElectionBoardServiceFault {
+		if (ballots == null) {
 			ballots = eb.getBallots(eID);
-		
+		}
+
 		return ballots;
 	}
-	
+
 	/**
 	 * Get the mixed encrypted votes by a given mixer
+	 *
 	 * @param mixerID the ID of a given mixer
 	 * @return the mixed encrypted votes of the given mixer
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  MixedEncryptedVotes getMixedEncryptedVotesBy(String mixerID) throws ElectionBoardServiceFault {
-		if(mixEncVotesBy == null)
+	public MixedEncryptedVotes getMixedEncryptedVotesBy(String mixerID) throws ElectionBoardServiceFault {
+		if (mixEncVotesBy == null) {
 			mixEncVotesBy = eb.getEncryptedVotesMixedBy(eID, mixerID);
-		
+		}
+
 		return mixEncVotesBy;
 	}
-	
+
 	/**
 	 * Get the mixed encrypted votes
+	 *
 	 * @return the mixed encrypted votes
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  MixedEncryptedVotes getMixedEncryptedVotes() throws ElectionBoardServiceFault {
-		if(mixEncVotes == null)
+	public MixedEncryptedVotes getMixedEncryptedVotes() throws ElectionBoardServiceFault {
+		if (mixEncVotes == null) {
 			mixEncVotes = eb.getMixedEncryptedVotes(eID);
-		
+		}
+
 		return mixEncVotes;
 	}
-	
+
 	/**
 	 * Get the partially decrypted votes
-	 * @param tallierID 
+	 *
+	 * @param tallierID
 	 * @return the partially decrypted votes
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  PartiallyDecryptedVotes getPartiallyDecryptedVotes(String tallierID) throws ElectionBoardServiceFault {
-		if(parDecVotes == null)
+	public PartiallyDecryptedVotes getPartiallyDecryptedVotes(String tallierID) throws ElectionBoardServiceFault {
+		if (parDecVotes == null) {
 			parDecVotes = eb.getPartiallyDecryptedVotes(eID, tallierID);
-		
+		}
+
 		return parDecVotes;
 	}
-	
+
 	/**
 	 * Get the decrypted votes
+	 *
 	 * @return the decrypted votes
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  DecryptedVotes getDecryptedVotes() throws ElectionBoardServiceFault {
-		if(decryptedVotes == null)
+	public DecryptedVotes getDecryptedVotes() throws ElectionBoardServiceFault {
+		if (decryptedVotes == null) {
 			decryptedVotes = eb.getDecryptedVotes(eID);
-		
+		}
+
 		return decryptedVotes;
 	}
-	
+
 	/**
 	 * Get the decoded votes
+	 *
 	 * @return the decoded votes
-	 * @throws ElectionBoardServiceFault  
+	 * @throws ElectionBoardServiceFault
 	 */
-	public  DecodedVotes getDecodedVotes() throws ElectionBoardServiceFault {
-		if(decodedVotes == null)
+	public DecodedVotes getDecodedVotes() throws ElectionBoardServiceFault {
+		if (decodedVotes == null) {
 			decodedVotes = eb.getDecodedVotes(eID);
-		
+		}
+
 		return decodedVotes;
 	}
-	
+
 	/**
 	 * Get a ballot
+	 *
 	 * @param verificationKey the verification key for this ballot
 	 * @return the ballot
 	 * @throws ElectionBoardServiceFault
 	 */
-	public Ballot getBallot(BigInteger verificationKey) throws ElectionBoardServiceFault{
+	public Ballot getBallot(BigInteger verificationKey) throws ElectionBoardServiceFault {
 		return eb.getBallot(eID, verificationKey);
 	}
-
-	
-	
 }

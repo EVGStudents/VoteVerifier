@@ -16,7 +16,7 @@ import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import ch.bfh.univoteverifier.utils.RSASignature;
-import ch.bfh.univoteverifier.verification.VerificationEnum;
+import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.math.BigInteger;
 import java.security.cert.CertificateException;
@@ -100,6 +100,6 @@ public class RSAImplementer {
 		
 		boolean r = vrfRSASign(Config.em,bi,signature);
 		
-		return new VerificationEvent(VerificationEnum.EL_SETUP_EA_CERT_SIGN, true);
+		return new VerificationEvent(VerificationType.EL_SETUP_EA_CERT_SIGN, true);
 	}
 }

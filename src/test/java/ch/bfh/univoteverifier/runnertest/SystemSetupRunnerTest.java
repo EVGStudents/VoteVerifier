@@ -10,11 +10,11 @@
 */
 package ch.bfh.univoteverifier.runnertest;
 
-import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.GUIMessenger;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
-import ch.bfh.univoteverifier.verification.SectionNameEnum;
-import ch.bfh.univoteverifier.verification.VerificationEnum;
+import ch.bfh.univoteverifier.common.SectionNameEnum;
+import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,16 +34,15 @@ public class SystemSetupRunnerTest {
 	
 	public SystemSetupRunnerTest() {
 		gm = new GUIMessenger();
-		ElectionBoardProxy ebp = new ElectionBoardProxy("sub-2013");
-		ssr = new SystemSetupRunner(ebp,gm);
+		ssr = new SystemSetupRunner(gm);
 		realList = ssr.run();
 		mockList = new ArrayList<>();
 		
-		mockList.add(new VerificationEvent(VerificationEnum.SETUP_P_IS_PRIME, true));
-		mockList.add(new VerificationEvent(VerificationEnum.SETUP_Q_IS_PRIME, true));
-		mockList.add(new VerificationEvent(VerificationEnum.SETUP_G_IS_GENERATOR, true));
-		mockList.add(new VerificationEvent(VerificationEnum.SETUP_P_IS_SAFE_PRIME, true));
-		mockList.add(new VerificationEvent(VerificationEnum.SETUP_PARAM_LEN, true));
+		mockList.add(new VerificationEvent(VerificationType.SETUP_P_IS_PRIME, true));
+		mockList.add(new VerificationEvent(VerificationType.SETUP_Q_IS_PRIME, true));
+		mockList.add(new VerificationEvent(VerificationType.SETUP_G_IS_GENERATOR, true));
+		mockList.add(new VerificationEvent(VerificationType.SETUP_P_IS_SAFE_PRIME, true));
+		mockList.add(new VerificationEvent(VerificationType.SETUP_PARAM_LEN, true));
 
 	}
 
@@ -74,6 +73,7 @@ public class SystemSetupRunnerTest {
 			assertEquals(realList.get(i).getVerificationEnum(),mockList.get(i).getVerificationEnum());
 			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
 			assertTrue(realList.get(i).isImplemented());
+			assertEquals(realList.get(i).getFailureCode(), FailureCode.CLEAN);
 		}
 	}
 

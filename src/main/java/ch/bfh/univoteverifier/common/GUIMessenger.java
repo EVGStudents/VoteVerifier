@@ -13,8 +13,6 @@ package ch.bfh.univoteverifier.common;
 import ch.bfh.univoteverifier.gui.VerificationListener;
 import ch.bfh.univoteverifier.gui.VerificationMessage;
 import ch.bfh.univoteverifier.gui.VerificationSubject;
-import ch.bfh.univoteverifier.verification.SectionNameEnum;
-import ch.bfh.univoteverifier.verification.VerificationEnum;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -51,7 +49,7 @@ public class GUIMessenger {
      */
     public void sendErrorMsg(String str) {
         VerificationEvent ve;
-        ve = new VerificationEvent(VerificationEnum.ERROR, str);
+        ve = new VerificationEvent(VerificationType.ERROR, str);
         ss.notifyListeners(ve);
     }
 

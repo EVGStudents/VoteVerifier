@@ -85,7 +85,9 @@
 			<resource>
 				<directory>src/main/java/ch/bfh/univoteverifier/resources</directory>
 			</resource>
-   
+			<resource>
+				<directory>src/test/java/ch/bfh/univoteverifier/testresources</directory>
+			</resource>
 		</resources>
 		<pluginManagement>
 			<plugins>

@@ -10,6 +10,7 @@
 */
 package ch.bfh.univoteverifier.runner;
 
+import ch.bfh.univoteverifier.common.SectionNameEnum;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
@@ -28,11 +29,11 @@ public class SystemSetupRunner extends Runner{
 	private final ParametersImplementer prmVrf;
 	private final GUIMessenger gm;
 	
-	public SystemSetupRunner(ElectionBoardProxy ebp, GUIMessenger gm) {
-		super(ebp, SectionNameEnum.SYSTEM_SETUP);
+	public SystemSetupRunner(GUIMessenger gm) {
+		super(null, SectionNameEnum.SYSTEM_SETUP);
 		
 		//create the verification classes we want
-		prmVrf = new ParametersImplementer(ebp);
+		prmVrf = new ParametersImplementer();
 		this.gm = gm;
 	}
 	

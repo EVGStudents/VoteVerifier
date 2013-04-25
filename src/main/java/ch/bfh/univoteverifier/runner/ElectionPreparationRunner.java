@@ -11,7 +11,7 @@
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import ch.bfh.univoteverifier.verification.SectionNameEnum;
+import ch.bfh.univoteverifier.common.SectionNameEnum;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.List;
 import java.util.logging.Logger;

@@ -9,6 +9,10 @@
 */
 package ch.bfh.univoteverifier.verification;
 
+import ch.bfh.univoteverifier.common.SectionNameEnum;
+import ch.bfh.univoteverifier.common.VerificationType;
+import ch.bfh.univoteverifier.common.FailureCode;
+
 /**
  * Verification Event is a helper class that contains information that shall be
  * sent to the GUI this class is part of the observer pattern
@@ -17,93 +21,105 @@ package ch.bfh.univoteverifier.verification;
  */
 public class VerificationEvent {
 
-    private final VerificationEnum v;
-    private SectionNameEnum section;
-    private String msg;
-    private boolean impl;
-    private boolean result;
-    
-        /**
-     * create a new verification event with an error message for the GUI
-     * @param v verification type for this event
-     * @param msg the message text that is being sent in this verification event
-     */
-    public VerificationEvent(VerificationEnum v, String msg) {
-        this.v = v;
-        this.msg = msg;
-    }
+	private final VerificationType v;
+	private SectionNameEnum section;
+	private String msg;
+	private boolean impl;
+	private boolean result;
+	private FailureCode fc;
 
+	/**
+	 * create a new verification event with an error message for the GUI
+	 *
+	 * @param v verification type for this event
+	 * @param msg the message text that is being sent in this verification
+	 * event
+	 */
+	public VerificationEvent(VerificationType v, String msg) {
+		this.v = v;
+		this.msg = msg;
+		this.fc = null;
+	}
 
+	/**
+	 * Create a new verification event 
+	 *
+	 * @param v The type of verification that has succeeded
+	 */
+	public VerificationEvent(VerificationType v, boolean res) {
+		this.v = v;
+		this.result = res;
+		this.impl = true;
+		this.fc = FailureCode.CLEAN;
+	}
 
-    
-    
-    /**
-     * Create a new verification results
-     *
-     * @param v Verification The type of verification
-     * @param result boolean
-     */
-    public VerificationEvent(VerificationEnum v, boolean result) {
-        this.v = v;
-        this.result = result;
-        this.impl = true;
-    }
+	public SectionNameEnum getSection() {
+		return section;
+	}
 
-    /**
-     * Create a new verification results
-     *
-     * @param v Verification The type of verification
-     * @param result boolean
-     * @þaram impl if the test implied in this result is implemented or not
-     */
-    public VerificationEvent(VerificationEnum v, boolean result, boolean impl) {
-        this.v = v;
-        this.result = result;
-        this.impl = impl;
-    }
+	public void setSection(SectionNameEnum section) {
+		this.section = section;
+	}
 
-    public SectionNameEnum getSection() {
-        return section;
-    }
+	/**
+	 * Get the verification type for this VerificationResult Identifies that
+	 * type of message/information that this event contains
+	 *
+	 * @return the verification type
+	 */
+	public VerificationType getVerificationEnum() {
+		return v;
+	}
 
-    public void setSection(SectionNameEnum section) {
-        this.section = section;
-    }
+	/**
+	 * Get the result for this VerificationEvent
+	 *
+	 * @return
+	 */
+	public boolean getResult() {
+		return result;
+	}
 
-    /**
-     * Get the verification type for this VerificationResult
-     * Identifies that type of message/information that this event contains
-     *
-     * @return the verification type
-     */
-    public VerificationEnum getVerificationEnum() {
-        return v;
-    }
+	/**
+	 * To know if the verification associated with this result is
+	 * implemented
+	 *
+	 * @return
+	 */
+	public boolean isImplemented() {
+		return impl;
+	}
 
-    /**
-     * Get the result for this VerificationResult
-     *
-     * @return
-     */
-    public boolean getResult() {
-        return result;
-    }
+	/**
+	 * Set the implementation flag for this verification event
+	 * @param impl the boolean value representing the implementation for this event
+	 */
+	public void setImplemented(boolean impl){
+		this.impl = impl;
+	}
 
-    /**
-     * To know if the verification associated with this result is implemented
-     *
-     * @return
-     */
-    public boolean isImplemented() {
-        return impl;
-    }
+	/**
+	 * get the String of the message this StatusEvent is delivering
+	 *
+	 * @return the message to deliver to the GUI
+	 */
+	public String getMessage() {
+		return msg;
+	}
 
-    /**
-     * get the String of the message this StatusEvent is delivering
-     *
-     * @return String the message to deliver to the GUI
-     */
-    public String getMessage() {
-        return msg;
-    }
+	/**
+	 * Get the failure code for this verification event
+	 * @return 
+	 */
+	public FailureCode getFailureCode(){
+		return this.fc;
+	}
+
+	/**
+	 * Set the failure code for this verification event
+	 * @param fc the failure code
+	 */
+	public void setFailureCode(FailureCode fc){
+		this.fc = fc;
+	}
 }

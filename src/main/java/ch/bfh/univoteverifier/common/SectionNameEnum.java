@@ -8,7 +8,7 @@
 *   Project independent UniVoteVerifier.
 *
 */
-package ch.bfh.univoteverifier.verification;
+package ch.bfh.univoteverifier.common;
 
 /**
  * This enumeration specify the name of the sections 

@@ -11,8 +11,8 @@
 package ch.bfh.univoteverifier.implementer;
 
 import ch.bfh.univoteverifier.common.Config;
-import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import ch.bfh.univoteverifier.verification.VerificationEnum;
+import ch.bfh.univoteverifier.common.FailureCode;
+import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.math.BigInteger;
 
@@ -22,12 +22,7 @@ import java.math.BigInteger;
  */
 public class ParametersImplementer {
 
-	private final ElectionBoardProxy ebp;
 	private final int PRIME_NUMBER_CERTAINITY = 1000;
-
-	public ParametersImplementer(ElectionBoardProxy ebp){
-		this.ebp = ebp;	
-	}
 
 	/**
 	 * Check if the parameters for the Schnorr's signature scheme
@@ -40,7 +35,13 @@ public class ParametersImplementer {
 		
 		boolean r = Config.p.bitLength() == lengthPG && Config.q.bitLength() == lengthQ && Config.g.bitLength() == lengthPG;
 
-		return new VerificationEvent(VerificationEnum.SETUP_PARAM_LEN, r);
+		VerificationEvent ve = new VerificationEvent(VerificationType.SETUP_PARAM_LEN, r);
+
+		if(!r)
+			ve.setFailureCode(FailureCode.FALSE_PARAMETERS_LENGTH);
+
+		return ve;
+		
 	}
 	
 	/**
@@ -49,7 +50,13 @@ public class ParametersImplementer {
 	 */
 	public VerificationEvent vrfPrimeP(){
 		boolean r = Config.p.isProbablePrime(PRIME_NUMBER_CERTAINITY);
-		return new VerificationEvent(VerificationEnum.SETUP_P_IS_PRIME, r);
+
+		VerificationEvent ve = new VerificationEvent(VerificationType.SETUP_P_IS_PRIME, r);
+		
+		if(!r)
+			ve.setFailureCode(FailureCode.COMPOSITE_PRIME_NUMBER);
+
+		return ve;
 	}
 		
 	/**
@@ -58,7 +65,13 @@ public class ParametersImplementer {
 	 */
 	public VerificationEvent vrfPrimeQ(){
 		boolean r = Config.q.isProbablePrime(PRIME_NUMBER_CERTAINITY);
-		return new VerificationEvent(VerificationEnum.SETUP_Q_IS_PRIME, r);
+		
+		VerificationEvent ve = new VerificationEvent(VerificationType.SETUP_Q_IS_PRIME, r);
+		
+		if(!r)
+			ve.setFailureCode(FailureCode.COMPOSITE_PRIME_NUMBER);
+
+		return ve;
 	}
 
 	/**
@@ -69,19 +82,30 @@ public class ParametersImplementer {
 		BigInteger multiple = Config.p.subtract(BigInteger.valueOf(1)).divide(Config.q);
 		
 		boolean r = multiple.multiply(Config.q).add(BigInteger.valueOf(1)).equals(Config.p);
-		return new VerificationEvent(VerificationEnum.SETUP_P_IS_SAFE_PRIME, r);
+		
+		VerificationEvent ve = new VerificationEvent(VerificationType.SETUP_P_IS_SAFE_PRIME, r);
+		
+		if(!r)
+			ve.setFailureCode(FailureCode.NOT_SAFE_PRIME);
+
+		return ve;
 	}
 	
 	
 	/**
 	 * Check if g is a generator of a subgroup H_q
-	 * @return is g is a valid generator
+	 * @return if g is a valid generator
 	 */
 	public VerificationEvent vrfGenerator(){
 		BigInteger res = Config.g.modPow(Config.q, Config.p);
 		
 		boolean r = res.equals(BigInteger.valueOf(1));
-		return new VerificationEvent(VerificationEnum.SETUP_G_IS_GENERATOR, r);
+		VerificationEvent ve = new VerificationEvent(VerificationType.SETUP_G_IS_GENERATOR, r);
+		
+		if(!r)
+			ve.setFailureCode(FailureCode.NOT_A_GENERATOR);
+
+		return ve;
 	}
 	
 }

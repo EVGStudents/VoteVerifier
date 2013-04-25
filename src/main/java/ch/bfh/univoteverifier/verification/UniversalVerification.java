@@ -10,6 +10,7 @@
 */
 package ch.bfh.univoteverifier.verification;
 
+import ch.bfh.univoteverifier.common.VerificationOrder;
 import ch.bfh.univoteverifier.runner.ElectionPeriodRunner;
 import ch.bfh.univoteverifier.runner.ElectionPreparationRunner;
 import ch.bfh.univoteverifier.runner.ElectionSetupRunner;
@@ -32,28 +33,37 @@ public class UniversalVerification extends Verification{
 		super(eID);
 
 		//initialize the runners based on the order 
-		if(VerificationEnum.ORDER_BY_ENTITES == displayType){
+		if(VerificationOrder.BY_ENTITES == displayType){
 			createRunnerByEntities();
 		}
-		else if(VerificationEnum.ORDER_BY_SPEC == displayType){
+		else if(VerificationOrder.BY_SPEC == displayType){
 			createRunnerBySpec();
 		}
 	}
 
+	/**
+	 * Create the necessaries runners used to print the results 
+	 * ordered by the specification
+	 */
 	private void createRunnerBySpec() {
-		SystemSetupRunner ssr = new SystemSetupRunner(ebproxy,gm);
+		SystemSetupRunner ssr = new SystemSetupRunner(gm);
 		ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy);
 		ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy);
 		ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy);
 		MixerTallierRunner mtr = new MixerTallierRunner(ebproxy);
 
 		runners.add(ssr);
+		//Decomment when they are implemented
 //		runners.add(esr);
 //		runners.add(epr);
 //		runners.add(eperiodr);
 //		runners.add(mtr);
 	}
 
+	/**
+	 * Create the necessaries runners used to print the results ordered
+	 * by entities
+	 */
 	private void createRunnerByEntities() {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
