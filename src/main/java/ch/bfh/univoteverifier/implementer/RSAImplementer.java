@@ -19,6 +19,7 @@ import ch.bfh.univoteverifier.utils.RSASignature;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPublicKey;
 import java.util.logging.Level;
@@ -81,7 +82,7 @@ public class RSAImplementer {
 	 * @throws ElectionBoardServiceFault
 	 * @throws CertificateException
 	 */
-	public VerificationEvent vrfEACertSign() throws ElectionBoardServiceFault, CertificateException{
+	public VerificationEvent vrfEACertSign() throws ElectionBoardServiceFault, CertificateException, NoSuchAlgorithmException{
 		//get the certificte as a string
 		String eaCertStr = CryptoFunc.getX509Certificate(ebp.getElectionSystemInfo().getElectionAdministration().getValue()).toString();
 		String eID = ebp.getElectionDefinition().getElectionId();
@@ -93,7 +94,7 @@ public class RSAImplementer {
 		sc.pushObject(StringConcatenator.RIGHT_DELIMITER);
 		
 		String strRes = sc.pullAll();
-		BigInteger bi = new BigInteger(strRes.getBytes());
+		BigInteger bi = CryptoFunc.sha1(strRes);
 		
 		//this is in the EA certificate - ToDo change it
 		BigInteger signature = new BigInteger("1");

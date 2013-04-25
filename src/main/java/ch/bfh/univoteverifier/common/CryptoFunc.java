@@ -52,6 +52,19 @@ public class CryptoFunc {
 	}
 
 	/**
+	 * Compute the sha-1 hash of a given string
+	 * @param s the string used to compute the hash
+	 * @return a BigInteger corresponding to the hash
+	 * @throws NoSuchAlgorithmException 
+	 */
+	public static BigInteger sha1(String s) throws NoSuchAlgorithmException{
+		MessageDigest md = MessageDigest.getInstance("SHA-1");
+		md.update(s.getBytes());
+
+		return new BigInteger(md.digest());
+	}
+
+	/**
 	 * Decode a base64 encoded string
 	 *
 	 * @param encodedBase64 the encoded string

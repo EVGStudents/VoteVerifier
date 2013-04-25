@@ -34,6 +34,7 @@ import ch.bfh.univote.common.VoterCertificates;
 import ch.bfh.univote.election.ElectionBoard;
 import ch.bfh.univote.election.ElectionBoardService;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
