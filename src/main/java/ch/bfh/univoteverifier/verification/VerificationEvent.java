@@ -3,10 +3,10 @@
  * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
  * Applied Sciences, Engineering and Information Technology, Research Institute
  * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
- * 
-* Project independent UniVoteVerifier.
- * 
-*/
+ *
+ * Project independent UniVoteVerifier.
+ *
+ */
 package ch.bfh.univoteverifier.verification;
 
 import ch.bfh.univoteverifier.common.SectionNameEnum;
@@ -20,14 +20,14 @@ import ch.bfh.univoteverifier.common.FailureCode;
  * @author prinstin
  */
 public class VerificationEvent {
-
+	
 	private final VerificationType v;
 	private SectionNameEnum section;
 	private String msg;
 	private boolean impl;
 	private boolean result;
 	private FailureCode fc;
-
+	
 	/**
 	 * create a new verification event with an error message for the GUI
 	 *
@@ -40,9 +40,9 @@ public class VerificationEvent {
 		this.msg = msg;
 		this.fc = null;
 	}
-
+	
 	/**
-	 * Create a new verification event 
+	 * Create a new verification event
 	 *
 	 * @param v The type of verification that has succeeded
 	 */
@@ -52,15 +52,15 @@ public class VerificationEvent {
 		this.impl = true;
 		this.fc = FailureCode.CLEAN;
 	}
-
+	
 	public SectionNameEnum getSection() {
 		return section;
 	}
-
+	
 	public void setSection(SectionNameEnum section) {
 		this.section = section;
 	}
-
+	
 	/**
 	 * Get the verification type for this VerificationResult Identifies that
 	 * type of message/information that this event contains
@@ -70,7 +70,7 @@ public class VerificationEvent {
 	public VerificationType getVerificationEnum() {
 		return v;
 	}
-
+	
 	/**
 	 * Get the result for this VerificationEvent
 	 *
@@ -79,7 +79,7 @@ public class VerificationEvent {
 	public boolean getResult() {
 		return result;
 	}
-
+	
 	/**
 	 * To know if the verification associated with this result is
 	 * implemented
@@ -89,15 +89,17 @@ public class VerificationEvent {
 	public boolean isImplemented() {
 		return impl;
 	}
-
+	
 	/**
 	 * Set the implementation flag for this verification event
-	 * @param impl the boolean value representing the implementation for this event
+	 *
+	 * @param impl the boolean value representing the implementation for
+	 * this event
 	 */
-	public void setImplemented(boolean impl){
+	public void setImplemented(boolean impl) {
 		this.impl = impl;
 	}
-
+	
 	/**
 	 * get the String of the message this StatusEvent is delivering
 	 *
@@ -106,20 +108,22 @@ public class VerificationEvent {
 	public String getMessage() {
 		return msg;
 	}
-
+	
 	/**
 	 * Get the failure code for this verification event
-	 * @return 
+	 *
+	 * @return
 	 */
-	public FailureCode getFailureCode(){
+	public FailureCode getFailureCode() {
 		return this.fc;
 	}
-
+	
 	/**
 	 * Set the failure code for this verification event
+	 *
 	 * @param fc the failure code
 	 */
-	public void setFailureCode(FailureCode fc){
+	public void setFailureCode(FailureCode fc) {
 		this.fc = fc;
 	}
 }
