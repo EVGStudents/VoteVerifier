@@ -10,12 +10,12 @@
 */
 package ch.bfh.univoteverifier.common;
 
-import ch.bfh.univoteverifier.gui.StatusEvent;
-import ch.bfh.univoteverifier.gui.StatusListener;
-import ch.bfh.univoteverifier.gui.StatusMessage;
-import ch.bfh.univoteverifier.gui.StatusSubject;
+import ch.bfh.univoteverifier.gui.VerificationListener;
+import ch.bfh.univoteverifier.gui.VerificationMessage;
+import ch.bfh.univoteverifier.gui.VerificationSubject;
 import ch.bfh.univoteverifier.verification.SectionNameEnum;
-import ch.bfh.univoteverifier.verification.VerificationResult;
+import ch.bfh.univoteverifier.verification.VerificationEnum;
+import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 public class GUIMessenger {
 
     ResourceBundle rb;
-    StatusSubject ss;
+    VerificationSubject ss;
     SectionNameEnum activeSection = SectionNameEnum.UNSET;
 
     /**
@@ -50,8 +50,9 @@ public class GUIMessenger {
      * @param str the message to send to the GUI to be displayed as an error in the console
      */
     public void sendErrorMsg(String str) {
-        StatusEvent se = new StatusEvent(StatusMessage.ERROR, str);
-        ss.notifyListeners(se);
+        VerificationEvent ve;
+        ve = new VerificationEvent(VerificationEnum.ERROR, str);
+        ss.notifyListeners(ve);
     }
 
     /**
@@ -60,10 +61,9 @@ public class GUIMessenger {
      *
      * @param vr the helper class in which the results are packaged
      */
-    public void sendVrfMsg(VerificationResult vr) {
-        vr.setSection(activeSection);
-        StatusEvent se = new StatusEvent(StatusMessage.VRF_RESULT, vr);
-        ss.notifyListeners(se);
+    public void sendVrfMsg(VerificationEvent ve) {
+        ve.setSection(activeSection);
+        ss.notifyListeners(ve);
     }
 
     /**
@@ -115,7 +115,7 @@ public class GUIMessenger {
      * @return the status subject for this object which is part of the observer
      * pattern
      */
-    public StatusSubject getStatusSubject() {
+    public VerificationSubject getStatusSubject() {
         return this.ss;
     }
 
@@ -124,30 +124,30 @@ public class GUIMessenger {
      * used to display messages in the status console of the GUI as well as
      * relay information regarding the status of verification process
      */
-    private class ConcreteSubject implements StatusSubject {
+    private class ConcreteSubject implements VerificationSubject {
 
         public ConcreteSubject() {
         }
-        ArrayList<StatusListener> listeners = new ArrayList();
+        ArrayList<VerificationListener> listeners = new ArrayList();
 
         @Override
-        public void addListener(StatusListener sl) {
+        public void addListener(VerificationListener sl) {
             Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "listener registered {0}", sl.getClass().getEnclosingClass());
             listeners.add(sl);
         }
 
         @Override
-        public void removeListener(StatusListener sl) {
+        public void removeListener(VerificationListener sl) {
             listeners.remove(sl);
         }
 
         @Override
-        public void notifyListeners(StatusEvent se) {
+        public void notifyListeners(VerificationEvent ve) {
             Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "notifyListeners called");
 
-            for (StatusListener pl : listeners) {
+            for (VerificationListener pl : listeners) {
                 Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "listener notified: {0}", pl.getClass().getEnclosingClass());
-                pl.updateStatus(se);
+                pl.updateStatus(ve);
             }
         }
     }

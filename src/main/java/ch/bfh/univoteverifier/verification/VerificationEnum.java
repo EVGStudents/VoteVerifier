@@ -25,8 +25,9 @@ public enum VerificationEnum {
 	SETUP_SIGN_PARAM_SIGN(170),
 	
 	EL_SETUP_EA_CERT(200),
-	EL_SETUP_EA_CERT_SIGN(210);
+	EL_SETUP_EA_CERT_SIGN(210),
 
+        ERROR(666);
 	//the ID of the verification
 	private final int code;
 	

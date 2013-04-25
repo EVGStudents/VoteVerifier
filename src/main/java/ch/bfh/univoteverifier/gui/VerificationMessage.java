@@ -16,7 +16,7 @@ package ch.bfh.univoteverifier.gui;
  * 
 * Enumerates the types of messages that the GUI receives
 */
-public enum StatusMessage {
+public enum VerificationMessage {
 
     /**
      * the type of StatusMessages possible. Used by the GUI to identify incoming
@@ -33,7 +33,7 @@ private int code;
 * Construct a Message
 * @param c the code for the message
 */
-private StatusMessage(int c){
+private VerificationMessage(int c){
 code = c;
 }
 

@@ -12,7 +12,7 @@ package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.verification.SectionNameEnum;
-import ch.bfh.univoteverifier.verification.VerificationResult;
+import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.List;
 //
 ///**
@@ -27,7 +27,7 @@ public class ElectionSetupRunner extends Runner{
 
 
 	@Override
-	public List<VerificationResult> run() {
+	public List<VerificationEvent> run() {
 		return null;
 	}
 

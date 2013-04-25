@@ -17,7 +17,7 @@ import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import ch.bfh.univoteverifier.utils.RSASignature;
 import ch.bfh.univoteverifier.verification.VerificationEnum;
-import ch.bfh.univoteverifier.verification.VerificationResult;
+import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.math.BigInteger;
 import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPublicKey;
@@ -81,7 +81,7 @@ public class RSAImplementer {
 	 * @throws ElectionBoardServiceFault
 	 * @throws CertificateException
 	 */
-	public VerificationResult vrfEACertSign() throws ElectionBoardServiceFault, CertificateException{
+	public VerificationEvent vrfEACertSign() throws ElectionBoardServiceFault, CertificateException{
 		//get the certificte as a string
 		String eaCertStr = CryptoFunc.getX509Certificate(ebp.getElectionSystemInfo().getElectionAdministration().getValue()).toString();
 		String eID = ebp.getElectionDefinition().getElectionId();
@@ -100,6 +100,6 @@ public class RSAImplementer {
 		
 		boolean r = vrfRSASign(Config.em,bi,signature);
 		
-		return new VerificationResult(VerificationEnum.EL_SETUP_EA_CERT_SIGN, true);
+		return new VerificationEvent(VerificationEnum.EL_SETUP_EA_CERT_SIGN, true);
 	}
 }

@@ -13,7 +13,8 @@ package ch.bfh.univoteverifier.gui;
 import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.MainController;
-import ch.bfh.univoteverifier.verification.VerificationResult;
+import ch.bfh.univoteverifier.verification.VerificationEnum;
+import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -58,7 +59,7 @@ public class MainGUI {
     JTextArea statusText;
     Color grey, darkGrey;
     MainController mc;
-    StatusListener sl;
+    VerificationListener sl;
     private String descDefault = "Please select the type of verification to make";
     JLabel vrfDescLabel, choiceDescLabel;
     VrfButton btnInd, btnUni;
@@ -580,7 +581,8 @@ public class MainGUI {
     }
 
     /**
-     * a Button type that contains a description  and methods that changes its appearance
+     * a Button type that contains a description and methods that changes its
+     * appearance
      */
     private class VrfButton extends JButton {
 
@@ -630,49 +632,42 @@ public class MainGUI {
     }
 
     /**
-     * This inner class represent the implementation of the observer pattern for
+     * This inner class represents the implementation of the observer pattern for
      * the status messages for the console and verification parts of the gui
      *
      * @author prinstin
      */
-    class StatusUpdate implements StatusListener {
+    class StatusUpdate implements VerificationListener {
 
         @Override
-        public void updateStatus(StatusEvent se) {
+        public void updateStatus(VerificationEvent ve) {
 
-            Logger.getLogger(StatusUpdate.class.getName()).log(Level.INFO, "status event received.  Type:{0}", se.getStatusMessage());
-            switch (se.getStatusMessage()) {
-                case VRF_RESULT:
-                    VerificationResult vr = se.getVerificationResult();
-                    String sectionName = vr.getSection().toString();
-                    if (activeVrfPanel == null) {
-                        activeVrfPanel = new VrfPanel(sectionName);
-                        innerPanel.add(activeVrfPanel);
-                    } else if (!activeVrfPanel.getName().equals(sectionName)) {
-                        activeVrfPanel = new VrfPanel((sectionName));
-                        innerPanel.add(activeVrfPanel);
-                    }
+            Logger.getLogger(StatusUpdate.class.getName()).log(Level.INFO, "status event received.  Type:{0}", ve.getVerificationEnum());
+            if (ve.getVerificationEnum() == VerificationEnum.ERROR) {
+                statusText.append("\n" + ve.getMessage());
+                statusText.setCaretPosition(statusText.getText().length());
+            } else {
+                String sectionName = ve.getSection().toString();
+                if (activeVrfPanel == null) {
+                    activeVrfPanel = new VrfPanel(sectionName);
+                    innerPanel.add(activeVrfPanel);
+                } else if (!activeVrfPanel.getName().equals(sectionName)) {
+                    activeVrfPanel = new VrfPanel((sectionName));
+                    innerPanel.add(activeVrfPanel);
+                }
 
-                    Boolean result = vr.getResult();
-                    int code = vr.getVerification().getID();
-                    String vrfType = getTextFromVrfCode(code);
-                    String outputText = "\n" + vrfType + " ............. " + result;
-                    //statusText.append(outputText);
-                    statusText.setText(statusText.getText() + outputText);
+                Boolean result = ve.getResult();
+                int code = ve.getVerificationEnum().getID();
+                String vrfType = getTextFromVrfCode(code);
+                String outputText = "\n" + vrfType + " ............. " + result;
+                //statusText.append(outputText);
+                statusText.setText(statusText.getText() + outputText);
 
-                    //add to GUI verification area
-                     Logger.getLogger(StatusUpdate.class.getName()).log(Level.INFO, "console output {0}", outputText);
-                    activeVrfPanel.addResultPanel(vrfType, result);
+                //add to GUI verification area
+                Logger.getLogger(StatusUpdate.class.getName()).log(Level.INFO, "console output {0}", outputText);
+                activeVrfPanel.addResultPanel(vrfType, result);
 
-                    break;
-                case VRF_STATUS:
-                    statusText.append("\n" + se.message);
-                    statusText.setCaretPosition(statusText.getText().length());
-                    break;
-                case ERROR:
-                    statusText.append("\n" + se.message);
-                    statusText.setCaretPosition(statusText.getText().length());
-                    break;
+
             }
         }
     }

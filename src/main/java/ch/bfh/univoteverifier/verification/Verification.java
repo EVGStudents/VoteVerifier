@@ -14,9 +14,7 @@ import ch.bfh.univote.common.Certificate;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.CryptoFunc;
-import ch.bfh.univoteverifier.gui.StatusEvent;
-import ch.bfh.univoteverifier.gui.StatusListener;
-import ch.bfh.univoteverifier.gui.StatusSubject;
+import ch.bfh.univoteverifier.gui.VerificationSubject;
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.GUIMessenger;
@@ -42,7 +40,7 @@ public abstract class Verification {
 	
 	//used to store the results of a verification
 	//maybe add two list for the two types of order
-	protected List<VerificationResult> res;
+	protected List<VerificationEvent> res;
 	
 	/**
 	 * Construct a new abstract verification with a given election ID
@@ -76,7 +74,7 @@ public abstract class Verification {
 	 * Get the status subject of the GUIMessenger stored in this class
 	 * @return the status subject
 	 */
-	public StatusSubject getStatusSubject() {
+	public VerificationSubject getStatusSubject() {
 		return this.gm.getStatusSubject();
 	}
 	
@@ -119,7 +117,7 @@ public abstract class Verification {
 	/**
 	 * Run a verification
 	 */
-	public List<VerificationResult> runVerification() {
+	public List<VerificationEvent> runVerification() {
 		
 		//initialize the public keys - ToDO decomment this when the webservices will work
 //		initializePublicKeys();
@@ -129,7 +127,7 @@ public abstract class Verification {
 		
 		//run the runners  and get the results
 		for(Runner r : runners){
-			List<VerificationResult> l = r.run();
+			List<VerificationEvent> l = r.run();
 			
 			//check that a list isn't empty
 			if(l != null){

@@ -12,7 +12,7 @@ package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.verification.SectionNameEnum;
-import ch.bfh.univoteverifier.verification.VerificationResult;
+import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class Runner {
 	
 
-	protected List<VerificationResult> partialResults;
+	protected List<VerificationEvent> partialResults;
 	protected ElectionBoardProxy ebp;
 	private final SectionNameEnum runnerName;
 
@@ -43,6 +43,6 @@ public abstract class Runner {
 	 * implemented
 	 * @return the list of results
 	 */
-	public abstract List<VerificationResult> run();
+	public abstract List<VerificationEvent> run();
 
 }

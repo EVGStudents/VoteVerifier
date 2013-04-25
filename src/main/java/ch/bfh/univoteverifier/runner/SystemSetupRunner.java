@@ -37,21 +37,21 @@ public class SystemSetupRunner extends Runner{
 	}
 	
 	@Override
-	public List<VerificationResult> run() {
+	public List<VerificationEvent> run() {
 		//perform the checks we want - pay attention to exceptions!
-		VerificationResult v1 = prmVrf.vrfPrimeP();
+		VerificationEvent v1 = prmVrf.vrfPrimeP();
 		gm.sendVrfMsg(v1);
 		
-		VerificationResult v2 = prmVrf.vrfPrimeQ();
+		VerificationEvent v2 = prmVrf.vrfPrimeQ();
 		gm.sendVrfMsg(v2);
 
-		VerificationResult v3 = prmVrf.vrfGenerator();
+		VerificationEvent v3 = prmVrf.vrfGenerator();
 		gm.sendVrfMsg(v3);
 
-		VerificationResult v4 = prmVrf.vrfSafePrime();
+		VerificationEvent v4 = prmVrf.vrfSafePrime();
 		gm.sendVrfMsg(v4);
 
-		VerificationResult v5 = prmVrf.vrfParamLen();
+		VerificationEvent v5 = prmVrf.vrfParamLen();
 		gm.sendVrfMsg(v5);
 
 		//cache the results	
