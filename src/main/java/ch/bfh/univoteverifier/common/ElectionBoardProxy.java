@@ -3,10 +3,10 @@
  * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
  * Applied Sciences, Engineering and Information Technology, Research Institute
  * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
- * 
-* Project independent UniVoteVerifier.
- * 
-*/
+ *
+ * Project independent UniVoteVerifier.
+ *
+ */
 package ch.bfh.univoteverifier.common;
 
 import ch.bfh.univote.common.Ballot;
@@ -34,11 +34,15 @@ import ch.bfh.univote.common.VoterCertificates;
 import ch.bfh.univote.election.ElectionBoard;
 import ch.bfh.univote.election.ElectionBoardService;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
-import java.io.Serializable;
+import com.thoughtworks.xstream.XStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,23 +61,23 @@ public class ElectionBoardProxy {
 	private ElectionSystemInfo sysInfo;
 	private ElectionDefinition elDef;
 	private EncryptionParameters encParam;
-	private EncryptionKeyShare encKeyShare;
+	private Map<String, EncryptionKeyShare> encKeyShare;
 	private EncryptionKey encKey;
-	private BlindedGenerator blindGen;
+	private Map<String, BlindedGenerator> blindGen;
 	private ElectionGenerator elGen;
 	private ElectionOptions elOpt;
 	private ElectionData elData;
 	private ElectoralRoll elRoll;
 	private VoterCertificates voterCerts;
-	private MixedVerificationKeys mixVerKeyBy;
+	private Map<String, MixedVerificationKeys> mixVerKeyBy;
 	private MixedVerificationKeys mixVerKey;
 	private List<VoterCertificate> latelyRegVoteCerts;
-	private List<MixedVerificationKey> latelyMixVerKeyBy;
+	private Map<String, List<MixedVerificationKey>> latelyMixVerKeyBy;
 	private List<MixedVerificationKey> latelyMixVerKey;
 	private Ballots ballots;
-	private MixedEncryptedVotes mixEncVotesBy;
+	private Map<String, MixedEncryptedVotes> mixEncVotesBy;
 	private MixedEncryptedVotes mixEncVotes;
-	private PartiallyDecryptedVotes parDecVotes;
+	private Map<String, PartiallyDecryptedVotes> parDecVotes;
 	private DecryptedVotes decryptedVotes;
 	private DecodedVotes decodedVotes;
 	private ElectionBoard eb;
@@ -115,19 +119,16 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Construct an ElectionBoardPeoxy with a given election ID. This must
-	 * be used only for the tests
+	 * Construct an ElectionBoardProxy. This constructor will load the
+	 * locally saved data previously downloaded from the univote election
+	 * board.
 	 *
-	 * @param eID the ID of the election
-	 * @param localData if true, the election board proxy will use some
-	 * local data save previously
+	 * USE FOR TEST ONLY!
 	 */
-	public ElectionBoardProxy(String eID, boolean localData) {
-		this.eID = eID;
-
-
-		//read the object from a file
-		//ToDo
+	public ElectionBoardProxy() throws FileNotFoundException {
+		//this ID must correspond to the suffix of the XML object stored
+		this.eID = "local-2013";
+		readElectionDataFromXML();
 	}
 
 	/**
@@ -137,6 +138,21 @@ public class ElectionBoardProxy {
 	private void getElectionBoard() {
 		ElectionBoardService ebs = new ElectionBoardService(wsdlURL);
 		eb = ebs.getElectionBoardPort();
+	}
+
+	/**
+	 * Read the relative data for the generated web service artifacts from
+	 * XML files instead of from the network
+	 */
+	private void readElectionDataFromXML() throws FileNotFoundException {
+		XStream xstream = new XStream();
+		String dataPath = "src/test/java/ch/bfh/univoteverifier/testresources/";
+
+		this.elData = (ElectionData) xstream.fromXML(new FileInputStream(dataPath + "ElectionData" + eID + ".xml"));
+
+		
+		//read the object from a file
+		//ToDo
 	}
 
 	/**
@@ -218,10 +234,15 @@ public class ElectionBoardProxy {
 	 */
 	public EncryptionKeyShare getEncryptionKeyShare(String tallierID) throws ElectionBoardServiceFault {
 		if (encKeyShare == null) {
-			encKeyShare = eb.getEncryptionKeyShare(eID, tallierID);
+			encKeyShare = new HashMap<>();
 		}
 
-		return encKeyShare;
+		if (encKeyShare.get(tallierID) == null) {
+
+			encKeyShare.put(tallierID, eb.getEncryptionKeyShare(eID, tallierID));
+		}
+
+		return encKeyShare.get(tallierID);
 	}
 
 	/**
@@ -247,10 +268,14 @@ public class ElectionBoardProxy {
 	 */
 	public BlindedGenerator getBlindedGenerator(String mixerID) throws ElectionBoardServiceFault {
 		if (blindGen == null) {
-			blindGen = eb.getBlindedGenerator(eID, mixerID);
+			blindGen = new HashMap<>();
 		}
 
-		return blindGen;
+		if (blindGen.get(mixerID) == null) {
+			blindGen.put(mixerID, eb.getBlindedGenerator(eID, mixerID));
+		}
+
+		return blindGen.get(mixerID);
 	}
 
 	/**
@@ -330,10 +355,15 @@ public class ElectionBoardProxy {
 	 */
 	public MixedVerificationKeys getMixedVerificationKeysBy(String mixerID) throws ElectionBoardServiceFault {
 		if (mixVerKeyBy == null) {
-			mixVerKeyBy = eb.getVerificationKeysMixedBy(eID, mixerID);
+			mixVerKeyBy = new HashMap<>();
 		}
 
-		return mixVerKeyBy;
+
+		if (mixVerKeyBy.get(mixerID) == null) {
+			mixVerKeyBy.put(mixerID, eb.getVerificationKeysMixedBy(eID, mixerID));
+		}
+
+		return mixVerKeyBy.get(mixerID);
 	}
 
 	/**
@@ -373,10 +403,14 @@ public class ElectionBoardProxy {
 	 */
 	public List<MixedVerificationKey> getLatelyMixedVerificationKeysBy(String mixerID) throws ElectionBoardServiceFault {
 		if (latelyMixVerKeyBy == null) {
-			latelyMixVerKeyBy = eb.getVerificationKeysLatelyMixedBy(eID, mixerID);
+			latelyMixVerKeyBy = new HashMap<>();
 		}
 
-		return latelyMixVerKeyBy;
+		if (latelyMixVerKeyBy.get(mixerID) == null) {
+			latelyMixVerKeyBy.put(mixerID, eb.getVerificationKeysLatelyMixedBy(eID, mixerID));
+		}
+
+		return latelyMixVerKeyBy.get(mixerID);
 	}
 
 	/**
@@ -416,10 +450,14 @@ public class ElectionBoardProxy {
 	 */
 	public MixedEncryptedVotes getMixedEncryptedVotesBy(String mixerID) throws ElectionBoardServiceFault {
 		if (mixEncVotesBy == null) {
-			mixEncVotesBy = eb.getEncryptedVotesMixedBy(eID, mixerID);
+			mixEncVotesBy = new HashMap<>();
 		}
 
-		return mixEncVotesBy;
+		if (mixEncVotesBy.get(mixerID) == null) {
+			mixEncVotesBy.put(mixerID, eb.getEncryptedVotesMixedBy(eID, mixerID));
+		}
+
+		return mixEncVotesBy.get(mixerID);
 	}
 
 	/**
@@ -445,10 +483,14 @@ public class ElectionBoardProxy {
 	 */
 	public PartiallyDecryptedVotes getPartiallyDecryptedVotes(String tallierID) throws ElectionBoardServiceFault {
 		if (parDecVotes == null) {
-			parDecVotes = eb.getPartiallyDecryptedVotes(eID, tallierID);
+			parDecVotes = new HashMap<>();
 		}
 
-		return parDecVotes;
+		if (parDecVotes.get(tallierID) == null) {
+			parDecVotes.put(tallierID, eb.getPartiallyDecryptedVotes(eID, tallierID));
+		}
+
+		return parDecVotes.get(tallierID);
 	}
 
 	/**

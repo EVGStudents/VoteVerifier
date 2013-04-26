@@ -13,7 +13,7 @@ package ch.bfh.univoteverifier.common;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.interfaces.RSAPublicKey;
+import java.security.cert.X509Certificate;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -57,11 +57,11 @@ public class Config {
 	 * These values are initialized when we run a verification 
 	 * so that they are available through the whole system
 	 */
-	public static RSAPublicKey ca;
-	public static RSAPublicKey ea;
-	public static RSAPublicKey em;
-	public static Map<String, RSAPublicKey> talliersPubKeys;
-	public static Map<String, RSAPublicKey> mixersPubKeys;
+	public static X509Certificate caCert;
+	public static X509Certificate eaCert;
+	public static X509Certificate emCert;
+	public static Map<String, X509Certificate> tCerts;
+	public static Map<String, X509Certificate> mCerts;
 	public static int tallierCount;
 	public static int mixerCount;
 	

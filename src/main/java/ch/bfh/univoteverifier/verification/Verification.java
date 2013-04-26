@@ -90,18 +90,18 @@ public abstract class Verification {
 	private void initializePublicKeys() {
 		try {
 			//initialize ca, em, ea
-			Config.ca = CryptoFunc.getRSAPublicKeyFromCert(ebproxy.getElectionSystemInfo().getCertificateAuthority().getValue());
-			Config.em = CryptoFunc.getRSAPublicKeyFromCert(ebproxy.getElectionSystemInfo().getElectionManager().getValue());
-			Config.ea = CryptoFunc.getRSAPublicKeyFromCert(ebproxy.getElectionSystemInfo().getElectionAdministration().getValue());
+			Config.caCert = CryptoFunc.getX509Certificate(ebproxy.getElectionSystemInfo().getCertificateAuthority().getValue());
+			Config.emCert = CryptoFunc.getX509Certificate(ebproxy.getElectionSystemInfo().getElectionManager().getValue());
+			Config.eaCert = CryptoFunc.getX509Certificate(ebproxy.getElectionSystemInfo().getElectionAdministration().getValue());
 
 			//initialize mixers
 			for (Certificate mCert : ebproxy.getElectionSystemInfo().getMixer()) {
-				Config.mixersPubKeys.put("mixer", CryptoFunc.getRSAPublicKeyFromCert(mCert.getValue()));
+				Config.mCerts.put("mixer", CryptoFunc.getX509Certificate(mCert.getValue()));
 			}
 
 			//initialize talliers
 			for (Certificate tCert : ebproxy.getElectionSystemInfo().getTallier()) {
-				Config.mixersPubKeys.put("tallier", CryptoFunc.getRSAPublicKeyFromCert(tCert.getValue()));
+				Config.tCerts.put("tallier", CryptoFunc.getX509Certificate(tCert.getValue()));
 			}
 
 			Config.mixerCount = ebproxy.getElectionSystemInfo().getMixer().size();

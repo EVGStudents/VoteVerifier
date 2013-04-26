@@ -33,8 +33,8 @@ public class CertificatesImplementer {
 
 	/**
 	 * Verify a certificate
-	 * @param c the list of certificates that compose the certification path. THe last certificate
-	 * of the list must the CA certificate
+	 * @param c the list of certificates that compose the certification path. The last certificate
+	 * of the list must be the CA certificate
 	 * @return true if the certificate algorithm path validation succeed
 	 * @throws CertificateException
 	 * @throws InvalidAlgorithmParameterException

@@ -89,18 +89,6 @@ public class CryptoFunc {
 	}
 
 	/**
-	 * Get the RSAPublic key from a certificate
-	 *
-	 * @param b the byte array representing the certificate
-	 * @return the RSA public key
-	 * @throws CertificateException
-	 */
-	public static RSAPublicKey getRSAPublicKeyFromCert(byte[] b) throws CertificateException {
-		RSAPublicKey pubKey = (RSAPublicKey) getX509Certificate(b).getPublicKey();
-		return pubKey;
-	}
-
-	/**
 	 * ToDO - probably useless Concatenates n given BigInteger values into a
 	 * string and pads them with the arbitrary string 001100
 	 *
