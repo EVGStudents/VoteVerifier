@@ -13,6 +13,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * This class test the behavior of the ParametersImplementer
  *
  * @author snake
  */
@@ -29,6 +30,9 @@ public class ParamImplTest {
 		pi.setG(new BigInteger("65537"));
 	}
 
+	/**
+	 * Test that the parameters are not long as expected
+	 */
 	@Test
 	public void testParamNotLen() {
 		VerificationEvent v = pi.vrfParamLen();
@@ -36,6 +40,9 @@ public class ParamImplTest {
 		assertEquals(v.getFailureCode(), FailureCode.FALSE_PARAMETERS_LENGTH);
 	}
 
+	/**
+	 * Test that P is not a safe prime
+	 */
 	@Test
 	public void testPisNotSafePrime() {
 		VerificationEvent v = pi.vrfSafePrime();
@@ -44,6 +51,9 @@ public class ParamImplTest {
 
 	}
 
+	/**
+	 * Test that P is not prime
+	 */
 	@Test
 	public void testPisNotPrime() {
 		VerificationEvent v = pi.vrfPrimeP();
@@ -51,6 +61,9 @@ public class ParamImplTest {
 		assertEquals(v.getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
 	}
 
+	/**
+	 * Test that Q is not prime
+	 */
 	@Test
 	public void testQisNotPrime() {
 		VerificationEvent v = pi.vrfPrimeQ();
@@ -58,6 +71,9 @@ public class ParamImplTest {
 		assertEquals(v.getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
 	}
 
+	/**
+	 * Test that G is not a generator
+	 */
 	@Test
 	public void testGisNotGenerator() {
 		VerificationEvent v = pi.vrfGenerator();
