@@ -10,7 +10,6 @@
  */
 package ch.bfh.univoteverifier.runnertest;
 
-import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.GUIMessenger;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.common.RunnerName;

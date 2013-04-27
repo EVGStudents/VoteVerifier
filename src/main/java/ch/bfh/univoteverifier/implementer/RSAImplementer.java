@@ -44,7 +44,8 @@ public class RSAImplementer {
 	public RSAImplementer(ElectionBoardProxy ebp) {
 		this.ebp = ebp;
 		sc = new StringConcatenator();
-		emPubKey = (RSAPublicKey) Config.emCert.getPublicKey();
+		//emPubKey = (RSAPublicKey) Config.emCert.getPublicKey();
+		emPubKey = null;
 	}
 
 	/**
