@@ -3,10 +3,10 @@
  * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
  * Applied Sciences, Engineering and Information Technology, Research Institute
  * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
- * 
-* Project independent UniVoteVerifier.
- * 
-*/
+ *
+ * Project independent UniVoteVerifier.
+ *
+ */
 package ch.bfh.univoteverifier.implementer;
 
 import ch.bfh.univote.election.ElectionBoardServiceFault;
@@ -70,7 +70,7 @@ public class RSAImplementer {
 	 * @param s the RSAPublicKey
 	 * @param clearText the text from where to get the signature
 	 * @param signature the pre-computed signature from the board
-	 * @return
+	 * @return true if the signature is verified correctly otherwise not
 	 */
 	public boolean vrfRSASign(RSAPublicKey s, BigInteger clearText, BigInteger signature) {
 		BigInteger ver = clearText.modPow(s.getPublicExponent(), s.getModulus());
@@ -112,6 +112,6 @@ public class RSAImplementer {
 
 		boolean r = vrfRSASign(emPubKey, clearText, signature);
 
-		return new VerificationEvent(VerificationType.EL_SETUP_EA_CERT_SIGN, r);
+		return new VerificationEvent(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r);
 	}
 }

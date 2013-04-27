@@ -14,11 +14,6 @@ import ch.bfh.univoteverifier.verification.IndividualVerification;
 import ch.bfh.univoteverifier.verification.UniversalVerification;
 import ch.bfh.univoteverifier.verification.Verification;
 import java.io.File;
-import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class is the controller who is responsible for the communication between
@@ -29,24 +24,6 @@ import java.util.logging.Logger;
 public class MainController {
 
 	private Verification v;
-
-	/**
-	 * Create a instance of the main controller. Only 1 is needed and is
-	 * created by the GUI
-	 */
-	public MainController() {
-		//initialize the root logger - maybe this should be placed into the main method
-		Handler h;
-
-		//		try {
-		//			h = new FileHandler("verification.log");
-		//			Logger.getLogger("").addHandler(h);
-		//
-		//		} catch (	IOException | SecurityException ex) {
-		//			Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-		//		}
-
-	}
 
 	/**
 	 * Create an universal verification
@@ -83,8 +60,9 @@ public class MainController {
 
 	/**
 	 * ToDo
+	 *
 	 * @param filepath
-	 * @return 
+	 * @return
 	 */
 	public String decodeQRCode(File filepath) {
 		QRCode qr = new QRCode();

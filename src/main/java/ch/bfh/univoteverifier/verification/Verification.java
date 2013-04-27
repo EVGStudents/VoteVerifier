@@ -87,26 +87,23 @@ public abstract class Verification {
 	 * Initialize the public key of the different entities as well as
 	 * talliers and mixers count
 	 */
-	private void initializePublicKeys() {
+	private void initializeEntityCertificates() {
 		try {
-			//initialize ca, em, ea
+			//initialize ca, em, ea certificate
 			Config.caCert = CryptoFunc.getX509Certificate(ebproxy.getElectionSystemInfo().getCertificateAuthority().getValue());
 			Config.emCert = CryptoFunc.getX509Certificate(ebproxy.getElectionSystemInfo().getElectionManager().getValue());
 			Config.eaCert = CryptoFunc.getX509Certificate(ebproxy.getElectionSystemInfo().getElectionAdministration().getValue());
 
-			//initialize mixers
+			//initialize mixers certificates
 			for (Certificate mCert : ebproxy.getElectionSystemInfo().getMixer()) {
 				Config.mCerts.put("mixer", CryptoFunc.getX509Certificate(mCert.getValue()));
 			}
 
-			//initialize talliers
+			//initialize talliers certificates
 			for (Certificate tCert : ebproxy.getElectionSystemInfo().getTallier()) {
 				Config.tCerts.put("tallier", CryptoFunc.getX509Certificate(tCert.getValue()));
 			}
 
-			Config.mixerCount = ebproxy.getElectionSystemInfo().getMixer().size();
-
-			Config.tallierCount = ebproxy.getElectionSystemInfo().getTallier().size();
 		} catch (CertificateException | ElectionBoardServiceFault ex) {
 			LOGGER.log(Level.SEVERE, null, ex);
 			gm.sendErrorMsg(ex.getMessage());
@@ -119,7 +116,7 @@ public abstract class Verification {
 	public List<VerificationEvent> runVerification() {
 
 		//initialize the public keys - ToDO decomment this when the webservices will work
-		//		initializePublicKeys();
+		//		initializeEntityCertificates();
 
 		if (runners.isEmpty()) {
 			LOGGER.log(Level.INFO, "There aren't runners. The verification will not run.");

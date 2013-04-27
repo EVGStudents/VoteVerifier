@@ -3,10 +3,10 @@
  * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
  * Applied Sciences, Engineering and Information Technology, Research Institute
  * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
- * 
-* Project independent UniVoteVerifier.
- * 
-*/
+ *
+ * Project independent UniVoteVerifier.
+ *
+ */
 package ch.bfh.univoteverifier.common;
 
 import java.io.ByteArrayInputStream;
@@ -17,7 +17,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPublicKey;
 import java.util.logging.Logger;
 import javax.xml.bind.DatatypeConverter;
 
@@ -53,11 +52,12 @@ public class CryptoFunc {
 
 	/**
 	 * Compute the sha-1 hash of a given string
+	 *
 	 * @param s the string used to compute the hash
 	 * @return a BigInteger corresponding to the hash
-	 * @throws NoSuchAlgorithmException 
+	 * @throws NoSuchAlgorithmException
 	 */
-	public static BigInteger sha1(String s) throws NoSuchAlgorithmException{
+	public static BigInteger sha1(String s) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-1");
 		md.update(s.getBytes());
 
@@ -89,8 +89,8 @@ public class CryptoFunc {
 	}
 
 	/**
-	 * ToDO - probably useless Concatenates n given BigInteger values into a
-	 * string and pads them with the arbitrary string 001100
+	 * Concatenates n given BigInteger values into a string and pads them
+	 * with the arbitrary string 001100
 	 *
 	 * @param c an array of BigInteger values
 	 * @return and String value of the concatenated contents of the array

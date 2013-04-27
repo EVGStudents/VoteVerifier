@@ -22,7 +22,7 @@ import ch.bfh.univoteverifier.runner.SystemSetupRunner;
  * @author snake
  */
 public class UniversalVerification extends Verification {
-	
+
 	/**
 	 * Construct a universal verification with an election id
 	 *
@@ -31,7 +31,7 @@ public class UniversalVerification extends Verification {
 	 */
 	public UniversalVerification(String eID) {
 		super(eID);
-		
+
 		//initialize the runners based on the order
 		if (VerificationOrder.BY_ENTITES == displayType) {
 			createRunnerByEntities();
@@ -39,18 +39,18 @@ public class UniversalVerification extends Verification {
 			createRunnerBySpec();
 		}
 	}
-	
+
 	/**
 	 * Create the necessaries runners used to print the results ordered by
 	 * the specification
 	 */
 	private void createRunnerBySpec() {
 		SystemSetupRunner ssr = new SystemSetupRunner(gm);
-		ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy);
-		ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy);
-		ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy);
-		MixerTallierRunner mtr = new MixerTallierRunner(ebproxy);
-		
+		ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy, gm);
+		ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy, gm);
+		ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy, gm);
+		MixerTallierRunner mtr = new MixerTallierRunner(ebproxy, gm);
+
 		runners.add(ssr);
 		//Decomment when they are implemented
 		//		runners.add(esr);
@@ -58,7 +58,7 @@ public class UniversalVerification extends Verification {
 		//		runners.add(eperiodr);
 		//		runners.add(mtr);
 	}
-	
+
 	/**
 	 * Create the necessaries runners used to print the results ordered by
 	 * entities

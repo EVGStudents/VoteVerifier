@@ -9,6 +9,9 @@
  */
 package ch.bfh.univoteverifier.implementer;
 
+import ch.bfh.univoteverifier.common.Config;
+import ch.bfh.univoteverifier.common.VerificationType;
+import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertPath;
@@ -19,12 +22,15 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.PKIXParameters;
 import java.security.cert.TrustAnchor;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * This class is used to check X509 certificates
+ *
  * @author snake
  */
 public class CertificatesImplementer {
@@ -33,34 +39,84 @@ public class CertificatesImplementer {
 
 	/**
 	 * Verify a certificate
-	 * @param c the list of certificates that compose the certification path. The last certificate
-	 * of the list must be the CA certificate
+	 *
+	 * @param c the certificate to be verified
 	 * @return true if the certificate algorithm path validation succeed
 	 * @throws CertificateException
 	 * @throws InvalidAlgorithmParameterException
 	 * @throws NoSuchAlgorithmException
-	 * @throws CertPathValidatorException 
+	 * @throws CertPathValidatorException
 	 */
-	public boolean vrfCert(List<X509Certificate> c) throws CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, CertPathValidatorException {
+	public boolean vrfCert(X509Certificate c) throws CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, CertPathValidatorException {
 		CertificateFactory cf = CertificateFactory.getInstance("X.509");
 
+		//create the certification path
+		List<X509Certificate> l = new ArrayList<>();
+		l.add(c);
+		l.add(Config.caCert);
+
 		//generate the certification path
-		CertPath cp = cf.generateCertPath(c);
+		CertPath cp = cf.generateCertPath(l);
 
 		//get the CA certificate as trust anchor
-		X509Certificate trust = c.get(c.size()-1);
-		TrustAnchor anchor = new TrustAnchor(trust, null);
-		
+		TrustAnchor anchor = new TrustAnchor(Config.caCert, null);
+
 		PKIXParameters params = new PKIXParameters(Collections.singleton(anchor));
+
+		//we don't have CRL for univote, so disable revocation mechanism
 		params.setRevocationEnabled(false);
 
 		//create a new instance of the certificate path validator algorithm to check the certificates
+		//PKIX is the algorithm used to check X.509 certificates path
 		CertPathValidator cpv = CertPathValidator.getInstance("PKIX");
 
-		//this method throw an exception if the certification path doesn't validate
 		cpv.validate(cp, params);
-		
+
 		return true;
 	}
 
+	/**
+	 * Verify the Election Manager certificate
+	 *
+	 * @return a VerificationEvent with the relative data
+	 */
+	public VerificationEvent vrfEMCert() {
+		boolean r = false;
+
+		try {
+			r = vrfCert(Config.emCert);
+		} catch (CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
+			LOGGER.log(Level.SEVERE, null, ex);
+		} catch (CertPathValidatorException ex) {
+			//we now that the certificate path verification has failed so the result is false
+			r = false;
+			LOGGER.log(Level.SEVERE, null, ex);
+		}
+
+		VerificationEvent v = new VerificationEvent(VerificationType.SETUP_EM_CERT, r);
+		return v;
+
+	}
+
+	/**
+	 * Verify the Election Administrator certificate
+	 *
+	 * @return a VerificationEvent with the relative data
+	 */
+	public VerificationEvent vrfEACert() {
+		boolean r = false;
+
+		try {
+			r = vrfCert(Config.eaCert);
+		} catch (CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
+			LOGGER.log(Level.SEVERE, null, ex);
+		} catch (CertPathValidatorException ex) {
+			//we now that the certificate path verification has failed so the result is false
+			r = false;
+			LOGGER.log(Level.SEVERE, null, ex);
+		}
+
+		VerificationEvent v = new VerificationEvent(VerificationType.EL_SETUP_EA_CERT, r);
+		return v;
+	}
 }

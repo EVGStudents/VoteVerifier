@@ -9,7 +9,7 @@
  */
 package ch.bfh.univoteverifier.verification;
 
-import ch.bfh.univoteverifier.common.SectionNameEnum;
+import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.common.FailureCode;
 
@@ -20,14 +20,14 @@ import ch.bfh.univoteverifier.common.FailureCode;
  * @author prinstin
  */
 public class VerificationEvent {
-	
+
 	private final VerificationType v;
-	private SectionNameEnum section;
+	private RunnerName section;
 	private String msg;
 	private boolean impl;
 	private boolean result;
 	private FailureCode fc;
-	
+
 	/**
 	 * create a new verification event with an error message for the GUI
 	 *
@@ -40,7 +40,7 @@ public class VerificationEvent {
 		this.msg = msg;
 		this.fc = null;
 	}
-	
+
 	/**
 	 * Create a new verification event
 	 *
@@ -50,17 +50,17 @@ public class VerificationEvent {
 		this.v = v;
 		this.result = res;
 		this.impl = true;
-		this.fc = FailureCode.CLEAN;
+		this.fc = null;
 	}
-	
-	public SectionNameEnum getSection() {
+
+	public RunnerName getSection() {
 		return section;
 	}
-	
-	public void setSection(SectionNameEnum section) {
+
+	public void setSection(RunnerName section) {
 		this.section = section;
 	}
-	
+
 	/**
 	 * Get the verification type for this VerificationResult Identifies that
 	 * type of message/information that this event contains
@@ -70,7 +70,7 @@ public class VerificationEvent {
 	public VerificationType getVerificationEnum() {
 		return v;
 	}
-	
+
 	/**
 	 * Get the result for this VerificationEvent
 	 *
@@ -79,7 +79,7 @@ public class VerificationEvent {
 	public boolean getResult() {
 		return result;
 	}
-	
+
 	/**
 	 * To know if the verification associated with this result is
 	 * implemented
@@ -89,7 +89,7 @@ public class VerificationEvent {
 	public boolean isImplemented() {
 		return impl;
 	}
-	
+
 	/**
 	 * Set the implementation flag for this verification event
 	 *
@@ -99,7 +99,7 @@ public class VerificationEvent {
 	public void setImplemented(boolean impl) {
 		this.impl = impl;
 	}
-	
+
 	/**
 	 * get the String of the message this StatusEvent is delivering
 	 *
@@ -108,7 +108,7 @@ public class VerificationEvent {
 	public String getMessage() {
 		return msg;
 	}
-	
+
 	/**
 	 * Get the failure code for this verification event
 	 *
@@ -117,7 +117,7 @@ public class VerificationEvent {
 	public FailureCode getFailureCode() {
 		return this.fc;
 	}
-	
+
 	/**
 	 * Set the failure code for this verification event
 	 *
