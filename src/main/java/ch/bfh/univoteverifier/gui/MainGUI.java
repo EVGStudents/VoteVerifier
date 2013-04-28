@@ -15,11 +15,13 @@ import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
+import com.sun.xml.ws.security.impl.policy.Layout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -27,11 +29,15 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -60,7 +66,7 @@ public class MainGUI {
     Color grey, darkGrey;
     MainController mc;
     VerificationListener sl;
-    private String descDefault = "Please select the type of verification to make";
+    private String descDefault= "Please select the type of verification to make";;
     JLabel vrfDescLabel, choiceDescLabel;
     VrfButton btnInd, btnUni;
     VrfButton[] btns = {btnInd, btnUni};
@@ -73,6 +79,7 @@ public class MainGUI {
     JScrollPane vrfScrollPanel;
     private final Properties prop = new Properties();
     private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
+    ResourceBundle rb;
 
     /**
      * @param args
@@ -87,6 +94,7 @@ public class MainGUI {
      * controllers and displays the window of the GUI.
      */
     public void start() {
+        rb = ResourceBundle.getBundle("error", Locale.ENGLISH);
         prefs = Preferences.userNodeForPackage(MainGUI.class);
         rawEIDlist = prefs.get("eIDList", "Bern Zurich vsbfh-2013");
         Pattern pattern = Pattern.compile("\\s");
@@ -105,7 +113,7 @@ public class MainGUI {
         masterPanel.setOpaque(true); //content panes must be opaque
         frame.setContentPane(masterPanel);
 
-        frame.setTitle("Independent UniVote Verifier");
+        frame.setTitle(rb.getString("windowTitle"));
         frame.pack();
         frame.setVisible(true);
 
@@ -154,7 +162,9 @@ public class MainGUI {
         createFileSelectButton();
         JButton btnIndVrf = createIndVrfButton();
         btnStart = createStartButton();
+        
 
+        buttonPanel.add(getLangBtnPanel());
         buttonPanel.add(btnUniVrf);
         buttonPanel.add(btnIndVrf);
         buttonPanel.add(btnStart);
@@ -289,10 +299,73 @@ public class MainGUI {
         statusText.setLineWrap(true);
         statusText.setEditable(false);
         statusText.setFont(new Font("Monospaced", Font.PLAIN, 15));
-        statusText.setText("Welcome to the Independent UniVote Verifier.");
-        String nextText = statusText.getText() + "\nPlease select a choice from the menu above.";
+        statusText.setText(rb.getString("welcomeText1"));
+        String nextText = statusText.getText() + rb.getString("welcomeText2");
         statusText.setText(nextText);
         return statusText;
+    }
+/**
+ * create the panel which hold the button with flag icons representing the different languages possible for the program
+ * @return JPanel the panel which contains the flag buttons
+ */
+    private JPanel getLangBtnPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        
+        ActionListener al = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String btnName = ((JButton)e.getSource()).getName();
+                if (0==btnName.compareTo("btnEn"))
+                    changeLocale("EN");
+                else if (0==btnName.compareTo("btnFr"))
+                    changeLocale("FR");
+                else if (0==btnName.compareTo("btnDe"))
+                    changeLocale("DE");
+            }
+        };
+
+        JButton btnDe = new JButton(new ImageIcon(MainGUI.class
+                .getResource("/DE.png").getPath()));
+        btnDe.setBorder(BorderFactory.createEmptyBorder());
+        btnDe.setContentAreaFilled(false);
+        btnDe.setName("btnDe");
+        btnDe.addActionListener(al);
+
+        JButton btnEn = new JButton(new ImageIcon(MainGUI.class
+                .getResource("/EN.png").getPath()));
+        btnEn.setBorder(BorderFactory.createEmptyBorder());
+        btnEn.setContentAreaFilled(false);
+        btnEn.setName("btnEn");
+btnEn.addActionListener(al);
+
+        JButton btnFr = new JButton(new ImageIcon(MainGUI.class
+                .getResource("/FR.png").getPath()));
+        btnFr.setBorder(BorderFactory.createEmptyBorder());
+        btnFr.setContentAreaFilled(false);
+        btnFr.setName("btnFr");
+btnFr.addActionListener(al);
+        panel.add(btnDe);
+        panel.add(btnFr);
+        panel.add(btnEn);
+
+
+        return panel;
+    }
+
+    /**
+     * change the language displayed in the GUI
+     */
+    public void changeLocale(String str){
+        Locale loc = new Locale(str);
+ rb = ResourceBundle.getBundle("error", loc);
+        
+        btnStart.setText(rb.getString("start"));
+        btnUni.setText(rb.getString("btnUni"));
+        btnInd.setText(rb.getString("btnInd"));
+        frame.setTitle(rb.getString("windowTitle"));
+        
     }
 
     /**
@@ -387,8 +460,9 @@ public class MainGUI {
      * deactivated focused effects
      */
     public JButton createUniVrfButton() {
-        final String descUni = "Verify the results of an entire election.  Enter an election ID:";
-        btnUni = new VrfButton("Universal Verification", descUni);
+        String descUni = rb.getString("descUni");
+        String name = rb.getString("btnUni");
+        btnUni = new VrfButton(name, descUni);
         btnUni.addMouseListener(
                 new MouseListener() {
             @Override
@@ -403,19 +477,19 @@ public class MainGUI {
             public void mouseReleased(MouseEvent e) {
                 primeDescPanel();
                 dynamicChoicePanel.add(comboBox);
-                choiceDescLabel.setText("Type or select an election ID: ");
+                choiceDescLabel.setText(rb.getString("descEID"));
                 innerPanel.repaint();
                 uniVrfSelected = true;
-                descDefault = descUni;
+                descDefault = rb.getString("descUni");
                 btnInd.depress();
                 btnUni.press();
-                statusText.setText("Universal Verification");
+                statusText.setText(rb.getString("btnUni"));
                 statusText.setFont(new Font("Serif", Font.PLAIN, 32));
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                vrfDescLabel.setText(descUni);
+                vrfDescLabel.setText( rb.getString("descUni"));
             }
 
             @Override
@@ -435,8 +509,9 @@ public class MainGUI {
      */
     public JButton createIndVrfButton() {
 
-        final String descInd = "Verify that a given ballot has been received and the certificate is valid.  A QR Code is required.";
-        btnInd = new VrfButton("Individual Verification", descInd);
+        String descInd = rb.getString("descInd");
+        String name = rb.getString("btnInd");
+        btnInd = new VrfButton(name, descInd);
 
         btnInd.addMouseListener(
                 new MouseListener() {
@@ -451,18 +526,19 @@ public class MainGUI {
             @Override
             public void mouseReleased(MouseEvent e) {
                 primeDescPanel();
-                choiceDescLabel.setText("Please drag a QR code into the space below, or select a file:");
+                String descQRCode = rb.getString("descQRCode");
+                choiceDescLabel.setText(descQRCode);
                 dynamicChoicePanel.add(btnFileSelector);
                 innerPanel.repaint();
                 uniVrfSelected = false;
-                descDefault = descInd;
+                descDefault =  rb.getString("descInd");
                 btnUni.depress();
                 btnInd.press();
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                vrfDescLabel.setText(descInd);
+                vrfDescLabel.setText( rb.getString("descInd"));
             }
 
             @Override
@@ -485,12 +561,12 @@ public class MainGUI {
             public void actionPerformed(ActionEvent e) {
                 String decodeResults = "nothing";
                 final JFileChooser fc = new JFileChooser();
-                int returnVal = fc.showDialog(innerPanel, "Select");
+                int returnVal = fc.showDialog(innerPanel,  rb.getString("selectFile"));
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
 
                     File file = fc.getSelectedFile();
                     if (file == null) {
-                        statusText.append("File invalid");
+                        statusText.append(rb.getString("invalidFile"));
                     } else {
 
                         statusText.append("\n" + file.getPath());
@@ -499,7 +575,7 @@ public class MainGUI {
                             qr.decode(file);
                         } catch (IOException ex) {
                             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                            statusText.append("The file could not be read, please try again.");
+                            statusText.append(rb.getString("fileReadError"));
                         }
                     }
                 }
@@ -551,18 +627,18 @@ public class MainGUI {
                 btnInd.setEnabled(false);
                 btnUni.setEnabled(false);
 
-                String msg = "Beginning verification for ";
+                String msg = rb.getString("beginningVrfFor")+" ";
                 statusText.setFont(new Font("Monospaced", Font.PLAIN, 16));
                 if (uniVrfSelected) {
                     String eID = (String) comboBox.getSelectedItem();
-                    msg = msg + "the election id " + eID;
+                    msg = msg + rb.getString("forElectionId")+" " + eID;
                     rawEIDlist = rawEIDlist + " " + eID;
                     prefs.put("eIDList", rawEIDlist);
                     mc.universalVerification(eID);
                     mc.getStatusSubject().addListener(sl);
                     mc.runVerifcation();
                 } else {
-                    msg += "the provided ballot receipt.";
+                    msg += rb.getString("ballotProvided");
                     mc.individualVerification(eIDlist[0]);
                 }
                 statusText.setText(msg);

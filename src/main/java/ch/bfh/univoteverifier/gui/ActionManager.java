@@ -7,7 +7,6 @@ package ch.bfh.univoteverifier.gui;
 
 import java.util.HashMap;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
 
 
 /**
@@ -49,4 +48,5 @@ public class ActionManager {
     }
 
 
+    
 }
