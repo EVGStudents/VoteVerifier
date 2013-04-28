@@ -13,7 +13,7 @@ package ch.bfh.univoteverifier.gui;
 import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.MainController;
-import ch.bfh.univoteverifier.verification.VerificationEnum;
+import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.awt.Color;
 import java.awt.Component;
@@ -643,7 +643,7 @@ public class MainGUI {
         public void updateStatus(VerificationEvent ve) {
 
             Logger.getLogger(StatusUpdate.class.getName()).log(Level.INFO, "status event received.  Type:{0}", ve.getVerificationEnum());
-            if (ve.getVerificationEnum() == VerificationEnum.ERROR) {
+            if (ve.getVerificationEnum() == VerificationType.ERROR) {
                 statusText.append("\n" + ve.getMessage());
                 statusText.setCaretPosition(statusText.getText().length());
             } else {

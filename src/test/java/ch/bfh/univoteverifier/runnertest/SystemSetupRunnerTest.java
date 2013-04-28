@@ -1,20 +1,19 @@
 /*
-*
-*  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
-*   Bern University of Applied Sciences, Engineering and Information Technology,
-*   Research Institute for Security in the Information Society, E-Voting Group,
-*   Biel, Switzerland.
-*
-*   Project independent UniVoteVerifier.
-*
-*/
+ *
+ *  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+ *   Bern University of Applied Sciences, Engineering and Information Technology,
+ *   Research Institute for Security in the Information Society, E-Voting Group,
+ *   Biel, Switzerland.
+ *
+ *   Project independent UniVoteVerifier.
+ *
+ */
 package ch.bfh.univoteverifier.runnertest;
 
-import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.GUIMessenger;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
-import ch.bfh.univoteverifier.verification.SectionNameEnum;
-import ch.bfh.univoteverifier.verification.VerificationEnum;
+import ch.bfh.univoteverifier.common.RunnerName;
+import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,7 @@ import static org.junit.Assert.*;
 
 /**
  * Test the runner of the system setup
+ *
  * @author snake
  */
 public class SystemSetupRunnerTest {
@@ -30,20 +30,19 @@ public class SystemSetupRunnerTest {
 	SystemSetupRunner ssr;
 	List<VerificationEvent> mockList;
 	List<VerificationEvent> realList;
-	GUIMessenger gm ;
-	
+	GUIMessenger gm;
+
 	public SystemSetupRunnerTest() {
 		gm = new GUIMessenger();
-		ElectionBoardProxy ebp = new ElectionBoardProxy("sub-2013");
-		ssr = new SystemSetupRunner(ebp,gm);
+		ssr = new SystemSetupRunner(gm);
 		realList = ssr.run();
 		mockList = new ArrayList<>();
-		
-		mockList.add(new VerificationEvent(VerificationEnum.SETUP_P_IS_PRIME, true));
-		mockList.add(new VerificationEvent(VerificationEnum.SETUP_Q_IS_PRIME, true));
-		mockList.add(new VerificationEvent(VerificationEnum.SETUP_G_IS_GENERATOR, true));
-		mockList.add(new VerificationEvent(VerificationEnum.SETUP_P_IS_SAFE_PRIME, true));
-		mockList.add(new VerificationEvent(VerificationEnum.SETUP_PARAM_LEN, true));
+
+		mockList.add(new VerificationEvent(VerificationType.SETUP_P_IS_PRIME, true));
+		mockList.add(new VerificationEvent(VerificationType.SETUP_Q_IS_PRIME, true));
+		mockList.add(new VerificationEvent(VerificationType.SETUP_G_IS_GENERATOR, true));
+		mockList.add(new VerificationEvent(VerificationType.SETUP_P_IS_SAFE_PRIME, true));
+		mockList.add(new VerificationEvent(VerificationType.SETUP_PARAM_LEN, true));
 
 	}
 
@@ -51,7 +50,7 @@ public class SystemSetupRunnerTest {
 	 * Test if the size of the result list correspond
 	 */
 	@Test
-	public void testSizeOfResults(){
+	public void testSizeOfResults() {
 		assertEquals(mockList.size(), realList.size());
 	}
 
@@ -59,22 +58,22 @@ public class SystemSetupRunnerTest {
 	 * Test if the runner name correspond
 	 */
 	@Test
-	public void testRunnerType(){
-		assertEquals(ssr.getRunnerName(),SectionNameEnum.SYSTEM_SETUP);
+	public void testRunnerType() {
+		assertEquals(ssr.getRunnerName(), RunnerName.SYSTEM_SETUP);
 	}
 
 	/**
 	 * Test if the result list correspond with the one we have built
 	 */
 	@Test
-	public void testResultList(){
+	public void testResultList() {
 		int i;
 
-		for(i = 0 ; i < mockList.size() ; i++){
-			assertEquals(realList.get(i).getVerificationEnum(),mockList.get(i).getVerificationEnum());
+		for (i = 0; i < mockList.size(); i++) {
+			assertEquals(realList.get(i).getVerificationEnum(), mockList.get(i).getVerificationEnum());
 			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
 			assertTrue(realList.get(i).isImplemented());
+			assertNull(realList.get(i).getFailureCode());
 		}
 	}
-
 }

@@ -1,19 +1,18 @@
 /**
-*
-*  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
-*   Bern University of Applied Sciences, Engineering and Information Technology,
-*   Research Institute for Security in the Information Society, E-Voting Group,
-*   Biel, Switzerland.
-*
-*   Project independent UniVoteVerifier.
-*
-*/
+ *
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
+ * Applied Sciences, Engineering and Information Technology, Research Institute
+ * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ *
+ * Project independent UniVoteVerifier.
+ *
+ */
 package ch.bfh.univoteverifier.common;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.interfaces.RSAPublicKey;
+import java.security.cert.X509Certificate;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -21,6 +20,7 @@ import java.util.logging.Logger;
 
 /**
  * This class contains all the variables for the configuration
+ *
  * @author snake
  */
 public class Config {
@@ -29,9 +29,8 @@ public class Config {
 	 * Configuration file path
 	 */
 	public static final String CONFIG = "src/main/java/ch/bfh/univoteverifier/resources/config.properties";
-	
 	private static final Properties prop = new Properties();
-	
+
 	static {
 		try {
 			prop.load(new FileInputStream(CONFIG));
@@ -39,30 +38,26 @@ public class Config {
 			Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
-	
 	/**
-	 * Schnorr's parameters are fixed and don't change over the time.
+	 * Schnorr's parameters are fixed and don't change over the time, as
+	 * well as the hash algorithm for Schnorr's signatures and proof of
+	 * knowledge
 	 */
-	public static final BigInteger p= new BigInteger(prop.getProperty("schnorr_p"));
-	public static final BigInteger q= new BigInteger(prop.getProperty("schnorr_q"));
-	public static final BigInteger g= new BigInteger(prop.getProperty("schnorr_g"));
-	public static final String hashAlgorithm= prop.getProperty("hash_function");
-	
+	public static final BigInteger p = new BigInteger(prop.getProperty("schnorr_p"));
+	public static final BigInteger q = new BigInteger(prop.getProperty("schnorr_q"));
+	public static final BigInteger g = new BigInteger(prop.getProperty("schnorr_g"));
+	public static final String hashAlgorithm = prop.getProperty("hash_function");
 	/**
-	 * URL of the WSDL
+	 * URL of the WSDL of UniVote
 	 */
 	public static final String wsdlLocation = prop.getProperty("wsdl_url");
-
 	/**
-	 * These values are initialized when we run a verification 
-	 * so that they are available through the whole system
+	 * These values are initialized when we run a verification so that they
+	 * are available through the whole system
 	 */
-	public static RSAPublicKey ca;
-	public static RSAPublicKey ea;
-	public static RSAPublicKey em;
-	public static Map<String, RSAPublicKey> talliersPubKeys;
-	public static Map<String, RSAPublicKey> mixersPubKeys;
-	public static int tallierCount;
-	public static int mixerCount;
-	
+	public static X509Certificate caCert;
+	public static X509Certificate eaCert;
+	public static X509Certificate emCert;
+	public static Map<String, X509Certificate> tCerts;
+	public static Map<String, X509Certificate> mCerts;
 }

@@ -1,36 +1,41 @@
 /**
-*
-*  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
-*   Bern University of Applied Sciences, Engineering and Information Technology,
-*   Research Institute for Security in the Information Society, E-Voting Group,
-*   Biel, Switzerland.
-*
-*   Project independent UniVoteVerifier.
-*
-*/
+ *
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
+ * Applied Sciences, Engineering and Information Technology, Research Institute
+ * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ *
+ * Project independent UniVoteVerifier.
+ *
+ */
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import ch.bfh.univoteverifier.verification.SectionNameEnum;
+import ch.bfh.univoteverifier.common.GUIMessenger;
+import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.List;
-//
-///**
-// *
-// * @author snake
-// */
-public class ElectionSetupRunner extends Runner{
 
-	public ElectionSetupRunner(ElectionBoardProxy ebp) {
-		super(ebp, SectionNameEnum.ELECTION_SETUP);
+/**
+ * This class represent an ElectionSetupRunner
+ *
+ * @author snake
+ */
+public class ElectionSetupRunner extends Runner {
+
+	private final GUIMessenger gm;
+
+	/**
+	 * Construct an ElectionSetupRunner with a given ElectionBoardProxy
+	 *
+	 * @param ebp the ElectionBoardProxy from where get the data
+	 */
+	public ElectionSetupRunner(ElectionBoardProxy ebp, GUIMessenger gm) {
+		super(ebp, RunnerName.ELECTION_SETUP);
+		this.gm = gm;
 	}
-
 
 	@Override
 	public List<VerificationEvent> run() {
 		return null;
 	}
-
-
-	
 }
