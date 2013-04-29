@@ -365,6 +365,8 @@ btnFr.addActionListener(al);
         btnUni.setText(rb.getString("btnUni"));
         btnInd.setText(rb.getString("btnInd"));
         frame.setTitle(rb.getString("windowTitle"));
+        choiceDescLabel.setText(rb.getString("descQRCode"));
+        btnFileSelector.setText(rb.getString("selectFile"));
         
     }
 
@@ -463,6 +465,7 @@ btnFr.addActionListener(al);
         String descUni = rb.getString("descUni");
         String name = rb.getString("btnUni");
         btnUni = new VrfButton(name, descUni);
+        
         btnUni.addMouseListener(
                 new MouseListener() {
             @Override
@@ -555,7 +558,7 @@ btnFr.addActionListener(al);
      * user can select a file which contains a QRCode image
      */
     public void createFileSelectButton() {
-        btnFileSelector = new JButton("select file");
+        btnFileSelector = new JButton(rb.getString("selectFile"));
         btnFileSelector.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -18,7 +18,7 @@ public class ActionManager {
     private HashMap actions;
     protected static ActionManager manager;
     
-    protected ActionManager()
+    private ActionManager()
     {
         actions = new HashMap();
     }
