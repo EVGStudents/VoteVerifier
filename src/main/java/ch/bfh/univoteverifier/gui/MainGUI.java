@@ -10,10 +10,10 @@
  */
 package ch.bfh.univoteverifier.gui;
 
-import action.ActionManager;
-import action.ChangeLocaleAction;
-import action.FileChooserAction;
-import action.StartAction;
+import ch.bfh.univoteverifier.action.ActionManager;
+import ch.bfh.univoteverifier.action.ChangeLocaleAction;
+import ch.bfh.univoteverifier.action.FileChooserAction;
+import ch.bfh.univoteverifier.action.StartAction;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.common.Messenger;

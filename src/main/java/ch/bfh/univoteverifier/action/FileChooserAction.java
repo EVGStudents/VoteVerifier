@@ -8,7 +8,7 @@
  *   Project independent UniVoteVerifier.
  *
  */
-package action;
+package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.gui.ConsolePanel;
 import java.awt.event.ActionEvent;

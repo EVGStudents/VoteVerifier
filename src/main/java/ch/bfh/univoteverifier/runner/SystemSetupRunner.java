@@ -15,6 +15,8 @@ import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.Messenger;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class represent a MixerTallierRunner
@@ -45,16 +47,33 @@ public class SystemSetupRunner extends Runner {
 		//perform the checks we want - pay attention to exceptions!
 		VerificationEvent v1 = prmVrf.vrfPrimeP();
 		gm.sendVrfMsg(v1);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException ex) {
+			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
+		}
 
 		VerificationEvent v2 = prmVrf.vrfPrimeQ();
 		gm.sendVrfMsg(v2);
-
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException ex) {
+			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
+		}
 		VerificationEvent v3 = prmVrf.vrfGenerator();
 		gm.sendVrfMsg(v3);
-
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException ex) {
+			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
+		}
 		VerificationEvent v4 = prmVrf.vrfSafePrime();
 		gm.sendVrfMsg(v4);
-
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException ex) {
+			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
+		}
 		VerificationEvent v5 = prmVrf.vrfParamLen();
 		gm.sendVrfMsg(v5);
 

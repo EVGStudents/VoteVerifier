@@ -10,6 +10,7 @@
  */
 package ch.bfh.univoteverifier.verificationtest;
 
+import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.verification.UniversalVerification;
 import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.common.VerificationType;
@@ -31,9 +32,11 @@ public class UniversalVerificationTester {
 	List<VerificationEvent> realList;
 	String eID = "sub-2013";
 	final int RES_COUNT = 5;
+	Messenger m;
 
 	public UniversalVerificationTester() {
-//		v = new UniversalVerification(eID);
+		m = new Messenger();
+		v = new UniversalVerification(m, eID);
 		realList = v.runVerification();
 
 		mockList = new ArrayList<>();

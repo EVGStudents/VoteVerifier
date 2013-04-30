@@ -10,7 +10,7 @@
  */
 package ch.bfh.univoteverifier.gui;
 
-import action.ActionManager;
+import ch.bfh.univoteverifier.action.ActionManager;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;

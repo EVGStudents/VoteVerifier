@@ -144,7 +144,6 @@ public class RSAImplementer {
 		ElectionDefinition ed = ebp.getElectionDefinition();
 		Signature signature = ed.getSignature();
 
-
 		//get the data
 		String eID = ed.getElectionId();
 		String descr = ed.getTitle();
