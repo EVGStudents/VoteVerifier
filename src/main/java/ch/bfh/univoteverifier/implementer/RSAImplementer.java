@@ -9,8 +9,6 @@
  */
 package ch.bfh.univoteverifier.implementer;
 
-import ch.bfh.univote.common.Ballot;
-import ch.bfh.univote.common.Ballots;
 import ch.bfh.univote.common.ElectionDefinition;
 import ch.bfh.univote.common.Signature;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
@@ -19,15 +17,14 @@ import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.StringConcatenator;
-import ch.bfh.univoteverifier.utils.RSASignature;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -60,24 +57,6 @@ public class RSAImplementer {
 	}
 
 	/**
-	 * ToDo - This method is used in the class utils. Maybe move it there in
-	 * another class
-	 *
-	 * @param s
-	 * @param mIn
-	 * @return
-	 */
-	public boolean vrfRSASign(RSASignature s, BigInteger mIn) {
-		BigInteger ver = s.getSig().modPow(s.getE(), s.getN());
-
-		boolean result = ver.equals(mIn);
-
-		LOGGER.log(Level.SEVERE, "RSA Verification failed");
-
-		return result;
-	}
-
-	/**
 	 * Verify a RSA signature.
 	 *
 	 * @param s the RSAPublicKey
@@ -101,7 +80,7 @@ public class RSAImplementer {
 	 * @throws ElectionBoardServiceFault
 	 * @throws CertificateException
 	 */
-	public VerificationEvent vrfEACertIDSign() throws ElectionBoardServiceFault, CertificateException, NoSuchAlgorithmException {
+	public VerificationEvent vrfEACertIDSign() throws ElectionBoardServiceFault, CertificateException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		//get the certificte as a string
 		String eaCertStr = Config.eaCert.toString();
 
@@ -140,7 +119,7 @@ public class RSAImplementer {
 	 * @throws ElectionBoardServiceFault
 	 * @throws NoSuchAlgorithmException
 	 */
-	public VerificationEvent vrfBasicParamSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException {
+	public VerificationEvent vrfBasicParamSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
 		ElectionDefinition ed = ebp.getElectionDefinition();
 		Signature signature = ed.getSignature();
 
