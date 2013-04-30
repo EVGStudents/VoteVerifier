@@ -44,45 +44,37 @@ public class SystemSetupRunner extends Runner {
 
 	@Override
 	public List<VerificationEvent> run() {
-		//perform the checks we want - pay attention to exceptions!
-		VerificationEvent v1 = prmVrf.vrfPrimeP();
-		gm.sendVrfMsg(v1);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException ex) {
-			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
-		}
 
-		VerificationEvent v2 = prmVrf.vrfPrimeQ();
-		gm.sendVrfMsg(v2);
 		try {
+			//perform the checks we want - pay attention to exceptions!
+			VerificationEvent v1 = prmVrf.vrfPrimeP();
+			gm.sendVrfMsg(v1);
 			Thread.sleep(1000);
-		} catch (InterruptedException ex) {
-			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		VerificationEvent v3 = prmVrf.vrfGenerator();
-		gm.sendVrfMsg(v3);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException ex) {
-			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		VerificationEvent v4 = prmVrf.vrfSafePrime();
-		gm.sendVrfMsg(v4);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException ex) {
-			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		VerificationEvent v5 = prmVrf.vrfParamLen();
-		gm.sendVrfMsg(v5);
 
-		//cache the results
-		partialResults.add(v1);
-		partialResults.add(v2);
-		partialResults.add(v3);
-		partialResults.add(v4);
-		partialResults.add(v5);
+			VerificationEvent v2 = prmVrf.vrfPrimeQ();
+			gm.sendVrfMsg(v2);
+			Thread.sleep(1000);
+
+			VerificationEvent v3 = prmVrf.vrfGenerator();
+			gm.sendVrfMsg(v3);
+			Thread.sleep(1000);
+
+			VerificationEvent v4 = prmVrf.vrfSafePrime();
+			gm.sendVrfMsg(v4);
+			Thread.sleep(1000);
+
+			VerificationEvent v5 = prmVrf.vrfParamLen();
+			gm.sendVrfMsg(v5);
+
+			//cache the results
+			partialResults.add(v1);
+			partialResults.add(v2);
+			partialResults.add(v3);
+			partialResults.add(v4);
+			partialResults.add(v5);
+		} catch (InterruptedException ex) {
+			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
+		}
 
 		return Collections.unmodifiableList(partialResults);
 	}
