@@ -9,6 +9,7 @@
  */
 package ch.bfh.univoteverifier.verification;
 
+import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.VerificationOrder;
 import ch.bfh.univoteverifier.runner.ElectionPeriodRunner;
 import ch.bfh.univoteverifier.runner.ElectionPreparationRunner;
@@ -29,8 +30,8 @@ public class UniversalVerification extends Verification {
 	 * @param eID the ID of the election
 	 * @param gm the entity used to exchange messages with the GUI
 	 */
-	public UniversalVerification(String eID) {
-		super(eID);
+	public UniversalVerification(Messenger msgr, String eID) {
+		super(msgr, eID);
 
 		//initialize the runners based on the order
 		if (VerificationOrder.BY_ENTITES == displayType) {

@@ -17,7 +17,7 @@ import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.gui.VerificationSubject;
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import ch.bfh.univoteverifier.common.GUIMessenger;
+import ch.bfh.univoteverifier.common.Messenger;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +37,7 @@ public abstract class Verification {
 	protected final List<Runner> runners;
 	protected final ElectionBoardProxy ebproxy;
 	protected VerificationOrder displayType = VerificationOrder.BY_SPEC;
-	protected GUIMessenger gm;
+	protected Messenger gm;
 	//used to store the results of a verification
 	//maybe add two list for the two types of order
 	protected List<VerificationEvent> res;
@@ -47,12 +47,12 @@ public abstract class Verification {
 	 *
 	 * @param eID the ID of an election
 	 */
-	public Verification(String eID) {
+	public Verification(Messenger msgr, String eID) {
 		this.eID = eID;
 		this.ebproxy = new ElectionBoardProxy(eID);
 		runners = new ArrayList<>();
 		res = new ArrayList<>();
-		this.gm = new GUIMessenger();
+		this.gm =msgr;
 
 		//ToDo check if is correct
 		LOGGER.setUseParentHandlers(true);
@@ -113,7 +113,7 @@ public abstract class Verification {
 	/**
 	 * Run a verification
 	 */
-	public List<VerificationEvent> runVerification() {
+	 public List<VerificationEvent> runVerification() {
 
 		//initialize the public keys - ToDO decomment this when the webservices will work
 		//		initializeEntityCertificates();

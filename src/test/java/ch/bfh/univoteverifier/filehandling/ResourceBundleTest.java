@@ -10,7 +10,7 @@
  */
 package ch.bfh.univoteverifier.filehandling;
 
-import ch.bfh.univoteverifier.common.GUIMessenger;
+import ch.bfh.univoteverifier.common.Messenger;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import org.junit.After;
@@ -43,7 +43,7 @@ public class ResourceBundleTest {
      */
     @Test
     public void GUIMessengerGetsKeyValue() {
-        GUIMessenger msrg = new GUIMessenger();
+        Messenger msrg = new Messenger();
         String resultStr = msrg.getMessageForKey("filenotfound");
         assertTrue(0 == "The file was not found.".compareTo(resultStr));
     }
@@ -54,7 +54,7 @@ public class ResourceBundleTest {
      */
     @Test
     public void GUIMessengerGetsKeyValueIfLocaleChanged() {
-        GUIMessenger msrg = new GUIMessenger();
+        Messenger msrg = new Messenger();
         msrg.changeLocale("de");
         String resultStr = msrg.getMessageForKey("filenotfound");
         assertTrue(0 == "Der Datei wurde nicht gefunden.".compareTo(resultStr));

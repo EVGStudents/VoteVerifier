@@ -126,4 +126,13 @@ public class VerificationEvent {
 	public void setFailureCode(FailureCode fc) {
 		this.fc = fc;
 	}
+        
+         @Override
+    public String toString() {
+        String s = "\n\tVerification Event" 
+                + "" + getSection()
+                + "" + getResult();
+              
+        return s;
+    }
 }

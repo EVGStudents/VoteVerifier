@@ -10,7 +10,7 @@
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import ch.bfh.univoteverifier.common.GUIMessenger;
+import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.List;
@@ -22,14 +22,14 @@ import java.util.List;
  */
 public class MixerTallierRunner extends Runner {
 
-	private final GUIMessenger gm;
+	private final Messenger gm;
 
 	/**
 	 * Construct an MixerTallierRunner with a given ElectionBoardProxy
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data
 	 */
-	public MixerTallierRunner(ElectionBoardProxy ebp, GUIMessenger gm) {
+	public MixerTallierRunner(ElectionBoardProxy ebp, Messenger gm) {
 		super(ebp, RunnerName.MIXING_TALLING);
 		this.gm = gm;
 	}

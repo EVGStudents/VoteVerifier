@@ -10,7 +10,7 @@
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import ch.bfh.univoteverifier.common.GUIMessenger;
+import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.List;
@@ -22,14 +22,14 @@ import java.util.List;
  */
 public class ElectionPeriodRunner extends Runner {
 
-	private final GUIMessenger gm;
+	private final Messenger gm;
 
 	/**
 	 * Construct an ElectionPeriodRunner with a given ElectionBoardProxy
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data
 	 */
-	public ElectionPeriodRunner(ElectionBoardProxy ebp, GUIMessenger gm) {
+	public ElectionPeriodRunner(ElectionBoardProxy ebp, Messenger gm) {
 		super(ebp, RunnerName.ELECTION_PERIOD);
 		this.gm = gm;
 	}

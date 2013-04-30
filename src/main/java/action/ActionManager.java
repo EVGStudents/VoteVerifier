@@ -2,21 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ch.bfh.univoteverifier.gui;
+package action;
 
 
 import java.util.HashMap;
 import javax.swing.Action;
 
-
 /**
  *
  * @author prinstin
  */
-public class ActionManager {
+public class ActionManager  {
     
     private HashMap actions;
-    protected static ActionManager manager;
+    protected static ActionManager manager = null;
     
     private ActionManager()
     {
@@ -25,10 +24,12 @@ public class ActionManager {
 
     public static ActionManager getInstance()
     {
+        if (manager == null)
+                manager = new ActionManager();
         return manager;
     }
 
-    protected void addActions(String name, Action action){
+    public void addActions(String name, Action action){
         actions.put(name, action);
     }
 
