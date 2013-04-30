@@ -12,7 +12,7 @@ package ch.bfh.univoteverifier.runner;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.verification.*;
-import ch.bfh.univoteverifier.common.GUIMessenger;
+import ch.bfh.univoteverifier.common.Messenger;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,14 +25,14 @@ import java.util.List;
 public class SystemSetupRunner extends Runner {
 
 	private final ParametersImplementer prmVrf;
-	private final GUIMessenger gm;
+	private final Messenger gm;
 
 	/**
 	 * Construct an SystemSetupRunner with a given ElectionBoardProxy
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data
 	 */
-	public SystemSetupRunner(GUIMessenger gm) {
+	public SystemSetupRunner(Messenger gm) {
 		super(null, RunnerName.SYSTEM_SETUP);
 
 		//create the implementer we want

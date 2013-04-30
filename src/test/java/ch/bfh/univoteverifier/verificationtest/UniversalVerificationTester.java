@@ -33,7 +33,7 @@ public class UniversalVerificationTester {
 	final int RES_COUNT = 5;
 
 	public UniversalVerificationTester() {
-		v = new UniversalVerification(eID);
+//		v = new UniversalVerification(eID);
 		realList = v.runVerification();
 
 		mockList = new ArrayList<>();

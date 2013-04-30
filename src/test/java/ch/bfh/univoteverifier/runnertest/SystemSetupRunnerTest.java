@@ -10,7 +10,7 @@
  */
 package ch.bfh.univoteverifier.runnertest;
 
-import ch.bfh.univoteverifier.common.GUIMessenger;
+import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
@@ -30,10 +30,10 @@ public class SystemSetupRunnerTest {
 	SystemSetupRunner ssr;
 	List<VerificationEvent> mockList;
 	List<VerificationEvent> realList;
-	GUIMessenger gm;
+	Messenger gm;
 
 	public SystemSetupRunnerTest() {
-		gm = new GUIMessenger();
+		gm = new Messenger();
 		ssr = new SystemSetupRunner(gm);
 		realList = ssr.run();
 		mockList = new ArrayList<>();

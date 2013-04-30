@@ -29,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -92,7 +93,47 @@ public class QRCode {
      * @param filename the File object containing the path to the QRcode image
      * @return the ElectionReceipt helper class with the information packed into it
      */
-    public ElectionReceipt decodeReceipt(File filename) {
-        return new ElectionReceipt();
+    public ElectionReceipt decodeReceipt(File filename) throws IOException{
+        
+        String decoded = decode(filename);
+        String[] groupedCleaned = groupAndCleanDecode(decoded);
+        String[][] results = separateDataPairs(groupedCleaned);
+        return new ElectionReceipt(results);
+    }
+    
+    public String removeBrackets(String str ){
+        str = str.replace("{", "");
+        str = str.replace("}", "");
+        return str;
+    }
+    
+    public String removeSlashAndQuotes(String str ){
+        str = str.replace("\"", "");
+        return str;
+    }
+        
+    public String[] groupReceiptData(String str){
+        Pattern pattern = Pattern.compile(",");
+        String[] grouped = pattern.split(str);
+        return grouped;
+    }
+    
+    public String[] groupAndCleanDecode(String str){
+        str = removeBrackets(str);
+        str = removeSlashAndQuotes(str);
+        return groupReceiptData(str);
+    }
+    
+    public String[][] separateDataPairs(String[] pairs){
+        String[][] separated = new String[pairs.length][2];
+        Pattern pattern = Pattern.compile(":");
+        for (int i =0; i<pairs.length;i++){
+            String[] split  = pattern.split(pairs[i],2);
+            String str0 = split[0];
+            separated[i][0] = str0;
+            String str1 = split[1];
+            separated[i][1] = str1;
+        }
+        return separated;
     }
 }

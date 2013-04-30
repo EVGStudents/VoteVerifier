@@ -10,14 +10,11 @@
 package ch.bfh.univoteverifier.common;
 
 import ch.bfh.univoteverifier.gui.VerificationListener;
-import ch.bfh.univoteverifier.gui.VerificationMessage;
 import ch.bfh.univoteverifier.gui.VerificationSubject;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -25,7 +22,7 @@ import java.util.logging.Logger;
  * sent to the GUI many classes have a reference to this class, but there will
  * be only one instance of it
  */
-public class GUIMessenger {
+public class Messenger {
 
 	ResourceBundle rb;
 	VerificationSubject ss;
@@ -34,8 +31,7 @@ public class GUIMessenger {
 	/**
 	 * instantiate a GUIMessenger that is used to relay messages to the GUI
 	 */
-	public GUIMessenger() {
-		Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "GUIMessenger instantiated");
+	public Messenger() {
 		ss = new ConcreteSubject();
 		instantiateRB("en");
 	}
@@ -132,7 +128,6 @@ public class GUIMessenger {
 
 		@Override
 		public void addListener(VerificationListener sl) {
-			Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "listener registered {0}", sl.getClass().getEnclosingClass());
 			listeners.add(sl);
 		}
 
@@ -143,10 +138,7 @@ public class GUIMessenger {
 
 		@Override
 		public void notifyListeners(VerificationEvent ve) {
-			Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "notifyListeners called");
-
 			for (VerificationListener pl : listeners) {
-				Logger.getLogger(QRCode.class.getName()).log(Level.INFO, "listener notified: {0}", pl.getClass().getEnclosingClass());
 				pl.updateStatus(ve);
 			}
 		}

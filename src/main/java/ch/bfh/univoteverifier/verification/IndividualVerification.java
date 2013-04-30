@@ -9,6 +9,8 @@
  */
 package ch.bfh.univoteverifier.verification;
 
+import ch.bfh.univoteverifier.common.Messenger;
+
 /**
  * This class is used to perform an individual verification
  *
@@ -21,8 +23,8 @@ public class IndividualVerification extends Verification {
 	 *
 	 * @param eID the election ID
 	 */
-	public IndividualVerification(String eID) {
-		super(eID);
+	public IndividualVerification(Messenger msgr, String eID) {
+		super(msgr, eID);
 	}
 
 	/**
