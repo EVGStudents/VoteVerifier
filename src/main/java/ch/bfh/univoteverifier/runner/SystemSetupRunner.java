@@ -15,7 +15,6 @@ import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.GUIMessenger;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * This class represent a MixerTallierRunner

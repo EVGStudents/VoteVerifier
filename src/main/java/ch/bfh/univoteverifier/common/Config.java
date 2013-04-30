@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 public class Config {
 
 	/**
-	 * Configuration file path
+	 * Configuration file path.
 	 */
 	public static final String CONFIG = "src/main/java/ch/bfh/univoteverifier/resources/config.properties";
 	private static final Properties prop = new Properties();
@@ -41,19 +41,19 @@ public class Config {
 	/**
 	 * Schnorr's parameters are fixed and don't change over the time, as
 	 * well as the hash algorithm for Schnorr's signatures and proof of
-	 * knowledge
+	 * knowledge.
 	 */
 	public static final BigInteger p = new BigInteger(prop.getProperty("schnorr_p"));
 	public static final BigInteger q = new BigInteger(prop.getProperty("schnorr_q"));
 	public static final BigInteger g = new BigInteger(prop.getProperty("schnorr_g"));
 	public static final String hashAlgorithm = prop.getProperty("hash_function");
 	/**
-	 * URL of the WSDL of UniVote
+	 * URL of the WSDL of UniVote.
 	 */
 	public static final String wsdlLocation = prop.getProperty("wsdl_url");
 	/**
 	 * These values are initialized when we run a verification so that they
-	 * are available through the whole system
+	 * are available through the whole system.
 	 */
 	public static X509Certificate caCert;
 	public static X509Certificate eaCert;

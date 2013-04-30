@@ -27,11 +27,12 @@ public enum RunnerName {
 	EM(7),
 	EA(8),
 	MIXER(9),
-	TALLIER(10);
+	TALLIER(10),
+	RESULT(11);
 	private final int id;
 
 	/**
-	 * Construct a new section name with a given ID
+	 * Construct a new section name with a given ID.
 	 *
 	 * @param id the ID for this section name
 	 */
@@ -40,7 +41,7 @@ public enum RunnerName {
 	}
 
 	/**
-	 * Get the ID of this RunnerName
+	 * Get the ID of this RunnerName.
 	 *
 	 * @return the ID of the section name
 	 */

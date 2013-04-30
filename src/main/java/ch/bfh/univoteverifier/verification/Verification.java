@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This abstract class represent a verification
+ * This abstract class represent a verification.
  *
  * @author prinstin
  */
@@ -43,7 +43,7 @@ public abstract class Verification {
 	protected List<VerificationEvent> res;
 
 	/**
-	 * Construct a new abstract verification with a given election ID
+	 * Construct a new abstract verification with a given election ID.
 	 *
 	 * @param eID the ID of an election
 	 */
@@ -59,7 +59,7 @@ public abstract class Verification {
 	}
 
 	/**
-	 * Set the view type for the verification
+	 * Set the view type for the verification.
 	 *
 	 * @param t the verification view
 	 */
@@ -68,7 +68,7 @@ public abstract class Verification {
 	}
 
 	/**
-	 * Get the status subject of the GUIMessenger stored in this class
+	 * Get the status subject of the GUIMessenger stored in this class.
 	 *
 	 * @return the status subject
 	 */
@@ -84,8 +84,7 @@ public abstract class Verification {
 	}
 
 	/**
-	 * Initialize the public key of the different entities as well as
-	 * talliers and mixers count
+	 * Initialize the certificates of the different entities.
 	 */
 	private void initializeEntityCertificates() {
 		try {

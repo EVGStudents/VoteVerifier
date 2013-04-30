@@ -9,10 +9,15 @@
  */
 package ch.bfh.univoteverifier.implementer;
 
+import ch.bfh.univote.common.Ballot;
+import ch.bfh.univote.common.Ballots;
+import ch.bfh.univote.common.ElectionDefinition;
+import ch.bfh.univote.common.Signature;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import ch.bfh.univoteverifier.utils.RSASignature;
 import ch.bfh.univoteverifier.common.VerificationType;
@@ -21,11 +26,12 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class holds all the methods that need a RSA Verification
+ * This class contains all the methods that need a RSA Verification.
  *
  * @author snake
  */
@@ -35,21 +41,27 @@ public class RSAImplementer {
 	private final ElectionBoardProxy ebp;
 	private final StringConcatenator sc;
 	private final RSAPublicKey emPubKey;
+	private final RSAPublicKey eaPubKey;
 
 	/**
-	 * Create a new RSAImplementer
+	 * Create a new RSAImplementer.
 	 *
 	 * @param ebp the election board proxy from where get the data
 	 */
 	public RSAImplementer(ElectionBoardProxy ebp) {
 		this.ebp = ebp;
 		sc = new StringConcatenator();
+		//ToDo - decomment when we have the data
 		//emPubKey = (RSAPublicKey) Config.emCert.getPublicKey();
 		emPubKey = null;
+		//eaPubKey = (RSAPublicKey)Config.eaCert.getPublicKey();
+		eaPubKey = null;
+
 	}
 
 	/**
-	 * ToDo
+	 * ToDo - This method is used in the class utils. Maybe move it there in
+	 * another class
 	 *
 	 * @param s
 	 * @param mIn
@@ -66,7 +78,7 @@ public class RSAImplementer {
 	}
 
 	/**
-	 * Verify a RSA signature
+	 * Verify a RSA signature.
 	 *
 	 * @param s the RSAPublicKey
 	 * @param clearText the text from where to get the signature
@@ -83,7 +95,7 @@ public class RSAImplementer {
 
 	/**
 	 * Verify the signature of the election administrator certificate plus
-	 * the election ID
+	 * the election ID.
 	 *
 	 * @return a verification event
 	 * @throws ElectionBoardServiceFault
@@ -96,23 +108,80 @@ public class RSAImplementer {
 		//get the election id
 		String eID = ebp.getElectionDefinition().getElectionId();
 
-		//concatenates
-		sc.pushObject(StringConcatenator.LEFT_DELIMITER);
+		//concatenate to (id|Z_ea|timestamp)
+		sc.pushLeftDelim();
 		sc.pushObject(eID);
-		sc.pushObject(StringConcatenator.INNER_DELIMITER);
+		sc.pushInnerDelim();
 		sc.pushObject(eaCertStr);
-		sc.pushObject(StringConcatenator.RIGHT_DELIMITER);
+		//add the timestamp when we found where this signature is - ToDo
+		//sc.pushInnerDelim();
+		//sc.pushObject(timestamp)
+		//sc.pushInnerDelim();
+		sc.pushRightDelim();
 
 		String strRes = sc.pullAll();
 
-		//compute the sha-1 hash of (id|Z_a)
-		BigInteger clearText = CryptoFunc.sha1(strRes);
+		//compute the sha-1 hash of (id|Z_a|timestamp)
+		BigInteger hash = CryptoFunc.sha1(strRes);
 
 		//find the signature of Page 13, Initialization, Step 3 - ToDO
 		BigInteger signature = new BigInteger("1");
 
-		boolean r = vrfRSASign(emPubKey, clearText, signature);
+		boolean r = vrfRSASign(emPubKey, hash, signature);
 
 		return new VerificationEvent(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r);
+	}
+
+	/**
+	 * Verify the signature of the basic parameters (id, description, key
+	 * length, talliers and mixers) of an election.
+	 *
+	 * @return a verification event
+	 * @throws ElectionBoardServiceFault
+	 * @throws NoSuchAlgorithmException
+	 */
+	public VerificationEvent vrfBasicParamSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException {
+		ElectionDefinition ed = ebp.getElectionDefinition();
+		Signature signature = ed.getSignature();
+
+
+		//get the data
+		String eID = ed.getElectionId();
+		String descr = ed.getTitle();
+		String keyLength = String.valueOf(ed.getKeyLength());
+		List< String> talliers = ed.getTallierId();
+		List<String> mixers = ed.getMixerId();
+
+		//concatenate to (id|descr|keyLength|(t_1|...|t_n)|(m_1|...|m_n)|timestamp)
+		sc.pushLeftDelim();
+		sc.pushObject(eID);
+		sc.pushInnerDelim();
+		sc.pushObject(descr);
+		sc.pushInnerDelim();
+		sc.pushObject(keyLength);
+		sc.pushInnerDelim();
+		sc.pushList(talliers, true);
+		sc.pushInnerDelim();
+		sc.pushList(mixers, true);
+		sc.pushInnerDelim();
+		sc.pushObject(signature.getTimestamp().toString());
+		sc.pushRightDelim();
+
+		String res = sc.pullAll();
+
+		//compute the hash of the concatenated string
+		BigInteger hash = CryptoFunc.sha1(res);
+
+		//verify the signature
+		boolean r = vrfRSASign(eaPubKey, hash, signature.getValue());
+
+		//create the VerificationEvent
+		VerificationEvent v = new VerificationEvent(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r);
+
+		if (!r) {
+			v.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+		}
+
+		return v;
 	}
 }

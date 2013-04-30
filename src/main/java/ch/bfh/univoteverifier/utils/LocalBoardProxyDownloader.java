@@ -39,9 +39,10 @@ public class LocalBoardProxyDownloader {
 	XStream xstream;
 	ElectionBoardProxy ebp;
 	final String DES_PATH = "src/test/java/ch/bfh/univoteverifier/testresources";
-	final String ELECTION_SUFFIX = "vsbfh-2013";
+	final String ELECTION_ID = "vsbfh-2013";
 	final List<String> mixerIdentifier;
 	final List<String> tallierIdentifier;
+	final String EXT = ".xml";
 
 	public static void main(String[] args) throws ElectionBoardServiceFault, FileNotFoundException {
 		LocalBoardProxyDownloader lbpd = new LocalBoardProxyDownloader();
@@ -81,7 +82,7 @@ public class LocalBoardProxyDownloader {
 	 */
 	public LocalBoardProxyDownloader() throws ElectionBoardServiceFault, FileNotFoundException {
 		xstream = new XStream();
-		ebp = new ElectionBoardProxy(ELECTION_SUFFIX);
+		ebp = new ElectionBoardProxy(ELECTION_ID);
 		mixerIdentifier = ebp.getElectionDefinition().getMixerId();
 		tallierIdentifier = ebp.getElectionDefinition().getTallierId();
 	}
@@ -94,7 +95,7 @@ public class LocalBoardProxyDownloader {
 	 */
 	private void realWrite(Object o, String suffix) {
 		try {
-			xstream.toXML(o, new FileOutputStream(DES_PATH + "/" + suffix + ELECTION_SUFFIX + ".xml"));
+			xstream.toXML(o, new FileOutputStream(DES_PATH + "/" + suffix + ELECTION_ID + EXT));
 		} catch (FileNotFoundException ex) {
 			Logger.getLogger(LocalBoardProxyDownloader.class.getName()).log(Level.SEVERE, null, ex);
 		}

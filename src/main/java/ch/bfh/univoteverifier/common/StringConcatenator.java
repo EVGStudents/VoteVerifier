@@ -4,9 +4,9 @@
  * Applied Sciences, Engineering and Information Technology, Research Institute
  * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
  *
-* Project independent UniVoteVerifier.
+ * Project independent UniVoteVerifier.
  *
-*/
+ */
 package ch.bfh.univoteverifier.common;
 
 import java.util.List;
@@ -47,6 +47,27 @@ public class StringConcatenator {
 	 */
 	public void pushObject(Object o) {
 		strB.append(o.toString());
+	}
+
+	/**
+	 * Push the left delimiter "(" in the current buffer
+	 */
+	public void pushLeftDelim() {
+		strB.append(StringConcatenator.LEFT_DELIMITER);
+	}
+
+	/**
+	 * Push the right delimiter ")" in the current buffer
+	 */
+	public void pushRightDelim() {
+		strB.append(StringConcatenator.RIGHT_DELIMITER);
+	}
+
+	/**
+	 * Push the inner delimiter "|" in the current buffer
+	 */
+	public void pushInnerDelim() {
+		strB.append(StringConcatenator.INNER_DELIMITER);
 	}
 
 	/**

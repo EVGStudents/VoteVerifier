@@ -47,19 +47,14 @@ public class CertificatesImplementer {
 	 * @throws NoSuchAlgorithmException
 	 * @throws CertPathValidatorException
 	 */
-	public boolean vrfCert(X509Certificate c) throws CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, CertPathValidatorException {
+	public boolean vrfCert(List<X509Certificate> certList) throws CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, CertPathValidatorException {
 		CertificateFactory cf = CertificateFactory.getInstance("X.509");
 
-		//create the certification path
-		List<X509Certificate> l = new ArrayList<>();
-		l.add(c);
-		l.add(Config.caCert);
-
 		//generate the certification path
-		CertPath cp = cf.generateCertPath(l);
+		CertPath cp = cf.generateCertPath(certList);
 
 		//get the CA certificate as trust anchor
-		TrustAnchor anchor = new TrustAnchor(Config.caCert, null);
+		TrustAnchor anchor = new TrustAnchor(certList.get(certList.size() - 1), null);
 
 		PKIXParameters params = new PKIXParameters(Collections.singleton(anchor));
 
@@ -84,7 +79,10 @@ public class CertificatesImplementer {
 		boolean r = false;
 
 		try {
-			r = vrfCert(Config.emCert);
+			List<X509Certificate> c = new ArrayList<>();
+			c.add(Config.emCert);
+			c.add(Config.caCert);
+			r = vrfCert(c);
 		} catch (CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
 			LOGGER.log(Level.SEVERE, null, ex);
 		} catch (CertPathValidatorException ex) {
@@ -107,7 +105,10 @@ public class CertificatesImplementer {
 		boolean r = false;
 
 		try {
-			r = vrfCert(Config.eaCert);
+			List<X509Certificate> c = new ArrayList<>();
+			c.add(Config.eaCert);
+			c.add(Config.caCert);
+			r = vrfCert(c);
 		} catch (CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
 			LOGGER.log(Level.SEVERE, null, ex);
 		} catch (CertPathValidatorException ex) {

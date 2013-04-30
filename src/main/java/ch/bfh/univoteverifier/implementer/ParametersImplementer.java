@@ -14,11 +14,9 @@ import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.math.BigInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * This class is used to check the validity of the parameters
+ * This class is used to check the validity of the parameters.
  *
  * @author snake
  */
@@ -35,7 +33,7 @@ public class ParametersImplementer {
 
 	/**
 	 * Check if the parameters for the Schnorr's signature scheme are
-	 * corrects by reading them from the configuration file
+	 * corrects by reading them from the configuration file.
 	 *
 	 * @return boolean true if the parameters are correct, false otherwise
 	 */
@@ -56,7 +54,7 @@ public class ParametersImplementer {
 	}
 
 	/**
-	 * Check if p is a prime number
+	 * Check if p is a prime number.
 	 *
 	 * @return true if p is prime, false otherwise
 	 */
@@ -73,7 +71,7 @@ public class ParametersImplementer {
 	}
 
 	/**
-	 * Check if q is a prime number
+	 * Check if q is a prime number.
 	 *
 	 * @return true if q is prime, false otherwise
 	 */
@@ -90,7 +88,7 @@ public class ParametersImplementer {
 	}
 
 	/**
-	 * Check if p is a safe prime (p = k*q + 1)
+	 * Check if p is a safe prime (p = k*q + 1).
 	 *
 	 * @return true if p is a safe prime, false otherwise
 	 */
@@ -109,14 +107,14 @@ public class ParametersImplementer {
 	}
 
 	/**
-	 * Check if g is a generator of a subgroup H_q
+	 * Check if g is a generator of a subgroup H_q.
 	 *
 	 * @return if g is a valid generator
 	 */
 	public VerificationEvent vrfGenerator() {
 		BigInteger res = g.modPow(q, p);
 
-		boolean r = res.equals(BigInteger.valueOf(1));
+		boolean r = res.equals(BigInteger.ONE);
 		VerificationEvent ve = new VerificationEvent(VerificationType.SETUP_G_IS_GENERATOR, r);
 
 		if (!r) {
@@ -127,7 +125,7 @@ public class ParametersImplementer {
 	}
 
 	/**
-	 * Set a new value for p
+	 * Set a new value for p.
 	 *
 	 * @param p the p value of the Schnorr's parameters
 	 */
@@ -136,7 +134,7 @@ public class ParametersImplementer {
 	}
 
 	/**
-	 * Set a new value for q
+	 * Set a new value for q.
 	 *
 	 * @param q the q value of the Schnorr's parameters
 	 */
@@ -145,7 +143,7 @@ public class ParametersImplementer {
 	}
 
 	/**
-	 * Set a new value for g
+	 * Set a new value for g.
 	 *
 	 * @param g the g value of the Schnorr's parameters
 	 */

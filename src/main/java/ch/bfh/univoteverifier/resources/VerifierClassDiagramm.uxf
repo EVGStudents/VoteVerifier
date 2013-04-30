@@ -2,27 +2,26 @@
 <diagram program="umlet" version="12.0">
   <zoom_level>6</zoom_level>
   <element>
-    <type>com.umlet.element.Note</type>
+    <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>282</x>
-      <y>150</y>
-      <w>156</w>
-      <h>78</h>
+      <x>462</x>
+      <y>36</y>
+      <w>126</w>
+      <h>48</h>
     </coordinates>
-    <panel_attributes>bg=red
-A verification is the key point
-of the infrastructure.
-It has an ID, an ElectionBoardProxy
-and can choose which runner
-use, so we can represent
-the result in different ways</panel_attributes>
+    <panel_attributes>bg=magenta
+GUI
+--
+-mainCtrl: MainController
+--
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Note</type>
     <coordinates>
-      <x>360</x>
-      <y>426</y>
+      <x>300</x>
+      <y>462</y>
       <w>114</w>
       <h>54</h>
     </coordinates>
@@ -33,10 +32,73 @@ perform and the order.</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>498</x>
+      <y>66</y>
+      <w>54</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=-
+has&gt;
+m1= 1
+m2= 1</panel_attributes>
+    <additional_attributes>30;60;30;18</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>444</x>
+      <y>510</y>
+      <w>42</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;18;18;60</additional_attributes>
+  </element>
+  <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>516</x>
-      <y>90</y>
+      <x>138</x>
+      <y>714</y>
+      <w>210</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+CertificateImplementer
+--
+
++vrfCert(cert,pubKey): boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>594</x>
+      <y>270</y>
+      <w>78</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>18;18;66;18</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>180</x>
+      <y>546</y>
+      <w>30</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>lt=&gt;</panel_attributes>
+    <additional_attributes>18;18;18;90</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>456</x>
+      <y>126</y>
       <w>138</w>
       <h>102</h>
     </coordinates>
@@ -53,10 +115,10 @@ MainController
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>456</x>
-      <y>624</y>
+      <x>444</x>
+      <y>666</y>
       <w>204</w>
-      <h>72</h>
+      <h>54</h>
     </coordinates>
     <panel_attributes>bg=yellow
 ParametersImplementer
@@ -70,61 +132,8 @@ ParametersImplementer
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>558</x>
-      <y>174</y>
-      <w>54</w>
-      <h>66</h>
-    </coordinates>
-    <panel_attributes>lt=-
-runs&gt;
-m1= 1
-m2= 1</panel_attributes>
-    <additional_attributes>30;54;30;18</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>504</x>
-      <y>474</y>
-      <w>42</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>30;18;18;60</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>720</x>
-      <y>300</y>
-      <w>102</w>
-      <h>36</h>
-    </coordinates>
-    <panel_attributes>bg=yellow
-UniversalVerification
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>558</x>
-      <y>354</y>
-      <w>54</w>
-      <h>66</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=*
-m2= 1
-runs &lt;</panel_attributes>
-    <additional_attributes>30;54;30;18</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>390</x>
-      <y>300</y>
+      <x>330</x>
+      <y>336</y>
       <w>132</w>
       <h>42</h>
     </coordinates>
@@ -135,26 +144,236 @@ observer pattern</panel_attributes>
     <additional_attributes>18;30;120;30</additional_attributes>
   </element>
   <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>396</x>
+      <y>492</y>
+      <w>66</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&gt;</panel_attributes>
+    <additional_attributes>18;18;54;18</additional_attributes>
+  </element>
+  <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>210</x>
-      <y>600</y>
-      <w>192</w>
-      <h>42</h>
+      <x>378</x>
+      <y>570</y>
+      <w>96</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>bg=yellow
-RSAImplementer
+CARunner
 --
-
-+vrfRSASign(cData,sData,pubKey) : boolean
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>318</x>
+      <x>84</x>
       <y>312</y>
+      <w>144</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>bg=orange
+ElectionBoardProxy
+--
+-eID: String
+-wsdlURL: URL
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Note</type>
+    <coordinates>
+      <x>102</x>
+      <y>510</y>
+      <w>114</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>bg=red
+Each implementer
+implements the relative methods.
+So for example in RSAImplementer
+we will have all the method
+that must verify a RSA Signature</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>498</x>
+      <y>210</y>
+      <w>58</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>lt=-
+runs&gt;
+m1= 1
+m2= 1</panel_attributes>
+    <additional_attributes>30;54;30;18</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Note</type>
+    <coordinates>
+      <x>222</x>
+      <y>186</y>
+      <w>156</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>bg=red
+A verification is the key point
+of the infrastructure.
+It has an ID, an ElectionBoardProxy
+and can choose which runner
+use, so we can represent
+the result in different ways</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>564</x>
+      <y>510</y>
+      <w>30</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>18;18;18;66</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>354</x>
+      <y>378</y>
+      <w>78</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>StatusEvent
+--
+--
+accessor methods
+bg=cyan
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>450</x>
+      <y>444</y>
+      <w>162</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+/Runner/
+--
+-ebproxy: ElectionBoardProxy
+-eID: String
+-name: String
+--
++run(): List&lt;VerificationResult&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>210</x>
+      <y>348</y>
+      <w>60</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>18;18;48;18</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>594</x>
+      <y>336</y>
+      <w>78</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>18;18;66;18</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>660</x>
+      <y>336</y>
+      <w>102</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+UniversalVerification
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>564</x>
+      <y>576</y>
+      <w>102</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+SystemSetupRunner
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>210</x>
+      <y>294</y>
+      <w>252</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1= 1
+m2= 1
+has a &lt;</panel_attributes>
+    <additional_attributes>18;30;240;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>570</x>
+      <y>594</y>
+      <w>54</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=-
+has&gt;
+m1= *
+m2= *</panel_attributes>
+    <additional_attributes>30;72;30;18</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>300</x>
+      <y>582</y>
+      <w>90</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>lt=-
+has&gt;
+m1= *
+m2= *</panel_attributes>
+    <additional_attributes>18;54;78;18</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>258</x>
+      <y>348</y>
       <w>90</w>
       <h>36</h>
     </coordinates>
@@ -167,234 +386,10 @@ bg=yellow
     <additional_attributes/>
   </element>
   <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>162</x>
-      <y>498</y>
-      <w>108</w>
-      <h>114</h>
-    </coordinates>
-    <panel_attributes>lt=&gt;</panel_attributes>
-    <additional_attributes>18;18;96;102</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>270</x>
-      <y>312</y>
-      <w>60</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>18;18;48;18</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>558</x>
-      <y>30</y>
-      <w>54</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>lt=-
-has&gt;
-m1= 1
-m2= 1</panel_attributes>
-    <additional_attributes>30;60;30;18</additional_attributes>
-  </element>
-  <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>900</x>
-      <y>0</y>
-      <w>150</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>bg=gray
-_CryptoUtils_
---
-+sha(value): BigInteger
-+readQrCode(qrcode): Result
-+checkElectionID(eID): boolean</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>594</x>
-      <y>558</y>
-      <w>78</w>
-      <h>78</h>
-    </coordinates>
-    <panel_attributes>lt=-
-has&gt;
-m1= *
-m2= *</panel_attributes>
-    <additional_attributes>18;66;66;18</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>420</x>
-      <y>204</y>
-      <w>102</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lt=&gt;</panel_attributes>
-    <additional_attributes>18;18;90;48</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>258</x>
-      <y>750</y>
-      <w>210</w>
-      <h>36</h>
-    </coordinates>
-    <panel_attributes>bg=yellow
-SchnorrImplementer
---
-+vrfSchnorrSign(cData,sData,pubKey) : boolean
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>270</x>
-      <y>258</y>
-      <w>252</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1= 1
-m2= 1
-has a &lt;</panel_attributes>
-    <additional_attributes>18;30;240;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>198</x>
-      <y>678</y>
-      <w>210</w>
-      <h>48</h>
-    </coordinates>
-    <panel_attributes>bg=yellow
-CertificateImplementer
---
-
-+vrfCert(cert,pubKey): boolean
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>738</x>
-      <y>96</y>
-      <w>156</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>bg=gray
-VerificationResult
---
--v: Verification
--r: boolean
---
-+getVerification(): Verification
-+getResult(): boolean
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>840</x>
-      <y>228</y>
-      <w>168</w>
-      <h>594</h>
-    </coordinates>
-    <panel_attributes>bg=blue
-&lt;&lt;enumeration&gt;&gt;
-VerificationEnum
---
-SETUP_P_IS_PRIME
-SETUP_Q_IS_PRIME
-SETUP_G_IS_GENERATOR
-SETUP_PARAM_LEN
-SETUP_P_IS_SAFE_PRIME
-SETUP_SIGN_PARAM_SIGN
-SETUP_EM_CERT
-SETUP_CA_CERT
-ESETUP_EA_CERT
-ESETUP_EA_CERT_SIGN
-ESETUP_EL_DEF_PARAM
-ESETUP_T_CERT
-ESETUP_M_CERT
-ESETUP_T_M_CERT_SIGN
-ESETUP_ENC_PARAM
-ESETUP_ENC_PARAM_SIGN
-ESETUP_KEY_SHARE
-ESETUP_KEY_SHARE_SIGN
-ESETUP_ENC_KEY
-ESETUP_ENC_KEY_SIGN
-ESETUP_BLIND_GEN_PROOF
-ESETUP_BLIND_GEN_PROOF_SIGN
-ESETUP_ANON_GEN
-ESETUP_ANON_GEN_SIGN
-EPREPR_OPT_SIGN
-EPRERP_EL_DATA_SIGN
-EPRERP_ELIG_VOT_SIGN
-EPRERP_ELIG_VOT_CERT_SIGN
-EPRERP_ELIG_VOT_CERT
-EPRERP_PUB_VER_KEY
-EPRERP_PUB_VER_KEY_SIGN
-EPRERP_PUB_KEY_CORRECT
-EPRERP_PUB_KEY_CORRECT_SIGN
-EPERIOD_LATE_CERT
-EPERIOD_LATE_CERT_SIGN
-EPERIOD_LATE_KEYS_MIX_PROOF
-EPERIOD_LATE_KEYS_MIX_PROOF_SIGN
-EPERIOD_LATE_KEY_BELONG
-EPERIOD_LATE_KEY_BELONG_SIGN
-EPERIOD_M_VER_KEY_PROOF
-EPERIOD_M_VER_KEY_PROOF_SIGN
-EPERIOD_LATE_REN_PUB_KEY
-EPERIOD_LATE_REN_PUB_KEY_SIGN
-EPERIOD_BALLOT
-EPERIOD_BALLOT_SIGN
-MT_MIX_ENC_PROOF
-MT_MIX_ENC_PROOF_SIGN
-MT_ENC_SHUF_SIGN
-MT_DEC_VOTE_PROOF
-MT_DEC_VOTE_PROOF_SIGN
-MT_PLAINTEXT_CHECK
-MT_PLAINTEXT_SIGN
-VRF_TRUE
-VRF_FALSE
-VRF_NOT_IMPLEMENTED
---
-+getID(): int
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>624</x>
-      <y>474</y>
-      <w>30</w>
-      <h>78</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>18;18;18;66</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>510</x>
-      <y>228</y>
+      <x>450</x>
+      <y>264</y>
       <w>162</w>
       <h>144</h>
     </coordinates>
@@ -422,27 +417,52 @@ innerclass}
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>510</x>
-      <y>408</y>
-      <w>162</w>
-      <h>84</h>
+      <x>786</x>
+      <y>174</y>
+      <w>156</w>
+      <h>90</h>
     </coordinates>
-    <panel_attributes>bg=yellow
-/Runner/
+    <panel_attributes>bg=gray
+VerificationResult
 --
--ebproxy: ElectionBoardProxy
--eID: String
--name: String
+-v: Verification
+-r: boolean
 --
-+run(): List&lt;VerificationResult&gt;
++getVerification(): Verification
++getResult(): boolean
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>360</x>
+      <y>240</y>
+      <w>102</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&gt;</panel_attributes>
+    <additional_attributes>18;18;90;48</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>498</x>
+      <y>390</y>
+      <w>54</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2= 1
+runs &lt;</panel_attributes>
+    <additional_attributes>30;54;30;18</additional_attributes>
+  </element>
+  <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>738</x>
-      <y>0</y>
+      <x>786</x>
+      <y>270</y>
       <w>156</w>
       <h>90</h>
     </coordinates>
@@ -460,51 +480,41 @@ ConcatString
     <additional_attributes/>
   </element>
   <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>654</x>
-      <y>234</y>
-      <w>78</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>18;18;66;18</additional_attributes>
-  </element>
-  <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>144</x>
-      <y>276</y>
-      <w>144</w>
-      <h>72</h>
+      <x>150</x>
+      <y>636</y>
+      <w>192</w>
+      <h>42</h>
     </coordinates>
-    <panel_attributes>bg=orange
-ElectionBoardProxy
+    <panel_attributes>bg=yellow
+RSAImplementer
 --
--eID: String
--wsdlURL: URL
+
++vrfRSASign(cData,sData,pubKey) : boolean
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>624</x>
-      <y>540</y>
-      <w>102</w>
+      <x>228</x>
+      <y>774</y>
+      <w>210</w>
       <h>36</h>
     </coordinates>
     <panel_attributes>bg=yellow
-SystemSetupRunner
+SchnorrImplementer
 --
++vrfSchnorrSign(cData,sData,pubKey) : boolean
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>720</x>
-      <y>240</y>
+      <x>660</x>
+      <y>276</y>
       <w>102</w>
       <h>36</h>
     </coordinates>
@@ -517,38 +527,8 @@ IndividualVerification
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>438</x>
-      <y>534</y>
-      <w>96</w>
-      <h>36</h>
-    </coordinates>
-    <panel_attributes>bg=yellow
-CARunner
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>522</x>
-      <y>0</y>
-      <w>126</w>
-      <h>48</h>
-    </coordinates>
-    <panel_attributes>bg=magenta
-GUI
---
--mainCtrl: MainController
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>516</x>
-      <y>714</y>
+      <x>492</x>
+      <y>738</y>
       <w>210</w>
       <h>48</h>
     </coordinates>
@@ -560,71 +540,19 @@ ProofImplementer
     <additional_attributes/>
   </element>
   <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>654</x>
-      <y>300</y>
-      <w>78</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>18;18;66;18</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>456</x>
-      <y>456</y>
-      <w>66</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>lt=&gt;</panel_attributes>
-    <additional_attributes>18;18;54;18</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Note</type>
-    <coordinates>
-      <x>66</x>
-      <y>474</y>
-      <w>114</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>bg=red
-Each implementer
-implements the relative methods.
-So for example in RSAImplementer
-we will have all the method
-that must verify a RSA Signature</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>360</x>
-      <y>546</y>
-      <w>90</w>
-      <h>66</h>
-    </coordinates>
-    <panel_attributes>lt=-
-has&gt;
-m1= *
-m2= *</panel_attributes>
-    <additional_attributes>18;54;78;18</additional_attributes>
-  </element>
-  <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>414</x>
-      <y>342</y>
-      <w>78</w>
-      <h>30</h>
+      <x>786</x>
+      <y>366</y>
+      <w>150</w>
+      <h>90</h>
     </coordinates>
-    <panel_attributes>StatusEvent
+    <panel_attributes>bg=gray
+_CryptoUtils_
 --
---
-accessor methods
-bg=cyan
-</panel_attributes>
++sha(value): BigInteger
++readQrCode(qrcode): Result
++checkElectionID(eID): boolean</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>

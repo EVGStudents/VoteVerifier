@@ -32,7 +32,7 @@ public class CryptoFunc {
 	/**
 	 * Compute the hash of a number and then put it into a BigInteger.
 	 * Change the value in the configuration file to chose the appropriate
-	 * hash algorithm
+	 * hash algorithm.
 	 *
 	 * @param val BigInteger the value used to compute the hash
 	 * @return BigInteger the hash as BigInteger representation
@@ -51,7 +51,7 @@ public class CryptoFunc {
 	}
 
 	/**
-	 * Compute the sha-1 hash of a given string
+	 * Compute the sha-1 hash of a given string.
 	 *
 	 * @param s the string used to compute the hash
 	 * @return a BigInteger corresponding to the hash
@@ -65,7 +65,7 @@ public class CryptoFunc {
 	}
 
 	/**
-	 * Decode a base64 encoded string
+	 * Decode a base64 encoded string.
 	 *
 	 * @param encodedBase64 the encoded string
 	 * @return the byte array of the decoded string, can be used in
@@ -76,7 +76,7 @@ public class CryptoFunc {
 	}
 
 	/**
-	 * Get an X509 certificate from a byte array
+	 * Get an X509 certificate from a byte array.
 	 *
 	 * @param b the byte array
 	 * @return an X509 certificate
@@ -90,7 +90,7 @@ public class CryptoFunc {
 
 	/**
 	 * Concatenates n given BigInteger values into a string and pads them
-	 * with the arbitrary string 001100
+	 * with the arbitrary string 001100.
 	 *
 	 * @param c an array of BigInteger values
 	 * @return and String value of the concatenated contents of the array

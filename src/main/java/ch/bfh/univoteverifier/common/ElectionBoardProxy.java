@@ -47,7 +47,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class is used as a proxy for the ElectionBoard of UniVote.
+ * This class is used as a proxy for the ElectionBoard of UniVote. It is used as
+ * a connection point in order to download the relative data needed to perform
+ * verifications.
  *
  * @author snake
  */
@@ -69,8 +71,8 @@ public class ElectionBoardProxy {
 	private ElectionDefinition elDef;
 	private ElectionGenerator elGen;
 	private ElectionOptions elOpt;
-	private ElectionSystemInfo elSysInfo;
 	private ElectoralRoll elRoll;
+	private ElectionSystemInfo elSysInfo;
 	private EncryptionKey encKey;
 	private Map<String, EncryptionKeyShare> encKeyShare;
 	private EncryptionParameters encParam;
@@ -87,7 +89,7 @@ public class ElectionBoardProxy {
 	private VoterCertificates voterCerts;
 
 	/**
-	 * Construct an ElectionBoardProxy with a given election id
+	 * Construct an ElectionBoardProxy with a given election id.
 	 *
 	 * @param eID the ID of the election
 	 */
@@ -130,14 +132,14 @@ public class ElectionBoardProxy {
 	 * USE FOR TEST ONLY!
 	 */
 	public ElectionBoardProxy() throws FileNotFoundException {
-		//this ID must correspond to the suffix of the XML object stored
+		//this eID must correspond to the suffix in the name of the XML file
 		this.eID = "vsbfh-2013";
 		readElectionDataFromXML();
 	}
 
 	/**
 	 * Used to instantiate the ElectionBoardPort from where we get the data
-	 * of an election
+	 * of an election.
 	 */
 	private void getElectionBoard() {
 		ElectionBoardService ebs = new ElectionBoardService(wsdlURL);
@@ -146,19 +148,43 @@ public class ElectionBoardProxy {
 
 	/**
 	 * Read the relative data for the generated web service artifacts from
-	 * XML files instead of from the network
+	 * XML files instead of from the network.
 	 */
 	private void readElectionDataFromXML() throws FileNotFoundException {
 		XStream xstream = new XStream();
 		String dataPath = "src/test/java/ch/bfh/univoteverifier/testresources/";
+		String EXT = ".xml";
 
-		this.elData = (ElectionData) xstream.fromXML(new FileInputStream(dataPath + "ElectionData" + eID + ".xml"));
-
-
+		//read the object from the XML file and store it in the relative object
+		this.ballot = (Map<BigInteger, Ballot>) xstream.fromXML(new FileInputStream(dataPath + "SingleBallot" + eID + EXT));
+		this.ballots = (Ballots) xstream.fromXML(new FileInputStream(dataPath + "Ballots" + eID + EXT));
+		this.blindGen = (Map<String, BlindedGenerator>) xstream.fromXML(new FileInputStream(dataPath + "BlindedGenerator" + eID + EXT));
+		this.decodedVotes = (DecodedVotes) xstream.fromXML(new FileInputStream(dataPath + "DecodedVotes" + eID + EXT));
+		this.decryptedVotes = (DecryptedVotes) xstream.fromXML(new FileInputStream(dataPath + "DecryptedVotes" + eID + EXT));
+		this.elData = (ElectionData) xstream.fromXML(new FileInputStream(dataPath + "ElectionData" + eID + EXT));
+		this.elDef = (ElectionDefinition) xstream.fromXML(new FileInputStream(dataPath + "ElectionDefinition" + eID + EXT));
+		this.elGen = (ElectionGenerator) xstream.fromXML(new FileInputStream(dataPath + "ElectionGenerator" + eID + EXT));
+		this.elOpt = (ElectionOptions) xstream.fromXML(new FileInputStream(dataPath + "ElectionOptions" + eID + EXT));
+		this.elRoll = (ElectoralRoll) xstream.fromXML(new FileInputStream(dataPath + "ElectoralRoll" + eID + EXT));
+		this.elSysInfo = (ElectionSystemInfo) xstream.fromXML(new FileInputStream(dataPath + "ElectionSystemInfo" + eID + EXT));
+		this.encKey = (EncryptionKey) xstream.fromXML(new FileInputStream(dataPath + "EncryptionKey" + eID + EXT));
+		this.encKeyShare = (Map<String, EncryptionKeyShare>) xstream.fromXML(new FileInputStream(dataPath + "EncryptionKeyShare" + eID + EXT));
+		this.encParam = (EncryptionParameters) xstream.fromXML(new FileInputStream(dataPath + "EncryptionParameters" + eID + EXT));
+		this.latelyMixVerKey = (List<MixedVerificationKey>) xstream.fromXML(new FileInputStream(dataPath + "LatelyMixedVerificationKeys" + eID + EXT));
+		this.latelyMixVerKeyBy = (Map<String, List<MixedVerificationKey>>) xstream.fromXML(new FileInputStream(dataPath + "LatelyMixedVerificationKeysBy" + eID + EXT));
+		this.latelyRegVoteCerts = (List<VoterCertificate>) xstream.fromXML(new FileInputStream(dataPath + "LatelyRegisteredVoterCerts" + eID + EXT));
+		this.mixEncVotes = (MixedEncryptedVotes) xstream.fromXML(new FileInputStream(dataPath + "MixedEncryptedVotes" + eID + EXT));
+		this.mixEncVotesBy = (Map<String, MixedEncryptedVotes>) xstream.fromXML(new FileInputStream(dataPath + "MixedEncryptedVotesBy" + eID + EXT));
+		this.mixVerKey = (MixedVerificationKeys) xstream.fromXML(new FileInputStream(dataPath + "MixedVerificationKeys" + eID + EXT));
+		this.mixVerKeyBy = (Map<String, MixedVerificationKeys>) xstream.fromXML(new FileInputStream(dataPath + "MixedVerificationKeysBy" + eID + EXT));
+		this.parDecVotes = (Map<String, PartiallyDecryptedVotes>) xstream.fromXML(new FileInputStream(dataPath + "PartiallyDecryptedVotes" + eID + EXT));
+		this.rootCert = (Certificate) xstream.fromXML(new FileInputStream(dataPath + "RootCertificate" + eID + EXT));
+		this.signParam = (SignatureParameters) xstream.fromXML(new FileInputStream(dataPath + "SignatureParameters" + eID + EXT));
+		this.voterCerts = (VoterCertificates) xstream.fromXML(new FileInputStream(dataPath + "VoterCerts" + eID + EXT));
 	}
 
 	/**
-	 * Get a ballot
+	 * Get a ballot.
 	 *
 	 * @param verificationKey the verification key for this ballot
 	 * @return the ballot
@@ -177,7 +203,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the ballots
+	 * Get the ballots.
 	 *
 	 * @return the ballots
 	 * @throws ElectionBoardServiceFault
@@ -191,7 +217,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the blinded generator of a given mixerID
+	 * Get the blinded generator of a given mixerID.
 	 *
 	 * @param mixerID
 	 * @return the blinded generator of mixerID
@@ -210,7 +236,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the decoded votes
+	 * Get the decoded votes.
 	 *
 	 * @return the decoded votes
 	 * @throws ElectionBoardServiceFault
@@ -224,7 +250,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the decrypted votes
+	 * Get the decrypted votes.
 	 *
 	 * @return the decrypted votes
 	 * @throws ElectionBoardServiceFault
@@ -238,7 +264,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the election data
+	 * Get the election data.
 	 *
 	 * @return the election data
 	 * @throws ElectionBoardServiceFault
@@ -252,7 +278,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the election definition
+	 * Get the election definition.
 	 *
 	 * @return the election definition
 	 * @throws ElectionBoardServiceFault
@@ -266,7 +292,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the election generator
+	 * Get the election generator.
 	 *
 	 * @return the election generator
 	 * @throws ElectionBoardServiceFault
@@ -280,7 +306,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the election option
+	 * Get the election option.
 	 *
 	 * @return the election option
 	 * @throws ElectionBoardServiceFault
@@ -294,7 +320,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the election system information
+	 * Get the election system information.
 	 *
 	 * @return the election system information
 	 * @throws ElectionBoardServiceFault
@@ -308,7 +334,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the encryption key
+	 * Get the encryption key.
 	 *
 	 * @return the encryption key
 	 * @throws ElectionBoardServiceFault
@@ -322,7 +348,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the encryption parameters
+	 * Get the encryption parameters.
 	 *
 	 * @return the encryption parameters
 	 * @throws ElectionBoardServiceFault
@@ -336,7 +362,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the encryption key share of tallierID
+	 * Get the encryption key share of tallierID.
 	 *
 	 * @param tallierID
 	 * @return the encryption key share of tallierID
@@ -355,7 +381,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the electoral roll
+	 * Get the electoral roll.
 	 *
 	 * @return the electoral roll
 	 * @throws ElectionBoardServiceFault
@@ -369,7 +395,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the lately mixed verification key
+	 * Get the lately mixed verification key.
 	 *
 	 * @return the lately mixed verification key
 	 * @throws ElectionBoardServiceFault
@@ -383,7 +409,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the lately mixed verification key mixed by mixerID
+	 * Get the lately mixed verification key mixed by mixerID.
 	 *
 	 * @param mixerID the ID of a given mixer
 	 * @return the lately mixed verification key of mixerID
@@ -402,7 +428,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the lately registered voter certificate
+	 * Get the lately registered voter certificate.
 	 *
 	 * @return the lately registered voter certificate
 	 * @throws ElectionBoardServiceFault
@@ -416,7 +442,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the mixed encrypted votes
+	 * Get the mixed encrypted votes.
 	 *
 	 * @return the mixed encrypted votes
 	 * @throws ElectionBoardServiceFault
@@ -430,7 +456,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the mixed encrypted votes by a given mixer
+	 * Get the mixed encrypted votes by a given mixer.
 	 *
 	 * @param mixerID the ID of a given mixer
 	 * @return the mixed encrypted votes of the given mixer
@@ -449,7 +475,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the mixed verification keys
+	 * Get the mixed verification keys.
 	 *
 	 * @return the mixed verification keys
 	 * @throws ElectionBoardServiceFault
@@ -463,6 +489,8 @@ public class ElectionBoardProxy {
 	}
 
 	/**
+	 *
+	 *
 	 * @param mixerID
 	 * @return the mixVerKeyBy
 	 * @throws ElectionBoardServiceFault
