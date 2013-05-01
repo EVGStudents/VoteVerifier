@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * This class represent a Runner. A runner is used to perform the verifications
- * with a precise order
+ * with a precise order.
  *
  * @author snake
  */
@@ -28,7 +28,7 @@ public abstract class Runner {
 	private final RunnerName runnerName;
 
 	/**
-	 * Construct a runner with an ElectionBoardProxy and a relative name
+	 * Construct a runner with an ElectionBoardProxy and a relative name.
 	 *
 	 * @param ebp
 	 * @param runnerName
@@ -40,7 +40,7 @@ public abstract class Runner {
 	}
 
 	/**
-	 * Get the name of this runner
+	 * Get the name of this runner.
 	 *
 	 * @return the name of this runner
 	 */
@@ -49,7 +49,7 @@ public abstract class Runner {
 	}
 
 	/**
-	 * Start this runner, it will perform the verification implemented
+	 * Start this runner, it will perform the verification implemented.
 	 *
 	 * @return the list of results
 	 */

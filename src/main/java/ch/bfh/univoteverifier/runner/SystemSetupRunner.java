@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class represent a MixerTallierRunner
+ * This class represent a MixerTallierRunner.
  *
  *
  * @author snake
@@ -30,9 +30,8 @@ public class SystemSetupRunner extends Runner {
 	private final Messenger gm;
 
 	/**
-	 * Construct an SystemSetupRunner with a given ElectionBoardProxy
+	 * Construct an SystemSetupRunner with a given Messenger.
 	 *
-	 * @param ebp the ElectionBoardProxy from where get the data
 	 */
 	public SystemSetupRunner(Messenger gm) {
 		super(null, RunnerName.SYSTEM_SETUP);

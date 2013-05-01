@@ -16,7 +16,7 @@ import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.List;
 
 /**
- * This class represent a MixerTallierRunner
+ * This class represent a MixerTallierRunner.
  *
  * @author snake
  */
@@ -25,9 +25,9 @@ public class MixerTallierRunner extends Runner {
 	private final Messenger gm;
 
 	/**
-	 * Construct an MixerTallierRunner with a given ElectionBoardProxy
+	 * Construct an MixerTallierRunner with a given ElectionBoardProxy.
 	 *
-	 * @param ebp the ElectionBoardProxy from where get the data
+	 * @param ebp the ElectionBoardProxy from where get the data.
 	 */
 	public MixerTallierRunner(ElectionBoardProxy ebp, Messenger gm) {
 		super(ebp, RunnerName.MIXING_TALLING);

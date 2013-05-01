@@ -83,6 +83,9 @@ public class CryptoFuncTest {
 		assertEquals(n10, CryptoFunc.sha256("(sub-2013|1024|2013-4-12-12:00:12)").toString(16));
 	}
 
+	/**
+	 * Test if the decode function for base64 works
+	 */
 	@Test
 	public void testBase64() throws UnsupportedEncodingException {
 		//precomputed base64 encoded string
@@ -93,11 +96,11 @@ public class CryptoFuncTest {
 		String b5 = "MjEyNDc2NDUzMDUyMDQwNjg5NzY4NTc2MDc1OTg0NzU5ODI3NDk4NTc5MDg1NzY5ODc1OTg1NjcwOTM4NzY1OTA4Nzk4Nw=="; //2124764530520406897685760759847598274985790857698759856709387659087987
 
 		//check that the decode works
-		assertEquals("(sub-2013|1024|2013-4-12-12:00:12)", CryptoFunc.decodeBase64("KHN1Yi0yMDEzfDEwMjR8MjAxMy00LTEyLTEyOjAwOjEyKQ=="));
-		assertEquals("(sub-2013|(t1|t2|t3)|(m1|m2|m3)|2013-13-13|certificateauthority)", CryptoFunc.decodeBase64(b2));
-		assertEquals("90758798987675", CryptoFunc.decodeBase64(b3));
-		assertEquals("345876986795598674987063598763975084576093709857609876890743980787", CryptoFunc.decodeBase64(b4));
-		assertEquals("2124764530520406897685760759847598274985790857698759856709387659087987", CryptoFunc.decodeBase64(b5));
+		assertEquals("(sub-2013|1024|2013-4-12-12:00:12)", new String(CryptoFunc.decodeBase64("KHN1Yi0yMDEzfDEwMjR8MjAxMy00LTEyLTEyOjAwOjEyKQ==")));
+		assertEquals("(sub-2013|(t1|t2|t3)|(m1|m2|m3)|2013-13-13|certificateauthority)", new String(CryptoFunc.decodeBase64(b2)));
+		assertEquals("90758798987675", new String(CryptoFunc.decodeBase64(b3)));
+		assertEquals("345876986795598674987063598763975084576093709857609876890743980787", new String(CryptoFunc.decodeBase64(b4)));
+		assertEquals("2124764530520406897685760759847598274985790857698759856709387659087987", new String(CryptoFunc.decodeBase64(b5)));
 
 	}
 }

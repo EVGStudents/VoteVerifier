@@ -18,9 +18,9 @@ import java.util.List;
 public class ResultsRunner extends Runner {
 
 	/**
-	 * Construct a ResultRunner with a given ElectionBoardProxy
+	 * Construct a ResultRunner with a given ElectionBoardProxy.
 	 *
-	 * @param ebp the ElectionBoardProxy from where get the data
+	 * @param ebp the ElectionBoardProxy from where get the data.
 	 */
 	public ResultsRunner(ElectionBoardProxy ebp) {
 		super(ebp, RunnerName.RESULT);

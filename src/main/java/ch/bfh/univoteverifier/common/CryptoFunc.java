@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import javax.xml.bind.DatatypeConverter;
 
 /**
- * This class contains some functions used by other classes
+ * This class contains some functions used by other classes.
  *
  * @author snake
  */
@@ -37,8 +37,8 @@ public class CryptoFunc {
 	 * Change the value in the configuration file to chose the appropriate
 	 * hash algorithm.
 	 *
-	 * @param val BigInteger the value used to compute the hash
-	 * @return the hash as BigInteger representation
+	 * @param val BigInteger the value used to compute the hash.
+	 * @return the hash as BigInteger representation.
 	 * @throws NoSuchAlgorithmException
 	 */
 	public static BigInteger sha256(String s) throws NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -51,8 +51,8 @@ public class CryptoFunc {
 	/**
 	 * Compute the sha-1 hash of a given string.
 	 *
-	 * @param s the string used to compute the hash
-	 * @return a BigInteger corresponding to the hash
+	 * @param s the string used to compute the hash.
+	 * @return a BigInteger corresponding to the hash.
 	 * @throws NoSuchAlgorithmException
 	 */
 	public static BigInteger sha1(String s) throws NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -65,18 +65,18 @@ public class CryptoFunc {
 	/**
 	 * Decode a base64 encoded string.
 	 *
-	 * @param encodedBase64 the encoded string
+	 * @param encodedBase64 the encoded string.
 	 * @return the byte array of the decoded string, can be used in
-	 * BigInteger constructur
+	 * BigInteger constructor.
 	 */
-	public static String decodeBase64(String encodedBase64) throws UnsupportedEncodingException {
-		return new String(DatatypeConverter.parseBase64Binary(encodedBase64), "UTF-8");
+	public static byte[] decodeBase64(String encodedBase64) {
+		return DatatypeConverter.parseBase64Binary(encodedBase64);
 	}
 
 	/**
 	 * Get an X509 certificate from a byte array.
 	 *
-	 * @param b the byte array
+	 * @param b the byte array.
 	 * @return an X509 certificate
 	 * @throws CertificateException
 	 */

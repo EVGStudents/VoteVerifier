@@ -16,16 +16,16 @@ import java.util.List;
 
 /**
  * This class represent a EMRunner that is responsible to run the verification
- * for the EM entity
+ * for the EM entity.
  *
  * @author snake
  */
 public class EMRunner extends Runner {
 
 	/**
-	 * Construct a EMRunner with a given ElectionBoardProxy
+	 * Construct a EMRunner with a given ElectionBoardProxy.
 	 *
-	 * @param ebp the ElectionBoardProxy from where get the data
+	 * @param ebp the ElectionBoardProxy from where get the data.
 	 */
 	public EMRunner(ElectionBoardProxy ebp) {
 		super(ebp, RunnerName.EM);

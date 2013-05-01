@@ -16,16 +16,16 @@ import java.util.List;
 
 /**
  * This class represent a EARunner that is responsible to run the verification
- * for the EA entity
+ * for the EA entity.
  *
  * @author snake
  */
 public class EARunner extends Runner {
 
 	/**
-	 * Construct a EARunner with a given ElectionBoardProxy
+	 * Construct a EARunner with a given ElectionBoardProxy.
 	 *
-	 * @param ebp the ElectionBoardProxy from where get the data
+	 * @param ebp the ElectionBoardProxy from where get the data.
 	 */
 	public EARunner(ElectionBoardProxy ebp) {
 		super(ebp, RunnerName.EA);

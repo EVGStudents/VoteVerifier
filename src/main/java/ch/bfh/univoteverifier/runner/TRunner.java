@@ -16,16 +16,16 @@ import java.util.List;
 
 /**
  * This class represent a TRunner that is responsible to run the verification
- * for the tallier entity
+ * for the tallier entity.
  *
  * @author snake
  */
 public class TRunner extends Runner {
 
 	/**
-	 * Construct a TRunner with a given ElectionBoardProxy
+	 * Construct a TRunner with a given ElectionBoardProxy.
 	 *
-	 * @param ebp the ElectionBoardProxy from where get the data
+	 * @param ebp the ElectionBoardProxy from where get the data.
 	 */
 	public TRunner(ElectionBoardProxy ebp) {
 		super(ebp, RunnerName.TALLIER);
