@@ -58,6 +58,7 @@ public class CryptoFuncTest {
 	 */
 	@Test
 	public void testSHA256() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		//precomputed hash values
 		String n1 = "a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e"; //Hello World
 		String n2 = "34210dcdba2a4fbbea8799ce84a14e8af1be3dd6a10796f32e8c2d008cb38c6c"; //BernerFachHochSchule
 		String n3 = "9f16e8de08a13d2fddb93cb45b43314221a9d8a98bb0b0bf7524b3b0f18349b1"; //67576576565765765675097986
@@ -69,6 +70,7 @@ public class CryptoFuncTest {
 		String n9 = "29b21b5cd967b2fcec20d7a915d23342978e06c60a9c176e4efc4b386ab535aa"; //2124764530520406897685760759847598274985790857698759856709387659087987
 		String n10 = "ed563fc634233228f3fe40411234e487cd5d7591af5f40a9bac4b4d985b746a6"; //(sub-2013|1024|2013-4-12-12:00:12)
 
+		//call the sha256 function and test if the results are equals
 		assertEquals(n1, CryptoFunc.sha256("Hello World").toString(16));
 		assertEquals(n2, CryptoFunc.sha256("BernerFachHochSchule").toString(16));
 		assertEquals(n3, CryptoFunc.sha256("67576576565765765675097986").toString(16));
@@ -79,5 +81,23 @@ public class CryptoFuncTest {
 		assertEquals(n8, CryptoFunc.sha256("345876986795598674987063598763975084576093709857609876890743980787").toString(16));
 		assertEquals(n9, CryptoFunc.sha256("2124764530520406897685760759847598274985790857698759856709387659087987").toString(16));
 		assertEquals(n10, CryptoFunc.sha256("(sub-2013|1024|2013-4-12-12:00:12)").toString(16));
+	}
+
+	@Test
+	public void testBase64() throws UnsupportedEncodingException {
+		//precomputed base64 encoded string
+		String b1 = "KHN1Yi0yMDEzfDEwMjR8MjAxMy00LTEyLTEyOjAwOjEyKQ=="; //(sub-2013|1024|2013-4-12-12:00:12)
+		String b2 = "KHN1Yi0yMDEzfCh0MXx0Mnx0Myl8KG0xfG0yfG0zKXwyMDEzLTEzLTEzfGNlcnRpZmljYXRlYXV0aG9yaXR5KQ==";	//(sub-2013|(t1|t2|t3)|(m1|m2|m3)|2013-13-13|certificateauthority)
+		String b3 = "OTA3NTg3OTg5ODc2NzU="; //90758798987675
+		String b4 = "MzQ1ODc2OTg2Nzk1NTk4Njc0OTg3MDYzNTk4NzYzOTc1MDg0NTc2MDkzNzA5ODU3NjA5ODc2ODkwNzQzOTgwNzg3"; //345876986795598674987063598763975084576093709857609876890743980787
+		String b5 = "MjEyNDc2NDUzMDUyMDQwNjg5NzY4NTc2MDc1OTg0NzU5ODI3NDk4NTc5MDg1NzY5ODc1OTg1NjcwOTM4NzY1OTA4Nzk4Nw=="; //2124764530520406897685760759847598274985790857698759856709387659087987
+
+		//check that the decode works
+		assertEquals("(sub-2013|1024|2013-4-12-12:00:12)", CryptoFunc.decodeBase64("KHN1Yi0yMDEzfDEwMjR8MjAxMy00LTEyLTEyOjAwOjEyKQ=="));
+		assertEquals("(sub-2013|(t1|t2|t3)|(m1|m2|m3)|2013-13-13|certificateauthority)", CryptoFunc.decodeBase64(b2));
+		assertEquals("90758798987675", CryptoFunc.decodeBase64(b3));
+		assertEquals("345876986795598674987063598763975084576093709857609876890743980787", CryptoFunc.decodeBase64(b4));
+		assertEquals("2124764530520406897685760759847598274985790857698759856709387659087987", CryptoFunc.decodeBase64(b5));
+
 	}
 }

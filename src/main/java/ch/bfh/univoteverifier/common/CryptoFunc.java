@@ -18,7 +18,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.DatatypeConverter;
 
@@ -70,8 +69,8 @@ public class CryptoFunc {
 	 * @return the byte array of the decoded string, can be used in
 	 * BigInteger constructur
 	 */
-	public static byte[] decodeBase64(String encodedBase64) {
-		return DatatypeConverter.parseBase64Binary(encodedBase64);
+	public static String decodeBase64(String encodedBase64) throws UnsupportedEncodingException {
+		return new String(DatatypeConverter.parseBase64Binary(encodedBase64), "UTF-8");
 	}
 
 	/**

@@ -12,6 +12,7 @@ package ch.bfh.univoteverifier.utilstest;
 
 import ch.bfh.univoteverifier.utils.OldPrimitives;
 import ch.bfh.univoteverifier.utils.ProofDiscreteLog;
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class NIZKPTest {
 	 * Tests valid proof with small values
 	 */
 	@Test
-	public void validProofSmallValues() throws NoSuchAlgorithmException {
+	public void validProofSmallValues() throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		ProofDiscreteLog prfDL = new ProofDiscreteLog();
 		ProofDiscreteLog prf = prfDL.getProofSmall();
 		assertTrue(op.vrfNIZKP(prf));
@@ -38,7 +39,7 @@ public class NIZKPTest {
 	 * Tests valid proof with large values
 	 */
 	@Test
-	public void validProofLargeValues() throws NoSuchAlgorithmException {
+	public void validProofLargeValues() throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		ProofDiscreteLog prfDL = new ProofDiscreteLog();
 		ProofDiscreteLog prf = prfDL.getProofLarge();
 		assertTrue(op.vrfNIZKP(prf));

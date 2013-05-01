@@ -13,6 +13,7 @@ package ch.bfh.univoteverifier.utilstest;
 import ch.bfh.univoteverifier.utils.OldPrimitives;
 import ch.bfh.univoteverifier.utils.SchnorrGenerator;
 import ch.bfh.univoteverifier.utils.SchnorrSignature;
+import java.io.UnsupportedEncodingException;
 import static org.junit.Assert.*;
 
 import java.math.BigInteger;
@@ -40,7 +41,7 @@ public class SchnorrTest {
 	 * @throws NoSuchAlgorithmException
 	 */
 	@Test
-	public void singleSignatureVerification() throws NoSuchAlgorithmException {
+	public void singleSignatureVerification() throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		//BFH encoded as 66 | 70 | 72
 		String bfh = "667072";
 		BigInteger message = new BigInteger(bfh);
@@ -58,7 +59,7 @@ public class SchnorrTest {
 	 * @throws NoSuchAlgorithmException
 	 */
 	@Test
-	public void multipleSignatureVerification() throws NoSuchAlgorithmException {
+	public void multipleSignatureVerification() throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		int numberOfVerifications = 100;
 
 		for (int i = 0; i < numberOfVerifications; i++) {
@@ -79,7 +80,7 @@ public class SchnorrTest {
 	 * @throws NoSuchAlgorithmException
 	 */
 	@Test
-	public void incorrectSignature() throws NoSuchAlgorithmException {
+	public void incorrectSignature() throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		//BFH encoded as 66 | 70 | 72
 		String bfh = "667072";
 		BigInteger message = new BigInteger(bfh);
