@@ -174,7 +174,7 @@ public void createContentPanel() {
      */
     private void createActions(Messenger msgr, ButtonGroup btnGroup){
         ActionManager am = ActionManager.getInstance();
-        Action changeLocaleAction = new ChangeLocaleAction(consolePanel);
+        Action changeLocaleAction = new ChangeLocaleAction(this);
         Action fileChooserAction = new FileChooserAction(innerPanel, this, qrCodeFile);
         Action startAction = new StartAction(msgr, this, innerPanel, comboBox, btnGroup, qrCodeFile);
         Action showConsoleAction = new ShowConsoleAction(this);

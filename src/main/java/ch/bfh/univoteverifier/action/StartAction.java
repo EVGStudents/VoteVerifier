@@ -11,12 +11,16 @@
 package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.QRCode;
+import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.MainGUI;
+import ch.bfh.univoteverifier.verification.IndividualVerification;
 import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.verification.VerificationThread;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -61,6 +65,8 @@ File qrCodeFile;
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
         innerPanel.setBackground(GUIconstants.GREY);
         innerPanel.repaint();
+        
+        ElectionReceipt er = getElectionReceipt(qrCodeFile, msgr);
         String msg = "";
         String eID = comboBox.getSelectedItem().toString();
         msg = msg + rb.getString("forElectionId") + eID;
@@ -85,4 +91,16 @@ File qrCodeFile;
 
         return null;
     }
+    
+    public ElectionReceipt getElectionReceipt(File qrCodeFile, Messenger msgr){
+              QRCode qr = new QRCode(msgr);
+              ElectionReceipt er = null;
+            try {
+              er =   qr.decodeReceipt(qrCodeFile);
+            } catch (IOException ex) {
+                Logger.getLogger(IndividualVerification.class.getName()).log(Level.SEVERE, "An error occured while processing the file", ex);
+            }
+            return er;
+            
+        }
 }

@@ -24,27 +24,18 @@ import java.util.logging.Logger;
  */
 public class IndividualVerification extends Verification {
 
+        ElectionReceipt er;
 	/**
 	 * Construct an IndividualVerification with a given election ID
 	 *
 	 * @param File the file with a path to a QR Code
 	 */
-	public IndividualVerification(Messenger msgr, File qrCodeFile) {
-		super(msgr, qrCodeFile);
-                ElectionReceipt er = getElectionReceipt(qrCodeFile, msgr);
+	public IndividualVerification(Messenger msgr, ElectionReceipt er) {
+		super(msgr, er.geteID());
+                this.er=er;
 	}
 
-        public ElectionReceipt getElectionReceipt(File qrCodeFile, Messenger msgr){
-              QRCode qr = new QRCode(msgr);
-              ElectionReceipt er = null;
-            try {
-              er =   qr.decodeReceipt(qrCodeFile);
-            } catch (IOException ex) {
-                Logger.getLogger(IndividualVerification.class.getName()).log(Level.SEVERE, "An error occured while processing the file", ex);
-            }
-            return er;
-            
-        }
+        
         
         
 	/**

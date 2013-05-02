@@ -41,7 +41,6 @@ public abstract class Verification {
     protected Messenger gm;
     //used to store the results of a verification
     protected List<VerificationEvent> res;
-    protected File qrCodeFile;
 
     /**
      * Construct a new abstract verification with a given election ID.
@@ -59,20 +58,6 @@ public abstract class Verification {
         LOGGER.setUseParentHandlers(true);
     }
 
-    /**
-     * Construct a new abstract verification with a QRCode.
-     * This constructor serves for individual verification
-     *
-     * @param msgr handles message sending to GUI or Console
-     */
-    public Verification(Messenger msgr, File qrCodeFile) {
-        this.qrCodeFile = qrCodeFile;
-        runners = new ArrayList<>();
-        res = new ArrayList<>();
-        this.gm = msgr;
-        //ToDo check if is correct
-        LOGGER.setUseParentHandlers(true);
-    }
 
     /**
      * Set the view type for the verification.
