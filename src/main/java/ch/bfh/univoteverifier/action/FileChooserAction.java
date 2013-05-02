@@ -11,11 +11,14 @@
 package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.gui.ConsolePanel;
+import ch.bfh.univoteverifier.gui.GUIconstants;
+import ch.bfh.univoteverifier.gui.MainGUI;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
+import static javax.swing.Action.NAME;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
@@ -27,15 +30,15 @@ public class FileChooserAction extends AbstractAction {
 
     ResourceBundle rb;
     JPanel innerPanel;
-    ConsolePanel consolePanel;
     File qrCodeFile;
+    MainGUI mainGUI;
 
-    public FileChooserAction(JPanel innerPanel, ConsolePanel consolePanel, File qrCodeFile) {
+    public FileChooserAction(JPanel innerPanel, MainGUI mainGUI, File qrCodeFile) {
         this.innerPanel = innerPanel;
-        this.consolePanel = consolePanel;
+        this.mainGUI = mainGUI;
         this.qrCodeFile = qrCodeFile;
-        this.putValue(NAME, "select");
-        rb = ResourceBundle.getBundle("error", Locale.ENGLISH);
+        rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
+        this.putValue(NAME, rb.getString("selectFile"));
     }
 
     @Override
@@ -49,11 +52,10 @@ public class FileChooserAction extends AbstractAction {
 
             qrCodeFile = fc.getSelectedFile();
             if (qrCodeFile == null) {
-                consolePanel.appendToStatusText(rb.getString("invalidFile"));
+                mainGUI.appendToConsole(rb.getString("invalidFile"));
             } else {
                 String path = "\n" + qrCodeFile.getPath();
-                consolePanel.appendToStatusText(path);
-
+                mainGUI.appendToConsole(path);
             }
         }
     }

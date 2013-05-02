@@ -11,6 +11,7 @@
 package ch.bfh.univoteverifier.common;
 
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
+import ch.bfh.univoteverifier.gui.GUIconstants;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.WriterException;
@@ -27,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -39,10 +41,14 @@ import javax.swing.ImageIcon;
  */
 public class QRCode {
 
+    private Messenger msgr;
+    ResourceBundle rb;
     /**
      * instantiate the class
      */
-    public QRCode() {
+    public QRCode(Messenger msgr) {
+        rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
+        this.msgr=msgr;
     }
 
     
@@ -55,7 +61,6 @@ public class QRCode {
         QRCodeWriter writer = new QRCodeWriter();
         BitMatrix bitMatrix = null;
         BufferedImage img = null;
-//        String str = "http://www.osgate.org/";
         try {
             bitMatrix = writer.encode(str, BarcodeFormat.QR_CODE, 300, 300);
             img = MatrixToImageWriter.toBufferedImage(bitMatrix);
@@ -74,10 +79,23 @@ public class QRCode {
      */
     public String decode(File filename) throws IOException {
         Result result = null;
+
+        FileInputStream fis = new FileInputStream(filename);
+        BufferedImage image = ImageIO.read(fis);
+        BufferedImageLuminanceSource bils = null;
         try {
-            BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(ImageIO.read(new FileInputStream(filename)))));
+            bils = new BufferedImageLuminanceSource(image);
+        } catch (NullPointerException ex) {
+            msgr.sendFatalErrorMsg(rb.getString("fileReadError"));
+            throw new RuntimeException(rb.getString("fileReadError"));
+        }
+
+        HybridBinarizer hb = new HybridBinarizer(bils);
+        BinaryBitmap binaryBitmap = new BinaryBitmap(hb);
+
+        try {
             result = new MultiFormatReader().decode(binaryBitmap);
-        } catch (NotFoundException | FileNotFoundException ex) {
+        } catch (NotFoundException ex) {
             Logger.getLogger(QRCode.class.getName()).log(Level.SEVERE, null, ex);
         }
 

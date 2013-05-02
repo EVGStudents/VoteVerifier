@@ -13,6 +13,7 @@ package ch.bfh.univoteverifier.gui;
 import ch.bfh.univoteverifier.action.ActionManager;
 import ch.bfh.univoteverifier.action.ChangeLocaleAction;
 import ch.bfh.univoteverifier.action.FileChooserAction;
+import ch.bfh.univoteverifier.action.ShowConsoleAction;
 import ch.bfh.univoteverifier.action.StartAction;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.MainController;
@@ -21,11 +22,10 @@ import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -33,18 +33,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 
 /**
  * Creates the main window of the GUI and generates the components needed to see
@@ -62,9 +61,8 @@ public class MainGUI extends JFrame {
     MainController mc;
     VerificationListener sl;
     JLabel vrfDescLabel, choiceDescLabel;
-    VerificationButton btnInd, btnUni;
-    VerificationButton[] btns = {btnInd, btnUni};
     JButton btnStart, btnFileSelector;
+    JRadioButton btnUni, btnInd;
     boolean selectionMade = false;
     JComboBox comboBox;
     String[] eIDlist;
@@ -88,18 +86,29 @@ public class MainGUI extends JFrame {
      * Construct the window and frame of this GUI
      */
     public MainGUI() {
-        initComponents();
+        initResources();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(696, 400));
 
         createContentPanel();
 
-        this.setJMenuBar(new VerificationMenuBar(consolePanel));
+        this.setJMenuBar(new VerificationMenuBar(this));
         this.setTitle(rb.getString("windowTitle"));
         this.pack();
     }
 
-    public void createContentPanel() {
+    
+    public void showConsole(boolean show) {
+        if (show) {
+            this.getContentPane().add(consolePanel);
+        } else {
+            this.getContentPane().remove(consolePanel);
+        }
+        this.validate();
+        this.repaint();
+    }
+
+public void createContentPanel() {
         resetContentPanel();
     }
 
@@ -107,14 +116,18 @@ public class MainGUI extends JFrame {
         JPanel masterPanel = createUI();
         masterPanel.setOpaque(true); //content panes must be opaque
         this.setContentPane(masterPanel);
+        initResources();
+        this.setJMenuBar(new VerificationMenuBar(this));
+        this.validate();
+        this.repaint();
     }
 
     /**
      * Instantiates the basic building blocks of the program such as the
      * controllers and displays the window of the GUI.
      */
-    public void initComponents() {
-        rb = ResourceBundle.getBundle("error", Locale.ENGLISH);
+    public void initResources() {
+        rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         prefs = Preferences.userNodeForPackage(MainGUI.class);
         rawEIDlist = prefs.get("eIDList", "Bern Zurich vsbfh-2013");
         Pattern pattern = Pattern.compile("\\s");
@@ -133,10 +146,10 @@ public class MainGUI extends JFrame {
     public JPanel createUI() {
         JPanel panel = new JPanel();
         
-      
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         createComboBox();
+        ButtonGroup btnGroup = new ButtonGroup();
         Messenger msgr = new Messenger();
         msgr.getStatusSubject().addListener(sl);
 
@@ -144,20 +157,13 @@ public class MainGUI extends JFrame {
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
         innerPanel.setBackground(GUIconstants.GREY);
 
+        createActions(msgr, btnGroup);
         
-        ActionManager am = ActionManager.getInstance();
-        Action startAction = new StartAction(msgr, consolePanel, innerPanel);
-        am.addActions("start", startAction);
-        
-        
-        topPanel = getTopPanel();
+        topPanel = getTopPanel(btnGroup);
         consolePanel = new ConsolePanel();
         panel.add(topPanel);
         panel.add(new MiddlePanel(innerPanel));
         panel.add(consolePanel);
-
-        createActions(msgr);
-
         return panel;
     }
 
@@ -166,15 +172,17 @@ public class MainGUI extends JFrame {
      * Create the actions that are used in this GUI
      * @param msgr 
      */
-    public void createActions(Messenger msgr){
+    private void createActions(Messenger msgr, ButtonGroup btnGroup){
         ActionManager am = ActionManager.getInstance();
         Action changeLocaleAction = new ChangeLocaleAction(consolePanel);
-        Action fileChooserAction = new FileChooserAction(innerPanel, consolePanel, qrCodeFile);
+        Action fileChooserAction = new FileChooserAction(innerPanel, this, qrCodeFile);
+        Action startAction = new StartAction(msgr, this, innerPanel, comboBox, btnGroup, qrCodeFile);
+        Action showConsoleAction = new ShowConsoleAction(this);
         
         am.addActions("fileChooser", fileChooserAction);
         am.addActions("changeLocale", changeLocaleAction);
-        
-         
+        am.addActions("start", startAction);
+        am.addActions("showConsole", showConsoleAction);
     }
     
     
@@ -184,15 +192,10 @@ public class MainGUI extends JFrame {
      * @return a JPanel which contains other components to be shown in the main
      * window
      */
-    public TopPanel getTopPanel() {
-        createUniVrfButton();
-        createIndVrfButton();
+    private TopPanel getTopPanel(ButtonGroup btnGrp) {
+        createBtnGrpUniInd(btnGrp);
         createStartButton();
-
-        TopPanel panel = new TopPanel(btnUni, btnInd, btnStart);
-
-        createFileSelectButton();
-
+        TopPanel panel = new TopPanel(btnUni, btnInd, btnStart, comboBox, btnGrp);
         return panel;
     }
 
@@ -200,7 +203,7 @@ public class MainGUI extends JFrame {
      * creates the comboBox that allows new election IDs to be inputed as well
      * as the selection of previously used election IDs
      */
-    public void createComboBox() {
+    private void createComboBox() {
         comboBox = new JComboBox(eIDlist);
         comboBox.setEditable(true);
         comboBox.setSelectedIndex(2);
@@ -215,124 +218,41 @@ public class MainGUI extends JFrame {
      * @return button to choose universal verification a grey background and
      * deactivated focused effects
      */
-    public JButton createUniVrfButton() {
-        String descUni = rb.getString("descUni");
+    private void createBtnGrpUniInd(ButtonGroup btnGrp) {
+        btnUni = new JRadioButton();
+        btnUni.setText("btnUni");
+        ActionManager am = ActionManager.getInstance();
         String name = rb.getString("btnUni");
-        btnUni = new VerificationButton(name, descUni);
-        btnUni.addMouseListener(
-                new MouseListener() {
-            String oldText;
+        btnUni = new JRadioButton(name);
+        btnUni.setBackground(GUIconstants.GREY);
 
-            @Override
-            public void mouseClicked(MouseEvent e) {
+        name = rb.getString("btnInd");
+        btnInd = new JRadioButton(name);
+        btnInd.setBackground(GUIconstants.GREY);
+        btnInd.setText("btnInd");
+
+        btnGrp.add(btnUni);
+        btnGrp.add(btnInd);
+        btnUni.setSelected(true);
+        
+        for (Enumeration<AbstractButton> buttons = btnGrp.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            LOGGER.log(Level.INFO, "createBtnGroup", button.getName());
+            if (button.isSelected()) {
+                LOGGER.log(Level.INFO, "createBtnGroup is selected", button.getName());
             }
+        }
 
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-//                 oldText = rb.getString("descUni");
-//                choiceDescLabel.setText(oldText);
-//                dynamicChoicePanel.add(comboBox);
-
-                if (!selectionMade) {
-                    topPanel.showChoicePanel();
-                    selectionMade = true;
-                }
-
-                btnInd.depress();
-                btnUni.press();
-                consolePanel.setStatusText(rb.getString("btnUni"));
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                oldText = topPanel.getDescription();
-                topPanel.setDescription(rb.getString("descUni"));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                topPanel.setDescription(oldText);
-            }
-        });
-        return btnUni;
+      
     }
 
-    /**
-     * create the button that shows the information and buttons needed to start
-     * individual verification
-     *
-     * @return JButton to choose individual verification a grey background and
-     * deactivated focused effects
-     */
-    public JButton createIndVrfButton() {
-
-        String descInd = rb.getString("descInd");
-        String name = rb.getString("btnInd");
-        btnInd = new VerificationButton(name, descInd);
-
-        btnInd.addMouseListener(
-                new MouseListener() {
-            String oldText;
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-//                oldText = rb.getString("descInd");
-//                choiceDescLabel.setText(oldText);
-//                dynamicChoicePanel.add(btnFileSelector);
-                if (!selectionMade) {
-                    topPanel.showChoicePanel();
-                    selectionMade = true;
-                }
-
-                btnUni.depress();
-                btnInd.press();
-                consolePanel.setStatusText(rb.getString("btnInd"));
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                oldText = topPanel.getDescription();
-                topPanel.setDescription(rb.getString("descInd"));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                topPanel.setDescription(oldText);
-            }
-        });
-
-        return btnInd;
-    }
-
-    /**
-     * create the button that shows a pop-up file selection window so that the
-     * user can select a file which contains a QRCode image
-     */
-    public void createFileSelectButton() {
-        btnFileSelector = new JButton(rb.getString("selectFile"));
-        btnFileSelector.setAction(ActionManager.getInstance().getAction("fileChooser"));
-    }
 
     /**
      * create the button that starts the verification process
      *
      * @return JButton the start button
      */
-    public JButton createStartButton() {
+    private JButton createStartButton() {
         btnStart = new JButton("START");
         btnStart.setBackground(GUIconstants.BLUE);
         btnStart.setAction(ActionManager.getInstance().getAction("start"));
@@ -370,6 +290,10 @@ public class MainGUI extends JFrame {
                 innerPanel.validate();
             }
         }
+    }
+    
+    public void appendToConsole(String str){
+        consolePanel.appendToStatusText(str);
     }
 
     /**

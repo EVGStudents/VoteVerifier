@@ -47,6 +47,18 @@ public class Messenger {
 		ve = new VerificationEvent(VerificationType.ERROR, str);
 		ss.notifyListeners(ve);
 	}
+        
+        	/*
+	 * send a fatal error message to the GUI
+	 * to be used in the case of an exception which prevent the program from continuing the desired course of action.
+         * Text will be dislpayed in a pop-up window.
+	 * @param String the message to send 
+	 */
+	public void sendFatalErrorMsg(String str) {
+		VerificationEvent ve;
+		ve = new VerificationEvent(VerificationType.FATAL_ERROR, str);
+		ss.notifyListeners(ve);
+	}
 
 	/**
 	 * send the results of a verification to the GUI the message is packaged

@@ -67,7 +67,8 @@ public enum VerificationType {
 	MT_VALID_PLAINTEXT_VOTES(550),
 	MT_VALID_PLAINTEXT_VOTES_SIGN(560),
 	//ToDO check if it is useful
-	ERROR(666);
+	ERROR(666),
+        FATAL_ERROR(667);
 	//the ID of the verification
 	private final int id;
 

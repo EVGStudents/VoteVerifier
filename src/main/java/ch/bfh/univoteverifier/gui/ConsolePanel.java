@@ -35,7 +35,7 @@ public class ConsolePanel extends JPanel {
     ResourceBundle rb;
 
     public ConsolePanel() {
-        rb = ResourceBundle.getBundle("error", Locale.ENGLISH);
+        rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
 
         this.setLayout(new GridLayout(1, 1));
         this.setBackground(GUIconstants.DARK_GREY);

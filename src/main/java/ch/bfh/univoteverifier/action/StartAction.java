@@ -11,20 +11,23 @@
 package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.common.Messenger;
-import ch.bfh.univoteverifier.gui.ConsolePanel;
 import ch.bfh.univoteverifier.gui.GUIconstants;
-import ch.bfh.univoteverifier.verification.VerificationSwingWorker;
+import ch.bfh.univoteverifier.gui.MainGUI;
+import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.verification.VerificationThread;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -33,35 +36,53 @@ import javax.swing.SwingUtilities;
 public class StartAction extends AbstractAction {
 
     Messenger msgr;
-    ConsolePanel consolePanel;
     JPanel innerPanel;
     ResourceBundle rb;
-
-    public StartAction(Messenger msgr, ConsolePanel consolePanel, JPanel innerPanel) {
-        rb = ResourceBundle.getBundle("error", Locale.ENGLISH);
+    MainGUI mainGUI;
+    JComboBox comboBox;
+    ButtonGroup btnGrp;
+File qrCodeFile;
+ private static final Logger LOGGER = Logger.getLogger(StartAction.class.getName());
+ 
+    public StartAction(Messenger msgr, MainGUI mainGUI, JPanel innerPanel, JComboBox comboBox, ButtonGroup btnGroup, File qrCodeFile) {
+        rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         this.innerPanel = innerPanel;
-        this.consolePanel = consolePanel;
         this.msgr = msgr;
-        putValue(NAME, "START");
-        putValue(SHORT_DESCRIPTION, "THIS IS A DESCRIPTION");
+        this.btnGrp = btnGroup;
+        this.comboBox = comboBox;
+        this.mainGUI = mainGUI;
+        this.qrCodeFile =qrCodeFile;
+        putValue(NAME, rb.getString("start"));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         innerPanel.removeAll();
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
         innerPanel.setBackground(GUIconstants.GREY);
         innerPanel.repaint();
-//        btnInd.setEnabled(false);
-//        btnUni.setEnabled(false);
-//        String msg = "starting verification";
-//        consolePanel.setStatusText(msg);
-//        mc.universalVerification(eID);
-//        mc.getStatusSubject().addListener(sl);
-        VerificationThread vt = new VerificationThread(msgr, "vsbfh-2013");
+        String msg = "";
+        String eID = comboBox.getSelectedItem().toString();
+        msg = msg + rb.getString("forElectionId") + eID;
+        mainGUI.appendToConsole(msg);
+        VerificationThread vt = new VerificationThread(msgr, eID);
         vt.start();
-//        VerificationSwingWorker vsw = new VerificationSwingWorker(msgr, "vsbfh-2013");
-//        vsw.execute();
+    }
+
+    /**
+     *
+     * @param buttonGroup
+     * @return
+     */
+    public String getSelectedButtonText(ButtonGroup buttonGroup) {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            LOGGER.log(Level.INFO, "BTN IN BTN GROUP:{0}", button.getText());
+            if (button.isSelected()) {
+                return button.getText();
+            }
+        }
+
+        return null;
     }
 }
