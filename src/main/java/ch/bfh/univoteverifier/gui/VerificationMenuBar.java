@@ -10,14 +10,20 @@
  */
 package ch.bfh.univoteverifier.gui;
 
+import ch.bfh.univoteverifier.action.ActionManager;
+import ch.bfh.univoteverifier.action.ShowConsoleAction;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.Action;
+import javax.swing.Box;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,21 +31,23 @@ import javax.swing.JMenuItem;
  */
 public class VerificationMenuBar extends JMenuBar {
 
-    JMenu fileMenu;
+   
     ResourceBundle rb;
-    ConsolePanel consolePanel;
-    
-    public VerificationMenuBar(ConsolePanel consolePanel) {
-        rb = ResourceBundle.getBundle("error", Locale.ENGLISH);
-        this.consolePanel = consolePanel;
-        createFileMenu();
-        createLanguageMenu();
+    MainGUI mainGUI;
 
+    public VerificationMenuBar(MainGUI mainGUI) {
+        rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
+        createFileMenu();
+        createViewMenu();
+        createLanguageMenu();
+        this.add(Box.createHorizontalGlue());
+        createHelpMenu();
+        this.mainGUI = mainGUI;
     }
 
     public void createFileMenu() {
-        fileMenu = new JMenu("file");
-        JMenuItem exitItem = new JMenuItem("exit");
+        JMenu menu = new JMenu(rb.getString("file"));
+        JMenuItem exitItem = new JMenuItem(rb.getString("exit"));
         exitItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -47,47 +55,60 @@ public class VerificationMenuBar extends JMenuBar {
             }
         });
 
-        fileMenu.add(exitItem);
-        this.add(fileMenu);
+        menu.add(exitItem);
+        this.add(menu);
     }
     
-     public void createLanguageMenu() {
-        JMenu langMenu = new JMenu("Language");
-        JMenuItem english = new JMenuItem("english");
-        ActionListener al = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                consolePanel.appendToStatusText("LANGUAGE CHANGE ENGLISH");
-            }
-        };
-        english.addActionListener(al);
+   public void createViewMenu() {
+        JMenu menu = new JMenu(rb.getString("view"));
+        JCheckBoxMenuItem consoleItem = new JCheckBoxMenuItem();
+        consoleItem.setSelected(true);
         
-        JMenuItem french = new JMenuItem("english");
-        al = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                consolePanel.appendToStatusText("LANGUAGE CHANGE ENGLISH");
-            }
-        };
-        english.addActionListener(al);
-        
-        JMenuItem german = new JMenuItem("english");
-         al = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                consolePanel.appendToStatusText("LANGUAGE CHANGE ENGLISH");
-            }
-        };
-        english.addActionListener(al);
-        
-        english.addActionListener(al);
-        french.addActionListener(al);
-        german.addActionListener(al);
-        
+        Action a = ActionManager.getInstance().getAction("showConsole");
+        consoleItem.setAction(a);
 
-        langMenu.add(english);
-        langMenu.add(german);
-        langMenu.add(french);
-        this.add(langMenu);
+        menu.add(consoleItem);
+        this.add(menu);
     }
+
+    public void createLanguageMenu() {
+        JMenu menu = new JMenu(rb.getString("language"));
+//        Action a = ActionManager.getInstance().getAction("changeLocale");
+
+        String[] lang = {"EN", "DE", "FR"};
+
+        for (int i = 0; i < lang.length; i++) {
+            JMenuItem menuitem = new JMenuItem();
+            menuitem.setText(rb.getString(lang[i])); //THIS SHOWS IN THE MENU
+            menuitem.setName(lang[i]); //THIS CAN IDENTIFY THE OBJECT
+//            menuitem.setAction(a);
+            menuitem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    
+                    String name = ((JMenuItem) e.getSource()).getName();
+                    GUIconstants.setLocale(name);
+                    mainGUI.resetContentPanel();
+                }
+            });
+            menu.add(menuitem);
+        }
+        this.add(menu);
+    }
+    
+        public void createHelpMenu() {
+        JMenu menu = new JMenu(rb.getString("help"));
+        JMenuItem exitItem = new JMenuItem(rb.getString("about"));
+        exitItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(mainGUI, GUIconstants.ABOUT_TEXT);
+            }
+        });
+
+        menu.add(exitItem);
+        this.add(menu);
+    }
+    
+    
 }

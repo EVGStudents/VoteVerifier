@@ -58,15 +58,5 @@ public class MainController {
 		return v.getStatusSubject();
 	}
 
-	/**
-	 * ToDo
-	 *
-	 * @param filepath
-	 * @return
-	 */
-	public String decodeQRCode(File filepath) {
-		QRCode qr = new QRCode();
-		//            String decodedStr = qr.decode(filepath);
-		return "";
-	}
+
 }

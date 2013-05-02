@@ -15,6 +15,7 @@ import ch.bfh.univoteverifier.gui.MainGUI;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JMenuItem;
 
 /**
  *
@@ -31,13 +32,13 @@ public class ChangeLocaleAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String btnName = ((JButton) e.getSource()).getName();
+        String name = ((JMenuItem)e.getSource()).getName();
         String text = "";
-        if (0 == btnName.compareTo("btnEn")) {
+        if (0 == name.compareTo("btnEn")) {
             text = "locale changed to english";
-        } else if (0 == btnName.compareTo("btnFr")) {
+        } else if (0 == name.compareTo("btnFr")) {
             text = "locale changed to french";
-        } else if (0 == btnName.compareTo("btnDe")) {
+        } else if (0 == name.compareTo("btnDe")) {
             text = "locale changed to german";
         }
         consolePanel.appendToStatusText(text);
