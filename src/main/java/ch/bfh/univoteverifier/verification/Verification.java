@@ -37,7 +37,7 @@ public abstract class Verification {
 	protected final List<Runner> runners;
 	protected final ElectionBoardProxy ebproxy;
 	protected VerificationOrder displayType = VerificationOrder.BY_SPEC;
-	protected Messenger gm;
+	protected Messenger msgr;
 	//used to store the results of a verification
 	protected List<VerificationEvent> res;
 
@@ -51,10 +51,7 @@ public abstract class Verification {
 		this.ebproxy = new ElectionBoardProxy(eID);
 		runners = new ArrayList<>();
 		res = new ArrayList<>();
-		this.gm = msgr;
-
-		//ToDo check if is correct
-		LOGGER.setUseParentHandlers(true);
+		this.msgr = msgr;
 	}
 
 	/**
@@ -72,7 +69,7 @@ public abstract class Verification {
 	 * @return the status subject
 	 */
 	public VerificationSubject getStatusSubject() {
-		return this.gm.getStatusSubject();
+		return this.msgr.getStatusSubject();
 	}
 
 	/**
@@ -104,7 +101,7 @@ public abstract class Verification {
 
 		} catch (CertificateException | ElectionBoardServiceFault ex) {
 			LOGGER.log(Level.SEVERE, null, ex);
-			gm.sendErrorMsg(ex.getMessage());
+			msgr.sendErrorMsg(ex.getMessage());
 		}
 	}
 

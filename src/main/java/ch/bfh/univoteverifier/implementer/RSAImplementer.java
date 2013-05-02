@@ -43,7 +43,7 @@ public class RSAImplementer {
 	/**
 	 * Create a new RSAImplementer.
 	 *
-	 * @param ebp the election board proxy from where get the data
+	 * @param ebp the election board proxy from where get the data.
 	 */
 	public RSAImplementer(ElectionBoardProxy ebp) {
 		this.ebp = ebp;
@@ -59,10 +59,10 @@ public class RSAImplementer {
 	/**
 	 * Verify a RSA signature.
 	 *
-	 * @param s the RSAPublicKey
-	 * @param clearText the text from where to get the signature
-	 * @param signature the pre-computed signature from the board
-	 * @return true if the signature is verified correctly otherwise not
+	 * @param s the RSAPublicKey.
+	 * @param clearText the text from where to get the signature.
+	 * @param signature the pre-computed signature from the board.
+	 * @return true if the signature is verified correctly otherwise not.
 	 */
 	public boolean vrfRSASign(RSAPublicKey s, BigInteger clearText, BigInteger signature) {
 		BigInteger ver = clearText.modPow(s.getPublicExponent(), s.getModulus());
@@ -76,7 +76,7 @@ public class RSAImplementer {
 	 * Verify the signature of the election administrator certificate plus
 	 * the election ID.
 	 *
-	 * @return a verification event
+	 * @return a verification event.
 	 * @throws ElectionBoardServiceFault
 	 * @throws CertificateException
 	 */
@@ -115,7 +115,7 @@ public class RSAImplementer {
 	 * Verify the signature of the basic parameters (id, description, key
 	 * length, talliers and mixers) of an election.
 	 *
-	 * @return a verification event
+	 * @return a verification event.
 	 * @throws ElectionBoardServiceFault
 	 * @throws NoSuchAlgorithmException
 	 */

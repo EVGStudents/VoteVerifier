@@ -28,7 +28,7 @@ public class UniversalVerification extends Verification {
 	 * Construct a universal verification with an election id
 	 *
 	 * @param eID the ID of the election
-	 * @param gm the entity used to exchange messages with the GUI
+	 * @param msgr the entity used to exchange messages with the GUI
 	 */
 	public UniversalVerification(Messenger msgr, String eID) {
 		super(msgr, eID);
@@ -46,11 +46,11 @@ public class UniversalVerification extends Verification {
 	 * the specification
 	 */
 	private void createRunnerBySpec() {
-		SystemSetupRunner ssr = new SystemSetupRunner(gm);
-		ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy, gm);
-		ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy, gm);
-		ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy, gm);
-		MixerTallierRunner mtr = new MixerTallierRunner(ebproxy, gm);
+		SystemSetupRunner ssr = new SystemSetupRunner(msgr);
+		ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy, msgr);
+		ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy, msgr);
+		ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy, msgr);
+		MixerTallierRunner mtr = new MixerTallierRunner(ebproxy, msgr);
 
 		runners.add(ssr);
 		//Decomment when they are implemented

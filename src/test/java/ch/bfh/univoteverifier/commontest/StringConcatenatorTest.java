@@ -42,7 +42,6 @@ public class StringConcatenatorTest {
 
 		//now we must have an empty string
 		assertEquals("", sc.pullAll());
-
 	}
 
 	/**
@@ -60,8 +59,6 @@ public class StringConcatenatorTest {
 		sc.pushRightDelim();
 
 		assertEquals("(first|second)", sc.pullAll());
-
-
 	}
 
 	/**
@@ -106,8 +103,6 @@ public class StringConcatenatorTest {
 		sc.pushRightDelim();
 
 		assertEquals("(first|(arr1|arr2|arr3)|second)", sc.pullAll());
-
-
 	}
 
 	/**
@@ -129,7 +124,6 @@ public class StringConcatenatorTest {
 
 		String res = sc.pullAll();
 
-
 		assertEquals("(134536454634534|454634534|134536534|634534|579485769845|678549|13565565756134536454634534|9879879134536454634534)", res);
 	}
 
@@ -144,8 +138,6 @@ public class StringConcatenatorTest {
 		sc.pushList(bi, true);
 
 		assertEquals("1", sc.pullAll());
-
-
 	}
 
 	/**
@@ -160,8 +152,6 @@ public class StringConcatenatorTest {
 		sc.pushList(bi, true);
 
 		assertEquals("(1|1)", sc.pullAll());
-
-
 	}
 
 	/**
@@ -174,8 +164,6 @@ public class StringConcatenatorTest {
 		sc.pushList(bi, true);
 
 		assertEquals("", sc.pullAll());
-
-
 	}
 
 	/**
