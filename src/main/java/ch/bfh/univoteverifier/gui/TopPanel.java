@@ -37,54 +37,50 @@ import javax.swing.border.EmptyBorder;
 public class TopPanel extends JPanel {
 
     private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
-    JButton btnUni, btnInd, btnStart;
     String eIDlist;
-JLabel vrfDescLabel;
-ResourceBundle rb;
+    JLabel vrfDescLabel;
+    ResourceBundle rb;
+    
 
     public TopPanel(JButton btnUni, JButton btnInd, JButton btnStart) {
-        rb= ResourceBundle.getBundle("error", Locale.ENGLISH);
-        this.btnInd = btnInd;
-        this.btnUni = btnUni;
-        this.btnStart = btnStart;
-        
+        rb = ResourceBundle.getBundle("error", Locale.ENGLISH);
+
         this.setBackground(Color.WHITE);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        this.add(getTitlePanel());
-
+        this.add(createTitlePanel());
+        this.add(createButtonPanel(btnUni,  btnInd,  btnStart));
+        this.add(createVrfDescPanel());
         
-        //description panel.  button in above panel changes text in this panel
-        //contains button to start verification
-        JPanel vrfDescPanel = new JPanel();
-        vrfDescPanel.setLayout(new GridLayout(1, 1));
-        vrfDescPanel.setBackground(GUIconstants.DARK_GREY);
-
-
-        vrfDescLabel = new JLabel(rb.getString("defaultDescription"));
-        vrfDescLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        vrfDescPanel.add(vrfDescLabel);
-        
-        
-        //button panel with two buttons and grey background
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(GUIconstants.GREY);
-
-        JButton btnUniVrf = btnUni;
-        JButton btnIndVrf = btnInd;
-
-       
-        buttonPanel.add(new I18nButtonPanel());
-        buttonPanel.add(btnUniVrf);
-        buttonPanel.add(btnIndVrf);
-        buttonPanel.add(btnStart);
- 
-        this.add(buttonPanel);
-        this.add(vrfDescPanel);
     }
 
-    public JPanel getTitlePanel() {
-        //title panel with white background and image
+    /**
+     * when a button is pressed, this method with show the panel where the user enters additional information 
+     */
+    public void showChoicePanel(){
+        this.add(createDynamicChoicePanel());
+        this.revalidate();
+        this.repaint();
+    }
+    
+      /**
+     * Create the button panel with the verification buttons in it
+     * @return JPanel
+     */ 
+    public JPanel createButtonPanel(JButton btnUni, JButton btnInd, JButton btnStart){
+        JPanel panel = new JPanel();
+        panel.setBackground(GUIconstants.GREY);
+        panel.add(btnUni);
+        panel.add(btnInd);
+        panel.add(btnStart);
+        return panel;
+    }
+    
+    /**
+     * Create the title panel with white background and image
+     * @return JPanel
+     */
+    public JPanel createTitlePanel() {
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new GridLayout(1, 1));
         titlePanel.setBackground(Color.white);
@@ -93,6 +89,33 @@ ResourceBundle rb;
         return titlePanel;
     }
 
+    public JPanel createVrfDescPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(1, 1));
+        panel.setBackground(GUIconstants.DARK_GREY);
+
+        vrfDescLabel = new JLabel(rb.getString("defaultDescription"));
+        vrfDescLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(vrfDescLabel);
+        return panel;
+    }
+    /**
+     * Creates a panel whose contents are changed based on selections made
+     * by the user. This panel will be displayed in the verification area
+     * (middle) of the GUI
+     */
+    public JPanel createDynamicChoicePanel() {
+        JPanel choicePanel = new JPanel();
+        choicePanel.setBackground(GUIconstants.DARK_GREY);
+        choicePanel.setPreferredSize(new Dimension(300, 40));
+
+        JLabel choiceLabel = new JLabel();
+        choiceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        choicePanel.add(choiceLabel);
+        return choicePanel;
+    }
+    
+        
     /**
      * Draw the panel with the image
      *
@@ -112,11 +135,12 @@ ResourceBundle rb;
         }
         return imgPanel;
     }
-    
-    public void setDescription(String str){
+
+    public void setDescription(String str) {
         vrfDescLabel.setText(str);
     }
-    public String getDescription(){
-    return vrfDescLabel.getText();
+
+    public String getDescription() {
+        return vrfDescLabel.getText();
     }
 }

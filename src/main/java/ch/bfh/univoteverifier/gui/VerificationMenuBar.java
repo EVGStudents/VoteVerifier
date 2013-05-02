@@ -10,6 +10,7 @@
  */
 package ch.bfh.univoteverifier.gui;
 
+import ch.bfh.univoteverifier.action.ActionManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
@@ -28,7 +29,7 @@ public class VerificationMenuBar extends JMenuBar {
     JMenu fileMenu;
     ResourceBundle rb;
     ConsolePanel consolePanel;
-    
+
     public VerificationMenuBar(ConsolePanel consolePanel) {
         rb = ResourceBundle.getBundle("error", Locale.ENGLISH);
         this.consolePanel = consolePanel;
@@ -50,44 +51,19 @@ public class VerificationMenuBar extends JMenuBar {
         fileMenu.add(exitItem);
         this.add(fileMenu);
     }
-    
-     public void createLanguageMenu() {
-        JMenu langMenu = new JMenu("Language");
-        JMenuItem english = new JMenuItem("english");
-        ActionListener al = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                consolePanel.appendToStatusText("LANGUAGE CHANGE ENGLISH");
-            }
-        };
-        english.addActionListener(al);
-        
-        JMenuItem french = new JMenuItem("english");
-        al = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                consolePanel.appendToStatusText("LANGUAGE CHANGE ENGLISH");
-            }
-        };
-        english.addActionListener(al);
-        
-        JMenuItem german = new JMenuItem("english");
-         al = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                consolePanel.appendToStatusText("LANGUAGE CHANGE ENGLISH");
-            }
-        };
-        english.addActionListener(al);
-        
-        english.addActionListener(al);
-        french.addActionListener(al);
-        german.addActionListener(al);
-        
 
-        langMenu.add(english);
-        langMenu.add(german);
-        langMenu.add(french);
+    public void createLanguageMenu() {
+        JMenu langMenu = new JMenu("Language");
+        Action a = ActionManager.getInstance().getAction("changeLocale");
+        
+        String[] lang = {"English", "German", "French"};
+        
+        for (int i = 0; i < lang.length; i++) {
+            JMenuItem menuitem = new JMenuItem(lang[i]);
+            menuitem.setName(lang[i]);
+            menuitem.setAction(a);
+            langMenu.add(menuitem);
+        }
         this.add(langMenu);
     }
 }

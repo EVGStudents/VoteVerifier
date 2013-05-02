@@ -11,6 +11,7 @@
 package ch.bfh.univoteverifier.gui;
 
 import java.awt.Color;
+import java.util.Locale;
 
 /**
  *
@@ -21,4 +22,13 @@ public class GUIconstants {
     public final static Color GREY = new Color(190, 190, 190);
     public final static Color DARK_GREY = new Color(140, 140, 140);
     public final static Color BLUE = new Color(110, 110, 254);
+    public static Locale loc = new Locale("EN");
+
+    public static void setLocale(String str) {
+        loc = new Locale(str);
+    }
+
+    public static Locale getLocale() {
+        return loc;
+    }
 }
