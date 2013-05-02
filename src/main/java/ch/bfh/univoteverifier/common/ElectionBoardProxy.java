@@ -60,7 +60,7 @@ public class ElectionBoardProxy {
 	private static final Logger LOGGER = Logger.getLogger(ElectionBoardProxy.class.getName());
 	private ElectionBoard eb;
 	/**
-	 * These instance variables store the data from the web services
+	 * These instance variables store the data from the web services.
 	 */
 	private Map<BigInteger, Ballot> ballot;
 	private Ballots ballots;
@@ -91,7 +91,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Construct an ElectionBoardProxy with a given election id.
 	 *
-	 * @param eID the ID of the election
+	 * @param eID the ID of the election.
 	 */
 	public ElectionBoardProxy(String eID) {
 		this.eID = eID;
@@ -109,8 +109,8 @@ public class ElectionBoardProxy {
 	 * Construct an ElectionBoardProxy with a given election id and a URL as
 	 * a source of the web services.
 	 *
-	 * @param eID the ID of the election
-	 * @param wsdlURL the URL of the WSDL file
+	 * @param eID the ID of the election.
+	 * @param wsdlURL the URL of the WSDL file.
 	 */
 	public ElectionBoardProxy(String eID, String wsdlURL) {
 		this.eID = eID;
@@ -186,9 +186,11 @@ public class ElectionBoardProxy {
 	/**
 	 * Get a ballot.
 	 *
-	 * @param verificationKey the verification key for this ballot
-	 * @return the ballot
-	 * @throws ElectionBoardServiceFault
+	 * @param verificationKey the verification key for this ballot.
+	 * @return the ballot.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public Ballot getBallot(BigInteger verificationKey) throws ElectionBoardServiceFault {
 		if (ballot == null) {
@@ -205,8 +207,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the ballots.
 	 *
-	 * @return the ballots
-	 * @throws ElectionBoardServiceFault
+	 * @return the ballots.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public Ballots getBallots() throws ElectionBoardServiceFault {
 		if (ballots == null) {
@@ -219,9 +223,11 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the blinded generator of a given mixerID.
 	 *
-	 * @param mixerID
-	 * @return the blinded generator of mixerID
-	 * @throws ElectionBoardServiceFault
+	 * @param mixerID.
+	 * @return the blinded generator of mixerID.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public BlindedGenerator getBlindedGenerator(String mixerID) throws ElectionBoardServiceFault {
 		if (blindGen == null) {
@@ -238,8 +244,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the decoded votes.
 	 *
-	 * @return the decoded votes
-	 * @throws ElectionBoardServiceFault
+	 * @return the decoded votes.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public DecodedVotes getDecodedVotes() throws ElectionBoardServiceFault {
 		if (decodedVotes == null) {
@@ -252,8 +260,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the decrypted votes.
 	 *
-	 * @return the decrypted votes
-	 * @throws ElectionBoardServiceFault
+	 * @return the decrypted votes.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public DecryptedVotes getDecryptedVotes() throws ElectionBoardServiceFault {
 		if (decryptedVotes == null) {
@@ -266,8 +276,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the election data.
 	 *
-	 * @return the election data
-	 * @throws ElectionBoardServiceFault
+	 * @return the election data.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public ElectionData getElectionData() throws ElectionBoardServiceFault {
 		if (elData == null) {
@@ -280,8 +292,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the election definition.
 	 *
-	 * @return the election definition
-	 * @throws ElectionBoardServiceFault
+	 * @return the election definition.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public ElectionDefinition getElectionDefinition() throws ElectionBoardServiceFault {
 		if (elDef == null) {
@@ -294,8 +308,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the election generator.
 	 *
-	 * @return the election generator
-	 * @throws ElectionBoardServiceFault
+	 * @return the election generator.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public ElectionGenerator getElectionGenerator() throws ElectionBoardServiceFault {
 		if (elGen == null) {
@@ -308,8 +324,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the election option.
 	 *
-	 * @return the election option
-	 * @throws ElectionBoardServiceFault
+	 * @return the election option.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public ElectionOptions getElectionOptions() throws ElectionBoardServiceFault {
 		if (elOpt == null) {
@@ -322,8 +340,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the election system information.
 	 *
-	 * @return the election system information
-	 * @throws ElectionBoardServiceFault
+	 * @return the election system information.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public ElectionSystemInfo getElectionSystemInfo() throws ElectionBoardServiceFault {
 		if (elSysInfo == null) {
@@ -336,8 +356,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the encryption key.
 	 *
-	 * @return the encryption key
-	 * @throws ElectionBoardServiceFault
+	 * @return the encryption key.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public EncryptionKey getEncryptionKey() throws ElectionBoardServiceFault {
 		if (encKey == null) {
@@ -350,8 +372,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the encryption parameters.
 	 *
-	 * @return the encryption parameters
-	 * @throws ElectionBoardServiceFault
+	 * @return the encryption parameters.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public EncryptionParameters getEncryptionParameters() throws ElectionBoardServiceFault {
 		if (encParam == null) {
@@ -364,9 +388,11 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the encryption key share of tallierID.
 	 *
-	 * @param tallierID
-	 * @return the encryption key share of tallierID
-	 * @throws ElectionBoardServiceFault
+	 * @param tallierID the ID of the tallier.
+	 * @return the encryption key share of tallierID.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public EncryptionKeyShare getEncryptionKeyShare(String tallierID) throws ElectionBoardServiceFault {
 		if (encKeyShare == null) {
@@ -383,8 +409,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the electoral roll.
 	 *
-	 * @return the electoral roll
-	 * @throws ElectionBoardServiceFault
+	 * @return the electoral roll.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public ElectoralRoll getElectoralRoll() throws ElectionBoardServiceFault {
 		if (elRoll == null) {
@@ -397,8 +425,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the lately mixed verification key.
 	 *
-	 * @return the lately mixed verification key
-	 * @throws ElectionBoardServiceFault
+	 * @return the lately mixed verification key.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public List<MixedVerificationKey> getLateyMixedVerificationKeys() throws ElectionBoardServiceFault {
 		if (latelyMixVerKey == null) {
@@ -411,9 +441,11 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the lately mixed verification key mixed by mixerID.
 	 *
-	 * @param mixerID the ID of a given mixer
-	 * @return the lately mixed verification key of mixerID
-	 * @throws ElectionBoardServiceFault
+	 * @param mixerID the ID of a given mixer.
+	 * @return the lately mixed verification key of mixerID.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public List<MixedVerificationKey> getLatelyMixedVerificationKeysBy(String mixerID) throws ElectionBoardServiceFault {
 		if (latelyMixVerKeyBy == null) {
@@ -430,8 +462,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the lately registered voter certificate.
 	 *
-	 * @return the lately registered voter certificate
-	 * @throws ElectionBoardServiceFault
+	 * @return the lately registered voter certificate.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public List<VoterCertificate> getLatelyRegisteredVoterCerts() throws ElectionBoardServiceFault {
 		if (latelyRegVoteCerts == null) {
@@ -444,8 +478,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the mixed encrypted votes.
 	 *
-	 * @return the mixed encrypted votes
-	 * @throws ElectionBoardServiceFault
+	 * @return the mixed encrypted votes.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public MixedEncryptedVotes getMixedEncryptedVotes() throws ElectionBoardServiceFault {
 		if (mixEncVotes == null) {
@@ -456,11 +492,13 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the mixed encrypted votes by a given mixer.
+	 * Get the mixed encrypted votes of a given mixer.
 	 *
-	 * @param mixerID the ID of a given mixer
-	 * @return the mixed encrypted votes of the given mixer
-	 * @throws ElectionBoardServiceFault
+	 * @param mixerID the ID of a given mixer.
+	 * @return the mixed encrypted votes of the given mixer.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public MixedEncryptedVotes getMixedEncryptedVotesBy(String mixerID) throws ElectionBoardServiceFault {
 		if (mixEncVotesBy == null) {
@@ -477,8 +515,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the mixed verification keys.
 	 *
-	 * @return the mixed verification keys
-	 * @throws ElectionBoardServiceFault
+	 * @return the mixed verification keys.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public MixedVerificationKeys getMixedVerificationKeys() throws ElectionBoardServiceFault {
 		if (mixVerKey == null) {
@@ -489,11 +529,13 @@ public class ElectionBoardProxy {
 	}
 
 	/**
+	 * Get the mixed verification key of a given mixer.
 	 *
-	 *
-	 * @param mixerID
-	 * @return the mixVerKeyBy
-	 * @throws ElectionBoardServiceFault
+	 * @param mixerID the ID of the mixer.
+	 * @return the mixed verification keys of the mixer.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public MixedVerificationKeys getMixedVerificationKeysBy(String mixerID) throws ElectionBoardServiceFault {
 		if (mixVerKeyBy == null) {
@@ -509,11 +551,13 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the partially decrypted votes
+	 * Get the partially decrypted votes.
 	 *
-	 * @param tallierID
-	 * @return the partially decrypted votes
-	 * @throws ElectionBoardServiceFault
+	 * @param tallierID the ID of the tallier.
+	 * @return the partially decrypted votes.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public PartiallyDecryptedVotes getPartiallyDecryptedVotes(String tallierID) throws ElectionBoardServiceFault {
 		if (parDecVotes == null) {
@@ -528,10 +572,12 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the root certificate
+	 * Get the root certificate.
 	 *
-	 * @return the root certificate
-	 * @throws ElectionBoardServiceFault
+	 * @return the root certificate.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public Certificate getRootCertificate() throws ElectionBoardServiceFault {
 		if (rootCert == null) {
@@ -542,10 +588,12 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the signature parameters
+	 * Get the signature parameters.
 	 *
-	 * @return the signature parameters
-	 * @throws ElectionBoardServiceFault
+	 * @return the signature parameters.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public SignatureParameters getSignatureParameters() throws ElectionBoardServiceFault {
 		if (signParam == null) {
@@ -556,10 +604,12 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the voter certificates
+	 * Get the voter certificates.
 	 *
-	 * @return the voter certificates
-	 * @throws ElectionBoardServiceFault
+	 * @return the voter certificates.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public VoterCertificates getVoterCerts() throws ElectionBoardServiceFault {
 		if (voterCerts == null) {

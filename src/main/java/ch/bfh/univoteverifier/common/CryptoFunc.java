@@ -31,19 +31,20 @@ public class CryptoFunc {
 	private static final Logger LOGGER = Logger.getLogger(CryptoFunc.class.getName());
 	private static final String HASH_256 = "sha-256";
 	private static final String HASH_1 = "sha-1";
+	private static final String ENCODING = "UTF-8";
 
 	/**
-	 * Compute the hash of a number and then put it into a BigInteger.
-	 * Change the value in the configuration file to chose the appropriate
-	 * hash algorithm.
+	 * Compute the sha-256 hash of a given string
 	 *
 	 * @param val BigInteger the value used to compute the hash.
 	 * @return the hash as BigInteger representation.
-	 * @throws NoSuchAlgorithmException
+	 * @throws NoSuchAlgorithmException if the hash algorithm cannot be
+	 * found.
+	 * @throws UnsupportedEncodingException if the encoding cannot be found.
 	 */
 	public static BigInteger sha256(String s) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		MessageDigest md = MessageDigest.getInstance(HASH_256);
-		String utfStr = new String(s.getBytes(), "UTF-8");
+		String utfStr = new String(s.getBytes(), ENCODING);
 		md.update(utfStr.getBytes());
 		return new BigInteger(1, md.digest());
 	}
@@ -53,11 +54,13 @@ public class CryptoFunc {
 	 *
 	 * @param s the string used to compute the hash.
 	 * @return a BigInteger corresponding to the hash.
-	 * @throws NoSuchAlgorithmException
+	 * @throws NoSuchAlgorithmException if the hash algorithm cannot be
+	 * found.
+	 * @throws UnsupportedEncodingException if the encoding cannot be found.
 	 */
 	public static BigInteger sha1(String s) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		MessageDigest md = MessageDigest.getInstance(HASH_1);
-		String utfStr = new String(s.getBytes(), "UTF-8");
+		String utfStr = new String(s.getBytes(), ENCODING);
 		md.update(utfStr.getBytes());
 		return new BigInteger(1, md.digest());
 	}
@@ -76,9 +79,11 @@ public class CryptoFunc {
 	/**
 	 * Get an X509 certificate from a byte array.
 	 *
-	 * @param b the byte array.
-	 * @return an X509 certificate
-	 * @throws CertificateException
+	 * @param b the byte array that shall contain the data of a X509
+	 * certificate.
+	 * @return an X509 certificate.
+	 * @throws CertificateException if the certificate factory cannot found
+	 * the specified type.
 	 */
 	public static X509Certificate getX509Certificate(byte[] b) throws CertificateException {
 		InputStream is = new ByteArrayInputStream(b);

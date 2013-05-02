@@ -40,13 +40,13 @@ import java.util.logging.Logger;
  */
 public class LocalBoardProxyDownloader {
 
-	XStream xstream;
-	ElectionBoardProxy ebp;
-	final String DES_PATH = "src/test/java/ch/bfh/univoteverifier/testresources";
-	final String ELECTION_ID = "vsbfh-2013";
-	final List<String> mixerIdentifier;
-	final List<String> tallierIdentifier;
-	final String EXT = ".xml";
+	private final XStream xstream;
+	private final ElectionBoardProxy ebp;
+	private final String DES_PATH = "src/test/java/ch/bfh/univoteverifier/testresources";
+	private final String ELECTION_ID = "vsbfh-2013";
+	private final List<String> mixerIdentifier;
+	private final List<String> tallierIdentifier;
+	private final String EXT = ".xml";
 
 	public static void main(String[] args) throws ElectionBoardServiceFault, FileNotFoundException {
 		LocalBoardProxyDownloader lbpd = new LocalBoardProxyDownloader();
