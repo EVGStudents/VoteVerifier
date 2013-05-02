@@ -18,6 +18,7 @@ import ch.bfh.univoteverifier.gui.VerificationSubject;
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
+import java.io.File;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,9 +34,9 @@ import java.util.logging.Logger;
 public abstract class Verification {
 
 	private static final Logger LOGGER = Logger.getLogger(Verification.class.getName());
-	private final String eID;
-	protected final List<Runner> runners;
-	protected final ElectionBoardProxy ebproxy;
+	private String eID;
+	protected List<Runner> runners;
+	protected ElectionBoardProxy ebproxy;
 	protected VerificationOrder displayType = VerificationOrder.BY_SPEC;
 	protected Messenger msgr;
 	//used to store the results of a verification
@@ -52,6 +53,9 @@ public abstract class Verification {
 		runners = new ArrayList<>();
 		res = new ArrayList<>();
 		this.msgr = msgr;
+
+		//ToDo check if is correct
+		LOGGER.setUseParentHandlers(true);
 	}
 
 	/**

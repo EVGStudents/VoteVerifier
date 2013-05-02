@@ -53,262 +53,261 @@ import javax.swing.JScrollPane;
  */
 public class MainGUI extends JFrame {
 
-    JFrame frame;
-    JPanel vrfDescPanel, dynamicChoicePanel, innerPanel;
-    TopPanel topPanel;
-    ConsolePanel consolePanel;
-    ResultPanel activeVrfPanel;
-    MainController mc;
-    VerificationListener sl;
-    JLabel vrfDescLabel, choiceDescLabel;
-    JButton btnStart, btnFileSelector;
-    JRadioButton btnUni, btnInd;
-    boolean selectionMade = false;
-    JComboBox comboBox;
-    String[] eIDlist;
-    String rawEIDlist;
-    Preferences prefs;
-    JScrollPane vrfScrollPanel;
-    private final Properties prop = new Properties();
-    private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
-    ResourceBundle rb;
-    File qrCodeFile;
+	JFrame frame;
+	JPanel vrfDescPanel, dynamicChoicePanel, innerPanel;
+	TopPanel topPanel;
+	ConsolePanel consolePanel;
+	ResultPanel activeVrfPanel;
+	MainController mc;
+	VerificationListener sl;
+	JLabel vrfDescLabel, choiceDescLabel;
+	JButton btnStart, btnFileSelector;
+	JRadioButton btnUni, btnInd;
+	boolean selectionMade = false;
+	JComboBox comboBox;
+	String[] eIDlist;
+	String rawEIDlist;
+	Preferences prefs;
+	JScrollPane vrfScrollPanel;
+	private final Properties prop = new Properties();
+	private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
+	ResourceBundle rb;
+	File qrCodeFile;
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        MainGUI gui = new MainGUI();
-        gui.setVisible(true);
-    }
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		MainGUI gui = new MainGUI();
+		gui.setVisible(true);
+	}
 
-    /**
-     * Construct the window and frame of this GUI
-     */
-    public MainGUI() {
-        initResources();
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setMinimumSize(new Dimension(696, 400));
+	/**
+	 * Construct the window and frame of this GUI
+	 */
+	public MainGUI() {
+		initResources();
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setMinimumSize(new Dimension(696, 400));
 
-        createContentPanel();
+		createContentPanel();
 
-        this.setJMenuBar(new VerificationMenuBar(this));
-        this.setTitle(rb.getString("windowTitle"));
-        this.pack();
-    }
+		this.setJMenuBar(new VerificationMenuBar(this));
+		this.setTitle(rb.getString("windowTitle"));
+		this.pack();
+	}
 
-    
-    public void showConsole(boolean show) {
-        if (show) {
-            this.getContentPane().add(consolePanel);
-        } else {
-            this.getContentPane().remove(consolePanel);
-        }
-        this.validate();
-        this.repaint();
-    }
+	public void showConsole(boolean show) {
+		if (show) {
+			this.getContentPane().add(consolePanel);
+		} else {
+			this.getContentPane().remove(consolePanel);
+		}
+		this.validate();
+		this.repaint();
+	}
 
-public void createContentPanel() {
-        resetContentPanel();
-    }
+	public void createContentPanel() {
+		resetContentPanel();
+	}
 
-    public void resetContentPanel() {
-        JPanel masterPanel = createUI();
-        masterPanel.setOpaque(true); //content panes must be opaque
-        this.setContentPane(masterPanel);
-        initResources();
-        this.setJMenuBar(new VerificationMenuBar(this));
-        this.validate();
-        this.repaint();
-    }
+	public void resetContentPanel() {
+		JPanel masterPanel = createUI();
+		masterPanel.setOpaque(true); //content panes must be opaque
+		this.setContentPane(masterPanel);
+		initResources();
+		this.setJMenuBar(new VerificationMenuBar(this));
+		this.validate();
+		this.repaint();
+	}
 
-    /**
-     * Instantiates the basic building blocks of the program such as the
-     * controllers and displays the window of the GUI.
-     */
-    public void initResources() {
-        rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
-        prefs = Preferences.userNodeForPackage(MainGUI.class);
-        rawEIDlist = prefs.get("eIDList", "Bern Zurich vsbfh-2013");
-        Pattern pattern = Pattern.compile("\\s");
-        eIDlist = pattern.split(rawEIDlist);
-        mc = new MainController();
-        sl = new StatusUpdate();
-    }
+	/**
+	 * Instantiates the basic building blocks of the program such as the
+	 * controllers and displays the window of the GUI.
+	 */
+	public void initResources() {
+		rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
+		prefs = Preferences.userNodeForPackage(MainGUI.class);
+		rawEIDlist = prefs.get("eIDList", "Bern Zurich vsbfh-2013");
+		Pattern pattern = Pattern.compile("\\s");
+		eIDlist = pattern.split(rawEIDlist);
+		mc = new MainController();
+		sl = new StatusUpdate();
+	}
 
-    /**
-     * Creates the main components of the main window. The main window is
-     * divided into three parts: northPanel, and in the middle the verification
-     * panel (vrfPanel) and at the bottom the statusPanel
-     *
-     * @return a JPanel which will be set as the main content panel of the frame
-     */
-    public JPanel createUI() {
-        JPanel panel = new JPanel();
-        
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+	/**
+	 * Creates the main components of the main window. The main window is
+	 * divided into three parts: northPanel, and in the middle the
+	 * verification panel (vrfPanel) and at the bottom the statusPanel
+	 *
+	 * @return a JPanel which will be set as the main content panel of the
+	 * frame
+	 */
+	public JPanel createUI() {
+		JPanel panel = new JPanel();
 
-        createComboBox();
-        ButtonGroup btnGroup = new ButtonGroup();
-        Messenger msgr = new Messenger();
-        msgr.getStatusSubject().addListener(sl);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        innerPanel = new JPanel();
-        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
-        innerPanel.setBackground(GUIconstants.GREY);
+		createComboBox();
+		ButtonGroup btnGroup = new ButtonGroup();
+		Messenger msgr = new Messenger();
+		msgr.getStatusSubject().addListener(sl);
 
-        createActions(msgr, btnGroup);
-        
-        topPanel = getTopPanel(btnGroup);
-        consolePanel = new ConsolePanel();
-        panel.add(topPanel);
-        panel.add(new MiddlePanel(innerPanel));
-        panel.add(consolePanel);
-        return panel;
-    }
+		innerPanel = new JPanel();
+		innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
+		innerPanel.setBackground(GUIconstants.GREY);
 
+		createActions(msgr, btnGroup);
 
-    /**
-     * Create the actions that are used in this GUI
-     * @param msgr 
-     */
-    private void createActions(Messenger msgr, ButtonGroup btnGroup){
-        ActionManager am = ActionManager.getInstance();
-        Action changeLocaleAction = new ChangeLocaleAction(consolePanel);
-        Action fileChooserAction = new FileChooserAction(innerPanel, this, qrCodeFile);
-        Action startAction = new StartAction(msgr, this, innerPanel, comboBox, btnGroup, qrCodeFile);
-        Action showConsoleAction = new ShowConsoleAction(this);
-        
-        am.addActions("fileChooser", fileChooserAction);
-        am.addActions("changeLocale", changeLocaleAction);
-        am.addActions("start", startAction);
-        am.addActions("showConsole", showConsoleAction);
-    }
-    
-    
-    /**
-     * create the components necessary to display the northPanel
-     *
-     * @return a JPanel which contains other components to be shown in the main
-     * window
-     */
-    private TopPanel getTopPanel(ButtonGroup btnGrp) {
-        createBtnGrpUniInd(btnGrp);
-        createStartButton();
-        TopPanel panel = new TopPanel(btnUni, btnInd, btnStart, comboBox, btnGrp);
-        return panel;
-    }
+		topPanel = getTopPanel(btnGroup);
+		consolePanel = new ConsolePanel();
+		panel.add(topPanel);
+		panel.add(new MiddlePanel(innerPanel));
+		panel.add(consolePanel);
+		return panel;
+	}
 
-    /**
-     * creates the comboBox that allows new election IDs to be inputed as well
-     * as the selection of previously used election IDs
-     */
-    private void createComboBox() {
-        comboBox = new JComboBox(eIDlist);
-        comboBox.setEditable(true);
-        comboBox.setSelectedIndex(2);
-        comboBox.setSize(30, 50);
-        comboBox.setFont(new Font("Serif", Font.PLAIN, 10));
-    }
+	/**
+	 * Create the actions that are used in this GUI
+	 *
+	 * @param msgr
+	 */
+	private void createActions(Messenger msgr, ButtonGroup btnGroup) {
+		ActionManager am = ActionManager.getInstance();
+		Action changeLocaleAction = new ChangeLocaleAction(this);
+		Action fileChooserAction = new FileChooserAction(innerPanel, this, qrCodeFile);
+		Action startAction = new StartAction(msgr, this, innerPanel, comboBox, btnGroup, qrCodeFile);
+		Action showConsoleAction = new ShowConsoleAction(this);
 
-    /**
-     * create the button that shows the information and buttons needed to start
-     * universal verification
-     *
-     * @return button to choose universal verification a grey background and
-     * deactivated focused effects
-     */
-    private void createBtnGrpUniInd(ButtonGroup btnGrp) {
-        btnUni = new JRadioButton();
-        btnUni.setText("btnUni");
-        ActionManager am = ActionManager.getInstance();
-        String name = rb.getString("btnUni");
-        btnUni = new JRadioButton(name);
-        btnUni.setBackground(GUIconstants.GREY);
+		am.addActions("fileChooser", fileChooserAction);
+		am.addActions("changeLocale", changeLocaleAction);
+		am.addActions("start", startAction);
+		am.addActions("showConsole", showConsoleAction);
+	}
 
-        name = rb.getString("btnInd");
-        btnInd = new JRadioButton(name);
-        btnInd.setBackground(GUIconstants.GREY);
-        btnInd.setText("btnInd");
+	/**
+	 * create the components necessary to display the northPanel
+	 *
+	 * @return a JPanel which contains other components to be shown in the
+	 * main window
+	 */
+	private TopPanel getTopPanel(ButtonGroup btnGrp) {
+		createBtnGrpUniInd(btnGrp);
+		createStartButton();
+		TopPanel panel = new TopPanel(btnUni, btnInd, btnStart, comboBox, btnGrp);
+		return panel;
+	}
 
-        btnGrp.add(btnUni);
-        btnGrp.add(btnInd);
-        btnUni.setSelected(true);
-        
-        for (Enumeration<AbstractButton> buttons = btnGrp.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-            LOGGER.log(Level.INFO, "createBtnGroup", button.getName());
-            if (button.isSelected()) {
-                LOGGER.log(Level.INFO, "createBtnGroup is selected", button.getName());
-            }
-        }
+	/**
+	 * creates the comboBox that allows new election IDs to be inputed as
+	 * well as the selection of previously used election IDs
+	 */
+	private void createComboBox() {
+		comboBox = new JComboBox(eIDlist);
+		comboBox.setEditable(true);
+		comboBox.setSelectedIndex(2);
+		comboBox.setSize(30, 50);
+		comboBox.setFont(new Font("Serif", Font.PLAIN, 10));
+	}
 
-      
-    }
+	/**
+	 * create the button that shows the information and buttons needed to
+	 * start universal verification
+	 *
+	 * @return button to choose universal verification a grey background and
+	 * deactivated focused effects
+	 */
+	private void createBtnGrpUniInd(ButtonGroup btnGrp) {
+		btnUni = new JRadioButton();
+		btnUni.setText("btnUni");
+		ActionManager am = ActionManager.getInstance();
+		String name = rb.getString("btnUni");
+		btnUni = new JRadioButton(name);
+		btnUni.setBackground(GUIconstants.GREY);
+
+		name = rb.getString("btnInd");
+		btnInd = new JRadioButton(name);
+		btnInd.setBackground(GUIconstants.GREY);
+		btnInd.setText("btnInd");
+
+		btnGrp.add(btnUni);
+		btnGrp.add(btnInd);
+		btnUni.setSelected(true);
+
+		for (Enumeration<AbstractButton> buttons = btnGrp.getElements(); buttons.hasMoreElements();) {
+			AbstractButton button = buttons.nextElement();
+			LOGGER.log(Level.INFO, "createBtnGroup", button.getName());
+			if (button.isSelected()) {
+				LOGGER.log(Level.INFO, "createBtnGroup is selected", button.getName());
+			}
+		}
 
 
-    /**
-     * create the button that starts the verification process
-     *
-     * @return JButton the start button
-     */
-    private JButton createStartButton() {
-        btnStart = new JButton("START");
-        btnStart.setBackground(GUIconstants.BLUE);
-        btnStart.setAction(ActionManager.getInstance().getAction("start"));
-        return btnStart;
-    }
+	}
 
-    /**
-     * This inner class represents the implementation of the observer pattern
-     * for the status messages for the console and verification parts of the gui
-     *
-     * @author prinstin
-     */
-    class StatusUpdate implements VerificationListener {
+	/**
+	 * create the button that starts the verification process
+	 *
+	 * @return JButton the start button
+	 */
+	private JButton createStartButton() {
+		btnStart = new JButton("START");
+		btnStart.setBackground(GUIconstants.BLUE);
+		btnStart.setAction(ActionManager.getInstance().getAction("start"));
+		return btnStart;
+	}
 
-        @Override
-        public void updateStatus(VerificationEvent ve) {
+	/**
+	 * This inner class represents the implementation of the observer
+	 * pattern for the status messages for the console and verification
+	 * parts of the gui
+	 *
+	 * @author prinstin
+	 */
+	class StatusUpdate implements VerificationListener {
 
-            if (ve.getVerificationEnum() == VerificationType.ERROR) {
-                consolePanel.appendToStatusText("\n" + ve.getMessage());
-            } else {
-                String sectionName = ve.getSection().toString();
-                if (activeVrfPanel == null) {
-                    activeVrfPanel = new ResultPanel(sectionName);
-                    innerPanel.add(activeVrfPanel);
-                } else if (!activeVrfPanel.getName().equals(sectionName)) {
-                    activeVrfPanel = new ResultPanel((sectionName));
-                    innerPanel.add(activeVrfPanel);
-                }
-                Boolean result = ve.getResult();
-                int code = ve.getVerificationEnum().getID();
-                String vrfType = getTextFromVrfCode(code);
-                String outputText = "\n" + vrfType + " ............. " + result;
-                consolePanel.appendToStatusText(outputText);
-                activeVrfPanel.addResultPanel(vrfType, result);
-                innerPanel.validate();
-            }
-        }
-    }
-    
-    public void appendToConsole(String str){
-        consolePanel.appendToStatusText(str);
-    }
+		@Override
+		public void updateStatus(VerificationEvent ve) {
 
-    /**
-     * turns the vrfCode into a text string that is shown in the GUI
-     *
-     * @param code int value which corresponds to a verification type
-     * @return the user-friendly text the describes a verification step
-     */
-    public String getTextFromVrfCode(int code) {
-        try {
-            prop.load(new FileInputStream("src/main/java/ch/bfh/univoteverifier/resources/messages.properties"));
-        } catch (IOException ex) {
-            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
-        }
+			if (ve.getVerificationEnum() == VerificationType.ERROR) {
+				consolePanel.appendToStatusText("\n" + ve.getMessage());
+			} else {
+				String sectionName = ve.getSection().toString();
+				if (activeVrfPanel == null) {
+					activeVrfPanel = new ResultPanel(sectionName);
+					innerPanel.add(activeVrfPanel);
+				} else if (!activeVrfPanel.getName().equals(sectionName)) {
+					activeVrfPanel = new ResultPanel((sectionName));
+					innerPanel.add(activeVrfPanel);
+				}
+				Boolean result = ve.getResult();
+				int code = ve.getVerificationEnum().getID();
+				String vrfType = getTextFromVrfCode(code);
+				String outputText = "\n" + vrfType + " ............. " + result;
+				consolePanel.appendToStatusText(outputText);
+				activeVrfPanel.addResultPanel(vrfType, result);
+				innerPanel.validate();
+			}
+		}
+	}
 
-        return (String) prop.getProperty(String.valueOf(code));
-    }
+	public void appendToConsole(String str) {
+		consolePanel.appendToStatusText(str);
+	}
+
+	/**
+	 * turns the vrfCode into a text string that is shown in the GUI
+	 *
+	 * @param code int value which corresponds to a verification type
+	 * @return the user-friendly text the describes a verification step
+	 */
+	public String getTextFromVrfCode(int code) {
+		try {
+			prop.load(new FileInputStream("src/main/java/ch/bfh/univoteverifier/resources/messages.properties"));
+		} catch (IOException ex) {
+			Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return (String) prop.getProperty(String.valueOf(code));
+	}
 }

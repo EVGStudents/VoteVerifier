@@ -11,12 +11,16 @@
 package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.QRCode;
+import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.MainGUI;
+import ch.bfh.univoteverifier.verification.IndividualVerification;
 import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.verification.VerificationThread;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -35,54 +39,68 @@ import javax.swing.JPanel;
  */
 public class StartAction extends AbstractAction {
 
-    Messenger msgr;
-    JPanel innerPanel;
-    ResourceBundle rb;
-    MainGUI mainGUI;
-    JComboBox comboBox;
-    ButtonGroup btnGrp;
-File qrCodeFile;
- private static final Logger LOGGER = Logger.getLogger(StartAction.class.getName());
- 
-    public StartAction(Messenger msgr, MainGUI mainGUI, JPanel innerPanel, JComboBox comboBox, ButtonGroup btnGroup, File qrCodeFile) {
-        rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
-        this.innerPanel = innerPanel;
-        this.msgr = msgr;
-        this.btnGrp = btnGroup;
-        this.comboBox = comboBox;
-        this.mainGUI = mainGUI;
-        this.qrCodeFile =qrCodeFile;
-        putValue(NAME, rb.getString("start"));
-    }
+	Messenger msgr;
+	JPanel innerPanel;
+	ResourceBundle rb;
+	MainGUI mainGUI;
+	JComboBox comboBox;
+	ButtonGroup btnGrp;
+	File qrCodeFile;
+	private static final Logger LOGGER = Logger.getLogger(StartAction.class.getName());
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        innerPanel.removeAll();
-        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
-        innerPanel.setBackground(GUIconstants.GREY);
-        innerPanel.repaint();
-        String msg = "";
-        String eID = comboBox.getSelectedItem().toString();
-        msg = msg + rb.getString("forElectionId") + eID;
-        mainGUI.appendToConsole(msg);
-        VerificationThread vt = new VerificationThread(msgr, eID);
-        vt.start();
-    }
+	public StartAction(Messenger msgr, MainGUI mainGUI, JPanel innerPanel, JComboBox comboBox, ButtonGroup btnGroup, File qrCodeFile) {
+		rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
+		this.innerPanel = innerPanel;
+		this.msgr = msgr;
+		this.btnGrp = btnGroup;
+		this.comboBox = comboBox;
+		this.mainGUI = mainGUI;
+		this.qrCodeFile = qrCodeFile;
+		putValue(NAME, rb.getString("start"));
+	}
 
-    /**
-     *
-     * @param buttonGroup
-     * @return
-     */
-    public String getSelectedButtonText(ButtonGroup buttonGroup) {
-        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-            LOGGER.log(Level.INFO, "BTN IN BTN GROUP:{0}", button.getText());
-            if (button.isSelected()) {
-                return button.getText();
-            }
-        }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		innerPanel.removeAll();
+		innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
+		innerPanel.setBackground(GUIconstants.GREY);
+		innerPanel.repaint();
 
-        return null;
-    }
+		ElectionReceipt er = getElectionReceipt(qrCodeFile, msgr);
+		String msg = "";
+		String eID = comboBox.getSelectedItem().toString();
+		msg = msg + rb.getString("forElectionId") + eID;
+		mainGUI.appendToConsole(msg);
+		VerificationThread vt = new VerificationThread(msgr, eID);
+		vt.start();
+	}
+
+	/**
+	 *
+	 * @param buttonGroup
+	 * @return
+	 */
+	public String getSelectedButtonText(ButtonGroup buttonGroup) {
+		for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+			AbstractButton button = buttons.nextElement();
+			LOGGER.log(Level.INFO, "BTN IN BTN GROUP:{0}", button.getText());
+			if (button.isSelected()) {
+				return button.getText();
+			}
+		}
+
+		return null;
+	}
+
+	public ElectionReceipt getElectionReceipt(File qrCodeFile, Messenger msgr) {
+		QRCode qr = new QRCode(msgr);
+		ElectionReceipt er = null;
+		try {
+			er = qr.decodeReceipt(qrCodeFile);
+		} catch (IOException ex) {
+			Logger.getLogger(IndividualVerification.class.getName()).log(Level.SEVERE, "An error occured while processing the file", ex);
+		}
+		return er;
+
+	}
 }
