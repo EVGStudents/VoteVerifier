@@ -19,7 +19,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.DSAPublicKey;
 
 /**
- * This class contains all the methods that need a Schnorr verification
+ * This class contains all the methods that need a Schnorr verification.
  *
  * @author snake
  */
@@ -44,22 +44,27 @@ public class SchnorrImplementer {
 	 * Verify the given Schnorr's signature against the hash we have
 	 * computed.
 	 *
-	 * @param signature the signature to check.
-	 * @param message the content to sign.
-	 * @param publicKey the public key used to verify the signature.
-	 * @return return true if the signature is verified correctly, false
-	 * otherwise.
+	 *
+	 * @param publicKey the public key we must use to verify the signature.
+	 * @param m the message to sign.
+	 * @param s the first value of a valid Schnorr signature.
+	 * @param e the second value of a valid Schnorr signature.
+	 * @return true if the verification succeed, false otherwise
+	 * @throws NoSuchAlgorithmException if the hash function used in this
+	 * method does not find the algorithm.
+	 * @throws UnsupportedEncodingException if the hash function used in
+	 * this method does not find the encoding.
 	 */
-	public boolean vrfSchnorrSign(DSAPublicKey publicKey, BigInteger clearText, BigInteger s, BigInteger e) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+	public boolean vrfSchnorrSign(DSAPublicKey publicKey, BigInteger m, BigInteger s, BigInteger e) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		BigInteger pubKeyValue = publicKey.getY();
 
 		//compute r = g^s * y^e mod p - ToDO check s and e
 		BigInteger r = g.modPow(s, p).multiply(pubKeyValue.modPow(e, p)).mod(p);
 
-		//concatenate clear text with r: (clearText|r)
+		//concatenate clear text with r: (m|r)
 		StringConcatenator sc = new StringConcatenator();
 		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(clearText, StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(m, StringConcatenator.INNER_DELIMITER);
 		sc.pushObjectDelimiter(r, StringConcatenator.RIGHT_DELIMITER);
 		String concat = sc.pullAll();
 

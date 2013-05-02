@@ -10,12 +10,7 @@
 package ch.bfh.univoteverifier.verification;
 
 import ch.bfh.univoteverifier.common.Messenger;
-import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class is used to perform an individual verification

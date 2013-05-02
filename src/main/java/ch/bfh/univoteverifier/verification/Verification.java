@@ -18,7 +18,6 @@ import ch.bfh.univoteverifier.gui.VerificationSubject;
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
-import java.io.File;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +33,7 @@ import java.util.logging.Logger;
 public abstract class Verification {
 
 	private static final Logger LOGGER = Logger.getLogger(Verification.class.getName());
-	private String eID;
+	private final String eID;
 	protected List<Runner> runners;
 	protected ElectionBoardProxy ebproxy;
 	protected VerificationOrder displayType = VerificationOrder.BY_SPEC;
@@ -45,7 +44,9 @@ public abstract class Verification {
 	/**
 	 * Construct a new abstract verification with a given election ID.
 	 *
-	 * @param eID the ID of an election
+	 * @param msgr the Messenger used to manage the output
+	 * @param eID the ID of an election.
+	 *
 	 */
 	public Verification(Messenger msgr, String eID) {
 		this.eID = eID;
@@ -53,31 +54,30 @@ public abstract class Verification {
 		runners = new ArrayList<>();
 		res = new ArrayList<>();
 		this.msgr = msgr;
-
-		//ToDo check if is correct
-		LOGGER.setUseParentHandlers(true);
 	}
 
 	/**
 	 * Set the view type for the verification.
 	 *
-	 * @param t the verification view
+	 * @param t the verification view.
 	 */
 	public void setViewType(VerificationOrder t) {
 		displayType = t;
 	}
 
 	/**
-	 * Get the status subject of the GUIMessenger stored in this class.
+	 * Get the status subject of the Messenger stored in this class.
 	 *
-	 * @return the status subject
+	 * @return the status subject.
 	 */
 	public VerificationSubject getStatusSubject() {
 		return this.msgr.getStatusSubject();
 	}
 
 	/**
-	 * @return the eID
+	 * Get the election id for this verification.
+	 *
+	 * @return the eID.
 	 */
 	public String geteID() {
 		return eID;
@@ -110,7 +110,7 @@ public abstract class Verification {
 	}
 
 	/**
-	 * Run a verification
+	 * Run a verification.
 	 */
 	public List<VerificationEvent> runVerification() {
 

@@ -35,7 +35,7 @@ public class ParametersImplementer {
 	 * Check if the parameters for the Schnorr's signature scheme are
 	 * corrects by reading them from the configuration file.
 	 *
-	 * @return boolean true if the parameters are correct, false otherwise
+	 * @return boolean true if the parameters are correct, false otherwise.
 	 */
 	public VerificationEvent vrfParamLen() {
 		int lengthPG = 1024;
@@ -56,7 +56,7 @@ public class ParametersImplementer {
 	/**
 	 * Check if p is a prime number.
 	 *
-	 * @return true if p is prime, false otherwise
+	 * @return true if p is prime, false otherwise.
 	 */
 	public VerificationEvent vrfPrimeP() {
 		boolean r = p.isProbablePrime(PRIME_NUMBER_CERTAINITY);
@@ -73,7 +73,7 @@ public class ParametersImplementer {
 	/**
 	 * Check if q is a prime number.
 	 *
-	 * @return true if q is prime, false otherwise
+	 * @return true if q is prime, false otherwise.
 	 */
 	public VerificationEvent vrfPrimeQ() {
 		boolean r = q.isProbablePrime(PRIME_NUMBER_CERTAINITY);
@@ -90,9 +90,10 @@ public class ParametersImplementer {
 	/**
 	 * Check if p is a safe prime (p = k*q + 1).
 	 *
-	 * @return true if p is a safe prime, false otherwise
+	 * @return true if p is a safe prime, false otherwise.
 	 */
 	public VerificationEvent vrfSafePrime() {
+		//subtract one from p, now (p-1) must be divisible by q without rest
 		BigInteger rest = p.subtract(BigInteger.ONE).mod(q);
 
 		boolean r = rest.equals(BigInteger.ZERO);
@@ -109,7 +110,7 @@ public class ParametersImplementer {
 	/**
 	 * Check if g is a generator of a subgroup H_q.
 	 *
-	 * @return if g is a valid generator
+	 * @return if g is a valid generator.
 	 */
 	public VerificationEvent vrfGenerator() {
 		BigInteger res = g.modPow(q, p);
@@ -127,7 +128,7 @@ public class ParametersImplementer {
 	/**
 	 * Set a new value for p.
 	 *
-	 * @param p the p value of the Schnorr's parameters
+	 * @param p the p value of the Schnorr's parameters.
 	 */
 	public void setP(BigInteger p) {
 		this.p = p;
@@ -136,7 +137,7 @@ public class ParametersImplementer {
 	/**
 	 * Set a new value for q.
 	 *
-	 * @param q the q value of the Schnorr's parameters
+	 * @param q the q value of the Schnorr's parameters.
 	 */
 	public void setQ(BigInteger q) {
 		this.q = q;
@@ -145,7 +146,7 @@ public class ParametersImplementer {
 	/**
 	 * Set a new value for g.
 	 *
-	 * @param g the g value of the Schnorr's parameters
+	 * @param g the g value of the Schnorr's parameters.
 	 */
 	public void setG(BigInteger g) {
 		this.g = g;

@@ -25,10 +25,10 @@ import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 public class UniversalVerification extends Verification {
 
 	/**
-	 * Construct a universal verification with an election id
+	 * Construct a universal verification with an election id.
 	 *
-	 * @param eID the ID of the election
-	 * @param msgr the entity used to exchange messages with the GUI
+	 * @param eID the ID of the election.
+	 * @param msgr the entity used to exchange messages with the GUI.
 	 */
 	public UniversalVerification(Messenger msgr, String eID) {
 		super(msgr, eID);
@@ -43,7 +43,7 @@ public class UniversalVerification extends Verification {
 
 	/**
 	 * Create the necessaries runners used to print the results ordered by
-	 * the specification
+	 * the specification.
 	 */
 	private void createRunnerBySpec() {
 		SystemSetupRunner ssr = new SystemSetupRunner(msgr);
@@ -62,7 +62,7 @@ public class UniversalVerification extends Verification {
 
 	/**
 	 * Create the necessaries runners used to print the results ordered by
-	 * entities
+	 * entities.
 	 */
 	private void createRunnerByEntities() {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -64,8 +64,9 @@ public class RSAImplementer {
 	 * @param signature the pre-computed signature from the board.
 	 * @return true if the signature is verified correctly otherwise not.
 	 */
-	public boolean vrfRSASign(RSAPublicKey s, BigInteger clearText, BigInteger signature) {
-		BigInteger ver = clearText.modPow(s.getPublicExponent(), s.getModulus());
+	public boolean vrfRSASign(RSAPublicKey s, BigInteger m, BigInteger signature) {
+		//compute m^e mod s, this must be equal to the given signature
+		BigInteger ver = m.modPow(s.getPublicExponent(), s.getModulus());
 
 		boolean result = ver.equals(signature);
 
@@ -76,9 +77,15 @@ public class RSAImplementer {
 	 * Verify the signature of the election administrator certificate plus
 	 * the election ID.
 	 *
-	 * @return a verification event.
-	 * @throws ElectionBoardServiceFault
-	 * @throws CertificateException
+	 * @returna verification event.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory used in this verification cannot be found.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationEvent vrfEACertIDSign() throws ElectionBoardServiceFault, CertificateException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		//get the certificte as a string
@@ -89,18 +96,14 @@ public class RSAImplementer {
 
 		//concatenate to (id|Z_ea|timestamp)
 		sc.pushLeftDelim();
-		sc.pushObject(eID);
-		sc.pushInnerDelim();
-		sc.pushObject(eaCertStr);
+		sc.pushObjectDelimiter(eID, StringConcatenator.INNER_DELIMITER);
 		//add the timestamp when we found where this signature is - ToDo
-		//sc.pushInnerDelim();
-		//sc.pushObject(timestamp)
-		//sc.pushInnerDelim();
-		sc.pushRightDelim();
+		//sc.pushObjectDelimiter(timestamp,StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(eaCertStr, StringConcatenator.RIGHT_DELIMITER);
 
 		String strRes = sc.pullAll();
 
-		//compute the sha-1 hash of (id|Z_a|timestamp)
+		//compute the hash of the concatenated string
 		BigInteger hash = CryptoFunc.sha1(strRes);
 
 		//find the signature of Page 13, Initialization, Step 3 - ToDO
@@ -115,9 +118,13 @@ public class RSAImplementer {
 	 * Verify the signature of the basic parameters (id, description, key
 	 * length, talliers and mixers) of an election.
 	 *
-	 * @return a verification event.
-	 * @throws ElectionBoardServiceFault
-	 * @throws NoSuchAlgorithmException
+	 * @returna verification event.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationEvent vrfBasicParamSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
 		ElectionDefinition ed = ebp.getElectionDefinition();
@@ -132,18 +139,14 @@ public class RSAImplementer {
 
 		//concatenate to (id|descr|keyLength|(t_1|...|t_n)|(m_1|...|m_n)|timestamp)
 		sc.pushLeftDelim();
-		sc.pushObject(eID);
-		sc.pushInnerDelim();
-		sc.pushObject(descr);
-		sc.pushInnerDelim();
-		sc.pushObject(keyLength);
-		sc.pushInnerDelim();
+		sc.pushObjectDelimiter(eID, StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(descr, StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(keyLength, StringConcatenator.INNER_DELIMITER);
 		sc.pushList(talliers, true);
 		sc.pushInnerDelim();
 		sc.pushList(mixers, true);
 		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp().toString());
-		sc.pushRightDelim();
+		sc.pushObjectDelimiter(signature.getTimestamp().toString(), StringConcatenator.RIGHT_DELIMITER);
 
 		String res = sc.pullAll();
 
