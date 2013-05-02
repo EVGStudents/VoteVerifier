@@ -39,7 +39,6 @@ public abstract class Verification {
 	protected VerificationOrder displayType = VerificationOrder.BY_SPEC;
 	protected Messenger gm;
 	//used to store the results of a verification
-	//maybe add two list for the two types of order
 	protected List<VerificationEvent> res;
 
 	/**
@@ -52,7 +51,7 @@ public abstract class Verification {
 		this.ebproxy = new ElectionBoardProxy(eID);
 		runners = new ArrayList<>();
 		res = new ArrayList<>();
-		this.gm =msgr;
+		this.gm = msgr;
 
 		//ToDo check if is correct
 		LOGGER.setUseParentHandlers(true);
@@ -112,7 +111,7 @@ public abstract class Verification {
 	/**
 	 * Run a verification
 	 */
-	 public List<VerificationEvent> runVerification() {
+	public List<VerificationEvent> runVerification() {
 
 		//initialize the public keys - ToDO decomment this when the webservices will work
 		//		initializeEntityCertificates();

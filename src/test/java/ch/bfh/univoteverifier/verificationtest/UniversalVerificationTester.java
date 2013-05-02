@@ -32,11 +32,9 @@ public class UniversalVerificationTester {
 	List<VerificationEvent> realList;
 	String eID = "sub-2013";
 	final int RES_COUNT = 5;
-	Messenger m;
 
 	public UniversalVerificationTester() {
-		m = new Messenger();
-		v = new UniversalVerification(m, eID);
+		v = new UniversalVerification(new Messenger(), eID);
 		realList = v.runVerification();
 
 		mockList = new ArrayList<>();

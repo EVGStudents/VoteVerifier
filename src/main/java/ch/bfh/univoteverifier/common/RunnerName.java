@@ -11,7 +11,7 @@ package ch.bfh.univoteverifier.common;
 
 /**
  * This enumeration specify the name of the sections for the verification
- * results
+ * results.
  *
  * @author snake
  */

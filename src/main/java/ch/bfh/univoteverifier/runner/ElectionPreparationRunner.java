@@ -16,7 +16,7 @@ import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.util.List;
 
 /**
- * This class represent an ElectionPreparationRunner
+ * This class represent an ElectionPreparationRunner.
  *
  * @author snake
  */
@@ -26,9 +26,9 @@ public class ElectionPreparationRunner extends Runner {
 
 	/**
 	 * Construct an ElectionPreparationRunner with a given
-	 * ElectionBoardProxy
+	 * ElectionBoardProxy.
 	 *
-	 * @param ebp the ElectionBoardProxy from where get the data
+	 * @param ebp the ElectionBoardProxy from where get the data.
 	 */
 	public ElectionPreparationRunner(ElectionBoardProxy ebp, Messenger gm) {
 		super(ebp, RunnerName.ELECTION_PREPARATION);

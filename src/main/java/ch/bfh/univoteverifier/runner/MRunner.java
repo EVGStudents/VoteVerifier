@@ -16,16 +16,16 @@ import java.util.List;
 
 /**
  * This class represent a MRunner that is responsible to run the verification
- * for the mixer entity
+ * for the mixer entity.
  *
  * @author snake
  */
 public class MRunner extends Runner {
 
 	/**
-	 * Construct a MRunner with a given ElectionBoardProxy
+	 * Construct a MRunner with a given ElectionBoardProxy.
 	 *
-	 * @param ebp the ElectionBoardProxy from where get the data
+	 * @param ebp the ElectionBoardProxy from where get the data.
 	 */
 	public MRunner(ElectionBoardProxy ebp) {
 		super(ebp, RunnerName.MIXER);

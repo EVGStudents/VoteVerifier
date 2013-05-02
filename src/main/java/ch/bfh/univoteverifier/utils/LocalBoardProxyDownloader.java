@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 /**
  * This class stores the data from the election board of univote into XML file
  * that can be later converted into real java objects. These objects can be used
- * as a source data for the univote verifier
+ * as a source data for the univote verifier.
  *
  * @author snake
  */
@@ -76,7 +76,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Construct a new local board proxy downloaded
+	 * Construct a new local board proxy downloaded.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -88,10 +88,10 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write an object to a file as XML
+	 * Write an object to a file as XML.
 	 *
-	 * @param o the object to be written
-	 * @param suffix the name of file
+	 * @param o the object to be written.
+	 * @param suffix the name of file.
 	 */
 	private void realWrite(Object o, String suffix) {
 		try {
@@ -102,7 +102,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write a signale ballot
+	 * Write a signale ballot.
 	 */
 	public void writeBallot() throws ElectionBoardServiceFault {
 		//ToDo - Change it, read the real verification key from a qr-code
@@ -112,7 +112,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the ballots
+	 * Write the ballots.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -121,7 +121,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the blinded generator of all mixers
+	 * Write the blinded generator of all mixers.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -136,7 +136,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the decoded votes
+	 * Write the decoded votes.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -145,7 +145,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the decrypted votes
+	 * Write the decrypted votes.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -154,7 +154,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the election data
+	 * Write the election data.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -163,7 +163,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the election definition
+	 * Write the election definition.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -172,7 +172,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the election generator
+	 * Write the election generator.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -181,7 +181,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the election options
+	 * Write the election options.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -190,7 +190,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the election system info
+	 * Write the election system info.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -199,7 +199,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the electoral roll
+	 * Write the electoral roll.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -208,7 +208,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the encryption key
+	 * Write the encryption key.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -217,7 +217,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the encryption key share for every tallier
+	 * Write the encryption key share for every tallier.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -232,7 +232,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the encryption parameters
+	 * Write the encryption parameters.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -241,7 +241,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the lately mixed verification keys
+	 * Write the lately mixed verification keys.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -250,7 +250,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the lately mixed verification keys for each mixer
+	 * Write the lately mixed verification keys for each mixer.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -265,7 +265,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the lately registered voter certs
+	 * Write the lately registered voter certs.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -274,7 +274,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the mixed encrypted votes
+	 * Write the mixed encrypted votes.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -283,7 +283,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the mixed encrypted votes for each mixer
+	 * Write the mixed encrypted votes for each mixer.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -298,7 +298,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the mixed verification keys
+	 * Write the mixed verification keys.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -307,7 +307,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the mixed verification keys for each mixer
+	 * Write the mixed verification keys for each mixer.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -322,7 +322,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the partially decrypted votes for each tallier
+	 * Write the partially decrypted votes for each tallier.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -337,7 +337,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the root certificate
+	 * Write the root certificate.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -346,7 +346,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the signature parameters
+	 * Write the signature parameters.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */
@@ -355,7 +355,7 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write the voter certificates
+	 * Write the voter certificates.
 	 *
 	 * @throws ElectionBoardServiceFault
 	 */

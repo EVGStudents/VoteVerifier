@@ -4,9 +4,9 @@
  * Applied Sciences, Engineering and Information Technology, Research Institute
  * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
  *
-* Project independent UniVoteVerifier.
+ * Project independent UniVoteVerifier.
  *
-*/
+ */
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
@@ -16,16 +16,16 @@ import java.util.List;
 
 /**
  * This class represent a CARunner that is responsible to run the verification
- * for the CA entity
+ * for the CA entity.
  *
  * @author snake
  */
 public class CARunner extends Runner {
 
 	/**
-	 * Construct a CARunner with a given ElectionBoardProxy
+	 * Construct a CARunner with a given ElectionBoardProxy.
 	 *
-	 * @param ebp the ElectionBoardProxy from where get the data
+	 * @param ebp the ElectionBoardProxy from where get the data.
 	 */
 	public CARunner(ElectionBoardProxy ebp) {
 		super(ebp, RunnerName.CA);

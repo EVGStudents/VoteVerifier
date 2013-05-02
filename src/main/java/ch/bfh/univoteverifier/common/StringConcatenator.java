@@ -12,7 +12,7 @@ package ch.bfh.univoteverifier.common;
 import java.util.List;
 
 /**
- * This class is used to concatenate a string in different ways
+ * This class is used to concatenate a string in different ways.
  *
  * @author snake
  */
@@ -41,30 +41,48 @@ public class StringConcatenator {
 
 	/**
 	 * Push an object to be concatenated to this StringConstructor. Its
-	 * String value will be added to the concatenator
+	 * String value will be added to the concatenator.
 	 *
-	 * @param o the object to be pushed
+	 * @param o the object to be pushed.
 	 */
 	public void pushObject(Object o) {
 		strB.append(o.toString());
 	}
 
 	/**
-	 * Push the left delimiter "(" in the current buffer
+	 * Push two an object and a delimiter to this StringConstructor.
+	 *
+	 * @param o the object to be pushed.
+	 * @param delimiter the delimiter to be pushed.
+	 */
+	public void pushObjectDelimiter(Object o, String delimiter) {
+		if (delimiter.equals(StringConcatenator.LEFT_DELIMITER)) {
+			strB.append(StringConcatenator.LEFT_DELIMITER);
+		}
+
+		strB.append(o.toString());
+
+		if (delimiter.equals(StringConcatenator.INNER_DELIMITER) || delimiter.equals(StringConcatenator.RIGHT_DELIMITER)) {
+			strB.append(delimiter);
+		}
+	}
+
+	/**
+	 * Push the left delimiter "(" in the current buffer.
 	 */
 	public void pushLeftDelim() {
 		strB.append(StringConcatenator.LEFT_DELIMITER);
 	}
 
 	/**
-	 * Push the right delimiter ")" in the current buffer
+	 * Push the right delimiter ")" in the current buffer.
 	 */
 	public void pushRightDelim() {
 		strB.append(StringConcatenator.RIGHT_DELIMITER);
 	}
 
 	/**
-	 * Push the inner delimiter "|" in the current buffer
+	 * Push the inner delimiter "|" in the current buffer.
 	 */
 	public void pushInnerDelim() {
 		strB.append(StringConcatenator.INNER_DELIMITER);

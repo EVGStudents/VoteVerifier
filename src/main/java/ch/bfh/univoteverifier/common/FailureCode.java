@@ -21,18 +21,18 @@ public enum FailureCode {
 	private final int id;
 
 	/**
-	 * Construct a new failure code with a given ID
+	 * Construct a new failure code with a given ID.
 	 *
-	 * @param ID the ID for this failure
+	 * @param ID the ID for this failure.
 	 */
 	private FailureCode(int id) {
 		this.id = id;
 	}
 
 	/**
-	 * Get the ID for this failure
+	 * Get the ID for this failure.
 	 *
-	 * @return the ID of the failure
+	 * @return the ID of the failure.
 	 */
 	public int getID() {
 		return this.id;

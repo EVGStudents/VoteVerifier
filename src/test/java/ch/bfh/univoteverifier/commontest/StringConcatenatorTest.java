@@ -18,7 +18,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Test the string concatenator used to concatenate the strings
+ * Test the string concatenator used to concatenate the strings.
  *
  * @author snake
  */
@@ -35,8 +35,7 @@ public class StringConcatenatorTest {
 	 */
 	@Test
 	public void pullConcatenation() {
-		sc.pushObject("string");
-		sc.pushInnerDelim();
+		sc.pushObjectDelimiter("string", StringConcatenator.INNER_DELIMITER);
 		sc.pushObject("string");
 
 		assertEquals("string|string", sc.pullAll());
@@ -63,6 +62,22 @@ public class StringConcatenatorTest {
 		assertEquals("(first|second)", sc.pullAll());
 
 
+	}
+
+	/**
+	 * Test a simple concatenation with the method pushObjectDelimiter that
+	 * pushes the delimiter too.
+	 */
+	@Test
+	public void simpleConcatenationObjectDelimiter() {
+		String one = "first";
+		String two = "second";
+
+		sc.pushLeftDelim();
+		sc.pushObjectDelimiter(one, StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(two, StringConcatenator.RIGHT_DELIMITER);
+
+		assertEquals("(first|second)", sc.pullAll());
 	}
 
 	/**

@@ -12,7 +12,7 @@ package ch.bfh.univoteverifier.implementer;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import ch.bfh.univoteverifier.utils.SchnorrSignature;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.DSAPublicKey;
@@ -40,27 +40,6 @@ public class SchnorrImplementer {
 	}
 
 	/**
-	 * Verify the given signature. - ToDo move this in a class in the utils
-	 * package
-	 *
-	 * @param signature the signature to check
-	 * @param message the content to sign
-	 * @param publicKey the public key used to verify the signature
-	 * @return boolean return true if the signature is verified correctly,
-	 * false otherwise
-	 */
-	public boolean vrfSchnorrSign(SchnorrSignature signature, BigInteger message, BigInteger publicKey) throws NoSuchAlgorithmException {
-
-		BigInteger concat = Config.g.modPow(signature.getB(), Config.p).multiply(publicKey.modPow(signature.getA(), Config.p)).mod(Config.p);
-
-		BigInteger hashResult = CryptoFunc.sha(new BigInteger(message.toString() + concat.toString()));
-
-		boolean res = hashResult.equals(signature.getA());
-
-		return res;
-	}
-
-	/**
 	 * Verify the given Schnorr's signature against the hash we have
 	 * computed.
 	 *
@@ -70,14 +49,14 @@ public class SchnorrImplementer {
 	 * @return boolean return true if the signature is verified correctly,
 	 * false otherwise
 	 */
-	public boolean vrfSchnorrSign(DSAPublicKey publicKey, BigInteger clearText, BigInteger firstValue, BigInteger secondValue) throws NoSuchAlgorithmException {
+	public boolean vrfSchnorrSign(DSAPublicKey publicKey, BigInteger clearText, BigInteger firstValue, BigInteger secondValue) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		BigInteger pubKeyValue = publicKey.getY();
 
 		//r = g^s * y^e mod p - ToDO check if firstValue = s and secondValue = e
 		BigInteger rValue = g.modPow(firstValue, Config.p).multiply(pubKeyValue.modPow(secondValue, p)).mod(p);
 
 		//e_2 = sha-256(clearText|r) mod q => this must be equal to e
-		BigInteger hashResult = CryptoFunc.sha(new BigInteger(clearText.toString() + rValue.toString()));
+		BigInteger hashResult = CryptoFunc.sha256(clearText.toString() + rValue.toString());
 
 		//check that e_2 = e
 		boolean res = hashResult.equals(secondValue);
