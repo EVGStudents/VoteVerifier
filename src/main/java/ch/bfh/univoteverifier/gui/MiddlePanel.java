@@ -13,7 +13,6 @@ package ch.bfh.univoteverifier.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -31,6 +30,10 @@ import javax.swing.border.EmptyBorder;
  */
 public class MiddlePanel extends JPanel {
 
+    /**
+     * Create an instance of this class.
+     * @param innerPanel the content panel for verification results is added into a scroll pane.
+     */
     public MiddlePanel(JPanel innerPanel) {
         this.setLayout(new GridLayout(1, 1));
         this.setBackground(Color.WHITE);

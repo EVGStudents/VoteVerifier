@@ -10,13 +10,17 @@
  */
 package ch.bfh.univoteverifier.gui;
 
+import ch.bfh.univoteverifier.common.CryptoFunc;
+import java.math.BigInteger;
+
 /**
  *
  * @author prinstin
  */
 public class ElectionReceipt {
 
-    String eID, encVa, encVb, vk, pC, pR, vSA, vSB, sSId, sT, sV;
+    String eID, sSId, sT;
+    BigInteger encVa, encVb, vk, pC, pR, vSA, vSB, sV;
 
     public ElectionReceipt(String[][] values) {
         populateVariables(values);
@@ -24,32 +28,33 @@ public class ElectionReceipt {
 
     private void populateVariables(String[][] values) {
         eID = values[0][1];
-        encVa = values[1][1];
-        encVb = values[2][1];
-        vk = values[3][1];
-        pC = values[4][1];
-        pR = values[5][1];
-        vSA = values[6][1];
-        vSB = values[7][1];
+
+        encVa = new BigInteger(CryptoFunc.decodeBase64(values[1][1]));
+        encVb = new BigInteger(CryptoFunc.decodeBase64(values[2][1]));
+        vk = new BigInteger(CryptoFunc.decodeBase64(values[3][1]));
+        pC = new BigInteger(CryptoFunc.decodeBase64(values[4][1]));
+        pR = new BigInteger(CryptoFunc.decodeBase64(values[5][1]));
+        vSA = new BigInteger(CryptoFunc.decodeBase64(values[6][1]));
+        vSB = new BigInteger(CryptoFunc.decodeBase64(values[7][1]));
         sSId = values[8][1];
         sT = values[9][1];
-        sV = values[10][1];
+        sV = new BigInteger(CryptoFunc.decodeBase64(values[10][1]));
     }
 
     @Override
     public String toString() {
         String s = "\n\tElection Results (likely from QR Code)"
-                + " eID= " + this.eID
-                + " encVa= " + this.encVa
-                + " encVb= " + this.encVb
-                + " vk= " + this.vk
-                + " pC= " + this.pC
-                + " pR= " + this.pR
-                + " vSA= " + this.vSA
-                + " sSId= " + this.sSId
-                + " sT= " + this.sT
-                + " sV= " + this.sV
-                + " sV= " + this.sV;
+                + " eID= " + this.eID + "\n"
+                + " encVa= " + this.encVa + "\n"
+                + " encVb= " + this.encVb + "\n"
+                + " vk= " + this.vk + "\n"
+                + " pC= " + this.pC + "\n"
+                + " pR= " + this.pR + "\n"
+                + " vSA= " + this.vSA + "\n"
+                + " sSId= " + this.sSId + "\n"
+                + " sT= " + this.sT + "\n"
+                + " sV= " + this.sV + "\n"
+                + " sV= " + this.sV + "\n";
         return s;
     }
 
@@ -66,9 +71,9 @@ public class ElectionReceipt {
      * Get the 'a' value of this encryption pair E = Enc y (m, r) = (a, b) from
      * this Election Receipt.
      *
-     * @return String of a value of an encryption pair
+     * @return BigInteger of the 'a'-value of an encryption pair
      */
-    public String getEncVa() {
+    public BigInteger getEncVa() {
         return encVa;
     }
 
@@ -76,56 +81,56 @@ public class ElectionReceipt {
      * Get the 'b' value of this encryption pair E = Enc y (m, r) = (a, b) from
      * this Election Receipt.
      *
-     * @return String of b value of an encryption pair
+     * @return BigInteger of the 'b'-value of an encryption pair
      */
-    public String getEncVb() {
+    public BigInteger getEncVb() {
         return encVb;
     }
 
     /**
-     * Get the election ID from this Election Receipt.
+     * Get the vk value from this Election Receipt.
      *
-     * @return
+     * @return the BigInteger value of vk
      */
-    public String getVk() {
+    public BigInteger getVk() {
         return vk;
     }
 
     /**
      * Get the commitment from the proof in this election receipt.
      *
-     * @return String the commitment value of a proof
+     * @return BigInteger the commitment value of a proof
      */
-    public String getpC() {
+    public BigInteger getpC() {
         return pC;
     }
 
     /**
      * Get the response from the proof in this election receipt.
      *
-     * @return String the response value of a proof
+     * @return BigInteger of the response value of a proof
      */
-    public String getpR() {
+    public BigInteger getpR() {
         return pR;
     }
 
     /**
-     * Get the a value from this schnorr signature in this election receipt. a =
-     * H(m||g^r )
+     * Get the 'a'-value from this schnorr signature in this election receipt. a
+     * = H(m||g^r )
      *
-     * @return String the 'a' value of a schnorr signature
+     * @return BigInteger the 'a'-value of a schnorr signature
      */
-    public String getvSA() {
+    public BigInteger getvSA() {
         return vSA;
     }
 
     /**
-     * Get the a value from this schnorr signature in this election receipt. b =
-     * r − a · sk
+     * Get the 'b'-value from this schnorr signature in this election receipt. b
+     * = r − a · sk
      *
-     * @return String the 'b' value of a schnorr signature
+     * @return BigInteger the 'b'-value of a schnorr signature
      */
-    public String getvSB() {
+    public BigInteger getvSB() {
         return vSB;
     }
 
@@ -151,9 +156,10 @@ public class ElectionReceipt {
     /**
      * Get the signature value from this Election Receipt.
      *
-     * @return the String value of this signature value in this Election Receipt
+     * @return the BigInteger value of this signature value in this Election
+     * Receipt
      */
-    public String getsV() {
+    public BigInteger getsV() {
         return sV;
     }
 }

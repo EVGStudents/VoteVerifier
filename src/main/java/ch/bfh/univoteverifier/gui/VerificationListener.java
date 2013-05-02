@@ -13,7 +13,7 @@ package ch.bfh.univoteverifier.gui;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
 
 /**
- *
+ * Makes up part of the listener pattern used to send messages to the GUI or Console output.
  * @author prinstin
  */
 

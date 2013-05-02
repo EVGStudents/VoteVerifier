@@ -26,7 +26,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -83,7 +82,7 @@ public class MainGUI extends JFrame {
     }
 
     /**
-     * Construct the window and frame of this GUI
+     * Construct the window and frame of this GUI and initialize certain base variables.
      */
     public MainGUI() {
         initResources();
@@ -97,7 +96,10 @@ public class MainGUI extends JFrame {
         this.pack();
     }
 
-    
+    /**
+     * Toggle the visibility of the console-like panel which contains a JTextArea.
+     * @param show Boolean of true corresponds to showing the panel.
+     */
     public void showConsole(boolean show) {
         if (show) {
             this.getContentPane().add(consolePanel);
@@ -108,10 +110,18 @@ public class MainGUI extends JFrame {
         this.repaint();
     }
 
+    /**
+     * create the main content panel for this Frame Class.
+     */
 public void createContentPanel() {
         resetContentPanel();
     }
 
+/**
+ * Create or recreate the main content panel for this Frame Class.
+ * This method is called when the program starts as well as if a change of locale is needed.
+ * The entire GUI will is recreated.
+ */
     public void resetContentPanel() {
         JPanel masterPanel = createUI();
         masterPanel.setOpaque(true); //content panes must be opaque
@@ -123,8 +133,7 @@ public void createContentPanel() {
     }
 
     /**
-     * Instantiates the basic building blocks of the program such as the
-     * controllers and displays the window of the GUI.
+     * Instantiates some basic resources needed in this class.
      */
     public void initResources() {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
@@ -138,8 +147,8 @@ public void createContentPanel() {
 
     /**
      * Creates the main components of the main window. The main window is
-     * divided into three parts: northPanel, and in the middle the verification
-     * panel (vrfPanel) and at the bottom the statusPanel
+     * divided into three parts: topPanel, middlePanel, and optionally a
+     * consolePanel can be added at the bottom.
      *
      * @return a JPanel which will be set as the main content panel of the frame
      */
@@ -163,20 +172,20 @@ public void createContentPanel() {
         consolePanel = new ConsolePanel();
         panel.add(topPanel);
         panel.add(new MiddlePanel(innerPanel));
-        panel.add(consolePanel);
+        
         return panel;
     }
 
 
     /**
-     * Create the actions that are used in this GUI
+     * Create the actions that are used in this GUI.
      * @param msgr 
      */
     private void createActions(Messenger msgr, ButtonGroup btnGroup){
         ActionManager am = ActionManager.getInstance();
         Action changeLocaleAction = new ChangeLocaleAction(this);
-        Action fileChooserAction = new FileChooserAction(innerPanel, this, qrCodeFile);
-        Action startAction = new StartAction(msgr, this, innerPanel, comboBox, btnGroup, qrCodeFile);
+        Action fileChooserAction = new FileChooserAction(this, qrCodeFile);
+        Action startAction = new StartAction(msgr, innerPanel, comboBox, btnGroup, qrCodeFile);
         Action showConsoleAction = new ShowConsoleAction(this);
         
         am.addActions("fileChooser", fileChooserAction);
@@ -187,7 +196,7 @@ public void createContentPanel() {
     
     
     /**
-     * create the components necessary to display the northPanel
+     * Create the components necessary to display the topPanel.
      *
      * @return a JPanel which contains other components to be shown in the main
      * window
@@ -200,8 +209,8 @@ public void createContentPanel() {
     }
 
     /**
-     * creates the comboBox that allows new election IDs to be inputed as well
-     * as the selection of previously used election IDs
+     * Creates the comboBox that allows new election IDs to be inputed as well
+     * as the selection of previously used election IDs.
      */
     private void createComboBox() {
         comboBox = new JComboBox(eIDlist);
@@ -212,11 +221,8 @@ public void createContentPanel() {
     }
 
     /**
-     * create the button that shows the information and buttons needed to start
-     * universal verification
-     *
-     * @return button to choose universal verification a grey background and
-     * deactivated focused effects
+     * Create the button that shows the information and buttons needed to start
+     * universal verification.
      */
     private void createBtnGrpUniInd(ButtonGroup btnGrp) {
         btnUni = new JRadioButton();
@@ -248,7 +254,7 @@ public void createContentPanel() {
 
 
     /**
-     * create the button that starts the verification process
+     * Create the button that starts the verification process.
      *
      * @return JButton the start button
      */
@@ -261,7 +267,7 @@ public void createContentPanel() {
 
     /**
      * This inner class represents the implementation of the observer pattern
-     * for the status messages for the console and verification parts of the gui
+     * for the status messages for the console and verification parts of the GUI.
      *
      * @author prinstin
      */
@@ -292,15 +298,19 @@ public void createContentPanel() {
         }
     }
     
+    /**
+     * Append some text to the console-like JTextArea.
+     * @param str The String of the text to append.
+     */
     public void appendToConsole(String str){
         consolePanel.appendToStatusText(str);
     }
 
     /**
-     * turns the vrfCode into a text string that is shown in the GUI
+     * Turns the vrfCode into a text string that is shown in the GUI.
      *
-     * @param code int value which corresponds to a verification type
-     * @return the user-friendly text the describes a verification step
+     * @param code The int value which corresponds to a verification type.
+     * @return The user-friendly text that describes a verification step.
      */
     public String getTextFromVrfCode(int code) {
         try {

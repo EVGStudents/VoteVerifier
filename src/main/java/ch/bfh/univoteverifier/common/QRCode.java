@@ -1,12 +1,11 @@
 /**
-*
-*  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
-*   Bern University of Applied Sciences, Engineering and Information Technology,
-*   Research Institute for Security in the Information Society, E-Voting Group,
-*   Biel, Switzerland.
-*
-*   Project independent UniVoteVerifier.
-*
+ *
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
+ * Applied Sciences, Engineering and Information Technology, Research Institute
+ * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ * 
+ * Project independent UniVoteVerifier.
+ * 
 */
 package ch.bfh.univoteverifier.common;
 
@@ -26,7 +25,6 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -36,6 +34,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
+ * The QRCode Class creates and decodes QRCodes and interprets the data stored
+ * in an election receipt from the UniVote eVoting system.
  *
  * @author prinstin
  */
@@ -43,17 +43,22 @@ public class QRCode {
 
     private Messenger msgr;
     ResourceBundle rb;
+
     /**
-     * instantiate the class
+     * Create an instance of the QRCode class
+     *
+     * @param msgr a Messenger object to allow error messages to be shared with
+     * the GUI or Console.
      */
     public QRCode(Messenger msgr) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
-        this.msgr=msgr;
+        this.msgr = msgr;
     }
 
-    
     /**
-     * Creates the QRCode for a given text.  This method is used for testing purposes
+     * Creates the QRCode for a given text. This method is used for testing
+     * purposes
+     *
      * @param str the string from which a QRCode shall be created
      * @return the image of a QRcode
      */
@@ -73,6 +78,7 @@ public class QRCode {
 
     /**
      * decodes a QRCode into a String value
+     *
      * @param filename the File object containing the path to the QRcode image
      * @return a string of the value represented by the QRCode
      * @throws IOException if the file cannot be opened, an exception is thrown
@@ -107,46 +113,86 @@ public class QRCode {
     }
 
     /**
-     * decode the QRCode from an election receipt and pack the info in to a helper class
+     * decode the QRCode from an election receipt and pack the info in to a
+     * helper class
+     *
      * @param filename the File object containing the path to the QRcode image
-     * @return the ElectionReceipt helper class with the information packed into it
+     * @return the ElectionReceipt helper class with the information packed into
+     * it
      */
-    public ElectionReceipt decodeReceipt(File filename) throws IOException{
-        
+    public ElectionReceipt decodeReceipt(File filename) throws IOException {
+
         String decoded = decode(filename);
         String[] groupedCleaned = groupAndCleanDecode(decoded);
         String[][] results = separateDataPairs(groupedCleaned);
         return new ElectionReceipt(results);
     }
-    
-    public String removeBrackets(String str ){
+
+    /**
+     * Parse out the brackets from a string.
+     *
+     * @param str the String from which to remove brackets.
+     * @return the String with the brackets removed.
+     */
+    public String removeBrackets(String str) {
         str = str.replace("{", "");
         str = str.replace("}", "");
         return str;
     }
-    
-    public String removeSlashAndQuotes(String str ){
+
+    /**
+     * Parse out slashes and quotes from a string.
+     *
+     * @param str The String from which to remove slashes and quotes.
+     * @return the String with the slashes and quotes removed.
+     */
+    public String removeSlashAndQuotes(String str) {
         str = str.replace("\"", "");
         return str;
     }
-        
-    public String[] groupReceiptData(String str){
+
+    /**
+     * Separate by commas the data in a string containing a decoded QRCode from
+     * the UniVote eVoting system.
+     *
+     * @param str the string to split up by commas
+     * @return an array of strings which are pairs of data, in a for of "Key and
+     * Value".
+     */
+    public String[] groupReceiptData(String str) {
         Pattern pattern = Pattern.compile(",");
         String[] grouped = pattern.split(str);
         return grouped;
     }
-    
-    public String[] groupAndCleanDecode(String str){
+
+    /**
+     * Group and remove excess characters from a decoded QRCode of an Election
+     * Receipt from the UniVote eVoting system.
+     *
+     * @param str the String to remove characters from and to be split up
+     * @return an array of strings which are pairs of data, in a for of "Key and
+     * Value".
+     */
+    public String[] groupAndCleanDecode(String str) {
         str = removeBrackets(str);
         str = removeSlashAndQuotes(str);
         return groupReceiptData(str);
     }
-    
-    public String[][] separateDataPairs(String[] pairs){
+
+    /**
+     * Takes strings of pairs of data from the UniVote eVoting system and splits
+     * them into separate strings and places them into a two dimensional array
+     * of pairs of data like "Key value" groups.
+     *
+     * @param pairs
+     * @return Array of values from an election receipt from the UniVote eVoting
+     * system.
+     */
+    public String[][] separateDataPairs(String[] pairs) {
         String[][] separated = new String[pairs.length][2];
         Pattern pattern = Pattern.compile(":");
-        for (int i =0; i<pairs.length;i++){
-            String[] split  = pattern.split(pairs[i],2);
+        for (int i = 0; i < pairs.length; i++) {
+            String[] split = pattern.split(pairs[i], 2);
             String str0 = split[0];
             separated[i][0] = str0;
             String str1 = split[1];
