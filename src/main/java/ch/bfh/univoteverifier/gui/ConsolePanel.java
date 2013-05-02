@@ -13,7 +13,6 @@ package ch.bfh.univoteverifier.gui;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,8 +23,8 @@ import javax.swing.border.EmptyBorder;
  *
  * @author prinstin
  *
- * creates that status panel which is shown at the bottom of hte GUI and
- * contains a console-like message area
+ * Creates that status panel which is shown at the bottom of the GUI and
+ * optionally contains a console-like message area
  *
  * @return a JPanel which is one of the three main container/structure panels
  */
@@ -34,6 +33,9 @@ public class ConsolePanel extends JPanel {
     JTextArea statusText;
     ResourceBundle rb;
 
+    /**
+     * Create a instance of this class.
+     */
     public ConsolePanel() {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
 
@@ -53,10 +55,10 @@ public class ConsolePanel extends JPanel {
     }
 
     /**
-     * create the textBox that is used as the console-like message area at the
+     * Create the textBox that is used as the console-like message area at the
      * bottom of the GUI
      *
-     * @return a JTextArea with scroll bar, non editable
+     * @return JTextArea with scroll bar which is non editable.
      */
     private JTextArea createStatusTextBox() {
         statusText = new JTextArea();
@@ -70,14 +72,31 @@ public class ConsolePanel extends JPanel {
         return statusText;
     }
 
+    /**
+     * Get the text area of this panel
+     *
+     * @return JTextArea containing text in a console-like fashion.
+     */
     public JTextArea getStatusBox() {
         return this.statusText;
     }
-    
-    public void setStatusText(String str){
+
+    /**
+     * Set the text of the JTextArea containing text in a console-like fashion.
+     *
+     * @param str The String to be set in the console-like text area
+     */
+    public void setStatusText(String str) {
         statusText.setText(str);
     }
-    public void appendToStatusText(String str){
+
+    /**
+     * Append the text of the JTextArea containing text in a console-like
+     * fashion.
+     *
+     * @param str The String to append in the console-like text area
+     */
+    public void appendToStatusText(String str) {
         statusText.append(str);
     }
 }

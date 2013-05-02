@@ -10,18 +10,16 @@
  */
 package ch.bfh.univoteverifier.filehandling;
 
+import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.gui.MainGUI;
 import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.math.BigInteger;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 
 /**
  *
@@ -34,24 +32,22 @@ public class QRCodeTest {
 	 */
 	@Test
 	public void QRCodeDecodesElectionInfo() throws IOException {
-		        Messenger msgr = new Messenger();
-        QRCode qr = new QRCode(msgr);
+		Messenger msgr = new Messenger();
+		QRCode qr = new QRCode(msgr);
 		File file = new File(MainGUI.class
 			.getResource("/qrcodeGiu").getPath());
 		String resultStr = qr.decode(file);
 		String correctDecode = "{\"eID\":\"vsbfh-2013\",\"encVa\":\"72w86v8UbkIKBaoN6sPQPSP1a7dQf2ivaiU91L5Orindc4XqfVVznFRegKiK2G3P3tYqjijaLdBQjZEJSU0lXVkDDCbl_fGOt=DxlXNNGgdUn_IfhSefshyNHFzYnOHDPlFeZwOmO91zFt3woxWjSwMI0UhbnezFgvrpXp5fuYY\",\"encVb\":\"A38NYQfzQSA=73rLcStNKQCatMgXJyJ0sMa9wjPLkz92oGoQERk4ItanwOEXyyKEIfpu2nwqRhuGKpn9GU39h2_myjliO04Egz1DiS1ZaO7RrjU7fKSMlXU1hQbHOHvyDAZXX9EqY1gBVpT=u=eMVCf6TI0OFf8P86pDni=MB8Y\",\"vk\":\"4lfTbadkitS1NOXSiDhLKrTUh1J=gdOupOzFHgexC4LdYRuV9PIzblQgHfLYNtlEW8i6Tjr1FVv6HJZ902PHeyG8vrkTCJJEODOdZJ7TFzo8WCIywtyqXcFF52n_sg70FNRSLZcEBY6lCcRWWzBJxdGnbBLpl11QGcJ25cG6RKP\",\"pC\":\"2Qz1K9y14qGzBRQqJ7gAyezta3bi7pHY7307sHQxDYVlF6aQlwJDABY16gIYZNnTo121Lt8SXKpsn_rhGgkSqQMGmPnUkieepqyPg9ulkwEAvKBK80dlxzEFvNfaw9_a0SRR2aKIgWhuvAouPHlN9FMzLexlNApbKTTHNQ7dvR\",\"pR\":\"B4YMumm5bLYnT6iYhrQJT6fcMyCOtqQJOMsNxyhncpLCYIkhEVumA4tbB5HitapQU7nVXP_ZrS51VacXbkGU6LZ_BHy3je_iZoMY=5FjLNppoOWitzzkToFkL=bhlIsnMHQhJizXSNAGpRLPTvkI7bhGb=FxousxxCx0=RGYH3\",\"vSA\":\"6rQltQyKPrzIAPaZnCBp0x2F0N2AC4g5JprF_R_Qycs\",\"vSB\":\"3x73szdurz40HjfaYTBF42ecyL9mN56wFTZDGF8a3FN\",\"sSId\":\"electionmanager\",\"sT\":\"2013-03-25T10:58:11.000Z\",\"sV\":\"ShZKrcEYQnsA2Ks352oLIUABAaglxmNsCaYIfKzM_tfRARyYPgNSxNLtNcaQf10VqEq57DArGrhvjLjJwmU5mfip3FRUqZ1hGNFxkqdYM8bLC0uhoiALyHVFkLu4etQG4Dp8RuJ5dmp5UTs0QcEHEIIQcd8_=J7iIeqRLAlcU6\"}";
 		assertTrue(0 == correctDecode.compareTo(resultStr));
 	}
-        
- 
 
 	/**
 	 * test that the QR code can be read from a path on the computer
 	 */
 	@Test
 	public void bracketsRemovedFromString() throws IOException {
-		        Messenger msgr = new Messenger();
-        QRCode qr = new QRCode(msgr);
+		Messenger msgr = new Messenger();
+		QRCode qr = new QRCode(msgr);
 		File file = new File(MainGUI.class
 			.getResource("/qrcodeGiu").getPath());
 		String str = qr.decode(file);
@@ -62,8 +58,8 @@ public class QRCodeTest {
 
 	@Test
 	public void splitAtCommas() throws IOException {
-		        Messenger msgr = new Messenger();
-        QRCode qr = new QRCode(msgr);
+		Messenger msgr = new Messenger();
+		QRCode qr = new QRCode(msgr);
 		File file = new File(MainGUI.class
 			.getResource("/qrcodeGiu").getPath());
 		String correctDecode = "{\"eID\":\"vsbfh-2013\",\"encVa\":\"72w86v8UbkIKBaoN6sPQPSP1a7dQf2ivaiU91L5Orindc4XqfVVznFRegKiK2G3P3tYqjijaLdBQjZEJSU0lXVkDDCbl_fGOt=DxlXNNGgdUn_IfhSefshyNHFzYnOHDPlFeZwOmO91zFt3woxWjSwMI0UhbnezFgvrpXp5fuYY\",\"encVb\":\"A38NYQfzQSA=73rLcStNKQCatMgXJyJ0sMa9wjPLkz92oGoQERk4ItanwOEXyyKEIfpu2nwqRhuGKpn9GU39h2_myjliO04Egz1DiS1ZaO7RrjU7fKSMlXU1hQbHOHvyDAZXX9EqY1gBVpT=u=eMVCf6TI0OFf8P86pDni=MB8Y\",\"vk\":\"4lfTbadkitS1NOXSiDhLKrTUh1J=gdOupOzFHgexC4LdYRuV9PIzblQgHfLYNtlEW8i6Tjr1FVv6HJZ902PHeyG8vrkTCJJEODOdZJ7TFzo8WCIywtyqXcFF52n_sg70FNRSLZcEBY6lCcRWWzBJxdGnbBLpl11QGcJ25cG6RKP\",\"pC\":\"2Qz1K9y14qGzBRQqJ7gAyezta3bi7pHY7307sHQxDYVlF6aQlwJDABY16gIYZNnTo121Lt8SXKpsn_rhGgkSqQMGmPnUkieepqyPg9ulkwEAvKBK80dlxzEFvNfaw9_a0SRR2aKIgWhuvAouPHlN9FMzLexlNApbKTTHNQ7dvR\",\"pR\":\"B4YMumm5bLYnT6iYhrQJT6fcMyCOtqQJOMsNxyhncpLCYIkhEVumA4tbB5HitapQU7nVXP_ZrS51VacXbkGU6LZ_BHy3je_iZoMY=5FjLNppoOWitzzkToFkL=bhlIsnMHQhJizXSNAGpRLPTvkI7bhGb=FxousxxCx0=RGYH3\",\"vSA\":\"6rQltQyKPrzIAPaZnCBp0x2F0N2AC4g5JprF_R_Qycs\",\"vSB\":\"3x73szdurz40HjfaYTBF42ecyL9mN56wFTZDGF8a3FN\",\"sSId\":\"electionmanager\",\"sT\":\"2013-03-25T10:58:11.000Z\",\"sV\":\"ShZKrcEYQnsA2Ks352oLIUABAaglxmNsCaYIfKzM_tfRARyYPgNSxNLtNcaQf10VqEq57DArGrhvjLjJwmU5mfip3FRUqZ1hGNFxkqdYM8bLC0uhoiALyHVFkLu4etQG4Dp8RuJ5dmp5UTs0QcEHEIIQcd8_=J7iIeqRLAlcU6\"}";
@@ -96,8 +92,8 @@ public class QRCodeTest {
 
 	@Test
 	public void dataGroupedAndCleaned() throws IOException {
-		        Messenger msgr = new Messenger();
-        QRCode qr = new QRCode(msgr);
+		Messenger msgr = new Messenger();
+		QRCode qr = new QRCode(msgr);
 		File file = new File(MainGUI.class
 			.getResource("/qrcodeGiu").getPath());
 		String decoded = qr.decode(file);
@@ -131,8 +127,8 @@ public class QRCodeTest {
 
 	@Test
 	public void removeSlashAndQuotes() throws IOException {
-		        Messenger msgr = new Messenger();
-        QRCode qr = new QRCode(msgr);
+		Messenger msgr = new Messenger();
+		QRCode qr = new QRCode(msgr);
 		File file = new File(MainGUI.class
 			.getResource("/qrcodeGiu").getPath());
 		String str = qr.decode(file);
@@ -149,8 +145,8 @@ public class QRCodeTest {
 	 */
 	@Test
 	public void separateDataPairs() throws IOException {
-		        Messenger msgr = new Messenger();
-        QRCode qr = new QRCode(msgr);
+		Messenger msgr = new Messenger();
+		QRCode qr = new QRCode(msgr);
 		File file = new File(MainGUI.class
 			.getResource("/qrcodeGiu").getPath());
 		String decoded = qr.decode(file);
@@ -189,33 +185,54 @@ public class QRCodeTest {
 	 */
 	@Test
 	public void electionReceiptHasProperValues() throws IOException {
-		        Messenger msgr = new Messenger();
-        QRCode qr = new QRCode(msgr);
+		Messenger msgr = new Messenger();
+		QRCode qr = new QRCode(msgr);
 		File file = new File(MainGUI.class
 			.getResource("/qrcodeGiu").getPath());
 		ElectionReceipt ercp = qr.decodeReceipt(file);
 
-		String expected = ercp.geteID();
-		assertTrue(0 == expected.compareTo("vsbfh-2013"));
-		expected = ercp.getEncVa();
-		assertTrue(0 == expected.compareTo("72w86v8UbkIKBaoN6sPQPSP1a7dQf2ivaiU91L5Orindc4XqfVVznFRegKiK2G3P3tYqjijaLdBQjZEJSU0lXVkDDCbl_fGOt=DxlXNNGgdUn_IfhSefshyNHFzYnOHDPlFeZwOmO91zFt3woxWjSwMI0UhbnezFgvrpXp5fuYY"));
-		expected = ercp.getEncVb();
-		assertTrue(0 == expected.compareTo("A38NYQfzQSA=73rLcStNKQCatMgXJyJ0sMa9wjPLkz92oGoQERk4ItanwOEXyyKEIfpu2nwqRhuGKpn9GU39h2_myjliO04Egz1DiS1ZaO7RrjU7fKSMlXU1hQbHOHvyDAZXX9EqY1gBVpT=u=eMVCf6TI0OFf8P86pDni=MB8Y"));
-		expected = ercp.getVk();
-		assertTrue(0 == expected.compareTo("4lfTbadkitS1NOXSiDhLKrTUh1J=gdOupOzFHgexC4LdYRuV9PIzblQgHfLYNtlEW8i6Tjr1FVv6HJZ902PHeyG8vrkTCJJEODOdZJ7TFzo8WCIywtyqXcFF52n_sg70FNRSLZcEBY6lCcRWWzBJxdGnbBLpl11QGcJ25cG6RKP"));
-		expected = ercp.getpC();
-		assertTrue(0 == expected.compareTo("2Qz1K9y14qGzBRQqJ7gAyezta3bi7pHY7307sHQxDYVlF6aQlwJDABY16gIYZNnTo121Lt8SXKpsn_rhGgkSqQMGmPnUkieepqyPg9ulkwEAvKBK80dlxzEFvNfaw9_a0SRR2aKIgWhuvAouPHlN9FMzLexlNApbKTTHNQ7dvR"));
-		expected = ercp.getpR();
-		assertTrue(0 == expected.compareTo("B4YMumm5bLYnT6iYhrQJT6fcMyCOtqQJOMsNxyhncpLCYIkhEVumA4tbB5HitapQU7nVXP_ZrS51VacXbkGU6LZ_BHy3je_iZoMY=5FjLNppoOWitzzkToFkL=bhlIsnMHQhJizXSNAGpRLPTvkI7bhGb=FxousxxCx0=RGYH3"));
-		expected = ercp.getvSA();
-		assertTrue(0 == expected.compareTo("6rQltQyKPrzIAPaZnCBp0x2F0N2AC4g5JprF_R_Qycs"));
-		expected = ercp.getvSB();
-		assertTrue(0 == expected.compareTo("3x73szdurz40HjfaYTBF42ecyL9mN56wFTZDGF8a3FN"));
-		expected = ercp.getsSId();
-		assertTrue(0 == expected.compareTo("electionmanager"));
-		expected = ercp.getsT();
-		assertTrue(0 == expected.compareTo("2013-03-25T10:58:11.000Z"));
-		expected = ercp.getsV();
-		assertTrue(0 == expected.compareTo("ShZKrcEYQnsA2Ks352oLIUABAaglxmNsCaYIfKzM_tfRARyYPgNSxNLtNcaQf10VqEq57DArGrhvjLjJwmU5mfip3FRUqZ1hGNFxkqdYM8bLC0uhoiALyHVFkLu4etQG4Dp8RuJ5dmp5UTs0QcEHEIIQcd8_=J7iIeqRLAlcU6"));
+		BigInteger actual, expected;
+		String str = ercp.geteID();
+		assertTrue(0 == str.compareTo("vsbfh-2013"));
+
+		actual = ercp.getEncVa();
+		expected = new BigInteger(CryptoFunc.decodeBase64("72w86v8UbkIKBaoN6sPQPSP1a7dQf2ivaiU91L5Orindc4XqfVVznFRegKiK2G3P3tYqjijaLdBQjZEJSU0lXVkDDCbl_fGOt=DxlXNNGgdUn_IfhSefshyNHFzYnOHDPlFeZwOmO91zFt3woxWjSwMI0UhbnezFgvrpXp5fuYY"));
+		assertTrue(0 == expected.compareTo(actual));
+
+		actual = ercp.getEncVb();
+		expected = new BigInteger(CryptoFunc.decodeBase64("A38NYQfzQSA=73rLcStNKQCatMgXJyJ0sMa9wjPLkz92oGoQERk4ItanwOEXyyKEIfpu2nwqRhuGKpn9GU39h2_myjliO04Egz1DiS1ZaO7RrjU7fKSMlXU1hQbHOHvyDAZXX9EqY1gBVpT=u=eMVCf6TI0OFf8P86pDni=MB8Y"));
+		assertTrue(0 == expected.compareTo(actual));
+
+		actual = ercp.getVk();
+
+		expected = new BigInteger(CryptoFunc.decodeBase64("4lfTbadkitS1NOXSiDhLKrTUh1J=gdOupOzFHgexC4LdYRuV9PIzblQgHfLYNtlEW8i6Tjr1FVv6HJZ902PHeyG8vrkTCJJEODOdZJ7TFzo8WCIywtyqXcFF52n_sg70FNRSLZcEBY6lCcRWWzBJxdGnbBLpl11QGcJ25cG6RKP"));
+		assertTrue(0 == expected.compareTo(actual));
+
+		actual = ercp.getpC();
+		expected = new BigInteger(CryptoFunc.decodeBase64("2Qz1K9y14qGzBRQqJ7gAyezta3bi7pHY7307sHQxDYVlF6aQlwJDABY16gIYZNnTo121Lt8SXKpsn_rhGgkSqQMGmPnUkieepqyPg9ulkwEAvKBK80dlxzEFvNfaw9_a0SRR2aKIgWhuvAouPHlN9FMzLexlNApbKTTHNQ7dvR"));
+		assertTrue(0 == expected.compareTo(actual));
+
+
+		actual = ercp.getpR();
+		expected = new BigInteger(CryptoFunc.decodeBase64("B4YMumm5bLYnT6iYhrQJT6fcMyCOtqQJOMsNxyhncpLCYIkhEVumA4tbB5HitapQU7nVXP_ZrS51VacXbkGU6LZ_BHy3je_iZoMY=5FjLNppoOWitzzkToFkL=bhlIsnMHQhJizXSNAGpRLPTvkI7bhGb=FxousxxCx0=RGYH3"));
+		assertTrue(0 == expected.compareTo(actual));
+
+		actual = ercp.getvSA();
+		expected = new BigInteger(CryptoFunc.decodeBase64("6rQltQyKPrzIAPaZnCBp0x2F0N2AC4g5JprF_R_Qycs"));
+		assertTrue(0 == expected.compareTo(actual));
+
+		actual = ercp.getvSB();
+		expected = new BigInteger(CryptoFunc.decodeBase64("3x73szdurz40HjfaYTBF42ecyL9mN56wFTZDGF8a3FN"));
+		assertTrue(0 == expected.compareTo(actual));
+
+		str = ercp.getsSId();
+		assertTrue(0 == str.compareTo("electionmanager"));
+
+		str = ercp.getsT();
+		assertTrue(0 == str.compareTo("2013-03-25T10:58:11.000Z"));
+
+		actual = ercp.getsV();
+		expected = new BigInteger(CryptoFunc.decodeBase64("ShZKrcEYQnsA2Ks352oLIUABAaglxmNsCaYIfKzM_tfRARyYPgNSxNLtNcaQf10VqEq57DArGrhvjLjJwmU5mfip3FRUqZ1hGNFxkqdYM8bLC0uhoiALyHVFkLu4etQG4Dp8RuJ5dmp5UTs0QcEHEIIQcd8_=J7iIeqRLAlcU6"));
+		assertTrue(0 == expected.compareTo(actual));
 	}
 }

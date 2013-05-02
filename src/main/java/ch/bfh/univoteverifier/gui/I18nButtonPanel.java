@@ -11,9 +11,6 @@
 package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.action.ActionManager;
-import ch.bfh.univoteverifier.action.ChangeLocaleAction;
-import ch.bfh.univoteverifier.action.FileChooserAction;
-import ch.bfh.univoteverifier.action.StartAction;
 import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -23,23 +20,25 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
+ * This Panel Class contains images representing the possible locales that are
+ * available.
  *
  * @author prinstin
  */
 public class I18nButtonPanel extends JPanel {
 
     private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
-    
+
     /**
-     * create the panel which hold the button with flag icons representing the
-     * different languages possible for the program
+     * Create the panel which hold the button with flag icons representing the
+     * different languages possible for the program.
      *
      * @return JPanel the panel which contains the flag buttons
      */
     public I18nButtonPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         Action a = ActionManager.getInstance().getAction("changeLocale");
-        
+
         JButton btnDe = new JButton(new ImageIcon(MainGUI.class
                 .getResource("/DE.png").getPath()));
         btnDe.setBorder(BorderFactory.createEmptyBorder());
@@ -61,7 +60,7 @@ public class I18nButtonPanel extends JPanel {
         btnFr.setContentAreaFilled(false);
         btnFr.setName("btnFr");
         btnFr.setAction(a);
-        
+
         this.add(btnDe);
         this.add(btnFr);
         this.add(btnEn);

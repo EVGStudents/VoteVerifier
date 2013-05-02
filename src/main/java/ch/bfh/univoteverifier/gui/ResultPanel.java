@@ -1,7 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/**
+*
+*  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+*   Bern University of Applied Sciences, Engineering and Information Technology,
+*   Research Institute for Security in the Information Society, E-Voting Group,
+*   Biel, Switzerland.
+*
+*   Project independent UniVoteVerifier.
+*
+*/
 package ch.bfh.univoteverifier.gui;
 
 import java.awt.Dimension;
@@ -13,9 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 /**
+ * A JPanel that is used to show the verification results in the middle of the
+ * GUI
  *
  * @author prinstin
- * A JPanel that is used to show the verification results in the middle of the GUI
  */
 public class ResultPanel extends JPanel {
 
@@ -23,6 +30,10 @@ public class ResultPanel extends JPanel {
     JPanel titlePanel, contentPanel;
     JLabel label;
 
+    /**
+     * Create an instance of this Panel class.
+     * @param s The name to assign to this panel class.
+     */
     ResultPanel(String s) {
         super();
         name = s;
@@ -30,7 +41,7 @@ public class ResultPanel extends JPanel {
     }
 
     /**
-     * creates and structures the panel
+     * Creates and structure the panel.
      */
     public void generatePanel() {
         this.setPreferredSize(new Dimension(600, 100));
@@ -46,26 +57,30 @@ public class ResultPanel extends JPanel {
         this.add(contentPanel);
     }
 
+    /**
+     * Get the name of this Panel class.
+     * @return A String of the name of this Panel class.
+     */
     public String getName() {
         return name;
     }
 
     /**
-     * returns the panel responsible for showing the verification results
+     * Returns the panel responsible for showing the verification results.
      *
-     * @return the content panel for this instance
+     * @return The content panel for this instance.
      */
     public JPanel getContentPanel() {
         return this.contentPanel;
     }
 
     /**
-     * add content to the results panel. This method is called if message
-     * received over observer pattern
+     * Add content to the results panel. This method is called if message
+     * received over observer pattern.
      *
-     * @param str the text for the verification result to be displayed to in the
-     * GUI
-     * @param b the result of the verification
+     * @param str The text for the verification result to be displayed to in the
+     * GUI.
+     * @param b The result of the verification.
      */
     public void addResultPanel(String str, boolean b) {
         JPanel panel = new JPanel();
@@ -84,9 +99,9 @@ public class ResultPanel extends JPanel {
     }
 
     /**
-     * generate a standard panel for this class
+     * Generate a standard panel for this class.
      *
-     * @return an empty JPanel used by this class only
+     * @return An empty JPanel used by this class only.
      */
     public JPanel getBoxPanel() {
         JPanel panel = new JPanel();
