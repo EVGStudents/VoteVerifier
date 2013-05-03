@@ -26,6 +26,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -84,16 +85,7 @@ public class TopPanel extends JPanel {
      * Verification.
      */
     public void uniVrfSelected() {
-        if (!selectionMade) 
-            showChoicePanel();          
-        dynamicChoicePanel.removeAll();
-        String desc = rb.getString("descEID");
-        JLabel label = new JLabel(desc);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-
-        dynamicChoicePanel.add(label);
-        dynamicChoicePanel.add(comboBox);
-        panelModified();
+        changeContent("descEID", "descUni", comboBox);
     }
 
     /**
@@ -101,19 +93,26 @@ public class TopPanel extends JPanel {
      * Verification.
      */
     public void indVrfSelected() {
+        JButton btnFileSelector = new JButton(rb.getString("selectFile"));
+        btnFileSelector.setAction(ActionManager.getInstance().getAction("fileChooser"));
+        changeContent("descQRCode", "descInd", btnFileSelector);
+    }
+    
+    public void changeContent(String descLabel, String descName, JComponent c) {
+        vrfDescLabel.setText(rb.getString(descName));
         if (!selectionMade) {
             showChoicePanel();
         }
         dynamicChoicePanel.removeAll();
-        String desc = rb.getString("descQRCode");
+
+        String desc = rb.getString(descLabel);
         JLabel label = new JLabel(desc);
         label.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JButton btnFileSelector = new JButton(rb.getString("selectFile"));
-        btnFileSelector.setAction(ActionManager.getInstance().getAction("fileChooser"));
 
         dynamicChoicePanel.add(label);
-        dynamicChoicePanel.add(btnFileSelector);
+        dynamicChoicePanel.add(c);
+
         panelModified();
     }
 

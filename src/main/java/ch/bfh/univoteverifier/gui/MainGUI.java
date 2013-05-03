@@ -15,7 +15,7 @@ import ch.bfh.univoteverifier.action.ChangeLocaleAction;
 import ch.bfh.univoteverifier.action.FileChooserAction;
 import ch.bfh.univoteverifier.action.ShowConsoleAction;
 import ch.bfh.univoteverifier.action.StartAction;
-import ch.bfh.univoteverifier.common.Config;
+import ch.bfh.univoteverifier.common.IFileManager;
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.VerificationType;
@@ -23,16 +23,11 @@ import ch.bfh.univoteverifier.verification.VerificationEvent;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
-import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -40,9 +35,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * Creates the main window of the GUI and generates the components needed to see
@@ -53,10 +50,11 @@ import javax.swing.JScrollPane;
 public class MainGUI extends JFrame {
 
     JFrame frame;
-    JPanel vrfDescPanel, dynamicChoicePanel, innerPanel;
+    JPanel vrfDescPanel, dynamicChoicePanel, masterPanel;
     TopPanel topPanel;
+    MiddlePanel middlePanel;
     ConsolePanel consolePanel;
-    ResultPanel activeVrfPanel;
+    ResultTablePanel resultTablePanel;
     MainController mc;
     VerificationListener sl;
     JLabel vrfDescLabel, choiceDescLabel;
@@ -67,12 +65,10 @@ public class MainGUI extends JFrame {
     String[] eIDlist;
     String rawEIDlist;
     Preferences prefs;
-    JScrollPane vrfScrollPanel;
-    private final Properties prop = new Properties();
     private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
     ResourceBundle rb;
-    File qrCodeFile;
-
+    
+    
     /**
      * @param args
      */
@@ -85,6 +81,7 @@ public class MainGUI extends JFrame {
      * Construct the window and frame of this GUI and initialize certain base variables.
      */
     public MainGUI() {
+        setLookAndFeel();
         initResources();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(696, 400));
@@ -113,7 +110,7 @@ public class MainGUI extends JFrame {
     /**
      * create the main content panel for this Frame Class.
      */
-public void createContentPanel() {
+private void createContentPanel() {
         resetContentPanel();
     }
 
@@ -123,7 +120,7 @@ public void createContentPanel() {
  * The entire GUI will is recreated.
  */
     public void resetContentPanel() {
-        JPanel masterPanel = createUI();
+        masterPanel = createUI();
         masterPanel.setOpaque(true); //content panes must be opaque
         this.setContentPane(masterPanel);
         initResources();
@@ -135,7 +132,8 @@ public void createContentPanel() {
     /**
      * Instantiates some basic resources needed in this class.
      */
-    public void initResources() {
+    private void initResources() {
+        
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         prefs = Preferences.userNodeForPackage(MainGUI.class);
         rawEIDlist = prefs.get("eIDList", "Bern Zurich vsbfh-2013");
@@ -152,7 +150,7 @@ public void createContentPanel() {
      *
      * @return a JPanel which will be set as the main content panel of the frame
      */
-    public JPanel createUI() {
+    private JPanel createUI() {
         JPanel panel = new JPanel();
         
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -162,16 +160,17 @@ public void createContentPanel() {
         Messenger msgr = new Messenger();
         msgr.getStatusSubject().addListener(sl);
 
-        innerPanel = new JPanel();
-        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
-        innerPanel.setBackground(GUIconstants.GREY);
+        resultTablePanel = new ResultTablePanel();
+        middlePanel = new MiddlePanel(resultTablePanel);
+        middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
+        middlePanel.setBackground(GUIconstants.GREY);
 
         createActions(msgr, btnGroup);
         
         topPanel = getTopPanel(btnGroup);
         consolePanel = new ConsolePanel();
         panel.add(topPanel);
-        panel.add(new MiddlePanel(innerPanel));
+        panel.add(middlePanel);
         
         return panel;
     }
@@ -183,9 +182,10 @@ public void createContentPanel() {
      */
     private void createActions(Messenger msgr, ButtonGroup btnGroup){
         ActionManager am = ActionManager.getInstance();
+        IFileManager fm= new FileManager();
         Action changeLocaleAction = new ChangeLocaleAction(this);
-        Action fileChooserAction = new FileChooserAction(this, qrCodeFile);
-        Action startAction = new StartAction(msgr, innerPanel, comboBox, btnGroup, qrCodeFile);
+        Action fileChooserAction = new FileChooserAction(msgr, fm);
+        Action startAction = new StartAction(msgr, middlePanel, comboBox, btnGroup, fm);
         Action showConsoleAction = new ShowConsoleAction(this);
         
         am.addActions("fileChooser", fileChooserAction);
@@ -202,7 +202,7 @@ public void createContentPanel() {
      * window
      */
     private TopPanel getTopPanel(ButtonGroup btnGrp) {
-        createBtnGrpUniInd(btnGrp);
+        createBtnGrp(btnGrp);
         createStartButton();
         TopPanel panel = new TopPanel(btnUni, btnInd, btnStart, comboBox, btnGrp);
         return panel;
@@ -221,35 +221,22 @@ public void createContentPanel() {
     }
 
     /**
-     * Create the button that shows the information and buttons needed to start
-     * universal verification.
+     * Create the button that select the verification type.
      */
-    private void createBtnGrpUniInd(ButtonGroup btnGrp) {
-        btnUni = new JRadioButton();
-        btnUni.setText("btnUni");
+    private void createBtnGrp(ButtonGroup btnGrp) {
         ActionManager am = ActionManager.getInstance();
-        String name = rb.getString("btnUni");
-        btnUni = new JRadioButton(name);
-        btnUni.setBackground(GUIconstants.GREY);
 
-        name = rb.getString("btnInd");
-        btnInd = new JRadioButton(name);
+        btnUni = new JRadioButton();
+        btnUni.setBackground(GUIconstants.GREY);
+        btnUni.setName("btnUni");
+
+        btnInd = new JRadioButton();
         btnInd.setBackground(GUIconstants.GREY);
-        btnInd.setText("btnInd");
+        btnInd.setName("btnInd");
 
         btnGrp.add(btnUni);
         btnGrp.add(btnInd);
         btnUni.setSelected(true);
-        
-        for (Enumeration<AbstractButton> buttons = btnGrp.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-            LOGGER.log(Level.INFO, "createBtnGroup", button.getName());
-            if (button.isSelected()) {
-                LOGGER.log(Level.INFO, "createBtnGroup is selected", button.getName());
-            }
-        }
-
-      
     }
 
 
@@ -278,28 +265,49 @@ public void createContentPanel() {
 
             if (ve.getVerificationEnum() == VerificationType.ERROR) {
                 consolePanel.appendToStatusText("\n" + ve.getMessage());
+            } else if (ve.getVerificationEnum() == VerificationType.FATAL_ERROR) {
+                String text = "\n" + ve.getMessage();
+                  JOptionPane.showMessageDialog(masterPanel, text);
             } else {
                 String sectionName = ve.getSection().toString();
-                if (activeVrfPanel == null) {
-                    activeVrfPanel = new ResultPanel(sectionName);
-                    innerPanel.add(activeVrfPanel);
-                } else if (!activeVrfPanel.getName().equals(sectionName)) {
-                    activeVrfPanel = new ResultPanel((sectionName));
-                    innerPanel.add(activeVrfPanel);
-                }
                 Boolean result = ve.getResult();
                 int code = ve.getVerificationEnum().getID();
-                String vrfType = getTextFromVrfCode(code);
+                String vrfType = GUIconstants.getTextFromVrfCode(code);
+                ResultSet rs = new ResultSet(vrfType, result, sectionName);
+                resultTablePanel.addData(rs);
+
+                
                 String outputText = "\n" + vrfType + " ............. " + result;
                 consolePanel.appendToStatusText(outputText);
-                activeVrfPanel.addResultPanel(vrfType, result);
-                innerPanel.validate();
             }
         }
     }
     
+     /**
+     * This inner class holds a reference to a file expected to be QRCode and
+     * which is sent to the verification thread when individual verification is
+     * selected.
+     *
+     * @author prinstin
+     */
+    class FileManager implements IFileManager {
+
+        File file;
+
+        @Override
+        public File getFile() {
+            return file;
+        }
+
+        @Override
+        public void setFile(File file) {
+            this.file = file;
+        }
+    }
+
     /**
      * Append some text to the console-like JTextArea.
+     *
      * @param str The String of the text to append.
      */
     public void appendToConsole(String str){
@@ -307,18 +315,20 @@ public void createContentPanel() {
     }
 
     /**
-     * Turns the vrfCode into a text string that is shown in the GUI.
-     *
-     * @param code The int value which corresponds to a verification type.
-     * @return The user-friendly text that describes a verification step.
+     * Set the look and feel of the GUI to the default of the system the program is running on.
      */
-    public String getTextFromVrfCode(int code) {
-        try {
-            prop.load(new FileInputStream("src/main/java/ch/bfh/univoteverifier/resources/messages.properties"));
-        } catch (IOException ex) {
-            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+    public void setLookAndFeel(){
+             try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        return (String) prop.getProperty(String.valueOf(code));
-    }
+       }
+ 
 }

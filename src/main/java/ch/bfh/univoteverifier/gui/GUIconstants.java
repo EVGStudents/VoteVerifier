@@ -10,8 +10,14 @@
  */
 package ch.bfh.univoteverifier.gui;
 
+import ch.bfh.univoteverifier.common.Config;
 import java.awt.Color;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Locale;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Create a static utility class which contains widely used variables.
@@ -47,5 +53,24 @@ public class GUIconstants {
      */
     public static Locale getLocale() {
         return loc;
+    }
+    
+     /**
+     * Turns the vrfCode into a text string that is shown in the GUI.
+     *
+     * @param code The int value which corresponds to a verification type.
+     * @return The user-friendly text that describes a verification step.
+     */
+    public static String getTextFromVrfCode(int code) {
+        String text="";
+        try {
+            Properties prop;
+            prop = new Properties();
+            prop.load(new FileInputStream("src/main/java/ch/bfh/univoteverifier/resources/messages.properties"));
+            text = (String) prop.getProperty(String.valueOf(code));
+        } catch (IOException ex) {
+            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return text;
     }
 }

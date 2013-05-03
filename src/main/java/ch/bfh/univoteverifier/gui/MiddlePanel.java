@@ -13,6 +13,7 @@ package ch.bfh.univoteverifier.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -30,20 +31,31 @@ import javax.swing.border.EmptyBorder;
  */
 public class MiddlePanel extends JPanel {
 
+    JPanel innerPanel;
+    
     /**
      * Create an instance of this class.
      * @param innerPanel the content panel for verification results is added into a scroll pane.
      */
-    public MiddlePanel(JPanel innerPanel) {
+    public MiddlePanel(ResultTablePanel resultTablePanel) {
         this.setLayout(new GridLayout(1, 1));
         this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(696, 450));
         this.setBorder(new EmptyBorder(10, 30, 10, 30)); //top left bottom right
+        
+//        innerPanel = new JPanel();
+//        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
+//        innerPanel.setBackground(GUIconstants.GREY);
+//        
+//        JScrollPane vrfScrollPanel = new JScrollPane(innerPanel);
+//        vrfScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        JScrollPane vrfScrollPanel = new JScrollPane(innerPanel);
-        vrfScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-        this.add(vrfScrollPanel);
-
+        this.add(resultTablePanel);
+    }
+    
+    public void addResultPanel(JPanel panel){
+        innerPanel.add(panel);
+        this.revalidate();
+        this.repaint();
     }
 }

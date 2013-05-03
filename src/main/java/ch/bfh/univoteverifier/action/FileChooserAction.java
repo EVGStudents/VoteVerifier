@@ -10,6 +10,8 @@
  */
 package ch.bfh.univoteverifier.action;
 
+import ch.bfh.univoteverifier.common.IFileManager;
+import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.MainGUI;
 import java.awt.event.ActionEvent;
@@ -29,8 +31,8 @@ public class FileChooserAction extends AbstractAction {
 
     ResourceBundle rb;
     JPanel innerPanel;
-    File qrCodeFile;
-    MainGUI mainGUI;
+    IFileManager fm;
+    Messenger msgr;
 
     /**
      * Create an instance of this Action.
@@ -39,9 +41,9 @@ public class FileChooserAction extends AbstractAction {
      * @param qrCodeFile The reference to the File object where the fileChooser
      * stores the path to the QRCode
      */
-    public FileChooserAction(MainGUI mainGUI, File qrCodeFile) {
-        this.mainGUI = mainGUI;
-        this.qrCodeFile = qrCodeFile;
+    public FileChooserAction(Messenger msgr, IFileManager fm) {
+        this.msgr = msgr;
+        this.fm = fm;
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         this.putValue(NAME, rb.getString("selectFile"));
     }
@@ -58,13 +60,15 @@ public class FileChooserAction extends AbstractAction {
         final JFileChooser fc = new JFileChooser();
         int returnVal = fc.showDialog(innerPanel, rb.getString("selectFile"));
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            qrCodeFile = fc.getSelectedFile();
-            if (qrCodeFile == null) {
-                mainGUI.appendToConsole(rb.getString("invalidFile"));
+            File file = fc.getSelectedFile();
+            if (file == null) {
+                msgr.sendFatalErrorMsg(rb.getString("invalidFile"));
             } else {
-                String path = "\n" + qrCodeFile.getPath();
-                mainGUI.appendToConsole(path);
+                String path = "\n" + file.getPath();
+                msgr.sendErrorMsg("File Selected: "+path);
+                fm.setFile(file);
             }
+             
         }
     }
 }

@@ -25,6 +25,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -43,7 +44,7 @@ public class QRCode {
 
     private Messenger msgr;
     ResourceBundle rb;
-
+    private final Logger LOGGER = Logger.getLogger(this.getClass().getName());
     /**
      * Create an instance of the QRCode class
      *
@@ -83,32 +84,27 @@ public class QRCode {
      * @return a string of the value represented by the QRCode
      * @throws IOException if the file cannot be opened, an exception is thrown
      */
-    public String decode(File filename) throws IOException {
-        Result result = null;
-
+    public String decode(File filename)  {
+        String returnStr="";
+         try {
         FileInputStream fis = new FileInputStream(filename);
         BufferedImage image = ImageIO.read(fis);
         BufferedImageLuminanceSource bils = null;
-        try {
-            bils = new BufferedImageLuminanceSource(image);
-        } catch (NullPointerException ex) {
-            msgr.sendFatalErrorMsg(rb.getString("fileReadError"));
-            throw new RuntimeException(rb.getString("fileReadError"));
-        }
-
+        bils = new BufferedImageLuminanceSource(image);
+        msgr.sendFatalErrorMsg(rb.getString("fileReadError"));
         HybridBinarizer hb = new HybridBinarizer(bils);
         BinaryBitmap binaryBitmap = new BinaryBitmap(hb);
-
-        try {
-            result = new MultiFormatReader().decode(binaryBitmap);
-        } catch (NotFoundException ex) {
-            Logger.getLogger(QRCode.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        String returnStr = "error";
-        if (result != null) {
-            returnStr = result.toString();
-        }
+        Result result = new MultiFormatReader().decode(binaryBitmap);
+        returnStr = result.toString();
+         } catch (NullPointerException ex){
+             msgr.sendFatalErrorMsg("This file is not a valid QR Code");
+         }
+         catch (FileNotFoundException ex){
+         msgr.sendFatalErrorMsg("This file could not be read");
+         }
+         catch (NotFoundException | IOException ex){
+             msgr.sendFatalErrorMsg("This file is not a valid QR Code");
+         }
         return returnStr;
     }
 
@@ -120,12 +116,15 @@ public class QRCode {
      * @return the ElectionReceipt helper class with the information packed into
      * it
      */
-    public ElectionReceipt decodeReceipt(File filename) throws IOException {
-
+    public ElectionReceipt decodeReceipt(File filename) {
         String decoded = decode(filename);
-        String[] groupedCleaned = groupAndCleanDecode(decoded);
-        String[][] results = separateDataPairs(groupedCleaned);
-        return new ElectionReceipt(results);
+        if (decoded.length() > 0) {
+            String[] groupedCleaned = groupAndCleanDecode(decoded);
+            String[][] results = separateDataPairs(groupedCleaned);
+            return new ElectionReceipt(results);
+        } else {
+            throw new RuntimeException("An error occured while processing this file");
+        }
     }
 
     /**

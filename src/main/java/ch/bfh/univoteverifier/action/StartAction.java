@@ -10,11 +10,11 @@
  */
 package ch.bfh.univoteverifier.action;
 
+import ch.bfh.univoteverifier.common.IFileManager;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.gui.GUIconstants;
-import ch.bfh.univoteverifier.gui.MainGUI;
 import ch.bfh.univoteverifier.verification.IndividualVerification;
 import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.verification.VerificationThread;
@@ -22,12 +22,12 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
+import static javax.swing.Action.NAME;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
@@ -46,7 +46,11 @@ public class StartAction extends AbstractAction {
     ResourceBundle rb;
     JComboBox comboBox;
     ButtonGroup btnGrp;
-File qrCodeFile;
+    IFileManager fm;
+    ElectionReceipt er ;
+    boolean running=false;
+    VerificationThread vt;
+
  private static final Logger LOGGER = Logger.getLogger(StartAction.class.getName());
  
  /**
@@ -57,13 +61,13 @@ File qrCodeFile;
   * @param btnGroup
   * @param qrCodeFile 
   */
-    public StartAction(Messenger msgr, JPanel innerPanel, JComboBox comboBox, ButtonGroup btnGroup, File qrCodeFile) {
+    public StartAction(Messenger msgr, JPanel innerPanel, JComboBox comboBox, ButtonGroup btnGroup, IFileManager fm) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         this.innerPanel = innerPanel;
         this.msgr = msgr;
         this.btnGrp = btnGroup;
         this.comboBox = comboBox;
-        this.qrCodeFile =qrCodeFile;
+        this.fm=fm;
         putValue(NAME, rb.getString("start"));
     }
 
@@ -75,18 +79,76 @@ File qrCodeFile;
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+       if (!running){
+           startVerification();
+       }
+       else{
+           if (vt!=null)
+               vt.interrupt();
+           setStateRunning(false);
+       }
+    }
+
+    public void startVerification() {
+        String btnTxt = getSelectedButtonText(btnGrp);
+        LOGGER.log(Level.INFO, "BTN TEXT RETURNED:" + btnTxt);
+        String msg = "";
+        if (0 == btnTxt.compareTo("btnUni")) {
+            String eID = comboBox.getSelectedItem().toString();
+            msg = rb.getString("beginningVrfFor") + rb.getString("forElectionId") + eID;
+            msgr.sendErrorMsg(msg);
+            setStateRunning(true);
+            vt = new VerificationThread(msgr, eID);
+            vt.start();
+        } else {
+            if (fm.getFile() != null) {
+
+                if (fileProvidedIsValid()) {
+                    msg += rb.getString("ballotProvided");
+                    setStateRunning(true);
+                    vt = new VerificationThread(msgr, er);
+                    vt.start();
+                }
+            } else {
+                msgr.sendFatalErrorMsg(rb.getString("pleaseSelectFile"));
+            }
+        }
+
+    }
+
+    /**
+     * Sets the state of certain buttons when a verification is about to take
+     * place.
+     */
+    public void setStateRunning(boolean run) {
+        if (run) {
+            this.putValue(NAME, rb.getString("stop"));
+            running=true;
+        } else {
+            this.putValue(NAME, rb.getString("start"));
+            running = false;
+        }
+    }
+
+    /**
+     * Check that we have a valid QR Code before proceeding with verification steps.
+     * @return True if a QR Code has been detected.
+     */
+    public boolean fileProvidedIsValid(){
+        er = getElectionReceipt(fm.getFile(), msgr);
+        return (er!=null);
+    }
+    
+    /**
+     * Clears the content of the inner panel before the verification commences.
+     */
+    public void wipeInnerPanel(){
         innerPanel.removeAll();
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
         innerPanel.setBackground(GUIconstants.GREY);
         innerPanel.repaint();
-        
-        String eID = comboBox.getSelectedItem().toString();
-        String msg = rb.getString("beginningVrfFor") + rb.getString("forElectionId") + eID;
-        msgr.sendErrorMsg(msg);
-        VerificationThread vt = new VerificationThread(msgr, eID);
-        vt.start();
     }
-
+    
     /**
      * Get the name ID of the verification button that is selected.
      * @param buttonGroup
@@ -95,9 +157,8 @@ File qrCodeFile;
     public String getSelectedButtonText(ButtonGroup buttonGroup) {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
-            LOGGER.log(Level.INFO, "BTN IN BTN GROUP:{0}", button.getText());
             if (button.isSelected()) {
-                return button.getText();
+                return button.getName();
             }
         }
         return null;
@@ -109,15 +170,8 @@ File qrCodeFile;
      * @param msgr Messenger which transports error messages, etc.
      * @return  the ElectionReceipt helper class containing getter methods for the variables.
      */
-    public ElectionReceipt getElectionReceipt(File qrCodeFile, Messenger msgr){
-              QRCode qr = new QRCode(msgr);
-              ElectionReceipt er = null;
-            try {
-              er =   qr.decodeReceipt(qrCodeFile);
-            } catch (IOException ex) {
-                Logger.getLogger(IndividualVerification.class.getName()).log(Level.SEVERE, "An error occured while processing the file", ex);
-            }
-            return er;
-            
-        }
+    public ElectionReceipt getElectionReceipt(File qrCodeFile, Messenger msgr) {
+        QRCode qr = new QRCode(msgr);
+        return qr.decodeReceipt(qrCodeFile);
+    }
 }
