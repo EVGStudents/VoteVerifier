@@ -21,9 +21,7 @@ import java.io.File;
  */
 public class VerificationThread extends Thread {
 
-	
 	private final Verification v;
-	
 
 	/**
 	 * Construct a verification thread with a given Messenger and election
@@ -35,9 +33,10 @@ public class VerificationThread extends Thread {
 	public VerificationThread(Messenger msgr, String eID) {
 		this.v = new UniversalVerification(msgr, eID);
 	}
-        
-        	/**
-	 * Construct a verification thread with a given Messenger and QRCode File
+
+	/**
+	 * Construct a verification thread with a given Messenger and QRCode
+	 * File
 	 *
 	 * @param msgr the Messenger to where send the output
 	 * @param qrCodeFile the file with the path to the QRCode

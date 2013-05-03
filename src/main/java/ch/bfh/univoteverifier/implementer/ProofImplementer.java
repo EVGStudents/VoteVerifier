@@ -12,7 +12,7 @@ package ch.bfh.univoteverifier.implementer;
 import java.util.logging.Logger;
 
 /**
- * This class contains all the methods that need a NIZKP verification
+ * This class contains all the methods that need a NIZKP verification.
  *
  * @author snake
  */

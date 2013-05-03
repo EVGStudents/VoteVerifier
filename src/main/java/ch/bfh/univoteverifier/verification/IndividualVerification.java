@@ -10,12 +10,7 @@
 package ch.bfh.univoteverifier.verification;
 
 import ch.bfh.univoteverifier.common.Messenger;
-import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class is used to perform an individual verification
@@ -24,7 +19,8 @@ import java.util.logging.Logger;
  */
 public class IndividualVerification extends Verification {
 
-        ElectionReceipt er;
+	ElectionReceipt er;
+
 	/**
 	 * Construct an IndividualVerification with a given election ID
 	 *
@@ -32,12 +28,9 @@ public class IndividualVerification extends Verification {
 	 */
 	public IndividualVerification(Messenger msgr, ElectionReceipt er) {
 		super(msgr, er.geteID());
-                this.er=er;
+		this.er = er;
 	}
 
-        
-        
-        
 	/**
 	 * Create the necessaries runners used to print the results ordered by
 	 * the specification

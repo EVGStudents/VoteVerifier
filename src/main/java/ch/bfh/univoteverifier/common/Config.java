@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class contains all the variables for the configuration
+ * This class contains all the variables for the configuration.
  *
  * @author snake
  */

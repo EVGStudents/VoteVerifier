@@ -17,9 +17,13 @@ import ch.bfh.univote.common.MixedVerificationKeys;
 import ch.bfh.univote.common.PartiallyDecryptedVotes;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.QRCode;
+import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import com.thoughtworks.xstream.XStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -36,19 +40,19 @@ import java.util.logging.Logger;
  */
 public class LocalBoardProxyDownloader {
 
-	XStream xstream;
-	ElectionBoardProxy ebp;
-	final String DES_PATH = "src/test/java/ch/bfh/univoteverifier/testresources";
-	final String ELECTION_ID = "vsbfh-2013";
-	final List<String> mixerIdentifier;
-	final List<String> tallierIdentifier;
-	final String EXT = ".xml";
+	private final XStream xstream;
+	private final ElectionBoardProxy ebp;
+	private final String DES_PATH = "src/test/java/ch/bfh/univoteverifier/testresources";
+	private final String ELECTION_ID = "vsbfh-2013";
+	private final List<String> mixerIdentifier;
+	private final List<String> tallierIdentifier;
+	private final String EXT = ".xml";
 
 	public static void main(String[] args) throws ElectionBoardServiceFault, FileNotFoundException {
 		LocalBoardProxyDownloader lbpd = new LocalBoardProxyDownloader();
 
 		//Write all the objects to files
-		//lbpd.writeBallot();
+		lbpd.writeBallot();
 		lbpd.writeBallots();
 		lbpd.writeBlindedGenerator();
 		lbpd.writeDecodedVotes();
@@ -78,7 +82,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Construct a new local board proxy downloaded.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public LocalBoardProxyDownloader() throws ElectionBoardServiceFault, FileNotFoundException {
 		xstream = new XStream();
@@ -102,19 +108,27 @@ public class LocalBoardProxyDownloader {
 	}
 
 	/**
-	 * Write a signale ballot.
+	 * Write a single ballot.
 	 */
 	public void writeBallot() throws ElectionBoardServiceFault {
-		//ToDo - Change it, read the real verification key from a qr-code
-		BigInteger verificationKey = new BigInteger("1");
+		try {
+			QRCode qr = new QRCode(null);
+			ElectionReceipt er = qr.decodeReceipt(new File(this.getClass().getResource("/qrcodeGiu").getPath()));
+			BigInteger verificationKey = er.getVk();
 
-		realWrite(ebp.getBallot(verificationKey), "SingleBallot");
+			realWrite(ebp.getBallot(verificationKey), "SingleBallot");
+		} catch (IOException ex) {
+			Logger.getLogger(LocalBoardProxyDownloader.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
 	}
 
 	/**
 	 * Write the ballots.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeBallots() throws ElectionBoardServiceFault {
 		realWrite(ebp.getBallots(), "Ballots");
@@ -123,7 +137,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the blinded generator of all mixers.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeBlindedGenerator() throws ElectionBoardServiceFault {
 		Map<String, BlindedGenerator> blindGen = new HashMap<>();
@@ -138,7 +154,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the decoded votes.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeDecodedVotes() throws ElectionBoardServiceFault {
 		realWrite(ebp.getDecodedVotes(), "DecodedVotes");
@@ -147,7 +165,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the decrypted votes.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeDecryptedVotes() throws ElectionBoardServiceFault {
 		realWrite(ebp.getDecryptedVotes(), "DecryptedVotes");
@@ -156,7 +176,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the election data.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeElectionData() throws ElectionBoardServiceFault {
 		realWrite(ebp.getElectionData(), "ElectionData");
@@ -165,7 +187,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the election definition.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeElectionDefinition() throws ElectionBoardServiceFault {
 		realWrite(ebp.getElectionDefinition(), "ElectionDefinition");
@@ -174,7 +198,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the election generator.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeElectionGenerator() throws ElectionBoardServiceFault {
 		realWrite(ebp.getElectionGenerator(), "ElectionGenerator");
@@ -183,7 +209,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the election options.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeElectionOptions() throws ElectionBoardServiceFault {
 		realWrite(ebp.getElectionOptions(), "ElectionOptions");
@@ -192,7 +220,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the election system info.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeElectionSystemInfo() throws ElectionBoardServiceFault {
 		realWrite(ebp.getElectionSystemInfo(), "ElectionSystemInfo");
@@ -201,7 +231,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the electoral roll.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeElectoralRoll() throws ElectionBoardServiceFault {
 		realWrite(ebp.getElectoralRoll(), "ElectoralRoll");
@@ -210,7 +242,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the encryption key.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeEncryptionKey() throws ElectionBoardServiceFault {
 		realWrite(ebp.getEncryptionKey(), "EncryptionKey");
@@ -219,7 +253,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the encryption key share for every tallier.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeEncryptionKeyShare() throws ElectionBoardServiceFault {
 		Map<String, EncryptionKeyShare> encKeyShareBy = new HashMap<>();
@@ -234,7 +270,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the encryption parameters.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeEncryptionParameters() throws ElectionBoardServiceFault {
 		realWrite(ebp.getEncryptionParameters(), "EncryptionParameters");
@@ -243,7 +281,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the lately mixed verification keys.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeLatelyMixedVerificationKeys() throws ElectionBoardServiceFault {
 		realWrite(ebp.getLateyMixedVerificationKeys(), "LatelyMixedVerificationKeys");
@@ -252,7 +292,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the lately mixed verification keys for each mixer.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeLatelyMixedVerificationKeysBy() throws ElectionBoardServiceFault {
 		Map<String, List<MixedVerificationKey>> latelyMixedVerKeyBy = new HashMap<>();
@@ -267,7 +309,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the lately registered voter certs.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeLatelyRegisteredVoterCerts() throws ElectionBoardServiceFault {
 		realWrite(ebp.getLatelyRegisteredVoterCerts(), "LatelyRegisteredVoterCerts");
@@ -276,7 +320,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the mixed encrypted votes.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeMixedEncryptedVotes() throws ElectionBoardServiceFault {
 		realWrite(ebp.getMixedEncryptedVotes(), "MixedEncryptedVotes");
@@ -285,7 +331,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the mixed encrypted votes for each mixer.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeMixedEncryptedVotesBy() throws ElectionBoardServiceFault {
 		Map<String, MixedEncryptedVotes> mixEncVotesBy = new HashMap<>();
@@ -300,7 +348,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the mixed verification keys.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeMixedVerificationKeys() throws ElectionBoardServiceFault {
 		realWrite(ebp.getMixedVerificationKeys(), "MixedVerificationKeys");
@@ -309,7 +359,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the mixed verification keys for each mixer.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeMixedVerificationKeysBy() throws ElectionBoardServiceFault {
 		Map<String, MixedVerificationKeys> mixVerKeysBy = new HashMap<>();
@@ -324,7 +376,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the partially decrypted votes for each tallier.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writePartiallyDecrpytedVotes() throws ElectionBoardServiceFault {
 		Map<String, PartiallyDecryptedVotes> parDecVotes = new HashMap<>();
@@ -339,7 +393,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the root certificate.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeRootCertificate() throws ElectionBoardServiceFault {
 		realWrite(ebp.getRootCertificate(), "RootCertificate");
@@ -348,7 +404,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the signature parameters.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeSignatureParameters() throws ElectionBoardServiceFault {
 		realWrite(ebp.getSignatureParameters(), "SignatureParameters");
@@ -357,7 +415,9 @@ public class LocalBoardProxyDownloader {
 	/**
 	 * Write the voter certificates.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
 	 */
 	public void writeVoterCerts() throws ElectionBoardServiceFault {
 		realWrite(ebp.getVoterCerts(), "VoterCerts");

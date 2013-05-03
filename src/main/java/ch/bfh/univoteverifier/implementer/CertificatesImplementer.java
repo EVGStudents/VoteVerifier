@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class is used to check X509 certificates
+ * This class is used to check X509 certificates.
  *
  * @author snake
  */
@@ -38,14 +38,18 @@ public class CertificatesImplementer {
 	private static final Logger LOGGER = Logger.getLogger(CertificatesImplementer.class.getName());
 
 	/**
-	 * Verify a certificate
+	 * Verify a certificate.
 	 *
-	 * @param c the certificate to be verified
-	 * @return true if the certificate algorithm path validation succeed
-	 * @throws CertificateException
-	 * @throws InvalidAlgorithmParameterException
-	 * @throws NoSuchAlgorithmException
-	 * @throws CertPathValidatorException
+	 * @param c the certificate to be verified.
+	 * @return true if the certificate algorithm path validation succeed.
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory cannot be found.
+	 * @throws InvalidAlgorithmParameterException if the parameters for the
+	 * PKIX algorithm are not correct.
+	 * @throws NoSuchAlgorithmException if the algorithm specified for the
+	 * certificate path validator doesn't exist.
+	 * @throws CertPathValidatorException if the certificate path doesn't
+	 * validate.
 	 */
 	public boolean vrfCert(List<X509Certificate> certList) throws CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, CertPathValidatorException {
 		CertificateFactory cf = CertificateFactory.getInstance("X.509");
@@ -71,11 +75,17 @@ public class CertificatesImplementer {
 	}
 
 	/**
-	 * Verify the Election Manager certificate
+	 * Verify the ElectionManager certificate
 	 *
-	 * @return a VerificationEvent with the relative data
+	 * @return a VerificationEvent with the relative results
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory cannot be found.
+	 * @throws InvalidAlgorithmParameterException if the parameters for the
+	 * PKIX algorithm are not correct.
+	 * @throws NoSuchAlgorithmException if the algorithm specified for the
+	 * certificate path validator doesn't exist.
 	 */
-	public VerificationEvent vrfEMCert() {
+	public VerificationEvent vrfEMCert() throws CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
 		boolean r = false;
 
 		try {
@@ -83,8 +93,6 @@ public class CertificatesImplementer {
 			c.add(Config.emCert);
 			c.add(Config.caCert);
 			r = vrfCert(c);
-		} catch (CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
-			LOGGER.log(Level.SEVERE, null, ex);
 		} catch (CertPathValidatorException ex) {
 			//we now that the certificate path verification has failed so the result is false
 			r = false;
@@ -97,11 +105,17 @@ public class CertificatesImplementer {
 	}
 
 	/**
-	 * Verify the Election Administrator certificate
+	 * Verify the ElectionAdministrator certificate
 	 *
-	 * @return a VerificationEvent with the relative data
+	 * @return a VerificationEvent with the relative results
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory cannot be found.
+	 * @throws InvalidAlgorithmParameterException if the parameters for the
+	 * PKIX algorithm are not correct.
+	 * @throws NoSuchAlgorithmException if the algorithm specified for the
+	 * certificate path validator doesn't exist.
 	 */
-	public VerificationEvent vrfEACert() {
+	public VerificationEvent vrfEACert() throws CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
 		boolean r = false;
 
 		try {
@@ -109,8 +123,6 @@ public class CertificatesImplementer {
 			c.add(Config.eaCert);
 			c.add(Config.caCert);
 			r = vrfCert(c);
-		} catch (CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
-			LOGGER.log(Level.SEVERE, null, ex);
 		} catch (CertPathValidatorException ex) {
 			//we now that the certificate path verification has failed so the result is false
 			r = false;

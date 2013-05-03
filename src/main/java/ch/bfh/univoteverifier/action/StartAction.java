@@ -34,8 +34,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 /**
- * An Action Class that manages the action of clicking on the start
- * button.
+ * An Action Class that manages the action of clicking on the start button.
  *
  * @author prinstin
  */

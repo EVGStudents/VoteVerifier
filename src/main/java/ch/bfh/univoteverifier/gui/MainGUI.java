@@ -86,26 +86,28 @@ public class MainGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(696, 400));
 
-        createContentPanel();
+		createContentPanel();
 
-        this.setJMenuBar(new VerificationMenuBar(this));
-        this.setTitle(rb.getString("windowTitle"));
-        this.pack();
-    }
+		this.setJMenuBar(new VerificationMenuBar(this));
+		this.setTitle(rb.getString("windowTitle"));
+		this.pack();
+	}
 
-    /**
-     * Toggle the visibility of the console-like panel which contains a JTextArea.
-     * @param show Boolean of true corresponds to showing the panel.
-     */
-    public void showConsole(boolean show) {
-        if (show) {
-            this.getContentPane().add(consolePanel);
-        } else {
-            this.getContentPane().remove(consolePanel);
-        }
-        this.validate();
-        this.repaint();
-    }
+	/**
+	 * Toggle the visibility of the console-like panel which contains a
+	 * JTextArea.
+	 *
+	 * @param show Boolean of true corresponds to showing the panel.
+	 */
+	public void showConsole(boolean show) {
+		if (show) {
+			this.getContentPane().add(consolePanel);
+		} else {
+			this.getContentPane().remove(consolePanel);
+		}
+		this.validate();
+		this.repaint();
+	}
 
     /**
      * create the main content panel for this Frame Class.
@@ -143,22 +145,18 @@ private void createContentPanel() {
         sl = new StatusUpdate();
     }
 
-    /**
-     * Creates the main components of the main window. The main window is
-     * divided into three parts: topPanel, middlePanel, and optionally a
-     * consolePanel can be added at the bottom.
-     *
-     * @return a JPanel which will be set as the main content panel of the frame
-     */
-    private JPanel createUI() {
-        JPanel panel = new JPanel();
-        
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+	/**
+	 * Creates the main components of the main window. The main window is
+	 * divided into three parts: topPanel, middlePanel, and optionally a
+	 * consolePanel can be added at the bottom.
+	 *
+	 * @return a JPanel which will be set as the main content panel of the
+	 * frame
+	 */
+	public JPanel createUI() {
+		JPanel panel = new JPanel();
 
-        createComboBox();
-        ButtonGroup btnGroup = new ButtonGroup();
-        Messenger msgr = new Messenger();
-        msgr.getStatusSubject().addListener(sl);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         resultTablePanel = new ResultTablePanel();
         middlePanel = new MiddlePanel(resultTablePanel);
@@ -208,17 +206,17 @@ private void createContentPanel() {
         return panel;
     }
 
-    /**
-     * Creates the comboBox that allows new election IDs to be inputed as well
-     * as the selection of previously used election IDs.
-     */
-    private void createComboBox() {
-        comboBox = new JComboBox(eIDlist);
-        comboBox.setEditable(true);
-        comboBox.setSelectedIndex(2);
-        comboBox.setSize(30, 50);
-        comboBox.setFont(new Font("Serif", Font.PLAIN, 10));
-    }
+	/**
+	 * Create the button that starts the verification process.
+	 *
+	 * @return JButton the start button
+	 */
+	private JButton createStartButton() {
+		btnStart = new JButton("START");
+		btnStart.setBackground(GUIconstants.BLUE);
+		btnStart.setAction(ActionManager.getInstance().getAction("start"));
+		return btnStart;
+	}
 
     /**
      * Create the button that select the verification type.
@@ -239,6 +237,18 @@ private void createContentPanel() {
         btnUni.setSelected(true);
     }
 
+	/**
+	 * Turns the vrfCode into a text string that is shown in the GUI.
+	 *
+	 * @param code The int value which corresponds to a verification type.
+	 * @return The user-friendly text that describes a verification step.
+	 */
+	public String getTextFromVrfCode(int code) {
+		try {
+			prop.load(new FileInputStream("src/main/java/ch/bfh/univoteverifier/resources/messages.properties"));
+		} catch (IOException ex) {
+			Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+		}
 
     /**
      * Create the button that starts the verification process.
