@@ -111,15 +111,12 @@ public class LocalBoardProxyDownloader {
 	 * Write a single ballot.
 	 */
 	public void writeBallot() throws ElectionBoardServiceFault {
-		try {
 			QRCode qr = new QRCode(null);
 			ElectionReceipt er = qr.decodeReceipt(new File(this.getClass().getResource("/qrcodeGiu").getPath()));
 			BigInteger verificationKey = er.getVk();
 
 			realWrite(ebp.getBallot(verificationKey), "SingleBallot");
-		} catch (IOException ex) {
-			Logger.getLogger(LocalBoardProxyDownloader.class.getName()).log(Level.SEVERE, null, ex);
-		}
+		
 
 	}
 

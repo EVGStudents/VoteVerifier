@@ -158,6 +158,11 @@ private void createContentPanel() {
 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        createComboBox();
+        ButtonGroup btnGroup = new ButtonGroup();
+        Messenger msgr = new Messenger();
+        msgr.getStatusSubject().addListener(sl);
+
         resultTablePanel = new ResultTablePanel();
         middlePanel = new MiddlePanel(resultTablePanel);
         middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
@@ -192,6 +197,17 @@ private void createContentPanel() {
         am.addActions("showConsole", showConsoleAction);
     }
     
+    /**
+     * Creates the comboBox that allows new election IDs to be inputed as well
+     * as the selection of previously used election IDs.
+     */
+    private void createComboBox() {
+        comboBox = new JComboBox(eIDlist);
+        comboBox.setEditable(true);
+        comboBox.setSelectedIndex(2);
+        comboBox.setSize(30, 50);
+        comboBox.setFont(new Font("Serif", Font.PLAIN, 10));
+    }
     
     /**
      * Create the components necessary to display the topPanel.
@@ -237,30 +253,9 @@ private void createContentPanel() {
         btnUni.setSelected(true);
     }
 
-	/**
-	 * Turns the vrfCode into a text string that is shown in the GUI.
-	 *
-	 * @param code The int value which corresponds to a verification type.
-	 * @return The user-friendly text that describes a verification step.
-	 */
-	public String getTextFromVrfCode(int code) {
-		try {
-			prop.load(new FileInputStream("src/main/java/ch/bfh/univoteverifier/resources/messages.properties"));
-		} catch (IOException ex) {
-			Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
-		}
 
-    /**
-     * Create the button that starts the verification process.
-     *
-     * @return JButton the start button
-     */
-    private JButton createStartButton() {
-        btnStart = new JButton("START");
-        btnStart.setBackground(GUIconstants.BLUE);
-        btnStart.setAction(ActionManager.getInstance().getAction("start"));
-        return btnStart;
-    }
+
+   
 
     /**
      * This inner class represents the implementation of the observer pattern
