@@ -9,12 +9,16 @@
  */
 package ch.bfh.univoteverifier.runner;
 
+import ch.bfh.univote.common.Certificate;
+import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Config;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.VerificationType;
+import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,17 +32,19 @@ import java.util.logging.Logger;
  */
 public class SystemSetupRunner extends Runner {
 
-	private final ParametersImplementer prmVrf;
+	private final ParametersImplementer paramImpl;
+	private final CertificatesImplementer certImpl;
 
 	/**
 	 * Construct an SystemSetupRunner with a given Messenger.
 	 *
 	 */
-	public SystemSetupRunner(Messenger msgr) {
+	public SystemSetupRunner(ElectionBoardProxy ebp, Messenger msgr) {
 		super(RunnerName.SYSTEM_SETUP, msgr);
 
 		//create the implementer we want
-		prmVrf = new ParametersImplementer();
+		paramImpl = new ParametersImplementer(ebp);
+		certImpl = new CertificatesImplementer(ebp);
 	}
 
 	@Override
@@ -46,23 +52,23 @@ public class SystemSetupRunner extends Runner {
 
 		try {
 			//perform the checks we want - pay attention to exceptions!
-			VerificationResult v1 = prmVrf.vrfPrime(Config.p, VerificationType.SETUP_SCHNORR_P);
+			VerificationResult v1 = paramImpl.vrfPrime(Config.p, VerificationType.SETUP_SCHNORR_P);
 			msgr.sendVrfMsg(v1);
 			Thread.sleep(1000);
 
-			VerificationResult v2 = prmVrf.vrfPrime(Config.q, VerificationType.SETUP_SCHNORR_Q);
+			VerificationResult v2 = paramImpl.vrfPrime(Config.q, VerificationType.SETUP_SCHNORR_Q);
 			msgr.sendVrfMsg(v2);
 			Thread.sleep(1000);
 
-			VerificationResult v3 = prmVrf.vrfGenerator(Config.p, Config.q, Config.g, VerificationType.SETUP_SCHNORR_G);
+			VerificationResult v3 = paramImpl.vrfGenerator(Config.p, Config.q, Config.g, VerificationType.SETUP_SCHNORR_G);
 			msgr.sendVrfMsg(v3);
 			Thread.sleep(1000);
 
-			VerificationResult v4 = prmVrf.vrfSafePrime(Config.p, Config.q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
+			VerificationResult v4 = paramImpl.vrfSafePrime(Config.p, Config.q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
 			msgr.sendVrfMsg(v4);
 			Thread.sleep(1000);
 
-			VerificationResult v5 = prmVrf.vrfSchnorrParamLen(Config.p, Config.q, Config.g);
+			VerificationResult v5 = paramImpl.vrfSchnorrParamLen(Config.p, Config.q, Config.g);
 			msgr.sendVrfMsg(v5);
 
 			//cache the results
@@ -71,7 +77,7 @@ public class SystemSetupRunner extends Runner {
 			partialResults.add(v3);
 			partialResults.add(v4);
 			partialResults.add(v5);
-		} catch (InterruptedException ex) {
+		} catch (InterruptedException | ElectionBoardServiceFault ex) {
 			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
 		}
 

@@ -10,6 +10,7 @@
  */
 package ch.bfh.univoteverifier.runnertest;
 
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.common.RunnerName;
@@ -31,18 +32,22 @@ public class SystemSetupRunnerTest {
 	List<VerificationResult> mockList;
 	List<VerificationResult> realList;
 	Messenger gm;
+	ElectionBoardProxy ebp;
+	String eID;
 
 	public SystemSetupRunnerTest() {
 		gm = new Messenger();
-		ssr = new SystemSetupRunner(gm);
+		eID = "vsbfh-2013";
+		ebp = new ElectionBoardProxy(eID);
+		ssr = new SystemSetupRunner(ebp, gm);
 		realList = ssr.run();
 		mockList = new ArrayList<>();
 
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true, eID));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID));
 
 	}
 

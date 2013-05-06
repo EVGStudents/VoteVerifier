@@ -111,7 +111,7 @@ public class RSAImplementer {
 
 		boolean r = vrfRSASign(emPubKey, hash, signature);
 
-		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r);
+		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r, ebp.getElectionDefinition().getElectionId());
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class RSAImplementer {
 		boolean r = vrfRSASign(eaPubKey, hash, signature.getValue());
 
 		//create the VerificationResult
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r);
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r, ebp.getElectionDefinition().getElectionId());
 
 		if (!r) {
 			v.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);

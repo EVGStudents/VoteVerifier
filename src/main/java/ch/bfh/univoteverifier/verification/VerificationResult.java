@@ -26,17 +26,19 @@ public class VerificationResult {
 	private final boolean result;
 	private FailureCode fc;
 	private String entityName;
+	private final String eID;
 
 	/**
 	 * Create a new VerificationResult.
 	 *
 	 * @param v The type of verification that has succeeded.
 	 */
-	public VerificationResult(VerificationType v, boolean res) {
+	public VerificationResult(VerificationType v, boolean res, String eID) {
 		this.v = v;
 		this.result = res;
 		this.impl = true;
 		this.fc = null;
+		this.eID = eID;
 	}
 
 	/**

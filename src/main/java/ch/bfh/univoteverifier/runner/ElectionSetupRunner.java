@@ -10,11 +10,9 @@
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univote.election.ElectionBoardServiceFault;
-import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
-import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.implementer.RSAImplementer;
@@ -48,67 +46,77 @@ public class ElectionSetupRunner extends Runner {
 		super(RunnerName.ELECTION_SETUP, msgr);
 		rsaImpl = new RSAImplementer(ebp);
 		certImpl = new CertificatesImplementer(ebp);
-		prmImpl = new ParametersImplementer();
+		prmImpl = new ParametersImplementer(ebp);
 	}
 
 	@Override
 	public List<VerificationResult> run() {
 
-		//EA certificate verification
 		try {
+			//EA certificate verification
 			VerificationResult v1 = certImpl.vrfEACertificate();
 			msgr.sendVrfMsg(v1);
-		} catch (CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | ElectionBoardServiceFault ex) {
-			Logger.getLogger(ElectionSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
-		}
 
-		//RSA signature of (id|EA)
-		try {
+			//RSA signature of (id|EA)
 			VerificationResult v2 = rsaImpl.vrfEACertIDSign();
 			msgr.sendVrfMsg(v2);
-		} catch (ElectionBoardServiceFault | CertificateException | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-			Logger.getLogger(ElectionSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
-		}
 
-		//RSA signature of (id|descr|l|T|M)
-		try {
+			//RSA signature of (id|descr|l|T|M)
 			VerificationResult v3 = rsaImpl.vrfBasicParamSign();
 			msgr.sendVrfMsg(v3);
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-			Logger.getLogger(ElectionSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
-		}
 
-		//talliers certificates
-		try {
+			//talliers certificates
 			List<VerificationResult> tCertsEvent = certImpl.vrfTalliersCertificates();
 
 			for (VerificationResult v : tCertsEvent) {
 				msgr.sendVrfMsg(v);
 			}
-		} catch (ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | InvalidNameException ex) {
-			Logger.getLogger(ElectionSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
-		}
 
-		//mixers certificates
-		try {
+			//mixers certificates
 			List<VerificationResult> mCertsEvent = certImpl.vrfMixersCertificates();
 
 			for (VerificationResult v : mCertsEvent) {
 				msgr.sendVrfMsg(v);
 			}
-		} catch (ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | InvalidNameException ex) {
+
+			//RSA Signature of (id|Z_T|Z_M)
+			//ToDo
+
+			//ElGamal parameters
+			//ToDo
+
+			//Encryption Key Share Proof
+			//ToDo
+
+			//Encryption Key Share Signature
+			//ToDo
+
+			//Encryption Key
+			//ToDo
+
+			//Encryption Key Signature
+			//ToDo
+
+			//Election Generator Share Proof
+			//ToDo
+
+			//Election Generator Share Proof Signature
+			//ToDo
+
+			//Election Generator
+			//ToDo
+
+			//Election Generator Signature
+			//ToDo
+
+
+
+
+
+
+		} catch (ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | InvalidNameException | UnsupportedEncodingException ex) {
 			Logger.getLogger(ElectionSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
 		}
-
-		//RSA Signature of (id|Z_T|Z_M)
-		//ToDO
-
-
-		//ElGamal parameters
-		//ToDO
-
-
-
 
 
 		return null;

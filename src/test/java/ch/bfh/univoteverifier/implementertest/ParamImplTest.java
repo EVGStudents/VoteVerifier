@@ -10,7 +10,9 @@
  */
 package ch.bfh.univoteverifier.implementertest;
 
+import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Config;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
@@ -30,7 +32,8 @@ public class ParamImplTest {
 	BigInteger p, q, g;
 
 	public ParamImplTest() {
-		pi = new ParametersImplementer();
+		ElectionBoardProxy ebp = new ElectionBoardProxy("vsbfh-2013");
+		pi = new ParametersImplementer(ebp);
 
 		//change the value of p,q and g - all the test must fail
 		p = Config.p.multiply(new BigInteger("2"));
@@ -42,7 +45,7 @@ public class ParamImplTest {
 	 * Test that the parameters are not long as expected.
 	 */
 	@Test
-	public void testParamNotLen() {
+	public void testParamNotLen() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfSchnorrParamLen(p, q, g);
 		assertFalse(v.getResult());
 		assertEquals(v.getFailureCode(), FailureCode.FALSE_PARAMETERS_LENGTH);
@@ -52,7 +55,7 @@ public class ParamImplTest {
 	 * Test that P is not a safe prime.
 	 */
 	@Test
-	public void testPisNotSafePrime() {
+	public void testPisNotSafePrime() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfSafePrime(p, q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
 		assertFalse(v.getResult());
 		assertEquals(v.getFailureCode(), FailureCode.NOT_SAFE_PRIME);
@@ -63,7 +66,7 @@ public class ParamImplTest {
 	 * Test that P is not prime.
 	 */
 	@Test
-	public void testPisNotPrime() {
+	public void testPisNotPrime() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfPrime(p, VerificationType.SETUP_SCHNORR_P);
 		assertFalse(v.getResult());
 		assertEquals(v.getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
@@ -73,7 +76,7 @@ public class ParamImplTest {
 	 * Test that Q is not prime.
 	 */
 	@Test
-	public void testQisNotPrime() {
+	public void testQisNotPrime() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfPrime(q, VerificationType.SETUP_SCHNORR_Q);
 		assertFalse(v.getResult());
 		assertEquals(v.getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
@@ -83,7 +86,7 @@ public class ParamImplTest {
 	 * Test that G is not a generator.
 	 */
 	@Test
-	public void testGisNotGenerator() {
+	public void testGisNotGenerator() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfGenerator(p, q, g, VerificationType.SETUP_SCHNORR_G);
 		assertFalse(v.getResult());
 		assertEquals(v.getFailureCode(), FailureCode.NOT_A_GENERATOR);

@@ -46,7 +46,7 @@ public class UniversalVerification extends Verification {
 	 * the specification.
 	 */
 	private void createRunnerBySpec() {
-		SystemSetupRunner ssr = new SystemSetupRunner(msgr);
+		SystemSetupRunner ssr = new SystemSetupRunner(ebproxy, msgr);
 		ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy, msgr);
 		ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy, msgr);
 		ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy, msgr);
