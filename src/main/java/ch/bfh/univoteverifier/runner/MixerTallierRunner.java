@@ -12,7 +12,7 @@ package ch.bfh.univoteverifier.runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
-import ch.bfh.univoteverifier.verification.VerificationEvent;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.List;
 
 /**
@@ -22,20 +22,17 @@ import java.util.List;
  */
 public class MixerTallierRunner extends Runner {
 
-	private final Messenger gm;
-
 	/**
 	 * Construct an MixerTallierRunner with a given ElectionBoardProxy.
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data.
 	 */
-	public MixerTallierRunner(ElectionBoardProxy ebp, Messenger gm) {
-		super(ebp, RunnerName.MIXING_TALLING);
-		this.gm = gm;
+	public MixerTallierRunner(ElectionBoardProxy ebp, Messenger msgr) {
+		super(RunnerName.MIXING_TALLING, msgr);
 	}
 
 	@Override
-	public List<VerificationEvent> run() {
+	public List<VerificationResult> run() {
 		return null;
 	}
 }

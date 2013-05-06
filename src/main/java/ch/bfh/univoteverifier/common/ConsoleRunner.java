@@ -46,7 +46,7 @@ public class ConsoleRunner {
     
     public void runUniVrfConsole(Messenger msgr, String eID){
             String msg = rb.getString("beginningVrfFor") + rb.getString("forElectionId") + eID;
-            msgr.sendErrorMsg(msg);
+            msgr.sendSetupError(msg);
             VerificationThread vt = new VerificationThread(msgr, eID);
             vt.start();
     }
@@ -58,7 +58,7 @@ public class ConsoleRunner {
             if (er==null)
                 System.exit(0);
             String msg = rb.getString("beginningVrfFor") + rb.getString("ballotProvided");
-            msgr.sendErrorMsg(msg);
+            msgr.sendSetupError(msg);
             VerificationThread vt = new VerificationThread(msgr, er);
             vt.start();
     }

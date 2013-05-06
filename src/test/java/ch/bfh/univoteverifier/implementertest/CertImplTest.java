@@ -22,6 +22,12 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.InvalidNameException;
+import javax.naming.ldap.LdapName;
+import javax.naming.ldap.Rdn;
+import javax.security.auth.x500.X500Principal;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -38,7 +44,7 @@ public class CertImplTest {
 	File fQuoVadisRoot;
 
 	public CertImplTest() {
-		ci = new CertificatesImplementer();
+		ci = new CertificatesImplementer(null);
 
 		fBfh = new File(this.getClass().getResource("/www.bfh.ch").getPath());
 
@@ -62,6 +68,21 @@ public class CertImplTest {
 			certList.add(CryptoFunc.getX509Certificate(bBfh));
 			certList.add(CryptoFunc.getX509Certificate(bQuoVadisG));
 			certList.add(CryptoFunc.getX509Certificate(bQuoVadisRoot));
+
+			//
+			String princ = certList.get(0).getSubjectX500Principal().getName();
+
+			LdapName ldapDN;
+			try {
+				ldapDN = new LdapName(princ);
+				for (Rdn rdn : ldapDN.getRdns()) {
+					System.out.println(rdn.getType() + " -> " + rdn.getValue());
+				}
+			} catch (InvalidNameException ex) {
+				Logger.getLogger(CertImplTest.class.getName()).log(Level.SEVERE, null, ex);
+			}
+
+			//
 
 			assertTrue(ci.vrfCert(certList));
 		} catch (IOException | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | CertPathValidatorException ex) {

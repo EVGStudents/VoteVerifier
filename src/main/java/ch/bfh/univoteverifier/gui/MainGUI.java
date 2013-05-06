@@ -21,7 +21,7 @@ import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.common.VerificationType;
-import ch.bfh.univoteverifier.verification.VerificationEvent;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import ch.bfh.univoteverifier.verification.VerificationThread;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -288,7 +288,7 @@ private void createContentPanel() {
     class StatusUpdate implements VerificationListener {
 
         @Override
-        public void updateStatus(VerificationEvent ve) {
+        public void updateStatus(VerificationResult ve) {
             if (GUIRunning) {
                 if (ve.getVerificationEnum() == VerificationType.ERROR) {
                     consolePanel.appendToStatusText("\n" + ve.getMessage());
@@ -313,9 +313,9 @@ private void createContentPanel() {
     
     /**
      * Display the incoming verification result information in the GUI
-     * @param ve VerificationEvent helper class containing verification information.
+     * @param ve VerificationResult helper class containing verification information.
      */
-    public void showResultInGUI(VerificationEvent ve){
+    public void showResultInGUI(VerificationResult ve){
      String sectionName = ve.getSection().toString();
                 Boolean result = ve.getResult();
                 int code = ve.getVerificationEnum().getID();
@@ -329,9 +329,9 @@ private void createContentPanel() {
     
     /**
      * Show the verification information in the terminal.  This method is called if the program is being run from the terminal.
-     * @param ve VerificationEvent helper class containing verification information.
+     * @param ve VerificationResult helper class containing verification information.
      */
-    public void showResultInTerminal(VerificationEvent ve) {
+    public void showResultInTerminal(VerificationResult ve) {
         Boolean result = ve.getResult();
         int code = ve.getVerificationEnum().getID();
         String vrfType = GUIconstants.getTextFromVrfCode(code);

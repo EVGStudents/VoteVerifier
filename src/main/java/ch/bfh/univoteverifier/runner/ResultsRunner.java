@@ -1,18 +1,18 @@
 /**
-*
-*  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
-*   Bern University of Applied Sciences, Engineering and Information Technology,
-*   Research Institute for Security in the Information Society, E-Voting Group,
-*   Biel, Switzerland.
-*
-*   Project independent UniVoteVerifier.
-*
+ *
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
+ * Applied Sciences, Engineering and Information Technology, Research Institute
+ * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ *
+* Project independent UniVoteVerifier.
+ *
 */
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
-import ch.bfh.univoteverifier.verification.VerificationEvent;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.List;
 
 /**
@@ -28,12 +28,12 @@ public class ResultsRunner extends Runner {
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data.
 	 */
-	public ResultsRunner(ElectionBoardProxy ebp) {
-		super(ebp, RunnerName.RESULT);
+	public ResultsRunner(ElectionBoardProxy ebp, Messenger msgr) {
+		super(RunnerName.RESULT, msgr);
 	}
 
 	@Override
-	public List<VerificationEvent> run() {
+	public List<VerificationResult> run() {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 }

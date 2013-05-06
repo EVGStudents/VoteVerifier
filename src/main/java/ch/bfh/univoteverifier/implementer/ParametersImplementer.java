@@ -9,10 +9,9 @@
  */
 package ch.bfh.univoteverifier.implementer;
 
-import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.VerificationType;
-import ch.bfh.univoteverifier.verification.VerificationEvent;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.math.BigInteger;
 
 /**
@@ -23,27 +22,20 @@ import java.math.BigInteger;
 public class ParametersImplementer {
 
 	private final int PRIME_NUMBER_CERTAINITY = 1000;
-	private BigInteger p, q, g;
-
-	public ParametersImplementer() {
-		p = Config.p;
-		q = Config.q;
-		g = Config.g;
-	}
 
 	/**
 	 * Check if the parameters for the Schnorr's signature scheme are
 	 * corrects by reading them from the configuration file.
 	 *
-	 * @return boolean true if the parameters are correct, false otherwise.
+	 * @return a VerificationResult with the relative result.
 	 */
-	public VerificationEvent vrfParamLen() {
+	public VerificationResult vrfSchnorrParamLen(BigInteger p, BigInteger q, BigInteger g) {
 		int lengthPG = 1024;
 		int lengthQ = 256;
 
 		boolean r = p.bitLength() == lengthPG && q.bitLength() == lengthQ && g.bitLength() == lengthPG;
 
-		VerificationEvent ve = new VerificationEvent(VerificationType.SETUP_PARAM_LEN, r);
+		VerificationResult ve = new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, r);
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.FALSE_PARAMETERS_LENGTH);
@@ -53,32 +45,26 @@ public class ParametersImplementer {
 
 	}
 
-	/**
-	 * Check if p is a prime number.
-	 *
-	 * @return true if p is prime, false otherwise.
+	/*
+	 * Check the length of the ElGamal parameters
+	 * ToDo - Ask the length of the ElGamal parameters
 	 */
-	public VerificationEvent vrfPrimeP() {
-		boolean r = p.isProbablePrime(PRIME_NUMBER_CERTAINITY);
-
-		VerificationEvent ve = new VerificationEvent(VerificationType.SETUP_P_IS_PRIME, r);
-
-		if (!r) {
-			ve.setFailureCode(FailureCode.COMPOSITE_PRIME_NUMBER);
-		}
-
-		return ve;
+	public VerificationResult vrfElGamalParamLen(BigInteger p, BigInteger q, BigInteger g) {
+		int lengthP = 0;
+		int lengthQ = 0;
+		int lengthG = 0;
+		return null;
 	}
 
 	/**
-	 * Check if q is a prime number.
+	 * Check if a number is a prime number.
 	 *
-	 * @return true if q is prime, false otherwise.
+	 * @return a VerificationResult with the relative result.
 	 */
-	public VerificationEvent vrfPrimeQ() {
-		boolean r = q.isProbablePrime(PRIME_NUMBER_CERTAINITY);
+	public VerificationResult vrfPrime(BigInteger p, VerificationType type) {
+		boolean r = p.isProbablePrime(PRIME_NUMBER_CERTAINITY);
 
-		VerificationEvent ve = new VerificationEvent(VerificationType.SETUP_Q_IS_PRIME, r);
+		VerificationResult ve = new VerificationResult(type, r);
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.COMPOSITE_PRIME_NUMBER);
@@ -90,15 +76,15 @@ public class ParametersImplementer {
 	/**
 	 * Check if p is a safe prime (p = k*q + 1).
 	 *
-	 * @return true if p is a safe prime, false otherwise.
+	 * @return a VerificationResult with the relative result.
 	 */
-	public VerificationEvent vrfSafePrime() {
+	public VerificationResult vrfSafePrime(BigInteger p, BigInteger q, VerificationType type) {
 		//subtract one from p, now (p-1) must be divisible by q without rest
 		BigInteger rest = p.subtract(BigInteger.ONE).mod(q);
 
 		boolean r = rest.equals(BigInteger.ZERO);
 
-		VerificationEvent ve = new VerificationEvent(VerificationType.SETUP_P_IS_SAFE_PRIME, r);
+		VerificationResult ve = new VerificationResult(type, r);
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.NOT_SAFE_PRIME);
@@ -108,47 +94,20 @@ public class ParametersImplementer {
 	}
 
 	/**
-	 * Check if g is a generator of a subgroup H_q.
+	 * Check if g is a generator of a subgroup H_q of G_q.
 	 *
-	 * @return if g is a valid generator.
+	 * @return a VerificationResult with the relative result.
 	 */
-	public VerificationEvent vrfGenerator() {
+	public VerificationResult vrfGenerator(BigInteger p, BigInteger q, BigInteger g, VerificationType type) {
 		BigInteger res = g.modPow(q, p);
 
 		boolean r = res.equals(BigInteger.ONE);
-		VerificationEvent ve = new VerificationEvent(VerificationType.SETUP_G_IS_GENERATOR, r);
+		VerificationResult ve = new VerificationResult(type, r);
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.NOT_A_GENERATOR);
 		}
 
 		return ve;
-	}
-
-	/**
-	 * Set a new value for p.
-	 *
-	 * @param p the p value of the Schnorr's parameters.
-	 */
-	public void setP(BigInteger p) {
-		this.p = p;
-	}
-
-	/**
-	 * Set a new value for q.
-	 *
-	 * @param q the q value of the Schnorr's parameters.
-	 */
-	public void setQ(BigInteger q) {
-		this.q = q;
-	}
-
-	/**
-	 * Set a new value for g.
-	 *
-	 * @param g the g value of the Schnorr's parameters.
-	 */
-	public void setG(BigInteger g) {
-		this.g = g;
 	}
 }

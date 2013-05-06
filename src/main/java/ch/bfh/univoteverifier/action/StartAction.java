@@ -95,7 +95,7 @@ public class StartAction extends AbstractAction {
         if (0 == btnTxt.compareTo("btnUni")) {
             String eID = comboBox.getSelectedItem().toString();
             msg = rb.getString("beginningVrfFor") + rb.getString("forElectionId") + eID;
-            msgr.sendErrorMsg(msg);
+            msgr.sendSetupError(msg);
             setStateRunning(true);
             vt = new VerificationThread(msgr, eID);
             vt.start();

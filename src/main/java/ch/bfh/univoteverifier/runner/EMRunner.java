@@ -10,8 +10,9 @@
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
-import ch.bfh.univoteverifier.verification.VerificationEvent;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.List;
 
 /**
@@ -27,12 +28,12 @@ public class EMRunner extends Runner {
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data.
 	 */
-	public EMRunner(ElectionBoardProxy ebp) {
-		super(ebp, RunnerName.EM);
+	public EMRunner(ElectionBoardProxy ebp, Messenger msgr) {
+		super(RunnerName.EM, msgr);
 	}
 
 	@Override
-	public List<VerificationEvent> run() {
+	public List<VerificationResult> run() {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 }

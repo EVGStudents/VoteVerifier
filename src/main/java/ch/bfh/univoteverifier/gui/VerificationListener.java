@@ -10,7 +10,7 @@
 */
 package ch.bfh.univoteverifier.gui;
 
-import ch.bfh.univoteverifier.verification.VerificationEvent;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 
 /**
  * Makes up part of the listener pattern used to send messages to the GUI or Console output.
@@ -23,6 +23,6 @@ public interface VerificationListener {
      * receives information from the implementation of the verification classes and decides what should be done with it
      * @param se StatusEvent object: the container of the information
      */
-    public void updateStatus(VerificationEvent ve);
+    public void updateStatus(VerificationResult ve);
 }
 

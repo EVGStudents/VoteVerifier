@@ -65,7 +65,7 @@ public class FileChooserAction extends AbstractAction {
                 msgr.sendFatalErrorMsg(rb.getString("invalidFile"));
             } else {
                 String path = "\n" + file.getPath();
-                msgr.sendErrorMsg("File Selected: "+path);
+                msgr.sendSetupError("File Selected: "+path);
                 fm.setFile(file);
             }
              
