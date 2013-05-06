@@ -12,8 +12,6 @@ package ch.bfh.univoteverifier.common;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.cert.X509Certificate;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,13 +49,4 @@ public class Config {
 	 * URL of the WSDL of UniVote.
 	 */
 	public static final String wsdlLocation = prop.getProperty("wsdl_url");
-	/**
-	 * These values are initialized when we run a verification so that they
-	 * are available through the whole system.
-	 */
-	public static X509Certificate caCert;
-	public static X509Certificate eaCert;
-	public static X509Certificate emCert;
-	public static Map<String, X509Certificate> tCerts;
-	public static Map<String, X509Certificate> mCerts;
 }

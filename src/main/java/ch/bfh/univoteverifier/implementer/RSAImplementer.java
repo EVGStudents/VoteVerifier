@@ -18,7 +18,7 @@ import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import ch.bfh.univoteverifier.common.VerificationType;
-import ch.bfh.univoteverifier.verification.VerificationEvent;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
@@ -87,9 +87,9 @@ public class RSAImplementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationEvent vrfEACertIDSign() throws ElectionBoardServiceFault, CertificateException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public VerificationResult vrfEACertIDSign() throws ElectionBoardServiceFault, CertificateException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		//get the certificte as a string
-		String eaCertStr = Config.eaCert.toString();
+		String eaCertStr = ebp.getCACert().toString();
 
 		//get the election id
 		String eID = ebp.getElectionDefinition().getElectionId();
@@ -111,7 +111,7 @@ public class RSAImplementer {
 
 		boolean r = vrfRSASign(emPubKey, hash, signature);
 
-		return new VerificationEvent(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r);
+		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r);
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class RSAImplementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationEvent vrfBasicParamSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public VerificationResult vrfBasicParamSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
 		ElectionDefinition ed = ebp.getElectionDefinition();
 		Signature signature = ed.getSignature();
 
@@ -156,8 +156,8 @@ public class RSAImplementer {
 		//verify the signature
 		boolean r = vrfRSASign(eaPubKey, hash, signature.getValue());
 
-		//create the VerificationEvent
-		VerificationEvent v = new VerificationEvent(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r);
+		//create the VerificationResult
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r);
 
 		if (!r) {
 			v.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);

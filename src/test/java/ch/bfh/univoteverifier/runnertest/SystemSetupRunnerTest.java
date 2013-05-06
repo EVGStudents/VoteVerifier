@@ -14,7 +14,7 @@ import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
-import ch.bfh.univoteverifier.verification.VerificationEvent;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -28,8 +28,8 @@ import static org.junit.Assert.*;
 public class SystemSetupRunnerTest {
 
 	SystemSetupRunner ssr;
-	List<VerificationEvent> mockList;
-	List<VerificationEvent> realList;
+	List<VerificationResult> mockList;
+	List<VerificationResult> realList;
 	Messenger gm;
 
 	public SystemSetupRunnerTest() {
@@ -38,11 +38,11 @@ public class SystemSetupRunnerTest {
 		realList = ssr.run();
 		mockList = new ArrayList<>();
 
-		mockList.add(new VerificationEvent(VerificationType.SETUP_P_IS_PRIME, true));
-		mockList.add(new VerificationEvent(VerificationType.SETUP_Q_IS_PRIME, true));
-		mockList.add(new VerificationEvent(VerificationType.SETUP_G_IS_GENERATOR, true));
-		mockList.add(new VerificationEvent(VerificationType.SETUP_P_IS_SAFE_PRIME, true));
-		mockList.add(new VerificationEvent(VerificationType.SETUP_PARAM_LEN, true));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true));
 
 	}
 

@@ -23,7 +23,6 @@ import com.thoughtworks.xstream.XStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -111,12 +110,12 @@ public class LocalBoardProxyDownloader {
 	 * Write a single ballot.
 	 */
 	public void writeBallot() throws ElectionBoardServiceFault {
-			QRCode qr = new QRCode(null);
-			ElectionReceipt er = qr.decodeReceipt(new File(this.getClass().getResource("/qrcodeGiu").getPath()));
-			BigInteger verificationKey = er.getVk();
+		QRCode qr = new QRCode(null);
+		ElectionReceipt er = qr.decodeReceipt(new File(this.getClass().getResource("/qrcodeGiu").getPath()));
+		BigInteger verificationKey = er.getVk();
 
-			realWrite(ebp.getBallot(verificationKey), "SingleBallot");
-		
+		realWrite(ebp.getBallot(verificationKey), "SingleBallot");
+
 
 	}
 

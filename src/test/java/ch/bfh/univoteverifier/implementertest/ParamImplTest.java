@@ -12,77 +12,79 @@ package ch.bfh.univoteverifier.implementertest;
 
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.FailureCode;
+import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
-import ch.bfh.univoteverifier.verification.VerificationEvent;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.math.BigInteger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * This class test the behavior of the ParametersImplementer
+ * This class test the behavior of the ParametersImplementer.
  *
  * @author snake
  */
 public class ParamImplTest {
 
 	ParametersImplementer pi;
+	BigInteger p, q, g;
 
 	public ParamImplTest() {
 		pi = new ParametersImplementer();
 
 		//change the value of p,q and g - all the test must fail
-		pi.setP(Config.p.multiply(new BigInteger("2")));
-		pi.setQ(Config.q.multiply(new BigInteger("2")));
-		pi.setG(Config.g.multiply(new BigInteger("2")));
+		p = Config.p.multiply(new BigInteger("2"));
+		q = Config.q.multiply(new BigInteger("2"));
+		g = Config.g.multiply(new BigInteger("2"));
 	}
 
 	/**
-	 * Test that the parameters are not long as expected
+	 * Test that the parameters are not long as expected.
 	 */
 	@Test
 	public void testParamNotLen() {
-		VerificationEvent v = pi.vrfParamLen();
+		VerificationResult v = pi.vrfSchnorrParamLen(p, q, g);
 		assertFalse(v.getResult());
 		assertEquals(v.getFailureCode(), FailureCode.FALSE_PARAMETERS_LENGTH);
 	}
 
 	/**
-	 * Test that P is not a safe prime
+	 * Test that P is not a safe prime.
 	 */
 	@Test
 	public void testPisNotSafePrime() {
-		VerificationEvent v = pi.vrfSafePrime();
-		assertFalse(pi.vrfSafePrime().getResult());
+		VerificationResult v = pi.vrfSafePrime(p, q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
+		assertFalse(v.getResult());
 		assertEquals(v.getFailureCode(), FailureCode.NOT_SAFE_PRIME);
 
 	}
 
 	/**
-	 * Test that P is not prime
+	 * Test that P is not prime.
 	 */
 	@Test
 	public void testPisNotPrime() {
-		VerificationEvent v = pi.vrfPrimeP();
+		VerificationResult v = pi.vrfPrime(p, VerificationType.SETUP_SCHNORR_P);
 		assertFalse(v.getResult());
 		assertEquals(v.getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
 	}
 
 	/**
-	 * Test that Q is not prime
+	 * Test that Q is not prime.
 	 */
 	@Test
 	public void testQisNotPrime() {
-		VerificationEvent v = pi.vrfPrimeQ();
+		VerificationResult v = pi.vrfPrime(q, VerificationType.SETUP_SCHNORR_Q);
 		assertFalse(v.getResult());
 		assertEquals(v.getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
 	}
 
 	/**
-	 * Test that G is not a generator
+	 * Test that G is not a generator.
 	 */
 	@Test
 	public void testGisNotGenerator() {
-		VerificationEvent v = pi.vrfGenerator();
+		VerificationResult v = pi.vrfGenerator(p, q, g, VerificationType.SETUP_SCHNORR_G);
 		assertFalse(v.getResult());
 		assertEquals(v.getFailureCode(), FailureCode.NOT_A_GENERATOR);
 	}

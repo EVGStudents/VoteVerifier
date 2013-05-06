@@ -12,7 +12,7 @@ package ch.bfh.univoteverifier.runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
-import ch.bfh.univoteverifier.verification.VerificationEvent;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.List;
 
 /**
@@ -22,8 +22,6 @@ import java.util.List;
  */
 public class ElectionPreparationRunner extends Runner {
 
-	private final Messenger gm;
-
 	/**
 	 * Construct an ElectionPreparationRunner with a given
 	 * ElectionBoardProxy.
@@ -31,12 +29,11 @@ public class ElectionPreparationRunner extends Runner {
 	 * @param ebp the ElectionBoardProxy from where get the data.
 	 */
 	public ElectionPreparationRunner(ElectionBoardProxy ebp, Messenger gm) {
-		super(ebp, RunnerName.ELECTION_PREPARATION);
-		this.gm = gm;
+		super(RunnerName.ELECTION_PREPARATION, gm);
 	}
 
 	@Override
-	public List<VerificationEvent> run() {
+	public List<VerificationResult> run() {
 		return null;
 	}
 }

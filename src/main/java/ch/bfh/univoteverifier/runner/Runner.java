@@ -10,8 +10,9 @@
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
-import ch.bfh.univoteverifier.verification.VerificationEvent;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,35 +24,35 @@ import java.util.List;
  */
 public abstract class Runner {
 
-	protected List<VerificationEvent> partialResults;
-	protected ElectionBoardProxy ebp;
+	protected List<VerificationResult> partialResults;
+	protected final Messenger msgr;
 	private final RunnerName runnerName;
 
 	/**
 	 * Construct a runner with an ElectionBoardProxy and a relative name.
 	 *
-	 * @param ebp
-	 * @param runnerName
+	 * @param ebp the ElectionBoardProxy from where get the data.
+	 * @param runnerName the name of this runner.
 	 */
-	public Runner(ElectionBoardProxy ebp, RunnerName runnerName) {
-		this.ebp = ebp;
+	public Runner(RunnerName runnerName, Messenger msgr) {
 		this.runnerName = runnerName;
 		this.partialResults = new ArrayList<>();
+		this.msgr = msgr;
 	}
 
 	/**
 	 * Get the name of this runner.
 	 *
-	 * @return the name of this runner
+	 * @return the name of this runner.
 	 */
 	public RunnerName getRunnerName() {
 		return runnerName;
 	}
 
 	/**
-	 * Start this runner, it will perform the verification implemented.
+	 * Start this runner, it will perform the specified verifications.
 	 *
-	 * @return the list of results
+	 * @return the list of results.
 	 */
-	public abstract List<VerificationEvent> run();
+	public abstract List<VerificationResult> run();
 }

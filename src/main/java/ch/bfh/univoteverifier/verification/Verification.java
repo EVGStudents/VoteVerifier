@@ -39,7 +39,7 @@ public abstract class Verification {
 	protected VerificationOrder displayType = VerificationOrder.BY_SPEC;
 	protected Messenger msgr;
 	//used to store the results of a verification
-	protected List<VerificationEvent> res;
+	protected List<VerificationResult> res;
 
 	/**
 	 * Construct a new abstract verification with a given election ID.
@@ -84,38 +84,9 @@ public abstract class Verification {
 	}
 
 	/**
-	 * Initialize the certificates of the different entities.
-	 */
-	private void initializeEntityCertificates() {
-		try {
-			//initialize ca, em, ea certificate
-			Config.caCert = CryptoFunc.getX509Certificate(ebproxy.getElectionSystemInfo().getCertificateAuthority().getValue());
-			Config.emCert = CryptoFunc.getX509Certificate(ebproxy.getElectionSystemInfo().getElectionManager().getValue());
-			Config.eaCert = CryptoFunc.getX509Certificate(ebproxy.getElectionSystemInfo().getElectionAdministration().getValue());
-
-			//initialize mixers certificates
-			for (Certificate mCert : ebproxy.getElectionSystemInfo().getMixer()) {
-				Config.mCerts.put("mixer", CryptoFunc.getX509Certificate(mCert.getValue()));
-			}
-
-			//initialize talliers certificates
-			for (Certificate tCert : ebproxy.getElectionSystemInfo().getTallier()) {
-				Config.tCerts.put("tallier", CryptoFunc.getX509Certificate(tCert.getValue()));
-			}
-
-		} catch (CertificateException | ElectionBoardServiceFault ex) {
-			LOGGER.log(Level.SEVERE, null, ex);
-			msgr.sendErrorMsg(ex.getMessage());
-		}
-	}
-
-	/**
 	 * Run a verification.
 	 */
-	public List<VerificationEvent> runVerification() {
-
-		//initialize the public keys - ToDO decomment this when the webservices will work
-		//		initializeEntityCertificates();
+	public List<VerificationResult> runVerification() {
 
 		if (runners.isEmpty()) {
 			LOGGER.log(Level.INFO, "There aren't runners. The verification will not run.");
@@ -123,7 +94,7 @@ public abstract class Verification {
 
 		//run the runners  and get the results
 		for (Runner r : runners) {
-			List<VerificationEvent> l = r.run();
+			List<VerificationResult> l = r.run();
 
 			//check that a list isn't empty
 			if (l != null) {

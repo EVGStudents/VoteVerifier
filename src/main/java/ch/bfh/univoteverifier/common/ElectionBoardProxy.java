@@ -40,11 +40,16 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.InvalidNameException;
+import javax.naming.ldap.LdapName;
+import javax.naming.ldap.Rdn;
 
 /**
  * This class is used as a proxy for the ElectionBoard of UniVote. It is used as
@@ -87,6 +92,8 @@ public class ElectionBoardProxy {
 	private Certificate rootCert;
 	private SignatureParameters signParam;
 	private VoterCertificates voterCerts;
+	private Map<String, X509Certificate> talliersCerts;
+	private Map<String, X509Certificate> mixersCerts;
 
 	/**
 	 * Construct an ElectionBoardProxy with a given election id.
@@ -617,5 +624,123 @@ public class ElectionBoardProxy {
 		}
 
 		return voterCerts;
+	}
+
+	/**
+	 * Get the X509 Certificate of the CA.
+	 *
+	 * @return the X509Certificate of the CA.
+	 * @throws CertificateException if there are problem with the instance
+	 * of the certificate factory.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
+	 */
+	public X509Certificate getCACert() throws CertificateException, ElectionBoardServiceFault {
+		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getCertificateAuthority().getValue());
+
+		return c;
+	}
+
+	/**
+	 * Get the X509 Certificate of the EM .
+	 *
+	 * @return the X509Certificate of the EM.
+	 * @throws CertificateException if there are problem with the instance
+	 * of the certificate factory.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
+	 */
+	public X509Certificate getEMCert() throws CertificateException, ElectionBoardServiceFault {
+		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getElectionManager().getValue());
+
+		return c;
+	}
+
+	/**
+	 * Get the X509 Certificate of the EA.
+	 *
+	 * @return the X509Certificate of the EA.
+	 * @throws CertificateException if there are problem with the instance
+	 * of the certificate factory.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
+	 */
+	public X509Certificate getEACert() throws ElectionBoardServiceFault, CertificateException {
+		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getElectionAdministration().getValue());
+
+		return c;
+	}
+
+	/**
+	 * Get the X509 Certificates of the talliers.
+	 *
+	 * @return a map containing the name as key and the X509Certificates as
+	 * object of the talliers.
+	 * @throws CertificateException if there are problem with the instance
+	 * of the certificate factory.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
+	 * @throws InvalidNameException if the DN used to get the tallier name
+	 * is not valid.
+	 */
+	public Map<String, X509Certificate> getTalliersCerts() throws ElectionBoardServiceFault, CertificateException, InvalidNameException {
+		if (talliersCerts == null) {
+			talliersCerts = new HashMap<>();
+
+			for (Certificate cert : getElectionSystemInfo().getTallier()) {
+				X509Certificate xCert = CryptoFunc.getX509Certificate(cert.getValue());
+				String princ = xCert.getSubjectX500Principal().getName();
+
+				//use ldap to parse the Dn and get the CN
+				LdapName ldapDN = new LdapName(princ);
+				for (Rdn rdn : ldapDN.getRdns()) {
+					if (rdn.getType().equals("CN")) {
+						talliersCerts.put((String) rdn.getValue(), xCert);
+						break;
+					}
+				}
+			}
+		}
+
+		return talliersCerts;
+	}
+
+	/**
+	 * Get the X509 Certificates of the mixers.
+	 *
+	 * @return a map containing the name as key and the X509Certificates as
+	 * object of the mixers.
+	 * @throws CertificateException if there are problem with the instance
+	 * of the certificate factory.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
+	 * @throws InvalidNameException if the DN used to get the mixer name is
+	 * not valid.
+	 */
+	public Map<String, X509Certificate> getMixersCerts() throws ElectionBoardServiceFault, CertificateException, InvalidNameException {
+		if (mixersCerts == null) {
+			mixersCerts = new HashMap<>();
+
+			for (Certificate cert : getElectionSystemInfo().getMixer()) {
+				X509Certificate xCert = CryptoFunc.getX509Certificate(cert.getValue());
+				String princ = xCert.getSubjectX500Principal().getName();
+
+				//use ldap to parse the Dn and get the CN
+				LdapName ldapDN = new LdapName(princ);
+				for (Rdn rdn : ldapDN.getRdns()) {
+					if (rdn.getType().equals("CN")) {
+						mixersCerts.put((String) rdn.getValue(), xCert);
+						break;
+					}
+				}
+			}
+		}
+
+		return mixersCerts;
 	}
 }
