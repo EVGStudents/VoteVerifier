@@ -294,7 +294,8 @@ private void createContentPanel() {
                     consolePanel.appendToStatusText("\n" + ve.getMessage());
                 } else if (ve.getVerificationEnum() == VerificationType.FATAL_ERROR) {
                     String text = "\n" + ve.getMessage();
-                    JOptionPane.showMessageDialog(masterPanel, text);
+//                    JOptionPane.showMessageDialog(masterPanel, text);
+                    topPanel.setupErrorMsg(text);
                 } else {
                     showResultInGUI(ve);
                 }
