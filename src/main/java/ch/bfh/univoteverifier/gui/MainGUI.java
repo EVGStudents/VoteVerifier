@@ -20,6 +20,7 @@ import ch.bfh.univoteverifier.common.IFileManager;
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.QRCode;
+import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import ch.bfh.univoteverifier.verification.VerificationThread;
@@ -318,12 +319,12 @@ private void createContentPanel() {
      */
     public void showResultInGUI(VerificationEvent ve) {
         VerificationResult vr = ve.getVr();
-        String sectionName = vr.getSection().toString();
+        RunnerName rn = vr.getRunnerName();
         Boolean result = vr.getResult();
         int code = vr.getVerificationEnum().getID();
         String vrfType = GUIconstants.getTextFromVrfCode(code);
-        String eID = "vsbfh-2013";
-        ResultSet rs = new ResultSet(vrfType, result, sectionName, eID);
+        String eID = vr.getElectionID();
+        ResultSet rs = new ResultSet(vrfType, result, rn, eID);
         resultPanelManager.addData(rs);
         String outputText = "\n" + vrfType + " ............. " + result;
         consolePanel.appendToStatusText(outputText);

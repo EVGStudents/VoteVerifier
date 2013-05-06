@@ -4,6 +4,7 @@
  */
 package ch.bfh.univoteverifier.gui;
 
+import ch.bfh.univoteverifier.common.RunnerName;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -17,7 +18,7 @@ public class ResultSet {
     private Boolean result;
     private ImageIcon img;
     private JLabel label;
-    private String sectionName;
+    private RunnerName rn;
     private String eID;
     
     /**
@@ -25,10 +26,10 @@ public class ResultSet {
      * @param txt The description of the verification performed.
      * @param result The result of the verification.
      */
-    public ResultSet(String txt, Boolean result, String sectionName, String eID) {
+    public ResultSet(String txt, Boolean result, RunnerName rn, String eID) {
         this.txt = txt +"  "+ generateFiller(txt);
         this.result = result;
-        this.sectionName=sectionName;
+        this.rn=rn;
         this.eID=eID;
        java.net.URL urlImg = MainGUI.class.getResource("/check.png");
         this.img = new ImageIcon(urlImg);
@@ -71,8 +72,8 @@ public class ResultSet {
      * Get the section name from which these results come.
      * @return String the section name.
      */
-    public String getSectionName(){
-        return sectionName;
+    public RunnerName getRunnerName(){
+        return rn;
     }
     
     /**

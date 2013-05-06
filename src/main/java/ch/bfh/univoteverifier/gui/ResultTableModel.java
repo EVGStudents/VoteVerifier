@@ -20,7 +20,7 @@ public class ResultTableModel extends AbstractTableModel {
      */
     public ResultTableModel(ArrayList<ResultSet> data) {
         this.data=data;
-        String sectionName = data.get(0).getSectionName();
+        String sectionName = data.get(0).getRunnerName().toString();
         columnNames[0]=sectionName;
        
     }

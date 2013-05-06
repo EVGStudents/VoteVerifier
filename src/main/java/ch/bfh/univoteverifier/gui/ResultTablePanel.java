@@ -1,5 +1,6 @@
 package ch.bfh.univoteverifier.gui;
 
+import ch.bfh.univoteverifier.common.RunnerName;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -25,11 +26,14 @@ public class ResultTablePanel extends JPanel {
     JPanel masterTablePanel;
     ArrayList<ResultTable> tables;
     String eID;
+    RunnerName rn;
     
     /**
      * Create an instance of this panel.
      */
-    public ResultTablePanel(String eID) {
+    public ResultTablePanel(RunnerName rn, String eID) {
+        this.rn=rn;
+        this.eID=eID;
         tables = new ArrayList<>();
         createContentPanel();
     }
@@ -58,7 +62,7 @@ public class ResultTablePanel extends JPanel {
      * Add data to a table to see how it looks.  The data is meaningless.
      */
     public void addDummyData() {
-        addTable(new ResultSet("first entry", true,"Some section", "Some Election"));
+        addTable(new ResultSet("first entry", true,RunnerName.SYSTEM_SETUP, "Some Election"));
     }
 
     /**
@@ -70,8 +74,8 @@ public class ResultTablePanel extends JPanel {
         ResultTable rt=null;
         for (ResultTable rti: tables){
             String tableSectionName=rti.getSectionName();
-            String dataSectionName = r.getSectionName();
-            if (0==tableSectionName.compareTo(dataSectionName))
+            String runnerName = r.getRunnerName().toString();
+            if (0==tableSectionName.compareTo(runnerName))
                 tableExists=true;
                 rt=rti;
         }
@@ -106,7 +110,7 @@ public class ResultTablePanel extends JPanel {
         data.add(r);
         
         rtm = new ResultTableModel(data);
-        rt = new ResultTable(rtm, data.get(0).getSectionName());
+        rt = new ResultTable(rtm, data.get(0).getRunnerName().toString());
         rt.setShowGrid(false);
 
         tablePanel.add(rt, BorderLayout.CENTER);

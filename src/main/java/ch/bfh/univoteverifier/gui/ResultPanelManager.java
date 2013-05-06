@@ -35,7 +35,7 @@ public class ResultPanelManager extends JTabbedPane{
             ResultTablePanel rtp = getTableByName(rs.getEID());
             rtp.addData(rs);
         } else {
-            ResultTablePanel newRTP = new ResultTablePanel(rs.getEID());
+            ResultTablePanel newRTP = new ResultTablePanel(rs.getRunnerName(), rs.getEID());
             newRTP.addData(rs);
             this.addTab(rs.getEID(), newRTP);
             this.resultsPanels.add(newRTP);
@@ -64,7 +64,7 @@ public class ResultPanelManager extends JTabbedPane{
     
     public boolean hasTable(String eID){
         boolean found = false;
-        if (resultsPanels.size() > 0) {
+        if (resultsPanels.isEmpty()) {
             return found;
         }
         for (ResultTablePanel r : resultsPanels) {
