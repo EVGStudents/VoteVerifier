@@ -9,6 +9,8 @@
  */
 package ch.bfh.univoteverifier.implementer;
 
+import ch.bfh.univote.election.ElectionBoardServiceFault;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -22,6 +24,16 @@ import java.math.BigInteger;
 public class ParametersImplementer {
 
 	private final int PRIME_NUMBER_CERTAINITY = 1000;
+	private final ElectionBoardProxy ebp;
+
+	/**
+	 * Construct a new ParametersImplementer with a given election ID.
+	 *
+	 * @param eID the election ID.
+	 */
+	public ParametersImplementer(ElectionBoardProxy ebp) {
+		this.ebp = ebp;
+	}
 
 	/**
 	 * Check if the parameters for the Schnorr's signature scheme are
@@ -29,13 +41,13 @@ public class ParametersImplementer {
 	 *
 	 * @return a VerificationResult with the relative result.
 	 */
-	public VerificationResult vrfSchnorrParamLen(BigInteger p, BigInteger q, BigInteger g) {
+	public VerificationResult vrfSchnorrParamLen(BigInteger p, BigInteger q, BigInteger g) throws ElectionBoardServiceFault {
 		int lengthPG = 1024;
 		int lengthQ = 256;
 
 		boolean r = p.bitLength() == lengthPG && q.bitLength() == lengthQ && g.bitLength() == lengthPG;
 
-		VerificationResult ve = new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, r);
+		VerificationResult ve = new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, r, ebp.getElectionDefinition().getElectionId());
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.FALSE_PARAMETERS_LENGTH);
@@ -61,10 +73,10 @@ public class ParametersImplementer {
 	 *
 	 * @return a VerificationResult with the relative result.
 	 */
-	public VerificationResult vrfPrime(BigInteger p, VerificationType type) {
+	public VerificationResult vrfPrime(BigInteger p, VerificationType type) throws ElectionBoardServiceFault {
 		boolean r = p.isProbablePrime(PRIME_NUMBER_CERTAINITY);
 
-		VerificationResult ve = new VerificationResult(type, r);
+		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionDefinition().getElectionId());
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.COMPOSITE_PRIME_NUMBER);
@@ -78,13 +90,13 @@ public class ParametersImplementer {
 	 *
 	 * @return a VerificationResult with the relative result.
 	 */
-	public VerificationResult vrfSafePrime(BigInteger p, BigInteger q, VerificationType type) {
+	public VerificationResult vrfSafePrime(BigInteger p, BigInteger q, VerificationType type) throws ElectionBoardServiceFault {
 		//subtract one from p, now (p-1) must be divisible by q without rest
 		BigInteger rest = p.subtract(BigInteger.ONE).mod(q);
 
 		boolean r = rest.equals(BigInteger.ZERO);
 
-		VerificationResult ve = new VerificationResult(type, r);
+		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionDefinition().getElectionId());
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.NOT_SAFE_PRIME);
@@ -98,11 +110,11 @@ public class ParametersImplementer {
 	 *
 	 * @return a VerificationResult with the relative result.
 	 */
-	public VerificationResult vrfGenerator(BigInteger p, BigInteger q, BigInteger g, VerificationType type) {
+	public VerificationResult vrfGenerator(BigInteger p, BigInteger q, BigInteger g, VerificationType type) throws ElectionBoardServiceFault {
 		BigInteger res = g.modPow(q, p);
 
 		boolean r = res.equals(BigInteger.ONE);
-		VerificationResult ve = new VerificationResult(type, r);
+		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionDefinition().getElectionId());
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.NOT_A_GENERATOR);

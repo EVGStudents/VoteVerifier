@@ -38,11 +38,11 @@ public class UniversalVerificationTester {
 		realList = v.runVerification();
 
 		mockList = new ArrayList<>();
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true, eID));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID));
 		//ToDO add all the results when they are available
 	}
 

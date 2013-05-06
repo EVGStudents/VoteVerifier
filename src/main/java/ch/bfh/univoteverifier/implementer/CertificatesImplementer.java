@@ -105,7 +105,7 @@ public class CertificatesImplementer {
 			r = false;
 		}
 
-		return new VerificationResult(VerificationType.SETUP_CA_CERT, r);
+		return new VerificationResult(VerificationType.SETUP_CA_CERT, r, ebp.getElectionDefinition().getElectionId());
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class CertificatesImplementer {
 			r = false;
 		}
 
-		return new VerificationResult(VerificationType.SETUP_EM_CERT, r);
+		return new VerificationResult(VerificationType.SETUP_EM_CERT, r, ebp.getElectionDefinition().getElectionId());
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class CertificatesImplementer {
 			r = false;
 		}
 
-		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT, r);
+		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT, r, ebp.getElectionDefinition().getElectionId());
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class CertificatesImplementer {
 			}
 
 			//create a VerificationResult and then set the entity name to the one we have
-			VerificationResult vTallier = new VerificationResult(VerificationType.EL_SETUP_TALLIERS_CERT, r);
+			VerificationResult vTallier = new VerificationResult(VerificationType.EL_SETUP_TALLIERS_CERT, r, ebp.getElectionDefinition().getElectionId());
 			vTallier.setEntityName((String) e.getKey());
 
 			talliersCert.add(vTallier);
@@ -231,7 +231,7 @@ public class CertificatesImplementer {
 			}
 
 			//create a VerificationResult and then set the entity name to the one we have
-			VerificationResult vMixer = new VerificationResult(VerificationType.EL_SETUP_MIXERS_CERT, r);
+			VerificationResult vMixer = new VerificationResult(VerificationType.EL_SETUP_MIXERS_CERT, r, ebp.getElectionDefinition().getElectionId());
 			vMixer.setEntityName((String) e.getKey());
 
 			mixersCert.add(vMixer);
