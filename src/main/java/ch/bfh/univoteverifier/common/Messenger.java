@@ -29,7 +29,6 @@ public class Messenger {
 
 	ResourceBundle rb;
 	VerificationSubject ss;
-	RunnerName activeSection = RunnerName.UNSET;
 
 	/**
 	 * instantiate a GUIMessenger that is used to relay messages to the GUI
@@ -58,8 +57,8 @@ public class Messenger {
 	 */
 	public void sendElectionSpecError(String eID, Exception ex) {
 		String exName = ex.getClass().getName();
-		String message = rb.getString(exName);
-		VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_SPECIFIC_ERROR, eID);
+		String message = getMessageForKey(exName);
+		VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_SPECIFIC_ERROR, message, eID);
 		ss.notifyListeners(ve);
 	}
 
@@ -68,13 +67,17 @@ public class Messenger {
 	 * into a StatusEvent
 	 *
 	 * @param vr the helper class in which the results are packaged
-	 */
-	public void sendVrfMsg(VerificationResult ve) {
-		ve.setSection(activeSection);
-		ss.notifyListeners(ve);
-	}
+	
+     */
+    public void sendVrfMsg(VerificationResult vr) {
+        if (vr.getSection() == null) {
+            vr.setSection(RunnerName.UNSET);
+        }
+        VerificationEvent ve = new VerificationEvent(vr);
+        ss.notifyListeners(ve);
+    }
 
-	/**
+    /**
 	 * creates a resource bundle with for the default locale of en when the
 	 * class in instantiated
 	 *
@@ -94,17 +97,6 @@ public class Messenger {
 		rb = ResourceBundle.getBundle("error", loc);
 	}
 
-	/**
-	 * signal that a new section for the verification has been started sets
-	 * the value of a SectionNamEnum that is packed into vrfResult messages
-	 * to the GUI method is called by the classes involved in the
-	 * verification process
-	 *
-	 * @param s RunnerName which describes a verification category
-	 */
-	public void changeSection(RunnerName s) {
-		this.activeSection = s;
-	}
 
 	/**
 	 * returns the appropriate, language-specific message for a given key
@@ -152,7 +144,7 @@ public class Messenger {
 		}
 
 		@Override
-		public void notifyListeners(VerificationResult ve) {
+		public void notifyListeners(VerificationEvent ve) {
 			for (VerificationListener pl : listeners) {
 				pl.updateStatus(ve);
 			}

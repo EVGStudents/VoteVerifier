@@ -23,6 +23,6 @@ public interface VerificationListener {
      * receives information from the implementation of the verification classes and decides what should be done with it
      * @param se StatusEvent object: the container of the information
      */
-    public void updateStatus(VerificationResult ve);
+    public void updateStatus(VerificationEvent ve);
 }
 

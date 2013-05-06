@@ -62,7 +62,7 @@ public class FileChooserAction extends AbstractAction {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             if (file == null) {
-                msgr.sendFatalErrorMsg(rb.getString("invalidFile"));
+                msgr.sendSetupError(rb.getString("invalidFile"));
             } else {
                 String path = "\n" + file.getPath();
                 msgr.sendSetupError("File Selected: "+path);

@@ -288,22 +288,22 @@ private void createContentPanel() {
     class StatusUpdate implements VerificationListener {
 
         @Override
-        public void updateStatus(VerificationResult ve) {
+        public void updateStatus(VerificationEvent ve) {
             if (GUIRunning) {
-                if (ve.getVerificationEnum() == VerificationType.ERROR) {
-                    consolePanel.appendToStatusText("\n" + ve.getMessage());
-                } else if (ve.getVerificationEnum() == VerificationType.FATAL_ERROR) {
-                    String text = "\n" + ve.getMessage();
+                if (ve.getVm() == VerificationMessage.ELECTION_SPECIFIC_ERROR) {
+                    consolePanel.appendToStatusText("\n" + ve.getMsg());
+                } else if (ve.getVm() == VerificationMessage.SETUP_ERROR) {
+                    String text = "\n" + ve.getMsg();
 //                    JOptionPane.showMessageDialog(masterPanel, text);
                     topPanel.setupErrorMsg(text);
                 } else {
                     showResultInGUI(ve);
                 }
             } else {
-                if (ve.getVerificationEnum() == VerificationType.ERROR) {
-                   LOGGER.log(Level.SEVERE, ve.getMessage());
-                } else if (ve.getVerificationEnum() == VerificationType.FATAL_ERROR) {
-                    String text = "\n" + ve.getMessage();
+                if (ve.getVm() == VerificationMessage.ELECTION_SPECIFIC_ERROR) {
+                   LOGGER.log(Level.SEVERE, ve.getMsg());
+                } else if (ve.getVm() == VerificationMessage.SETUP_ERROR) {
+                    String text = "\n" + ve.getMsg();
                     LOGGER.log(Level.SEVERE, text);
                 } else {
                     showResultInTerminal(ve);
@@ -316,25 +316,27 @@ private void createContentPanel() {
      * Display the incoming verification result information in the GUI
      * @param ve VerificationResult helper class containing verification information.
      */
-    public void showResultInGUI(VerificationResult ve){
-     String sectionName = ve.getSection().toString();
-                Boolean result = ve.getResult();
-                int code = ve.getVerificationEnum().getID();
-                String vrfType = GUIconstants.getTextFromVrfCode(code);
-                String eID="vsbfh-2013";
-                ResultSet rs = new ResultSet(vrfType, result, sectionName, eID);
-                resultPanelManager.addData(rs);
-                String outputText = "\n" + vrfType + " ............. " + result;
-                consolePanel.appendToStatusText(outputText);
+    public void showResultInGUI(VerificationEvent ve) {
+        VerificationResult vr = ve.getVr();
+        String sectionName = vr.getSection().toString();
+        Boolean result = vr.getResult();
+        int code = vr.getVerificationEnum().getID();
+        String vrfType = GUIconstants.getTextFromVrfCode(code);
+        String eID = "vsbfh-2013";
+        ResultSet rs = new ResultSet(vrfType, result, sectionName, eID);
+        resultPanelManager.addData(rs);
+        String outputText = "\n" + vrfType + " ............. " + result;
+        consolePanel.appendToStatusText(outputText);
     }
     
     /**
      * Show the verification information in the terminal.  This method is called if the program is being run from the terminal.
      * @param ve VerificationResult helper class containing verification information.
      */
-    public void showResultInTerminal(VerificationResult ve) {
-        Boolean result = ve.getResult();
-        int code = ve.getVerificationEnum().getID();
+    public void showResultInTerminal(VerificationEvent ve) {
+         VerificationResult vr = ve.getVr();
+        Boolean result = vr.getResult();
+        int code = vr.getVerificationEnum().getID();
         String vrfType = GUIconstants.getTextFromVrfCode(code);
         String eID = "vsbfh-2013";
         String outputText = "\n" +eID + " : "+ vrfType + " ............. " + result;

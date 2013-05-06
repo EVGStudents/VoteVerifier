@@ -109,7 +109,7 @@ public class StartAction extends AbstractAction {
                     vt.start();
                 }
             } else {
-                msgr.sendFatalErrorMsg(rb.getString("pleaseSelectFile"));
+                msgr.sendSetupError(rb.getString("pleaseSelectFile"));
             }
         }
 

@@ -91,19 +91,19 @@ public class QRCode {
         BufferedImage image = ImageIO.read(fis);
         BufferedImageLuminanceSource bils = null;
         bils = new BufferedImageLuminanceSource(image);
-        msgr.sendFatalErrorMsg(rb.getString("fileReadError"));
+        msgr.sendSetupError(rb.getString("fileReadError"));
         HybridBinarizer hb = new HybridBinarizer(bils);
         BinaryBitmap binaryBitmap = new BinaryBitmap(hb);
         Result result = new MultiFormatReader().decode(binaryBitmap);
         returnStr = result.toString();
          } catch (NullPointerException ex){
-             msgr.sendFatalErrorMsg("This file is not a valid QR Code");
+             msgr.sendSetupError("This file is not a valid QR Code");
          }
          catch (FileNotFoundException ex){
-         msgr.sendFatalErrorMsg("This file could not be read");
+         msgr.sendSetupError("This file could not be read");
          }
          catch (NotFoundException | IOException ex){
-             msgr.sendFatalErrorMsg("This file is not a valid QR Code");
+             msgr.sendSetupError("This file is not a valid QR Code");
          }
         return returnStr;
     }
