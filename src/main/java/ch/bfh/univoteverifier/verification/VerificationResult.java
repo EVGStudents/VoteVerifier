@@ -14,13 +14,15 @@ import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.common.FailureCode;
 
 /*
- *
+ *This class is a VerificationResult and it represent the result of a single
+ * check (for example an RSA Signature). Here we can find some information like
+ * the result or if the check is implemented or not.
  * @author prinstin
  */
 public class VerificationResult {
 
 	private final VerificationType v;
-	private RunnerName section;
+	private RunnerName rn;
 	private String msg;
 	private boolean impl;
 	private final boolean result;
@@ -46,25 +48,25 @@ public class VerificationResult {
 	 *
 	 * @return the RunnerName of this VerificationResult.
 	 */
-	public RunnerName getSection() {
-		return section;
+	public RunnerName getRunnerName() {
+		return rn;
 	}
 
 	/**
-	 * Set the RunnerName for this VerificationResult
+	 * Set the RunnerName for this VerificationResult.
 	 *
 	 * @param section the RunnerName that has managed this
 	 * VerificationResult.
 	 */
-	public void setSection(RunnerName section) {
-		this.section = section;
+	public void setRunnerName(RunnerName rn) {
+		this.rn = rn;
 	}
 
 	/**
 	 * Get the verification type for this VerificationResult Identifies that
 	 * type of message/information that this event contains.
 	 *
-	 * @return the verification type
+	 * @return the verification type.
 	 */
 	public VerificationType getVerificationEnum() {
 		return v;
@@ -73,7 +75,7 @@ public class VerificationResult {
 	/**
 	 * Get the result for this VerificationResult.
 	 *
-	 * @return
+	 * @return the result as a boolean.
 	 */
 	public boolean getResult() {
 		return result;
@@ -83,14 +85,14 @@ public class VerificationResult {
 	 * To know if the verification associated with this result is
 	 * implemented.
 	 *
-	 * @return
+	 * @return a boolean.
 	 */
 	public boolean isImplemented() {
 		return impl;
 	}
 
 	/**
-	 * Set the implementation flag for this VerificationResult
+	 * Set the implementation flag for this VerificationResult.
 	 *
 	 * @param impl the boolean value representing the implementation for
 	 * this event.
@@ -118,7 +120,8 @@ public class VerificationResult {
 	}
 
 	/**
-	 * Set the entity name for this VerificationResult if any
+	 * Set the entity name for this VerificationResult if any. It can be use
+	 * to print the name for example of a tallier.
 	 *
 	 * @param entityName the name for example of a tallier.
 	 */
@@ -147,7 +150,7 @@ public class VerificationResult {
 	@Override
 	public String toString() {
 		String s = "\n\tVerification Event"
-			+ "" + getSection()
+			+ "" + getRunnerName()
 			+ "" + getResult();
 
 		return s;

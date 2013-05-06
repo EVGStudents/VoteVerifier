@@ -10,9 +10,11 @@
  */
 package ch.bfh.univoteverifier.implementertest;
 
+import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -44,8 +46,8 @@ public class CertImplTest {
 	File fQuoVadisRoot;
 
 	public CertImplTest() {
-		ElectionBoardProxy ebp = new ElectionBoardProxy("vs")
-		ci = new CertificatesImplementer(null);
+		ElectionBoardProxy ebp = new ElectionBoardProxy("vsbfh-2013");
+		ci = new CertificatesImplementer(ebp);
 
 		fBfh = new File(this.getClass().getResource("/www.bfh.ch").getPath());
 
@@ -114,7 +116,12 @@ public class CertImplTest {
 	}
 
 	@Test
+	public void testCaCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
+		VerificationResult vr = ci.vrfCACertificate();
+		assertTrue(vr.getResult());
+	}
+
+	@Test
 	public void testEACertificate() {
-		cer
 	}
 }
