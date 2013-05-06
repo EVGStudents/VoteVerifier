@@ -70,9 +70,6 @@ public class Messenger {
 	
      */
     public void sendVrfMsg(VerificationResult vr) {
-        if (vr.getSection() == null) {
-            vr.setSection(RunnerName.UNSET);
-        }
         VerificationEvent ve = new VerificationEvent(vr);
         ss.notifyListeners(ve);
     }
