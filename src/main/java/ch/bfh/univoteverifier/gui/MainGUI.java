@@ -15,11 +15,14 @@ import ch.bfh.univoteverifier.action.ChangeLocaleAction;
 import ch.bfh.univoteverifier.action.FileChooserAction;
 import ch.bfh.univoteverifier.action.ShowConsoleAction;
 import ch.bfh.univoteverifier.action.StartAction;
+import ch.bfh.univoteverifier.common.ConsoleRunner;
 import ch.bfh.univoteverifier.common.IFileManager;
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationEvent;
+import ch.bfh.univoteverifier.verification.VerificationThread;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
@@ -54,13 +57,13 @@ public class MainGUI extends JFrame {
     TopPanel topPanel;
     MiddlePanel middlePanel;
     ConsolePanel consolePanel;
-    ResultTablePanel resultTablePanel;
+    ResultPanelManager resultPanelManager;
     MainController mc;
     VerificationListener sl;
     JLabel vrfDescLabel, choiceDescLabel;
     JButton btnStart, btnFileSelector;
     JRadioButton btnUni, btnInd;
-    boolean selectionMade = false;
+    boolean selectionMade = false, GUIRunning=true;
     JComboBox comboBox;
     String[] eIDlist;
     String rawEIDlist;
@@ -73,26 +76,36 @@ public class MainGUI extends JFrame {
      * @param args
      */
     public static void main(String[] args) {
-        MainGUI gui = new MainGUI();
+        MainGUI gui = new MainGUI(args);
         gui.setVisible(true);
     }
 
     /**
-     * Construct the window and frame of this GUI and initialize certain base variables.
+     * Construct the window and frame of this GUI and initialize certain base
+     * variables.
      */
-    public MainGUI() {
-        setLookAndFeel();
+    public MainGUI(String[] args) {
         initResources();
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setMinimumSize(new Dimension(696, 400));
+        if (args.length > 0) {
+              GUIRunning=false;
+             Messenger msgr = createMessengerAddListener();
+            ConsoleRunner cr = new ConsoleRunner(msgr, args);
+        } else {
+            setLookAndFeel();
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            this.setMinimumSize(new Dimension(696, 400));
 
-		createContentPanel();
+            createContentPanel();
 
-		this.setJMenuBar(new VerificationMenuBar(this));
-		this.setTitle(rb.getString("windowTitle"));
-		this.pack();
-	}
-
+            this.setJMenuBar(new VerificationMenuBar(this));
+            this.setTitle(rb.getString("windowTitle"));
+            this.pack();
+        }
+       
+    }
+    
+   
+    
 	/**
 	 * Toggle the visibility of the console-like panel which contains a
 	 * JTextArea.
@@ -135,7 +148,6 @@ private void createContentPanel() {
      * Instantiates some basic resources needed in this class.
      */
     private void initResources() {
-        
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         prefs = Preferences.userNodeForPackage(MainGUI.class);
         rawEIDlist = prefs.get("eIDList", "Bern Zurich vsbfh-2013");
@@ -160,11 +172,11 @@ private void createContentPanel() {
 
         createComboBox();
         ButtonGroup btnGroup = new ButtonGroup();
-        Messenger msgr = new Messenger();
-        msgr.getStatusSubject().addListener(sl);
+        Messenger msgr = createMessengerAddListener();
 
-        resultTablePanel = new ResultTablePanel();
-        middlePanel = new MiddlePanel(resultTablePanel);
+       
+        resultPanelManager = new ResultPanelManager();
+        middlePanel = new MiddlePanel(resultPanelManager);
         middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
         middlePanel.setBackground(GUIconstants.GREY);
 
@@ -178,6 +190,16 @@ private void createContentPanel() {
         return panel;
     }
 
+    /**
+     * Create a Messenger instance and register the listener in this class.
+     *
+     * @return Messenger
+     */
+    public Messenger createMessengerAddListener() {
+        Messenger msgr = new Messenger();
+        msgr.getStatusSubject().addListener(sl);
+        return msgr;
+    }
 
     /**
      * Create the actions that are used in this GUI.
@@ -267,28 +289,58 @@ private void createContentPanel() {
 
         @Override
         public void updateStatus(VerificationEvent ve) {
-
-            if (ve.getVerificationEnum() == VerificationType.ERROR) {
-                consolePanel.appendToStatusText("\n" + ve.getMessage());
-            } else if (ve.getVerificationEnum() == VerificationType.FATAL_ERROR) {
-                String text = "\n" + ve.getMessage();
-                  JOptionPane.showMessageDialog(masterPanel, text);
+            if (GUIRunning) {
+                if (ve.getVerificationEnum() == VerificationType.ERROR) {
+                    consolePanel.appendToStatusText("\n" + ve.getMessage());
+                } else if (ve.getVerificationEnum() == VerificationType.FATAL_ERROR) {
+                    String text = "\n" + ve.getMessage();
+                    JOptionPane.showMessageDialog(masterPanel, text);
+                } else {
+                    showResultInGUI(ve);
+                }
             } else {
-                String sectionName = ve.getSection().toString();
-                Boolean result = ve.getResult();
-                int code = ve.getVerificationEnum().getID();
-                String vrfType = GUIconstants.getTextFromVrfCode(code);
-                ResultSet rs = new ResultSet(vrfType, result, sectionName);
-                resultTablePanel.addData(rs);
-
-                
-                String outputText = "\n" + vrfType + " ............. " + result;
-                consolePanel.appendToStatusText(outputText);
+                if (ve.getVerificationEnum() == VerificationType.ERROR) {
+                   LOGGER.log(Level.SEVERE, ve.getMessage());
+                } else if (ve.getVerificationEnum() == VerificationType.FATAL_ERROR) {
+                    String text = "\n" + ve.getMessage();
+                    LOGGER.log(Level.SEVERE, text);
+                } else {
+                    showResultInTerminal(ve);
+                }
             }
         }
     }
     
-     /**
+    /**
+     * Display the incoming verification result information in the GUI
+     * @param ve VerificationEvent helper class containing verification information.
+     */
+    public void showResultInGUI(VerificationEvent ve){
+     String sectionName = ve.getSection().toString();
+                Boolean result = ve.getResult();
+                int code = ve.getVerificationEnum().getID();
+                String vrfType = GUIconstants.getTextFromVrfCode(code);
+                String eID="vsbfh-2013";
+                ResultSet rs = new ResultSet(vrfType, result, sectionName, eID);
+                resultPanelManager.addData(rs);
+                String outputText = "\n" + vrfType + " ............. " + result;
+                consolePanel.appendToStatusText(outputText);
+    }
+    
+    /**
+     * Show the verification information in the terminal.  This method is called if the program is being run from the terminal.
+     * @param ve VerificationEvent helper class containing verification information.
+     */
+    public void showResultInTerminal(VerificationEvent ve) {
+        Boolean result = ve.getResult();
+        int code = ve.getVerificationEnum().getID();
+        String vrfType = GUIconstants.getTextFromVrfCode(code);
+        String eID = "vsbfh-2013";
+        String outputText = "\n" +eID + " : "+ vrfType + " ............. " + result;
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, outputText);
+    }
+
+    /**
      * This inner class holds a reference to a file expected to be QRCode and
      * which is sent to the verification thread when individual verification is
      * selected.

@@ -43,6 +43,8 @@ public class ResultTable extends JTable {
         return sectionName;
      }
     
+  
+    
         /**
      * Get table model for this table.
      * @return The tableModel for this table.

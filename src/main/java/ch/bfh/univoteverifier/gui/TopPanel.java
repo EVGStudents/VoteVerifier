@@ -196,6 +196,7 @@ public class TopPanel extends JPanel {
      */
     private JPanel getTitleImage() {
         JPanel imgPanel = new JPanel();
+        imgPanel.setBackground(Color.WHITE);
         java.net.URL img = MainGUI.class.getResource("/univoteTitle.jpeg");
         if (img != null) {
             ImageIcon logo = new ImageIcon(img);

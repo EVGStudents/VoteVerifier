@@ -18,16 +18,18 @@ public class ResultSet {
     private ImageIcon img;
     private JLabel label;
     private String sectionName;
+    private String eID;
     
     /**
      * Create an instance of this class.
      * @param txt The description of the verification performed.
      * @param result The result of the verification.
      */
-    public ResultSet(String txt, Boolean result, String sectionName) {
+    public ResultSet(String txt, Boolean result, String sectionName, String eID) {
         this.txt = txt +"  "+ generateFiller(txt);
         this.result = result;
         this.sectionName=sectionName;
+        this.eID=eID;
        java.net.URL urlImg = MainGUI.class.getResource("/check.png");
         this.img = new ImageIcon(urlImg);
         label=new JLabel(img);
@@ -71,6 +73,14 @@ public class ResultSet {
      */
     public String getSectionName(){
         return sectionName;
+    }
+    
+    /**
+     * Get the election ID for which this data is meant.
+     * @return the election ID.
+     */
+    public String getEID(){
+        return eID;
     }
     
     /**

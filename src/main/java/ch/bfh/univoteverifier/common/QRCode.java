@@ -13,7 +13,7 @@ import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
-import com.google.zxing.WriterException;
+//import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.NotFoundException;
@@ -56,26 +56,26 @@ public class QRCode {
         this.msgr = msgr;
     }
 
-    /**
-     * Creates the QRCode for a given text. This method is used for testing
-     * purposes
-     *
-     * @param str the string from which a QRCode shall be created
-     * @return the image of a QRcode
-     */
-    public ImageIcon createQRCode(String str) {
-        QRCodeWriter writer = new QRCodeWriter();
-        BitMatrix bitMatrix = null;
-        BufferedImage img = null;
-        try {
-            bitMatrix = writer.encode(str, BarcodeFormat.QR_CODE, 300, 300);
-            img = MatrixToImageWriter.toBufferedImage(bitMatrix);
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-        ImageIcon imgIcn = new ImageIcon(img);
-        return imgIcn;
-    }
+//    /**
+//     * Creates the QRCode for a given text. This method is used for testing
+//     * purposes
+//     *
+//     * @param str the string from which a QRCode shall be created
+//     * @return the image of a QRcode
+//     */
+//    public ImageIcon createQRCode(String str) {
+//        QRCodeWriter writer = new QRCodeWriter();
+//        BitMatrix bitMatrix = null;
+//        BufferedImage img = null;
+//        try {
+//            bitMatrix = writer.encode(str, BarcodeFormat.QR_CODE, 300, 300);
+//            img = MatrixToImageWriter.toBufferedImage(bitMatrix);
+//        } catch (WriterException e) {
+//            e.printStackTrace();
+//        }
+//        ImageIcon imgIcn = new ImageIcon(img);
+//        return imgIcn;
+//    }
 
     /**
      * decodes a QRCode into a String value

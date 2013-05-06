@@ -35,7 +35,18 @@ public class GUIconstants {
             + "\nBern University of Applied Sciences, Engineering and Information Technology,"
             + " \nResearch Institute for Security in the Information Society, E-Voting Group,"
             + " \nBiel, Switzerland.";
-
+ public final static String USAGE = ABOUT_TEXT
+            + "\n\nUsage: uvv [OPTION] [FILE]\n"
+            + "uvv verifies the results from an election held with the UniVote Wahlsystem.\n"
+            + "\n"
+            + "Examples:\n"
+            + "  uvv -i /home/username/qrcode \t# Verify a single election receipt from a QR code.\n"
+            + "  uvv -u vsbfh-2013   \t\t# Verify the results from the election with ID vsbfh-2013\n"
+            + "\n"
+            + "Commands:\n"
+            + "\n"
+            + "  -i, --individual [file]   \tVerify an election receipt.\n"
+            + "  -u, --universal \"election id\"\tVerify an an entire election.\n";
     /**
      * Set the locale being used for the program to a new value.
      *

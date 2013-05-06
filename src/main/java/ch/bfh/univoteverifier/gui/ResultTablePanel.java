@@ -24,11 +24,12 @@ public class ResultTablePanel extends JPanel {
     ResultTable rt;
     JPanel masterTablePanel;
     ArrayList<ResultTable> tables;
+    String eID;
     
     /**
      * Create an instance of this panel.
      */
-    public ResultTablePanel() {
+    public ResultTablePanel(String eID) {
         tables = new ArrayList<>();
         createContentPanel();
     }
@@ -57,7 +58,7 @@ public class ResultTablePanel extends JPanel {
      * Add data to a table to see how it looks.  The data is meaningless.
      */
     public void addDummyData() {
-        addTable(new ResultSet("first entry", true,"Some section"));
+        addTable(new ResultSet("first entry", true,"Some section", "Some Election"));
     }
 
     /**
@@ -116,4 +117,12 @@ public class ResultTablePanel extends JPanel {
         masterTablePanel.revalidate();
         masterTablePanel.repaint();
     }
+    
+        /**
+     * Get the eID of this table, which corresponds to the election ID for which this table holds results.
+     * @return The name of the election ID.
+     */
+    public String getEID(){
+        return eID;
+     }
 }

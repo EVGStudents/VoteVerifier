@@ -31,31 +31,28 @@ import javax.swing.border.EmptyBorder;
  */
 public class MiddlePanel extends JPanel {
 
-    JPanel innerPanel;
+    JPanel backgroundPanel;
     
     /**
      * Create an instance of this class.
      * @param innerPanel the content panel for verification results is added into a scroll pane.
      */
-    public MiddlePanel(ResultTablePanel resultTablePanel) {
+    public MiddlePanel(ResultPanelManager resultPanelManager) {
         this.setLayout(new GridLayout(1, 1));
         this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(696, 450));
         this.setBorder(new EmptyBorder(10, 30, 10, 30)); //top left bottom right
         
-//        innerPanel = new JPanel();
-//        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
-//        innerPanel.setBackground(GUIconstants.GREY);
-//        
-//        JScrollPane vrfScrollPanel = new JScrollPane(innerPanel);
-//        vrfScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-        this.add(resultTablePanel);
+        backgroundPanel=  new JPanel();
+        backgroundPanel.setBackground(Color.WHITE);
+        backgroundPanel.setLayout(new GridLayout(1, 1));
+        backgroundPanel.add(resultPanelManager);
+        this.add(backgroundPanel);
     }
     
-    public void addResultPanel(JPanel panel){
-        innerPanel.add(panel);
-        this.revalidate();
-        this.repaint();
+    public void setBackgroundGrey(){
+    backgroundPanel.setBackground(GUIconstants.GREY);
     }
+    
+ 
 }
