@@ -11,6 +11,7 @@
 package ch.bfh.univoteverifier.implementertest;
 
 import ch.bfh.univoteverifier.common.CryptoFunc;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +28,6 @@ import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
 import javax.naming.ldap.LdapName;
 import javax.naming.ldap.Rdn;
-import javax.security.auth.x500.X500Principal;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -44,6 +44,7 @@ public class CertImplTest {
 	File fQuoVadisRoot;
 
 	public CertImplTest() {
+		ElectionBoardProxy ebp = new ElectionBoardProxy("vs")
 		ci = new CertificatesImplementer(null);
 
 		fBfh = new File(this.getClass().getResource("/www.bfh.ch").getPath());
@@ -110,5 +111,10 @@ public class CertImplTest {
 			assertTrue(ci.vrfCert(certList));
 		} catch (IOException | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
 		}
+	}
+
+	@Test
+	public void testEACertificate() {
+		cer
 	}
 }

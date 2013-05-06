@@ -135,6 +135,15 @@ public class VerificationResult {
 		return this.entityName;
 	}
 
+	/**
+	 * Get the election ID.
+	 *
+	 * @return a String with election ID.
+	 */
+	public String getElectionID() {
+		return this.eID;
+	}
+
 	@Override
 	public String toString() {
 		String s = "\n\tVerification Event"
