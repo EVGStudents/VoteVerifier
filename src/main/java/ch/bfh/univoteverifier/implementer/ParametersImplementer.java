@@ -12,6 +12,7 @@ package ch.bfh.univoteverifier.implementer;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.FailureCode;
+import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.math.BigInteger;
@@ -30,6 +31,7 @@ public class ParametersImplementer {
 	 * Construct a new ParametersImplementer with a given election ID.
 	 *
 	 * @param eID the election ID.
+	 * @param rn the name of the runner who used this implementer.
 	 */
 	public ParametersImplementer(ElectionBoardProxy ebp) {
 		this.ebp = ebp;

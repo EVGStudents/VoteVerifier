@@ -53,22 +53,28 @@ public class SystemSetupRunner extends Runner {
 		try {
 			//perform the checks we want - pay attention to exceptions!
 			VerificationResult v1 = paramImpl.vrfPrime(Config.p, VerificationType.SETUP_SCHNORR_P);
+			v1.setRunnerName(RunnerName.SYSTEM_SETUP);
+
 			msgr.sendVrfMsg(v1);
 			Thread.sleep(1000);
 
 			VerificationResult v2 = paramImpl.vrfPrime(Config.q, VerificationType.SETUP_SCHNORR_Q);
+			v2.setRunnerName(RunnerName.SYSTEM_SETUP);
 			msgr.sendVrfMsg(v2);
 			Thread.sleep(1000);
 
 			VerificationResult v3 = paramImpl.vrfGenerator(Config.p, Config.q, Config.g, VerificationType.SETUP_SCHNORR_G);
+			v3.setRunnerName(RunnerName.SYSTEM_SETUP);
 			msgr.sendVrfMsg(v3);
 			Thread.sleep(1000);
 
 			VerificationResult v4 = paramImpl.vrfSafePrime(Config.p, Config.q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
+			v4.setRunnerName(RunnerName.SYSTEM_SETUP);
 			msgr.sendVrfMsg(v4);
 			Thread.sleep(1000);
 
 			VerificationResult v5 = paramImpl.vrfSchnorrParamLen(Config.p, Config.q, Config.g);
+			v5.setRunnerName(RunnerName.SYSTEM_SETUP);
 			msgr.sendVrfMsg(v5);
 
 			//cache the results
