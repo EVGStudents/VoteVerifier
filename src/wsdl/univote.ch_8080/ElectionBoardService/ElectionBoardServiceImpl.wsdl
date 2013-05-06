@@ -31,14 +31,20 @@
 	<message name="getRootCertificateResponse">
 		<part name="parameters" element="tns:getRootCertificateResponse"/>
 	</message>
+	<message name="getKnownElectionIds">
+		<part name="parameters" element="tns:getKnownElectionIds"/>
+	</message>
+	<message name="getKnownElectionIdsResponse">
+		<part name="parameters" element="tns:getKnownElectionIdsResponse"/>
+	</message>
+
+	<!-- Election Setup -->
 	<message name="getElectionSystemInfo">
 		<part name="parameters" element="tns:getElectionSystemInfo"/>
 	</message>
 	<message name="getElectionSystemInfoResponse">
 		<part name="parameters" element="tns:getElectionSystemInfoResponse"/>
 	</message>
-
-	<!-- Election Setup -->
 	<message name="getElectionDefinition">
 		<part name="parameters" element="tns:getElectionDefinition"/>
 	</message>
@@ -196,13 +202,18 @@
 			<output message="tns:getRootCertificateResponse"/>
 			<fault message="tns:ElectionBoardServiceFault" name="ElectionBoardServiceFault"/>
 		</operation>
+		<operation name="getKnownElectionIds">
+			<input message="tns:getKnownElectionIds"/>
+			<output message="tns:getKnownElectionIdsResponse"/>
+			<fault message="tns:ElectionBoardServiceFault" name="ElectionBoardServiceFault"/>
+		</operation>
+
+		<!-- Election Setup -->
 		<operation name="getElectionSystemInfo">
 			<input message="tns:getElectionSystemInfo"/>
 			<output message="tns:getElectionSystemInfoResponse"/>
 			<fault message="tns:ElectionBoardServiceFault" name="ElectionBoardServiceFault"/>
 		</operation>
-
-		<!-- Election Setup -->
 		<operation name="getElectionDefinition">
 			<input message="tns:getElectionDefinition"/>
 			<output message="tns:getElectionDefinitionResponse"/>
@@ -349,7 +360,7 @@
 				<soap:fault name="ElectionBoardServiceFault" use="literal"/>
 			</fault>
 		</operation>
-		<operation name="getElectionSystemInfo">
+		<operation name="getKnownElectionIds">
 			<soap:operation soapAction=""/>
 			<input>
 				<soap:body use="literal"/>
@@ -363,6 +374,18 @@
 		</operation>
 
 		<!-- Election Setup -->
+		<operation name="getElectionSystemInfo">
+			<soap:operation soapAction=""/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+			<fault name="ElectionBoardServiceFault">
+				<soap:fault name="ElectionBoardServiceFault" use="literal"/>
+			</fault>
+		</operation>
 		<operation name="getElectionDefinition">
 			<soap:operation soapAction=""/>
 			<input>

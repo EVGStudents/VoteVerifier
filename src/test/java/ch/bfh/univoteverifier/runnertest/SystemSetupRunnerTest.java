@@ -43,11 +43,11 @@ public class SystemSetupRunnerTest {
 		realList = ssr.run();
 		mockList = new ArrayList<>();
 
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true, eID));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID, RunnerName.SYSTEM_SETUP));
 
 	}
 

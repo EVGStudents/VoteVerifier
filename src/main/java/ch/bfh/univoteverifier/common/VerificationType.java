@@ -10,7 +10,7 @@
 package ch.bfh.univoteverifier.common;
 
 /**
- * This enumeration contains the list of the different verifications
+ * This enumeration contains the list of the different verifications.
  *
  * @author snake
  */
@@ -32,6 +32,8 @@ public enum VerificationType {
 	EL_SETUP_ELGAMAL_P(230),
 	EL_SETUP_ELGAMAL_Q(231),
 	EL_SETUP_ELGAMAL_G(232),
+	EL_SETUP_ELGAMAL_SAFE_PRIME(233),
+	EL_SETUP_ELGAMAL_PARAM_LEN(234),
 	EL_SETUP_ELGAMAL_PARAMS_SIGN(235),
 	EL_SETUP_T_NIZKP_OF_X(240),
 	EL_SETUP_T_NIZKP_OF_X_SIGN(245),
@@ -76,18 +78,18 @@ public enum VerificationType {
 	private final int id;
 
 	/**
-	 * Construct a verification type with a given ID
+	 * Construct a verification type with a given ID.
 	 *
-	 * @param id the ID of the verification type
+	 * @param id the ID of the verification type.
 	 */
 	private VerificationType(int id) {
 		this.id = id;
 	}
 
 	/**
-	 * Get the ID of the verification
+	 * Get the ID of the verification.
 	 *
-	 * @return the ID of the verification
+	 * @return the ID of the verification.
 	 */
 	public int getID() {
 		return id;

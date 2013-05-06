@@ -354,7 +354,7 @@ public class ElectionBoardProxy {
 	 */
 	public ElectionSystemInfo getElectionSystemInfo() throws ElectionBoardServiceFault {
 		if (elSysInfo == null) {
-			elSysInfo = eb.getElectionSystemInfo();
+			elSysInfo = eb.getElectionSystemInfo(eID);
 		}
 
 		return elSysInfo;
@@ -643,7 +643,7 @@ public class ElectionBoardProxy {
 	}
 
 	/**
-	 * Get the X509 Certificate of the EM .
+	 * Get the X509 Certificate of the EM.
 	 *
 	 * @return the X509Certificate of the EM.
 	 * @throws CertificateException if there are problem with the instance
@@ -653,6 +653,7 @@ public class ElectionBoardProxy {
 	 * parameter.
 	 */
 	public X509Certificate getEMCert() throws CertificateException, ElectionBoardServiceFault {
+
 		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getElectionManager().getValue());
 
 		return c;
@@ -742,5 +743,14 @@ public class ElectionBoardProxy {
 		}
 
 		return mixersCerts;
+	}
+
+	/**
+	 * Get the election ID.
+	 *
+	 * @return the election ID of this ElectionBoardProxy.
+	 */
+	public String getElectionID() {
+		return this.eID;
 	}
 }

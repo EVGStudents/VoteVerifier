@@ -12,6 +12,7 @@ package ch.bfh.univoteverifier.implementer;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.security.InvalidAlgorithmParameterException;
@@ -35,12 +36,17 @@ import javax.naming.InvalidNameException;
  *
  * @author snake
  */
-public class CertificatesImplementer {
+public class CertificatesImplementer extends Implementer {
 
-	private final ElectionBoardProxy ebp;
-
-	public CertificatesImplementer(ElectionBoardProxy ebp) {
-		this.ebp = ebp;
+	/**
+	 * Create a new CertificatesImplementer with a given ElectionBoardProxy
+	 * and RunnerName.
+	 *
+	 * @param ebp the ElectionBoardProxy from where get the data.
+	 * @param rn the RunnerName who needs this implementer.
+	 */
+	public CertificatesImplementer(ElectionBoardProxy ebp, RunnerName rn) {
+		super(ebp, rn);
 	}
 
 	/**
@@ -105,7 +111,7 @@ public class CertificatesImplementer {
 			r = false;
 		}
 
-		return new VerificationResult(VerificationType.SETUP_CA_CERT, r, ebp.getElectionDefinition().getElectionId());
+		return new VerificationResult(VerificationType.SETUP_CA_CERT, r, ebp.getElectionID(), rn);
 	}
 
 	/**
@@ -133,7 +139,7 @@ public class CertificatesImplementer {
 			r = false;
 		}
 
-		return new VerificationResult(VerificationType.SETUP_EM_CERT, r, ebp.getElectionDefinition().getElectionId());
+		return new VerificationResult(VerificationType.SETUP_EM_CERT, r, ebp.getElectionID(), rn);
 	}
 
 	/**
@@ -161,7 +167,7 @@ public class CertificatesImplementer {
 			r = false;
 		}
 
-		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT, r, ebp.getElectionDefinition().getElectionId());
+		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT, r, ebp.getElectionID(), rn);
 	}
 
 	/**
@@ -193,7 +199,7 @@ public class CertificatesImplementer {
 			}
 
 			//create a VerificationResult and then set the entity name to the one we have
-			VerificationResult vTallier = new VerificationResult(VerificationType.EL_SETUP_TALLIERS_CERT, r, ebp.getElectionDefinition().getElectionId());
+			VerificationResult vTallier = new VerificationResult(VerificationType.EL_SETUP_TALLIERS_CERT, r, ebp.getElectionID(), rn);
 			vTallier.setEntityName((String) e.getKey());
 
 			talliersCert.add(vTallier);
@@ -231,7 +237,7 @@ public class CertificatesImplementer {
 			}
 
 			//create a VerificationResult and then set the entity name to the one we have
-			VerificationResult vMixer = new VerificationResult(VerificationType.EL_SETUP_MIXERS_CERT, r, ebp.getElectionDefinition().getElectionId());
+			VerificationResult vMixer = new VerificationResult(VerificationType.EL_SETUP_MIXERS_CERT, r, ebp.getElectionID(), rn);
 			vMixer.setEntityName((String) e.getKey());
 
 			mixersCert.add(vMixer);

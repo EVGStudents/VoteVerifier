@@ -12,10 +12,10 @@ package ch.bfh.univoteverifier.implementer;
 import ch.bfh.univote.common.ElectionDefinition;
 import ch.bfh.univote.common.Signature;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
-import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.FailureCode;
+import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -25,17 +25,14 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * This class contains all the methods that need a RSA Verification.
  *
  * @author snake
  */
-public class RSAImplementer {
+public class RSAImplementer extends Implementer {
 
-	private static final Logger LOGGER = Logger.getLogger(RSAImplementer.class.getName());
-	private final ElectionBoardProxy ebp;
 	private final StringConcatenator sc;
 	private final RSAPublicKey emPubKey;
 	private final RSAPublicKey eaPubKey;
@@ -45,8 +42,8 @@ public class RSAImplementer {
 	 *
 	 * @param ebp the election board proxy from where get the data.
 	 */
-	public RSAImplementer(ElectionBoardProxy ebp) {
-		this.ebp = ebp;
+	public RSAImplementer(ElectionBoardProxy ebp, RunnerName rn) {
+		super(ebp, rn);
 		sc = new StringConcatenator();
 		//ToDo - decomment when we have the data
 		//emPubKey = (RSAPublicKey) Config.emCert.getPublicKey();
@@ -111,14 +108,14 @@ public class RSAImplementer {
 
 		boolean r = vrfRSASign(emPubKey, hash, signature);
 
-		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r, ebp.getElectionDefinition().getElectionId());
+		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r, ebp.getElectionID(), rn);
 	}
 
 	/**
 	 * Verify the signature of the basic parameters (id, description, key
 	 * length, talliers and mixers) of an election.
 	 *
-	 * @returna verification event.
+	 * @returna a VerificationResul.
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 * @throws NoSuchAlgorithmException if the hash algorithm function used
@@ -157,7 +154,94 @@ public class RSAImplementer {
 		boolean r = vrfRSASign(eaPubKey, hash, signature.getValue());
 
 		//create the VerificationResult
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r, ebp.getElectionDefinition().getElectionId());
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r, ebp.getElectionID(), rn);
+
+		if (!r) {
+			v.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+		}
+
+		return v;
+	}
+
+	/**
+	 * Verify the signature of the talliers and mixers certificates with the
+	 * election id.
+	 *
+	 * @return a VerificationResult.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 */
+	public VerificationResult vrfTMCertsSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+		//ToDo - change to the correct value when we find it.
+		Signature signature = null;
+
+		//concatenate to (id|(Z_t1|....|Z_tn)|(Z_m1|...|Z_mn)|timestamp)
+		sc.pushLeftDelim();
+		sc.pushObjectDelimiter(ebp.getElectionDefinition().getElectionId(), StringConcatenator.INNER_DELIMITER);
+		sc.pushList(ebp.getElectionSystemInfo().getTallier(), true);
+		sc.pushInnerDelim();
+		sc.pushList(ebp.getElectionSystemInfo().getMixer(), true);
+		sc.pushInnerDelim();
+		//get the timestamp when we will know where it is
+		//sc.pushObjectDelimiter(timestamp, StringConcatenator.RIGHT_DELIMITER);
+
+		String res = sc.pullAll();
+
+		//compute the hash of the concatenated string
+		BigInteger hash = CryptoFunc.sha1(res);
+
+		//verify the signature
+		boolean r = vrfRSASign(emPubKey, hash, signature.getValue());
+
+		//create the VerificationResult
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_CERT_M_CERT_ID_SIGN, r, ebp.getElectionID(), rn);
+
+		if (!r) {
+			v.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+		}
+
+		return v;
+	}
+
+	/**
+	 * Verify the signature of the ElGamal parameters with the election id.
+	 *
+	 * @return a VerificationResult.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 */
+	public VerificationResult vrfElGamalParamSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+		Signature signature = ebp.getEncryptionParameters().getSignature();
+		BigInteger P = ebp.getEncryptionParameters().getPrime();
+		BigInteger Q = ebp.getEncryptionParameters().getGroupOrder();
+		BigInteger G = ebp.getEncryptionParameters().getGenerator();
+
+		//concatenate to (id|P|Q|G|timestamp)
+		sc.pushLeftDelim();
+		sc.pushObjectDelimiter(ebp.getElectionDefinition().getElectionId(), StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(P, StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(Q, StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(G, StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(signature.getTimestamp(), StringConcatenator.RIGHT_DELIMITER);
+
+		String res = sc.pullAll();
+
+		//compute the hash of the concatenated string
+		BigInteger hash = CryptoFunc.sha1(res);
+
+		//verify the signature
+		boolean r = vrfRSASign(emPubKey, hash, signature.getValue());
+
+		//create the VerificationResult
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_ELGAMAL_PARAMS_SIGN, r, ebp.getElectionID(), rn);
 
 		if (!r) {
 			v.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);

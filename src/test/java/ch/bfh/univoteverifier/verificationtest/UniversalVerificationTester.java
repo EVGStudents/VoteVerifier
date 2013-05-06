@@ -11,6 +11,7 @@
 package ch.bfh.univoteverifier.verificationtest;
 
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.verification.UniversalVerification;
 import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.common.VerificationType;
@@ -38,11 +39,11 @@ public class UniversalVerificationTester {
 		realList = v.runVerification();
 
 		mockList = new ArrayList<>();
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true, eID));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID, RunnerName.UNSET));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true, eID, RunnerName.UNSET));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID, RunnerName.UNSET));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID, RunnerName.UNSET));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID, RunnerName.UNSET));
 		//ToDO add all the results when they are available
 	}
 

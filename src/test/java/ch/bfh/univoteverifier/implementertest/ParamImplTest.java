@@ -14,6 +14,7 @@ import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.FailureCode;
+import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -33,7 +34,7 @@ public class ParamImplTest {
 
 	public ParamImplTest() {
 		ElectionBoardProxy ebp = new ElectionBoardProxy("vsbfh-2013");
-		pi = new ParametersImplementer(ebp);
+		pi = new ParametersImplementer(ebp, RunnerName.UNSET);
 
 		//change the value of p,q and g - all the test must fail
 		p = Config.p.multiply(new BigInteger("2"));

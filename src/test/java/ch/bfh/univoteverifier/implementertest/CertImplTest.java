@@ -13,8 +13,8 @@ package ch.bfh.univoteverifier.implementertest;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
-import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,11 +25,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.InvalidNameException;
-import javax.naming.ldap.LdapName;
-import javax.naming.ldap.Rdn;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -44,16 +39,20 @@ public class CertImplTest {
 	File fBfh;
 	File fQuoVadisG;
 	File fQuoVadisRoot;
+	ElectionBoardProxy ebp;
+	File cacert;
 
 	public CertImplTest() {
-		ElectionBoardProxy ebp = new ElectionBoardProxy("vsbfh-2013");
-		ci = new CertificatesImplementer(ebp);
+		ebp = new ElectionBoardProxy("vsbfh-2013");
+		ci = new CertificatesImplementer(ebp, RunnerName.UNSET);
 
 		fBfh = new File(this.getClass().getResource("/www.bfh.ch").getPath());
 
 		fQuoVadisG = new File(this.getClass().getResource("/QuoVadisGlobalSSLICA").getPath());
 
 		fQuoVadisRoot = new File(this.getClass().getResource("/QuoVadisRootCA2").getPath());
+
+		cacert = new File(this.getClass().getResource("/CACertificate.pem").getPath());
 	}
 
 	/**
@@ -71,21 +70,6 @@ public class CertImplTest {
 			certList.add(CryptoFunc.getX509Certificate(bBfh));
 			certList.add(CryptoFunc.getX509Certificate(bQuoVadisG));
 			certList.add(CryptoFunc.getX509Certificate(bQuoVadisRoot));
-
-			//
-			String princ = certList.get(0).getSubjectX500Principal().getName();
-
-			LdapName ldapDN;
-			try {
-				ldapDN = new LdapName(princ);
-				for (Rdn rdn : ldapDN.getRdns()) {
-					System.out.println(rdn.getType() + " -> " + rdn.getValue());
-				}
-			} catch (InvalidNameException ex) {
-				Logger.getLogger(CertImplTest.class.getName()).log(Level.SEVERE, null, ex);
-			}
-
-			//
 
 			assertTrue(ci.vrfCert(certList));
 		} catch (IOException | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | CertPathValidatorException ex) {
@@ -116,12 +100,41 @@ public class CertImplTest {
 	}
 
 	@Test
-	public void testCaCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
-		VerificationResult vr = ci.vrfCACertificate();
-		assertTrue(vr.getResult());
-	}
+	public void testCaCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IOException {
+		//VerificationResult vr = ci.vrfCACertificate();
+		//assertTrue(vr.getResult());
 
-	@Test
-	public void testEACertificate() {
+		byte[] bb = ebp.getElectionSystemInfo().getElectionAdministration().getValue();
+		System.out.println(new String(bb));
+		String s = "-----BEGIN CERTIFICATE-----\n"
+			+ "MIIDIDCCAomgAwIBAgIENd70zzANBgkqhkiG9w0BAQUFADBOMQswCQYDVQQGEwJV\n"
+			+ "UzEQMA4GA1UEChMHRXF1aWZheDEtMCsGA1UECxMkRXF1aWZheCBTZWN1cmUgQ2Vy\n"
+			+ "dGlmaWNhdGUgQXV0aG9yaXR5MB4XDTk4MDgyMjE2NDE1MVoXDTE4MDgyMjE2NDE1\n"
+			+ "MVowTjELMAkGA1UEBhMCVVMxEDAOBgNVBAoTB0VxdWlmYXgxLTArBgNVBAsTJEVx\n"
+			+ "dWlmYXggU2VjdXJlIENlcnRpZmljYXRlIEF1dGhvcml0eTCBnzANBgkqhkiG9w0B\n"
+			+ "AQEFAAOBjQAwgYkCgYEAwV2xWGcIYu6gmi0fCG2RFGiYCh7+2gRvE4RiIcPRfM6f\n"
+			+ "BeC4AfBONOziipUEZKzxa1NfBbPLZ4C/QgKO/t0BCezhABRP/PvwDN1Dulsr4R+A\n"
+			+ "cJkVV5MW8Q+XarfCaCMczE1ZMKxRHjuvK9buY0V7xdlfUNLjUA86iOe/FP3gx7kC\n"
+			+ "AwEAAaOCAQkwggEFMHAGA1UdHwRpMGcwZaBjoGGkXzBdMQswCQYDVQQGEwJVUzEQ\n"
+			+ "MA4GA1UEChMHRXF1aWZheDEtMCsGA1UECxMkRXF1aWZheCBTZWN1cmUgQ2VydGlm\n"
+			+ "aWNhdGUgQXV0aG9yaXR5MQ0wCwYDVQQDEwRDUkwxMBoGA1UdEAQTMBGBDzIwMTgw\n"
+			+ "ODIyMTY0MTUxWjALBgNVHQ8EBAMCAQYwHwYDVR0jBBgwFoAUSOZo+SvSspXXR9gj\n"
+			+ "IBBPM5iQn9QwHQYDVR0OBBYEFEjmaPkr0rKV10fYIyAQTzOYkJ/UMAwGA1UdEwQF\n"
+			+ "MAMBAf8wGgYJKoZIhvZ9B0EABA0wCxsFVjMuMGMDAgbAMA0GCSqGSIb3DQEBBQUA\n"
+			+ "A4GBAFjOKer89961zgK5F7WF0bnj4JXMJTENAKaSbn+2kmOeUJXRmm/kEd5jhW6Y\n"
+			+ "7qj/WsjTVbJmcVfewCHrPSqnI0kBBIZCe/zuf6IWUrVnZ9NA2zsmWLIodz2uFHdh\n"
+			+ "1voqZiegDfqnc1zqcPGUIWVEX/r87yloqaKHee9570+sB3c4\n"
+			+ "-----END CERTIFICATE-----";
+		X509Certificate x = CryptoFunc.getX509Certificate(s.getBytes());
+
+//		byte[] b2 = ebp.getElectionSystemInfo().getElectionAdministration().getValue();
+//		System.out.println(new String(b2));
+//		X509Certificate c2 = CryptoFunc.getX509Certificate(b2);
+//		System.out.println(c2);
+//
+//		byte[] b3 = ebp.getElectionSystemInfo().getCertificateAuthority().getValue();
+//		X509Certificate c3 = CryptoFunc.getX509Certificate(b3);
+//		System.out.println(c3);
+
 	}
 }

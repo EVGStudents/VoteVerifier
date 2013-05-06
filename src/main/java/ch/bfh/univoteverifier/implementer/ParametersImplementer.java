@@ -22,19 +22,18 @@ import java.math.BigInteger;
  *
  * @author snake
  */
-public class ParametersImplementer {
+public class ParametersImplementer extends Implementer {
 
 	private final int PRIME_NUMBER_CERTAINITY = 1000;
-	private final ElectionBoardProxy ebp;
 
 	/**
 	 * Construct a new ParametersImplementer with a given election ID.
 	 *
-	 * @param eID the election ID.
+	 * @param ebp the ElectionBoardProxy used to get the data.
 	 * @param rn the name of the runner who used this implementer.
 	 */
-	public ParametersImplementer(ElectionBoardProxy ebp) {
-		this.ebp = ebp;
+	public ParametersImplementer(ElectionBoardProxy ebp, RunnerName rn) {
+		super(ebp, rn);
 	}
 
 	/**
@@ -49,7 +48,7 @@ public class ParametersImplementer {
 
 		boolean r = p.bitLength() == lengthPG && q.bitLength() == lengthQ && g.bitLength() == lengthPG;
 
-		VerificationResult ve = new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, r, ebp.getElectionDefinition().getElectionId());
+		VerificationResult ve = new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, r, ebp.getElectionDefinition().getElectionId(), rn);
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.FALSE_PARAMETERS_LENGTH);
@@ -60,7 +59,7 @@ public class ParametersImplementer {
 	}
 
 	/*
-	 * Check the length of the ElGamal parameters
+	 * Check the length of the ElGamal parameters.
 	 * ToDo - Ask the length of the ElGamal parameters
 	 */
 	public VerificationResult vrfElGamalParamLen(BigInteger p, BigInteger q, BigInteger g) {
@@ -78,7 +77,7 @@ public class ParametersImplementer {
 	public VerificationResult vrfPrime(BigInteger p, VerificationType type) throws ElectionBoardServiceFault {
 		boolean r = p.isProbablePrime(PRIME_NUMBER_CERTAINITY);
 
-		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionDefinition().getElectionId());
+		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionDefinition().getElectionId(), rn);
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.COMPOSITE_PRIME_NUMBER);
@@ -98,7 +97,7 @@ public class ParametersImplementer {
 
 		boolean r = rest.equals(BigInteger.ZERO);
 
-		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionDefinition().getElectionId());
+		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionDefinition().getElectionId(), rn);
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.NOT_SAFE_PRIME);
@@ -116,7 +115,7 @@ public class ParametersImplementer {
 		BigInteger res = g.modPow(q, p);
 
 		boolean r = res.equals(BigInteger.ONE);
-		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionDefinition().getElectionId());
+		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionDefinition().getElectionId(), rn);
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.NOT_A_GENERATOR);

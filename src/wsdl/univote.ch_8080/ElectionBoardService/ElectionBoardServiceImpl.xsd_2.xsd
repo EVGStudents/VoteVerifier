@@ -19,10 +19,12 @@
 	<xs:element name="getSignatureParametersResponse" type="tns:getSignatureParametersResponse"/>
 	<xs:element name="getRootCertificate" type="tns:getRootCertificate"/>
 	<xs:element name="getRootCertificateResponse" type="tns:getRootCertificateResponse"/>
-	<xs:element name="getElectionSystemInfo" type="tns:getElectionSystemInfo"/>
-	<xs:element name="getElectionSystemInfoResponse" type="tns:getElectionSystemInfoResponse"/>
+	<xs:element name="getKnownElectionIds" type="tns:getKnownElectionIds"/>
+	<xs:element name="getKnownElectionIdsResponse" type="tns:getKnownElectionIdsResponse"/>
 
 	<!-- Election Setup -->
+	<xs:element name="getElectionSystemInfo" type="tns:getElectionSystemInfo"/>
+	<xs:element name="getElectionSystemInfoResponse" type="tns:getElectionSystemInfoResponse"/>
 	<xs:element name="getElectionDefinition" type="tns:getElectionDefinition"/>
 	<xs:element name="getElectionDefinitionResponse" type="tns:getElectionDefinitionResponse"/>
 	<xs:element name="getEncryptionParameters" type="tns:getEncryptionParameters"/>
@@ -95,16 +97,26 @@
 			<xs:element name="certificate" type="ns1:certificate"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="getElectionSystemInfo">
+	<xs:complexType name="getKnownElectionIds">
 		<xs:sequence/>
+	</xs:complexType>
+	<xs:complexType name="getKnownElectionIdsResponse">
+		<xs:sequence>
+			<xs:element name="knownElectionIds" type="ns1:knownElectionIds"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Election Setup -->
+	<xs:complexType name="getElectionSystemInfo">
+		<xs:sequence>
+			<xs:element name="electionId" type="xs:string"/>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="getElectionSystemInfoResponse">
 		<xs:sequence>
 			<xs:element name="electionSystemInfo" type="ns1:electionSystemInfo"/>
 		</xs:sequence>
 	</xs:complexType>
-
-	<!-- Election Setup -->
 	<xs:complexType name="getElectionDefinition">
 		<xs:sequence>
 			<xs:element name="electionId" type="xs:string"/>
