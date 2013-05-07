@@ -34,13 +34,18 @@ public class VerificationResult {
 	 * Create a new VerificationResult.
 	 *
 	 * @param v The type of verification that has succeeded.
+	 * @param res The result.
+	 * @param eID The election ID who need this VerificationResult.
+	 * @param rn The name of the runner who wants to have this
+	 * VerificationResult.
 	 */
-	public VerificationResult(VerificationType v, boolean res, String eID) {
+	public VerificationResult(VerificationType v, boolean res, String eID, RunnerName rn) {
 		this.v = v;
 		this.result = res;
 		this.impl = true;
 		this.fc = null;
 		this.eID = eID;
+		this.rn = rn;
 	}
 
 	/**
@@ -50,16 +55,6 @@ public class VerificationResult {
 	 */
 	public RunnerName getRunnerName() {
 		return rn;
-	}
-
-	/**
-	 * Set the RunnerName for this VerificationResult.
-	 *
-	 * @param section the RunnerName that has managed this
-	 * VerificationResult.
-	 */
-	public void setRunnerName(RunnerName rn) {
-		this.rn = rn;
 	}
 
 	/**
@@ -147,7 +142,7 @@ public class VerificationResult {
 		return this.eID;
 	}
 
-	@Override
+	//ToDo check if is useful
 	public String toString() {
 		String s = "\n\tVerification Event"
 			+ "" + getRunnerName()

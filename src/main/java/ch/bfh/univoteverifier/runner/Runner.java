@@ -9,7 +9,6 @@
  */
 package ch.bfh.univoteverifier.runner;
 
-import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -26,7 +25,7 @@ public abstract class Runner {
 
 	protected List<VerificationResult> partialResults;
 	protected final Messenger msgr;
-	private final RunnerName runnerName;
+	protected final RunnerName runnerName;
 
 	/**
 	 * Construct a runner with an ElectionBoardProxy and a relative name.

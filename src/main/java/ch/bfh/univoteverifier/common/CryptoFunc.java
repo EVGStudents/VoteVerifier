@@ -34,7 +34,7 @@ public class CryptoFunc {
 	private static final String ENCODING = "UTF-8";
 
 	/**
-	 * Compute the sha-256 hash of a given string
+	 * Compute the sha-256 hash of a given string.
 	 *
 	 * @param val BigInteger the value used to compute the hash.
 	 * @return the hash as BigInteger representation.
@@ -88,6 +88,7 @@ public class CryptoFunc {
 	public static X509Certificate getX509Certificate(byte[] b) throws CertificateException {
 		InputStream is = new ByteArrayInputStream(b);
 		X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(is);
+
 		return cert;
 	}
 }
