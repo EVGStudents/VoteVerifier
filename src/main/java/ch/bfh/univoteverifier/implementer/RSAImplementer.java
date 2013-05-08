@@ -62,12 +62,7 @@ public class RSAImplementer extends Implementer {
 		//compute signature^e mod s, this must be equal to the hash we have computed
 		BigInteger decSign = signature.modPow(s.getPublicExponent(), s.getModulus());
 
-		System.out.println("Decrypted signature: " + decSign);
-		System.out.println("Length: " + decSign.bitLength());
-		System.out.println("My hash: " + hash);
-		System.out.println("Length: " + hash.bitLength());
 		boolean result = decSign.equals(hash);
-
 
 		return result;
 	}
@@ -152,7 +147,6 @@ public class RSAImplementer extends Implementer {
 		sc.pushObjectDelimiter(signature.getTimestamp().toString(), StringConcatenator.RIGHT_DELIMITER);
 
 		String res = sc.pullAll();
-		System.out.println(res);
 
 		//compute the hash of the concatenated string
 		BigInteger hash = CryptoFunc.sha256(res);
