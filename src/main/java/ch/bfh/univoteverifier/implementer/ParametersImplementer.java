@@ -40,6 +40,8 @@ public class ParametersImplementer extends Implementer {
 	 * Check if the parameters for the Schnorr's signature scheme are
 	 * corrects by reading them from the configuration file.
 	 *
+	 * Specification: 1.3.1.
+	 *
 	 * @return a VerificationResult with the relative result.
 	 */
 	public VerificationResult vrfSchnorrParamLen(BigInteger p, BigInteger q, BigInteger g) throws ElectionBoardServiceFault {
@@ -48,7 +50,7 @@ public class ParametersImplementer extends Implementer {
 
 		boolean r = p.bitLength() == lengthPG && q.bitLength() == lengthQ && g.bitLength() == lengthPG;
 
-		VerificationResult ve = new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, r, ebp.getElectionDefinition().getElectionId(), rn);
+		VerificationResult ve = new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, r, ebp.getElectionID(), rn);
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.FALSE_PARAMETERS_LENGTH);
@@ -59,14 +61,21 @@ public class ParametersImplementer extends Implementer {
 	}
 
 	/*
-	 * Check the length of the ElGamal parameters.
-	 * ToDo - Ask the length of the ElGamal parameters
+	 * Check the length of the ElGamal parameter p.
+	 *
+	 * Specification: 1.3.4, c.
+	 *
+	 * @return a VerificationResult with the relative result.
 	 */
-	public VerificationResult vrfElGamalParamLen(BigInteger p, BigInteger q, BigInteger g) {
-		int lengthP = 0;
-		int lengthQ = 0;
-		int lengthG = 0;
-		return null;
+	public VerificationResult vrfElGamalParamLen(BigInteger p, int keyLength) {
+		boolean r = p.bitLength() == keyLength;
+
+		VerificationResult ve = new VerificationResult(VerificationType.EL_SETUP_ELGAMAL_PARAM_LEN, r, ebp.getElectionID(), rn);
+		if (!r) {
+			ve.setFailureCode(FailureCode.FALSE_PARAMETERS_LENGTH);
+		}
+
+		return ve;
 	}
 
 	/**
@@ -77,7 +86,7 @@ public class ParametersImplementer extends Implementer {
 	public VerificationResult vrfPrime(BigInteger p, VerificationType type) throws ElectionBoardServiceFault {
 		boolean r = p.isProbablePrime(PRIME_NUMBER_CERTAINITY);
 
-		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionDefinition().getElectionId(), rn);
+		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionID(), rn);
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.COMPOSITE_PRIME_NUMBER);
@@ -97,7 +106,7 @@ public class ParametersImplementer extends Implementer {
 
 		boolean r = rest.equals(BigInteger.ZERO);
 
-		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionDefinition().getElectionId(), rn);
+		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionID(), rn);
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.NOT_SAFE_PRIME);
@@ -115,7 +124,7 @@ public class ParametersImplementer extends Implementer {
 		BigInteger res = g.modPow(q, p);
 
 		boolean r = res.equals(BigInteger.ONE);
-		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionDefinition().getElectionId(), rn);
+		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionID(), rn);
 
 		if (!r) {
 			ve.setFailureCode(FailureCode.NOT_A_GENERATOR);

@@ -1,0 +1,869 @@
+<ch.bfh.univote.common.ElectionData>
+  <electionId>vsbfh-2013</electionId>
+  <title>VSBFH Studierendenratswahl 2013</title>
+  <choice>
+    <ch.bfh.univote.common.PoliticalList>
+      <number>1</number>
+      <title>
+        <ch.bfh.univote.common.LocalizedText>
+          <language>DE</language>
+          <text>VS-Holz</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </title>
+      <partyName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>VS-Holz</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyName>
+      <partyShortName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>VS-Holz</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyShortName>
+      <choiceId>1</choiceId>
+    </ch.bfh.univote.common.PoliticalList>
+    <ch.bfh.univote.common.Candidate>
+      <number>1.1</number>
+      <lastName>Brotschi</lastName>
+      <firstName>Thomas</firstName>
+      <sex>M</sex>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Holztechnik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>4</semesterCount>
+      <status>NEW</status>
+      <listId>1</listId>
+      <cumulation>2</cumulation>
+      <choiceId>2</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>1.2</number>
+      <lastName>Dora</lastName>
+      <firstName>Valentin</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Holztechnik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>2</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>1</listId>
+      <cumulation>2</cumulation>
+      <choiceId>3</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>1.3</number>
+      <lastName>Gerber</lastName>
+      <firstName>Michael</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Holztechnik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>4</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>1</listId>
+      <cumulation>2</cumulation>
+      <choiceId>4</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>1.4</number>
+      <lastName>Jeker</lastName>
+      <firstName>Christof</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Holztechnik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>2</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>1</listId>
+      <cumulation>2</cumulation>
+      <choiceId>5</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>1.5</number>
+      <lastName>Storchenegger</lastName>
+      <firstName>Mario</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Holztechnik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>4</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>1</listId>
+      <cumulation>2</cumulation>
+      <choiceId>6</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>1.6</number>
+      <lastName>Lieberherr</lastName>
+      <firstName>Jonas</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Holztechnik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>4</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>1</listId>
+      <cumulation>2</cumulation>
+      <choiceId>7</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.PoliticalList>
+      <number>2</number>
+      <title>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>KuRt</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </title>
+      <partyName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>KuRt</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyName>
+      <partyShortName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>KuRt</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyShortName>
+      <choiceId>8</choiceId>
+    </ch.bfh.univote.common.PoliticalList>
+    <ch.bfh.univote.common.Candidate>
+      <number>2.1</number>
+      <lastName>Schütze</lastName>
+      <firstName>Julia</firstName>
+      <sex>F</sex>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Konservierung</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>2</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>8</listId>
+      <cumulation>2</cumulation>
+      <choiceId>9</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.PoliticalList>
+      <number>3</number>
+      <title>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>SOMBE</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </title>
+      <partyName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>SOMBE</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyName>
+      <partyShortName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>SOMBE</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyShortName>
+      <choiceId>10</choiceId>
+    </ch.bfh.univote.common.PoliticalList>
+    <ch.bfh.univote.common.Candidate>
+      <number>3.1</number>
+      <lastName>Kuhn</lastName>
+      <firstName>Christoph Adrian</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Dirigieren</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>2</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>10</listId>
+      <cumulation>2</cumulation>
+      <choiceId>11</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>3.2</number>
+      <lastName>Urweider</lastName>
+      <firstName>Sibill</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate[7]/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Pedagogy</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>2</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>10</listId>
+      <cumulation>2</cumulation>
+      <choiceId>12</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.PoliticalList>
+      <number>4</number>
+      <title>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>SO-FBS</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </title>
+      <partyName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>SO-FBS</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyName>
+      <partyShortName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>SO-FBS</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyShortName>
+      <choiceId>13</choiceId>
+    </ch.bfh.univote.common.PoliticalList>
+    <ch.bfh.univote.common.Candidate>
+      <number>4.1</number>
+      <lastName>Eichenberger</lastName>
+      <firstName>Thierry</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Soziale Arbeit</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>6</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>13</listId>
+      <cumulation>2</cumulation>
+      <choiceId>14</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>4.2</number>
+      <lastName>Balmer</lastName>
+      <firstName>Livia</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate[7]/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Soziale Arbeit</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>2</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>13</listId>
+      <cumulation>2</cumulation>
+      <choiceId>15</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>4.3</number>
+      <lastName>Ulrich</lastName>
+      <firstName>Tobias</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Soziale Arbeit</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>2</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>13</listId>
+      <cumulation>2</cumulation>
+      <choiceId>16</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.PoliticalList>
+      <number>5</number>
+      <title>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>VSI</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </title>
+      <partyName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>VSI</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyName>
+      <partyShortName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>VSI</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyShortName>
+      <choiceId>17</choiceId>
+    </ch.bfh.univote.common.PoliticalList>
+    <ch.bfh.univote.common.Candidate>
+      <number>5.1</number>
+      <lastName>Buri</lastName>
+      <firstName>Samuel</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Informatik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>4</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>17</listId>
+      <cumulation>2</cumulation>
+      <choiceId>18</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>5.2</number>
+      <lastName>Schwendimann</lastName>
+      <firstName>Adrian</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Informatik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>4</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>17</listId>
+      <cumulation>2</cumulation>
+      <choiceId>19</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>5.3</number>
+      <lastName>Lüdi</lastName>
+      <firstName>Marius</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Informatik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>4</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>17</listId>
+      <cumulation>2</cumulation>
+      <choiceId>20</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>5.4</number>
+      <lastName>Steinmann</lastName>
+      <firstName>Patrick</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Maschinentechnik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>2</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>17</listId>
+      <cumulation>2</cumulation>
+      <choiceId>21</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>5.5</number>
+      <lastName>Willi</lastName>
+      <firstName>Benjamin</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Maschinentechnik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>4</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>17</listId>
+      <cumulation>2</cumulation>
+      <choiceId>22</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>5.6</number>
+      <lastName>Grossmann</lastName>
+      <firstName>Patrick</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Elektrotechnik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>2</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>17</listId>
+      <cumulation>1</cumulation>
+      <choiceId>23</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>5.7</number>
+      <lastName>Gammenthaler</lastName>
+      <firstName>Fabian</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Maschinentechnik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>2</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>17</listId>
+      <cumulation>2</cumulation>
+      <choiceId>24</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.PoliticalList>
+      <number>6</number>
+      <title>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>LIT / HKB</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </title>
+      <partyName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>LIT / HKB</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyName>
+      <partyShortName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>LIT / HKB</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyShortName>
+      <choiceId>25</choiceId>
+    </ch.bfh.univote.common.PoliticalList>
+    <ch.bfh.univote.common.Candidate>
+      <number>6.1</number>
+      <lastName>Cordt-Moller</lastName>
+      <firstName>Cyrielle</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate[7]/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Literarisches Schreiben</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>2</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>25</listId>
+      <cumulation>1</cumulation>
+      <choiceId>26</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>6.2</number>
+      <lastName>Leuenberger</lastName>
+      <firstName>Eva</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate[7]/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Literarisches Schreiben</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>2</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>25</listId>
+      <cumulation>1</cumulation>
+      <choiceId>27</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.PoliticalList>
+      <number>7</number>
+      <title>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>SHEPPS</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </title>
+      <partyName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>SHEPPS</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyName>
+      <partyShortName>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>SHEPPS</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </partyShortName>
+      <choiceId>28</choiceId>
+    </ch.bfh.univote.common.PoliticalList>
+    <ch.bfh.univote.common.Candidate>
+      <number>7.1</number>
+      <lastName>Zentner</lastName>
+      <firstName> Anita</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate[7]/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Ernährung und Diätetik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>4</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>28</listId>
+      <cumulation>2</cumulation>
+      <choiceId>29</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>7.2</number>
+      <lastName>Koch</lastName>
+      <firstName>Laura</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate[7]/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Ernährung und Diätetik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>4</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>28</listId>
+      <cumulation>2</cumulation>
+      <choiceId>30</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>7.3</number>
+      <lastName>Grässli</lastName>
+      <firstName>Linda</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate[7]/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Ernährung und Diätetik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>4</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>28</listId>
+      <cumulation>2</cumulation>
+      <choiceId>31</choiceId>
+    </ch.bfh.univote.common.Candidate>
+    <ch.bfh.univote.common.Candidate>
+      <number>7.4</number>
+      <lastName>Bosch</lastName>
+      <firstName>Corinne</firstName>
+      <sex reference="../../ch.bfh.univote.common.Candidate[7]/sex"/>
+      <yearOfBirth>0</yearOfBirth>
+      <studyBranch>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>Ernährung und Diätetik</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyBranch>
+      <studyDegree>
+        <ch.bfh.univote.common.LocalizedText>
+          <language reference="../../../../ch.bfh.univote.common.PoliticalList/title/ch.bfh.univote.common.LocalizedText/language"/>
+          <text>-</text>
+        </ch.bfh.univote.common.LocalizedText>
+      </studyDegree>
+      <semesterCount>6</semesterCount>
+      <status reference="../../ch.bfh.univote.common.Candidate/status"/>
+      <listId>28</listId>
+      <cumulation>2</cumulation>
+      <choiceId>32</choiceId>
+    </ch.bfh.univote.common.Candidate>
+  </choice>
+  <rule>
+    <ch.bfh.univote.common.SummationRule>
+      <lowerBound>0</lowerBound>
+      <upperBound>1</upperBound>
+      <choiceId>
+        <int>1</int>
+        <int>8</int>
+        <int>10</int>
+        <int>13</int>
+        <int>17</int>
+        <int>25</int>
+        <int>28</int>
+      </choiceId>
+    </ch.bfh.univote.common.SummationRule>
+    <ch.bfh.univote.common.ForallRule>
+      <lowerBound>0</lowerBound>
+      <upperBound>1</upperBound>
+      <choiceId>
+        <int>1</int>
+        <int>8</int>
+        <int>10</int>
+        <int>13</int>
+        <int>17</int>
+        <int>25</int>
+        <int>28</int>
+      </choiceId>
+    </ch.bfh.univote.common.ForallRule>
+    <ch.bfh.univote.common.SummationRule>
+      <lowerBound>0</lowerBound>
+      <upperBound>19</upperBound>
+      <choiceId>
+        <int>2</int>
+        <int>3</int>
+        <int>4</int>
+        <int>5</int>
+        <int>6</int>
+        <int>7</int>
+        <int>9</int>
+        <int>11</int>
+        <int>12</int>
+        <int>14</int>
+        <int>15</int>
+        <int>16</int>
+        <int>18</int>
+        <int>19</int>
+        <int>20</int>
+        <int>21</int>
+        <int>22</int>
+        <int>23</int>
+        <int>24</int>
+        <int>26</int>
+        <int>27</int>
+        <int>29</int>
+        <int>30</int>
+        <int>31</int>
+        <int>32</int>
+      </choiceId>
+    </ch.bfh.univote.common.SummationRule>
+    <ch.bfh.univote.common.ForallRule>
+      <lowerBound>0</lowerBound>
+      <upperBound>2</upperBound>
+      <choiceId>
+        <int>2</int>
+        <int>3</int>
+        <int>4</int>
+        <int>5</int>
+        <int>6</int>
+        <int>7</int>
+        <int>9</int>
+        <int>11</int>
+        <int>12</int>
+        <int>14</int>
+        <int>15</int>
+        <int>16</int>
+        <int>18</int>
+        <int>19</int>
+        <int>20</int>
+        <int>21</int>
+        <int>22</int>
+        <int>23</int>
+        <int>24</int>
+        <int>26</int>
+        <int>27</int>
+        <int>29</int>
+        <int>30</int>
+        <int>31</int>
+        <int>32</int>
+      </choiceId>
+    </ch.bfh.univote.common.ForallRule>
+  </rule>
+  <prime>114976805901203322927793064266353130631100358884890611795685430308255431946868717157968512094431680208850992298469362789008172199758162090622610837042593285481211424651815254071747812960835340708677115335969836207454755772447971019331801304984762973139732374127285634446665853682249785141497670273747367402503</prime>
+  <groupOrder>57488402950601661463896532133176565315550179442445305897842715154127715973434358578984256047215840104425496149234681394504086099879081045311305418521296642740605712325907627035873906480417670354338557667984918103727377886223985509665900652492381486569866187063642817223332926841124892570748835136873683701251</groupOrder>
+  <generator>4</generator>
+  <encryptionKey>89964557065511725328601598399649308284225512169667592448345940497931772732011458546842946506800627739571280117278464912168064180812505343892455613273336447157803122350466302336490554197531079955601328977225299020744762461130940989047641768933376254576011451314455951671998452670562754958845715159241751246255</encryptionKey>
+  <electionGenerator>58424524556130156781976153601361645436464641629318804209560918672402146164355552126900273823072216970713569718939119484006479606952902443882718668839027427144767837676762981011545178278043540246642873002843566689515853106432459164798706843168597588771167278342649241728014501141778797930502898653936775187208</electionGenerator>
+  <signature>
+    <signerId>electionmanager</signerId>
+    <timestamp class="com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl">
+      <year>2013</year>
+      <month>3</month>
+      <day>22</day>
+      <timezone>0</timezone>
+      <hour>11</hour>
+      <minute>38</minute>
+      <second>29</second>
+      <fractionalSecond>0.000</fractionalSecond>
+    </timestamp>
+    <value>86400759299805992338224845237821779426091823825036235935822678567517805938854274179729585305306279145754429951631273943825624765330952855969850994790717313712001915759314611195025855427685543342913393303705339584622439567665701563503184820783885599735519146779405036411351717332242816109235467041117767195042</value>
+  </signature>
+</ch.bfh.univote.common.ElectionData>

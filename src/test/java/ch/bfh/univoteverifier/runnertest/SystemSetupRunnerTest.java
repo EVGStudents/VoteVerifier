@@ -16,6 +16,7 @@ import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -35,10 +36,10 @@ public class SystemSetupRunnerTest {
 	ElectionBoardProxy ebp;
 	String eID;
 
-	public SystemSetupRunnerTest() {
+	public SystemSetupRunnerTest() throws FileNotFoundException {
 		gm = new Messenger();
 		eID = "vsbfh-2013";
-		ebp = new ElectionBoardProxy(eID);
+		ebp = new ElectionBoardProxy();
 		ssr = new SystemSetupRunner(ebp, gm);
 		realList = ssr.run();
 		mockList = new ArrayList<>();
@@ -48,6 +49,8 @@ public class SystemSetupRunnerTest {
 		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID, RunnerName.SYSTEM_SETUP));
 		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID, RunnerName.SYSTEM_SETUP));
 		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_CA_CERT, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_EM_CERT, true, eID, RunnerName.SYSTEM_SETUP));
 
 	}
 
@@ -75,7 +78,7 @@ public class SystemSetupRunnerTest {
 		int i;
 
 		for (i = 0; i < mockList.size(); i++) {
-			assertEquals(realList.get(i).getVerificationEnum(), mockList.get(i).getVerificationEnum());
+			assertEquals(realList.get(i).getVerificationType(), mockList.get(i).getVerificationType());
 			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
 			assertTrue(realList.get(i).isImplemented());
 			assertNull(realList.get(i).getFailureCode());

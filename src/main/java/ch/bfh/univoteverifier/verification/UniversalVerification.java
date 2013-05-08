@@ -9,13 +9,14 @@
  */
 package ch.bfh.univoteverifier.verification;
 
+import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Messenger;
-import ch.bfh.univoteverifier.common.VerificationOrder;
 import ch.bfh.univoteverifier.runner.ElectionPeriodRunner;
 import ch.bfh.univoteverifier.runner.ElectionPreparationRunner;
 import ch.bfh.univoteverifier.runner.ElectionSetupRunner;
 import ch.bfh.univoteverifier.runner.MixerTallierRunner;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
+import java.security.cert.CertificateException;
 
 /**
  * This class is used to perform an universal verification
@@ -32,13 +33,7 @@ public class UniversalVerification extends Verification {
 	 */
 	public UniversalVerification(Messenger msgr, String eID) {
 		super(msgr, eID);
-
-		//initialize the runners based on the order
-		if (VerificationOrder.BY_ENTITES == displayType) {
-			createRunnerByEntities();
-		} else if (VerificationOrder.BY_SPEC == displayType) {
-			createRunnerBySpec();
-		}
+		createRunnerBySpec();
 	}
 
 	/**
@@ -46,25 +41,16 @@ public class UniversalVerification extends Verification {
 	 * the specification.
 	 */
 	private void createRunnerBySpec() {
-		SystemSetupRunner ssr = new SystemSetupRunner(ebproxy, msgr);
-		ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy, msgr);
-		ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy, msgr);
-		ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy, msgr);
-		MixerTallierRunner mtr = new MixerTallierRunner(ebproxy, msgr);
+		try {
+			SystemSetupRunner ssr = new SystemSetupRunner(ebproxy, msgr);
+			ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy, msgr);
+			ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy, msgr);
+			ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy, msgr);
+			MixerTallierRunner mtr = new MixerTallierRunner(ebproxy, msgr);
 
-		runners.add(ssr);
-		//Decomment when they are implemented
-		//		runners.add(esr);
-		//		runners.add(epr);
-		//		runners.add(eperiodr);
-		//		runners.add(mtr);
-	}
-
-	/**
-	 * Create the necessaries runners used to print the results ordered by
-	 * entities.
-	 */
-	private void createRunnerByEntities() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+			runners.add(ssr);
+		} catch (CertificateException | ElectionBoardServiceFault ex) {
+			msgr.sendElectionSpecError(geteID(), ex);
+		}
 	}
 }

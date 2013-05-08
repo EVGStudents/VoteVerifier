@@ -9,7 +9,6 @@
  */
 package ch.bfh.univoteverifier.runner;
 
-import ch.bfh.univote.common.Certificate;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
@@ -19,6 +18,9 @@ import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -70,6 +72,15 @@ public class SystemSetupRunner extends Runner {
 
 			VerificationResult v5 = paramImpl.vrfSchnorrParamLen(Config.p, Config.q, Config.g);
 			msgr.sendVrfMsg(v5);
+			Thread.sleep(1000);
+
+			VerificationResult v6 = certImpl.vrfCACertificate();
+			msgr.sendVrfMsg(v6);
+			Thread.sleep(1000);
+			Thread.sleep(1000);
+
+			VerificationResult v7 = certImpl.vrfEMCertificate();
+			msgr.sendVrfMsg(v7);
 
 			//cache the results
 			partialResults.add(v1);
@@ -77,7 +88,9 @@ public class SystemSetupRunner extends Runner {
 			partialResults.add(v3);
 			partialResults.add(v4);
 			partialResults.add(v5);
-		} catch (InterruptedException | ElectionBoardServiceFault ex) {
+			partialResults.add(v6);
+			partialResults.add(v7);
+		} catch (InterruptedException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
 			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
 		}
 

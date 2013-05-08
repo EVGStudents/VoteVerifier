@@ -32,18 +32,20 @@ public class UniversalVerificationTester {
 	List<VerificationResult> mockList;
 	List<VerificationResult> realList;
 	String eID = "sub-2013";
-	final int RES_COUNT = 5;
+	final int RES_COUNT = 7;
 
 	public UniversalVerificationTester() {
 		v = new UniversalVerification(new Messenger(), eID);
 		realList = v.runVerification();
 
 		mockList = new ArrayList<>();
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID, RunnerName.UNSET));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true, eID, RunnerName.UNSET));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID, RunnerName.UNSET));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID, RunnerName.UNSET));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID, RunnerName.UNSET));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_CA_CERT, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_EM_CERT, true, eID, RunnerName.SYSTEM_SETUP));
 		//ToDO add all the results when they are available
 	}
 
@@ -72,7 +74,7 @@ public class UniversalVerificationTester {
 
 		for (i = 0; i < mockList.size(); i++) {
 			if (i <= 5) {
-				assertEquals(realList.get(i).getVerificationEnum(), mockList.get(i).getVerificationEnum());
+				assertEquals(realList.get(i).getVerificationType(), mockList.get(i).getVerificationType());
 				assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
 				assertTrue(realList.get(i).isImplemented());
 			}

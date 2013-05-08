@@ -321,7 +321,7 @@ private void createContentPanel() {
         VerificationResult vr = ve.getVr();
         RunnerName rn = vr.getRunnerName();
         Boolean result = vr.getResult();
-        int code = vr.getVerificationEnum().getID();
+        int code = vr.getVerificationType().getID();
         String vrfType = GUIconstants.getTextFromVrfCode(code);
         String eID = vr.getElectionID();
         ResultSet rs = new ResultSet(vrfType, result, rn, eID);
@@ -337,7 +337,7 @@ private void createContentPanel() {
     public void showResultInTerminal(VerificationEvent ve) {
          VerificationResult vr = ve.getVr();
         Boolean result = vr.getResult();
-        int code = vr.getVerificationEnum().getID();
+        int code = vr.getVerificationType().getID();
         String vrfType = GUIconstants.getTextFromVrfCode(code);
         String eID = "vsbfh-2013";
         String outputText = "\n" +eID + " : "+ vrfType + " ............. " + result;
