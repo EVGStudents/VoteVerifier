@@ -51,8 +51,8 @@ public class LocalBoardProxyDownloader {
 		LocalBoardProxyDownloader lbpd = new LocalBoardProxyDownloader();
 
 		//Write all the objects to files
-		lbpd.writeBallot();
-		lbpd.writeBallots();
+//		lbpd.writeBallot();
+//		lbpd.writeBallots();
 		lbpd.writeBlindedGenerator();
 		lbpd.writeDecodedVotes();
 		lbpd.writeDecryptedVotes();
@@ -66,15 +66,15 @@ public class LocalBoardProxyDownloader {
 		lbpd.writeEncryptionKeyShare();
 		lbpd.writeEncryptionParameters();
 		lbpd.writeLatelyMixedVerificationKeys();
-		lbpd.writeLatelyMixedVerificationKeysBy();
-		lbpd.writeLatelyRegisteredVoterCerts();
-		lbpd.writeMixedEncryptedVotes();
+//		lbpd.writeLatelyMixedVerificationKeysBy();
+//		lbpd.writeLatelyRegisteredVoterCerts();
+//		lbpd.writeMixedEncryptedVotes();
 		lbpd.writeMixedEncryptedVotesBy();
-		lbpd.writeMixedVerificationKeys();
+//		lbpd.writeMixedVerificationKeys();
 		lbpd.writeMixedVerificationKeysBy();
 		lbpd.writePartiallyDecrpytedVotes();
-		lbpd.writeRootCertificate();
-		lbpd.writeSignatureParameters();
+//		lbpd.writeRootCertificate();
+//		lbpd.writeSignatureParameters();
 		lbpd.writeVoterCerts();
 	}
 
@@ -111,7 +111,9 @@ public class LocalBoardProxyDownloader {
 	 */
 	public void writeBallot() throws ElectionBoardServiceFault {
 		QRCode qr = new QRCode(null);
-		ElectionReceipt er = qr.decodeReceipt(new File(this.getClass().getResource("/qrcodeGiu").getPath()));
+		File f = new File(this.getClass().getResource("/qrcodeGiu").getPath());
+		System.out.println(f);
+		ElectionReceipt er = qr.decodeReceipt(f);
 		BigInteger verificationKey = er.getVk();
 
 		realWrite(ebp.getBallot(verificationKey), "SingleBallot");

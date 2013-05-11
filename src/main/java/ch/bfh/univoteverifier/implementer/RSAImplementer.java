@@ -42,14 +42,11 @@ public class RSAImplementer extends Implementer {
 	 *
 	 * @param ebp the election board proxy from where get the data.
 	 */
-	public RSAImplementer(ElectionBoardProxy ebp, RunnerName rn) {
+	public RSAImplementer(ElectionBoardProxy ebp, RunnerName rn) throws CertificateException, ElectionBoardServiceFault {
 		super(ebp, rn);
 		sc = new StringConcatenator();
-		//ToDo - decomment when we have the data
-		//emPubKey = (RSAPublicKey) Config.emCert.getPublicKey();
-		emPubKey = null;
-		//eaPubKey = (RSAPublicKey)Config.eaCert.getPublicKey();
-		eaPubKey = null;
+		emPubKey = (RSAPublicKey) ebp.getEMCert().getPublicKey();
+		eaPubKey = (RSAPublicKey) ebp.getEACert().getPublicKey();
 
 	}
 
@@ -61,11 +58,11 @@ public class RSAImplementer extends Implementer {
 	 * @param signature the pre-computed signature from the board.
 	 * @return true if the signature is verified correctly otherwise not.
 	 */
-	public boolean vrfRSASign(RSAPublicKey s, BigInteger m, BigInteger signature) {
-		//compute m^e mod s, this must be equal to the given signature
-		BigInteger ver = m.modPow(s.getPublicExponent(), s.getModulus());
+	public boolean vrfRSASign(RSAPublicKey s, BigInteger hash, BigInteger signature) {
+		//compute signature^e mod s, this must be equal to the hash we have computed
+		BigInteger decSign = signature.modPow(s.getPublicExponent(), s.getModulus());
 
-		boolean result = ver.equals(signature);
+		boolean result = decSign.equals(hash);
 
 		return result;
 	}
@@ -73,6 +70,8 @@ public class RSAImplementer extends Implementer {
 	/**
 	 * Verify the signature of the election administrator certificate plus
 	 * the election ID.
+	 *
+	 * Specification: 1.3.4, a.
 	 *
 	 * @returna verification event.
 	 * @throws ElectionBoardServiceFault if there is problem with the public
@@ -115,6 +114,8 @@ public class RSAImplementer extends Implementer {
 	 * Verify the signature of the basic parameters (id, description, key
 	 * length, talliers and mixers) of an election.
 	 *
+	 * Specification: 1.3.4, b.
+	 *
 	 * @returna a VerificationResul.
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
@@ -148,7 +149,7 @@ public class RSAImplementer extends Implementer {
 		String res = sc.pullAll();
 
 		//compute the hash of the concatenated string
-		BigInteger hash = CryptoFunc.sha1(res);
+		BigInteger hash = CryptoFunc.sha256(res);
 
 		//verify the signature
 		boolean r = vrfRSASign(eaPubKey, hash, signature.getValue());
@@ -166,6 +167,8 @@ public class RSAImplementer extends Implementer {
 	/**
 	 * Verify the signature of the talliers and mixers certificates with the
 	 * election id.
+	 *
+	 * Specification: 1.3.4, b.
 	 *
 	 * @return a VerificationResult.
 	 * @throws ElectionBoardServiceFault if there is problem with the public
@@ -209,6 +212,8 @@ public class RSAImplementer extends Implementer {
 
 	/**
 	 * Verify the signature of the ElGamal parameters with the election id.
+	 *
+	 * Specification: 1.3.4, c.
 	 *
 	 * @return a VerificationResult.
 	 * @throws ElectionBoardServiceFault if there is problem with the public

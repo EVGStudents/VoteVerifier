@@ -90,6 +90,8 @@ public class CertificatesImplementer extends Implementer {
 	/**
 	 * Verify the certificate of the CA entity.
 	 *
+	 * Specification: 1.3.2, a.
+	 *
 	 * @return a VerificationResult with the relative results.
 	 * @throws CertificateException if the specified instance for the
 	 * certificate factory cannot be found.
@@ -99,7 +101,7 @@ public class CertificatesImplementer extends Implementer {
 	 * certificate path validator doesn't exist.
 	 */
 	public VerificationResult vrfCACertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
-		X509Certificate caCert = CryptoFunc.getX509Certificate(ebp.getElectionSystemInfo().getCertificateAuthority().getValue());
+		X509Certificate caCert = ebp.getCACert();
 		boolean r;
 
 		try {
@@ -117,6 +119,8 @@ public class CertificatesImplementer extends Implementer {
 	/**
 	 * Verify the certificate of the EM entity.
 	 *
+	 * Specification: 1.3.2, b.
+	 *
 	 * @return a VerificationResult with the relative results.
 	 * @throws CertificateException if the specified instance for the
 	 * certificate factory cannot be found.
@@ -126,13 +130,12 @@ public class CertificatesImplementer extends Implementer {
 	 * certificate path validator doesn't exist.
 	 */
 	public VerificationResult vrfEMCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
-		X509Certificate emCert = CryptoFunc.getX509Certificate(ebp.getElectionSystemInfo().getElectionManager().getValue());
+		X509Certificate emCert = ebp.getEMCert();
 		boolean r;
 
 		try {
 			List<X509Certificate> c = new ArrayList<>();
 			c.add(emCert);
-			c.add(ebp.getCACert());
 			r = vrfCert(c);
 		} catch (CertPathValidatorException ex) {
 			//we now that the certificate path verification has failed so the result is false
@@ -145,6 +148,8 @@ public class CertificatesImplementer extends Implementer {
 	/**
 	 * Verify the certificate of the EA entity.
 	 *
+	 * Specification: 1.3.4, a.
+	 *
 	 * @return a VerificationResult with the relative results.
 	 * @throws CertificateException if the specified instance for the
 	 * certificate factory cannot be found.
@@ -154,13 +159,12 @@ public class CertificatesImplementer extends Implementer {
 	 * certificate path validator doesn't exist.
 	 */
 	public VerificationResult vrfEACertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
-		X509Certificate eaCert = CryptoFunc.getX509Certificate(ebp.getElectionSystemInfo().getElectionAdministration().getValue());
+		X509Certificate eaCert = ebp.getEACert();
 		boolean r;
 
 		try {
 			List<X509Certificate> c = new ArrayList<>();
 			c.add(eaCert);
-			c.add(ebp.getCACert());
 			r = vrfCert(c);
 		} catch (CertPathValidatorException ex) {
 			//we now that the certificate path verification has failed so the result is false
@@ -172,6 +176,8 @@ public class CertificatesImplementer extends Implementer {
 
 	/**
 	 * Verify the certificate of the talliers.
+	 *
+	 * Specification: 1.3.4, b.
 	 *
 	 * @return a list of VerificationResult for each tallier.
 	 * @throws CertificateException if the specified instance for the
@@ -191,7 +197,6 @@ public class CertificatesImplementer extends Implementer {
 			try {
 				List<X509Certificate> certPath = new ArrayList<>();
 				certPath.add((X509Certificate) e.getValue());
-				certPath.add(ebp.getCACert());
 				r = vrfCert(certPath);
 			} catch (CertPathValidatorException ex) {
 				//we now that the certificate path verification has failed so the result is false
@@ -211,6 +216,8 @@ public class CertificatesImplementer extends Implementer {
 	/**
 	 * Verify the certificate of the mixers.
 	 *
+	 * Specification: 1.3.4, b.
+	 *
 	 * @return a list of VerificationResult for each mixer.
 	 * @throws CertificateException if the specified instance for the
 	 * certificate factory cannot be found.
@@ -229,7 +236,6 @@ public class CertificatesImplementer extends Implementer {
 			try {
 				List<X509Certificate> certPath = new ArrayList<>();
 				certPath.add((X509Certificate) e.getValue());
-				certPath.add(ebp.getCACert());
 				r = vrfCert(certPath);
 			} catch (CertPathValidatorException ex) {
 				//we now that the certificate path verification has failed so the result is false

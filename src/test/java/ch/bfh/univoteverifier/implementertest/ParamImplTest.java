@@ -18,6 +18,7 @@ import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -32,8 +33,8 @@ public class ParamImplTest {
 	ParametersImplementer pi;
 	BigInteger p, q, g;
 
-	public ParamImplTest() {
-		ElectionBoardProxy ebp = new ElectionBoardProxy("vsbfh-2013");
+	public ParamImplTest() throws FileNotFoundException {
+		ElectionBoardProxy ebp = new ElectionBoardProxy();
 		pi = new ParametersImplementer(ebp, RunnerName.UNSET);
 
 		//change the value of p,q and g - all the test must fail

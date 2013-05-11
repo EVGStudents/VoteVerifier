@@ -10,15 +10,10 @@
 package ch.bfh.univoteverifier.verification;
 
 import ch.bfh.univoteverifier.common.VerificationOrder;
-import ch.bfh.univote.common.Certificate;
-import ch.bfh.univote.election.ElectionBoardServiceFault;
-import ch.bfh.univoteverifier.common.Config;
-import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.gui.VerificationSubject;
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

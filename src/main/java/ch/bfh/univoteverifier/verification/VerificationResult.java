@@ -61,9 +61,9 @@ public class VerificationResult {
 	 * Get the verification type for this VerificationResult Identifies that
 	 * type of message/information that this event contains.
 	 *
-	 * @return the verification type.
+	 * @return the VerificationType.
 	 */
-	public VerificationType getVerificationEnum() {
+	public VerificationType getVerificationType() {
 		return v;
 	}
 

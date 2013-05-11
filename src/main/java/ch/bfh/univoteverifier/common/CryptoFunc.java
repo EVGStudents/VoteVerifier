@@ -81,12 +81,25 @@ public class CryptoFunc {
 	 *
 	 * @param b the byte array that shall contain the data of a X509
 	 * certificate.
+	 * @param newLine if true, the byte array will be parsed and a "\n" will
+	 * be added after "-----BEGIN CERTIFICATE-----" and before "-----END
+	 * CERTIFICATE-----".
 	 * @return an X509 certificate.
 	 * @throws CertificateException if the certificate factory cannot found
 	 * the specified type.
 	 */
-	public static X509Certificate getX509Certificate(byte[] b) throws CertificateException {
-		InputStream is = new ByteArrayInputStream(b);
+	public static X509Certificate getX509Certificate(byte[] b, boolean newLine) throws CertificateException {
+		String bStr = new String(b);
+
+		if (newLine) {
+			StringBuilder sb = new StringBuilder(bStr);
+			//insert after -----BEGIN CERTIFICATE-----
+			sb.insert(27, '\n');
+			//insert before -----END CERTIFICATE-----
+			sb.insert(sb.length() - 25, '\n');
+			bStr = sb.toString();
+		}
+		InputStream is = new ByteArrayInputStream(bStr.getBytes());
 		X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(is);
 
 		return cert;
