@@ -26,25 +26,25 @@ import java.util.logging.Logger;
  */
 public class ProofImplementer {
 
-	private static final Logger LOGGER = Logger.getLogger(ProofImplementer.class.getName());
-	private final ElectionBoardProxy ebp;
+    private static final Logger LOGGER = Logger.getLogger(ProofImplementer.class.getName());
+    private final ElectionBoardProxy ebp;
 
-	public ProofImplementer(ElectionBoardProxy ebp) {
-		this.ebp = ebp;
-	}
+    public ProofImplementer(ElectionBoardProxy ebp) {
+        this.ebp = ebp;
+    }
 
-	public List<VerificationResult> vrfProofDistributedKeyGen() throws ElectionBoardServiceFault {
+    public List<VerificationResult> vrfProofDistributedKeyGen() throws ElectionBoardServiceFault {
 
-		for (String tName : ebp.getElectionDefinition().getTallierId()) {
-			EncryptionKeyShare eks = ebp.getEncryptionKeyShare(tName);
+        for (String tName : ebp.getElectionDefinition().getTallierId()) {
+            EncryptionKeyShare eks = ebp.getEncryptionKeyShare(tName);
 
-			BigInteger y_j = eks.getKey();
-			Proof p = eks.getProof();
+            BigInteger y_j = eks.getKey();
+            Proof p = eks.getProof();
 
-			//ToDo
-			//we have (t,c,s) in the proof, getCommitment (t) and getResponse (s) where is the challenge c (univote-crypto.js)?.
+            //ToDo
+            //we have (t,c,s) in the proof, getCommitment (t) and getResponse (s) where is the challenge c (univote-crypto.js)?.
 
-		}
-		return null;
-	}
+        }
+        return null;
+    }
 }
