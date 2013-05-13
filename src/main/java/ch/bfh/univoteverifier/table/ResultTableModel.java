@@ -10,7 +10,10 @@
  */
 package ch.bfh.univoteverifier.table;
 
+import ch.bfh.univoteverifier.gui.GUIconstants;
 import java.util.ArrayList;
+import java.util.Formatter;
+import java.util.Locale;
 import javax.swing.Icon;
 import javax.swing.table.AbstractTableModel;
 
@@ -83,13 +86,27 @@ public class ResultTableModel extends AbstractTableModel {
     public Object getValueAt(int row, int col) {
         Object ret;
         if (col == 0) {
-            ret = data.get(row).getTxt();
+            ResultSet rs = data.get(row);
+            String formattedText = formatText(rs);
+            ret = formattedText;
         } else if (col == 1) {
             ret = data.get(row).getImage();
         } else {
             ret = null;
         }
         return ret;
+    }
+
+    public String formatText(ResultSet rs) {
+        String text = rs.getTxt();
+        if (!rs.getEntityName().equals("notSet")) {
+            StringBuilder sb = new StringBuilder();
+            Formatter formatter = new Formatter(sb, GUIconstants.getLocale());
+            String entityName = rs.getEntityName();
+            formatter.format(text, entityName);
+            text = formatter.toString();
+        }
+        return text;
     }
 
     /**
