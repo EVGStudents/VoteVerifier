@@ -8,7 +8,7 @@
 *   Project independent UniVoteVerifier.
 *
 */
-package ch.bfh.univoteverifier.gui;
+package ch.bfh.univoteverifier.listener;
 
 import ch.bfh.univoteverifier.verification.VerificationResult;
 

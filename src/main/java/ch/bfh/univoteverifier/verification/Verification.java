@@ -10,7 +10,7 @@
 package ch.bfh.univoteverifier.verification;
 
 import ch.bfh.univoteverifier.common.VerificationOrder;
-import ch.bfh.univoteverifier.gui.VerificationSubject;
+import ch.bfh.univoteverifier.listener.VerificationSubject;
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;

@@ -7,7 +7,7 @@
  * Project independent UniVoteVerifier.
  *
  */
-package ch.bfh.univoteverifier.gui;
+package ch.bfh.univoteverifier.listener;
 
 import ch.bfh.univoteverifier.verification.VerificationResult;
 
@@ -27,7 +27,9 @@ public class VerificationEvent {
     private final VerificationResult vr;
 
     /**
-     * Create an instance of this helper class to send a message that is specific to an given election ID.
+     * Create an instance of this helper class to send a message that is
+     * specific to an given election ID.
+     *
      * @param vm The type of message that this VerificationEvent contains
      * @param msg The message to be shown in the GUI or console
      * @param eID the election ID for which this message pertains.
@@ -38,10 +40,13 @@ public class VerificationEvent {
         this.eID = eID;
         this.vr = null;
     }
-    
-        /**
-     * Create an instance of this helper class to send a message about a problem with the setup of the verification to be performed.
-     * A message of this type will be displayed below the buttons for Universal or Individual verification.
+
+    /**
+     * Create an instance of this helper class to send a message about a problem
+     * with the setup of the verification to be performed. A message of this
+     * type will be displayed below the buttons for Universal or Individual
+     * verification.
+     *
      * @param vm The type of message that this VerificationEvent contains
      * @param msg The message to be shown in the GUI or console
      */
@@ -51,39 +56,55 @@ public class VerificationEvent {
         this.vr = null;
     }
 
-        /**
-     * Create an instance of this helper class to send verification results to output
+    /**
+     * Create an instance of this helper class to send verification results to
+     * output
+     *
      * @param vr The helper class which contains the verification results.
+     * @param vm The type of message that this VerificationEvent contains
      */
     public VerificationEvent(VerificationResult vr) {
         this.vr = vr;
         this.vm = VerificationMessage.RESULT;
+        this.eID = vr.getElectionID();
     }
 
     /**
      * Get the message from this VerificationEvent.
+     *
      * @return String the message.
      */
     public String getMsg() {
         return msg;
     }
 
- /**
-  * Get the VerificationMessage, which designates the type of message in this VerificationEvent.
-  * @return The VerificationMessage Enum used to designate the type of message in an VerificationEvent. 
-  */
+    /**
+     * Get the VerificationMessage, which designates the type of message in this
+     * VerificationEvent.
+     *
+     * @return The VerificationMessage Enum used to designate the type of
+     * message in an VerificationEvent.
+     */
     public VerificationMessage getVm() {
         return vm;
     }
 
     /**
      * Get the verification results.
-     * @return VerificationResult : the helper class, which organizes the results from verification tests.
+     *
+     * @return VerificationResult : the helper class, which organizes the
+     * results from verification tests.
      */
     public VerificationResult getVr() {
         return vr;
     }
-    
-    
 
+    /**
+     * Get the eID for which this message is intended.
+     *
+     * @return String : the election ID
+     */
+    public String getEID() {
+        return eID;
+    }
 }

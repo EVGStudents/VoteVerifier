@@ -9,7 +9,7 @@
  */
 package ch.bfh.univoteverifier.common;
 
-import ch.bfh.univoteverifier.gui.VerificationSubject;
+import ch.bfh.univoteverifier.listener.VerificationSubject;
 import ch.bfh.univoteverifier.verification.Verification;
 
 /**
