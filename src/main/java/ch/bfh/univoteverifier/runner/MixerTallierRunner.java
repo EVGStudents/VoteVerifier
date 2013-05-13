@@ -82,6 +82,10 @@ public class MixerTallierRunner extends Runner {
 				VerificationResult v5 = proofImpl.vrfDecryptedVotesByProof(tName);
 				msgr.sendVrfMsg(v5);
 				partialResults.add(v5);
+
+				VerificationResult v6 = rsaImpl.vrfDecryptedVotesBySign(tName);
+				msgr.sendVrfMsg(v6);
+				partialResults.add(v6);
 			}
 
 

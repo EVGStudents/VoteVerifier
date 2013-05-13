@@ -26,6 +26,7 @@ import ch.bfh.univote.common.LocalizedText;
 import ch.bfh.univote.common.MixedEncryptedVotes;
 import ch.bfh.univote.common.MixedVerificationKey;
 import ch.bfh.univote.common.MixedVerificationKeys;
+import ch.bfh.univote.common.PartiallyDecryptedVotes;
 import ch.bfh.univote.common.PoliticalList;
 import ch.bfh.univote.common.Rule;
 import ch.bfh.univote.common.Signature;
@@ -1080,5 +1081,14 @@ public class RSAImplementer extends Implementer {
 		}
 
 		return vr;
+	}
+
+	public VerificationResult vrfDecryptedVotesBySign(String tallierName) throws ElectionBoardServiceFault {
+		PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tallierName);
+		Signature signature = pdv.getSignature();
+
+		//concatenate to (id|
+
+		return null;
 	}
 }

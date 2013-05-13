@@ -35,7 +35,7 @@ public class ResultTableModel extends AbstractTableModel {
      */
     public ResultTableModel(ArrayList<ResultSet> data) {
         this.data = data;
-        String sectionName = data.get(0).getRunnerName().toString();
+        String sectionName = data.get(0).getSectionName();
         columnNames[0] = sectionName;
 
     }

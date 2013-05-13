@@ -5,11 +5,8 @@
 package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.table.ResultTablePanel;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 
 /**
@@ -28,6 +25,15 @@ public class ToggleResultOrganizationAction implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String name = ((JComponent) e.getSource()).getName();
 //        rtp.showPanel(name);
-        System.out.println("TOGGLE RESULT ORGANIZATOIN CALLED:" + name);
+
+        if (0 == name.compareTo("btnEntity")) {
+            rtp.showPanelEntity();
+        }
+        if (0 == name.compareTo("btnSpec")) {
+            rtp.showPanelSpec();
+        }
+        if (0 == name.compareTo("btnType")) {
+            rtp.showPanelType();
+        }
     }
 }

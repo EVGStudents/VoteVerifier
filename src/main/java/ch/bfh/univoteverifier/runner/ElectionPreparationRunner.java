@@ -101,6 +101,7 @@ public class ElectionPreparationRunner extends Runner {
 //			msgr.sendVrfMsg(v9);
 //			partialResults.add(v9);
 
+
 		} catch (InvalidAlgorithmParameterException | CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
