@@ -37,20 +37,20 @@ public class MiddlePanel extends JPanel {
     /**
      * Create an instance of this class.
      *
-     * @param innerPanel the content panel for verification results is added
-     * into a scroll pane.
+     * @param resultPanelManager the content panel for verification results is
+     * added into a scroll pane.
      */
     public MiddlePanel(ResultTabbedPane resultPanelManager) {
         this.setLayout(new GridLayout(1, 1));
         this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(696, 500));
         this.setBorder(new EmptyBorder(10, 30, 10, 30)); //top left bottom right
-
-        backgroundPanel = new JPanel();
-        backgroundPanel.setBackground(Color.WHITE);
-        backgroundPanel.setLayout(new GridLayout(1, 1));
-        backgroundPanel.add(resultPanelManager);
-        this.add(backgroundPanel);
+        resultPanelManager.setBackground(Color.WHITE);
+//        backgroundPanel = new JPanel();
+//        backgroundPanel.setBackground(Color.WHITE);
+//        backgroundPanel.setLayout(new GridLayout(1, 1));
+//        backgroundPanel.add(resultPanelManager);
+        this.add(resultPanelManager);
     }
 
     public void setBackgroundGrey() {

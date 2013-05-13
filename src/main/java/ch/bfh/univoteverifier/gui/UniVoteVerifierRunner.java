@@ -6,11 +6,6 @@ package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.common.ConsoleRunner;
 import ch.bfh.univoteverifier.common.LogFormatter;
-import ch.bfh.univoteverifier.common.Messenger;
-import ch.bfh.univoteverifier.listener.VerificationEvent;
-import ch.bfh.univoteverifier.listener.VerificationListener;
-import ch.bfh.univoteverifier.listener.VerificationMessage;
-import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;

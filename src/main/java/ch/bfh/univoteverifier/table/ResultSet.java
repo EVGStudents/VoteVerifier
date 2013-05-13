@@ -11,7 +11,9 @@
 package ch.bfh.univoteverifier.table;
 
 import ch.bfh.univoteverifier.common.RunnerName;
-import ch.bfh.univoteverifier.gui.MainGUI;
+import ch.bfh.univoteverifier.verification.VerificationResult;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -29,6 +31,9 @@ public class ResultSet {
     private JLabel label;
     private RunnerName rn;
     private String eID;
+    private String sectionName;
+    private VerificationResult vr;
+    private static final Logger LOGGER = Logger.getLogger(ResultSet.class.getName());
 
     /**
      * Create an instance of this class.
@@ -36,12 +41,13 @@ public class ResultSet {
      * @param txt The description of the verification performed.
      * @param result The result of the verification.
      */
-    public ResultSet(String txt, Boolean result, RunnerName rn, String eID, ImageIcon img) {
+    public ResultSet(String txt, ImageIcon img, VerificationResult vr) {
         this.txt = txt + "  " + generateFiller(txt);
-        this.result = result;
-        this.rn = rn;
-        this.eID = eID;
+        this.result = vr.getResult();
+        this.rn = vr.getRunnerName();
+        this.eID = vr.getElectionID();
         this.img = img;
+        this.vr = vr;
         label = new JLabel(img);
     }
 
@@ -52,6 +58,33 @@ public class ResultSet {
      */
     public String getTxt() {
         return txt;
+    }
+
+    /**
+     * Get the entity for to which data belongs..
+     *
+     * @return String the description.
+     */
+    public String getEntityName() {
+        LOGGER.log(Level.INFO, "Entity Name : {0}", vr.getEntityName());
+        return vr.getEntityName();
+    }
+
+    /**
+     * Get the section name for which this data is to be displayed in the GUI.
+     *
+     * @return String the section name.
+     */
+    public String getSectionName() {
+        return sectionName;
+    }
+
+    /**
+     * Set the section name for which this data is to be displayed in the GUI.
+     *
+     */
+    public void setSectionName(String str) {
+        sectionName = str;
     }
 
     /**

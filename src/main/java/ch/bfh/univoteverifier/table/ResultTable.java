@@ -21,7 +21,7 @@ import javax.swing.table.TableColumn;
  */
 public class ResultTable extends JTable {
 
-    private String runnerName;
+    private String sectionName;
     private ResultTableModel rtm;
 
     /**
@@ -29,11 +29,11 @@ public class ResultTable extends JTable {
      *
      * @param rtm A ResultTableModel which manages the table's data.
      */
-    public ResultTable(ResultTableModel rtm, String runnerName) {
+    public ResultTable(ResultTableModel rtm, String sectionName) {
         super(rtm);
         setShowGrid(false);
         this.rtm = rtm;
-        this.runnerName = runnerName;
+        this.sectionName = sectionName;
         setRowHeight(30);
         TableColumn tc = getColumnModel().getColumn(0);
         tc.setPreferredWidth(340);
@@ -48,8 +48,8 @@ public class ResultTable extends JTable {
      *
      * @return The name of the verification type.
      */
-    public String getRunnerName() {
-        return runnerName;
+    public String getSectionName() {
+        return sectionName;
     }
 
     /**

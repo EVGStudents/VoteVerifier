@@ -44,16 +44,14 @@ public class ResultProcessor {
      */
     public void showResultInGUI(VerificationEvent ve) {
         VerificationResult vr = ve.getVr();
-        RunnerName rn = vr.getRunnerName();
         Boolean result = vr.getResult();
         int code = vr.getVerificationType().getID();
         String vrfType = GUIconstants.getTextFromVrfCode(code);
-        String eID = vr.getElectionID();
         ImageIcon img = getImage(vr);
-        ResultSet rs = new ResultSet(vrfType, result, rn, eID, img);
+        ResultSet rs = new ResultSet(vrfType, img, vr);
         resultPanelManager.addData(rs);
         String outputText = "\n" + vrfType + " ............. " + result;
-        consolePanel.appendToStatusText(outputText, eID);
+        consolePanel.appendToStatusText(outputText, ve.getEID());
     }
 
     public ImageIcon getImage(VerificationResult vr) {

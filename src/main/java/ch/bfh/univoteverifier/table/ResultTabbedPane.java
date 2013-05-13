@@ -48,7 +48,12 @@ public class ResultTabbedPane extends JTabbedPane {
      * currently being viewed.
      */
     public ResultTabbedPane(ThreadManager tm, ChangeListener cl) {
+        JPanel welcomePanel = new JPanel();
+        welcomePanel.setBackground(Color.WHITE);
+        this.addTab("Welcome", welcomePanel);
+
         this.addChangeListener(cl);
+
         removeTabAction = new RemoveTabAction(this, tm);
         this.setBackground(Color.WHITE);
         resultsPanels = new ArrayList<>();
@@ -77,6 +82,7 @@ public class ResultTabbedPane extends JTabbedPane {
      * @param rs ResultSet contains the data to add.
      */
     public void addAndCreateNewTab(ResultSet rs) {
+
         String title = rs.getEID();
         ResultTablePanel newRTP = new ResultTablePanel(title);
         newRTP.addData(rs);
@@ -85,9 +91,9 @@ public class ResultTabbedPane extends JTabbedPane {
         this.addTab(title, newRTP);
 
         int index = this.indexOfTab(title);
-        JPanel pnlTab = new JPanel();
-        pnlTab.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        pnlTab.setOpaque(false);
+        JPanel tab = new JPanel();
+        tab.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        tab.setOpaque(false);
         JLabel lblTitle = new JLabel(title);
         lblTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 
@@ -102,10 +108,10 @@ public class ResultTabbedPane extends JTabbedPane {
         btnClose.setBorder(BorderFactory.createEtchedBorder());
         btnClose.setRolloverEnabled(true);
 
-        pnlTab.add(lblTitle);
-        pnlTab.add(btnClose);
+        tab.add(lblTitle);
+        tab.add(btnClose);
 
-        this.setTabComponentAt(index, pnlTab);
+        this.setTabComponentAt(index, tab);
 
         btnClose.addActionListener(removeTabAction);
     }

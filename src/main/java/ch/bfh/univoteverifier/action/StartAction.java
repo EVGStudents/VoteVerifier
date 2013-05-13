@@ -127,16 +127,6 @@ public class StartAction extends AbstractAction {
     }
 
     /**
-     * Clears the content of the inner panel before the verification commences.
-     */
-    public void wipeInnerPanel() {
-        innerPanel.removeAll();
-        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.X_AXIS));
-        innerPanel.setBackground(GUIconstants.GREY);
-        innerPanel.repaint();
-    }
-
-    /**
      * Get the name ID of the verification button that is selected.
      *
      * @param buttonGroup
