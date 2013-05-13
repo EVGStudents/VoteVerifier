@@ -84,7 +84,7 @@ public class ProofImplTest {
 	@Test
 	public void testLatelyRegistrationKeys() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
-			VerificationResult vr = pi.vrfLatelyVerificationKeysProof(mName);
+			VerificationResult vr = pi.vrfLatelyVerificationKeysByProof(mName);
 			assertFalse(vr.getResult());
 			assertFalse(vr.isImplemented());
 		}

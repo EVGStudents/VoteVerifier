@@ -52,6 +52,7 @@ public class VerificationResult {
 		this.rn = rn;
 		this.it = it;
 		this.et = et;
+		this.entityName = "notSet";
 	}
 
 	/**

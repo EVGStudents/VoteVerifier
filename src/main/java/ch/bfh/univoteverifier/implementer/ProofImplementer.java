@@ -12,8 +12,10 @@ package ch.bfh.univoteverifier.implementer;
 import ch.bfh.univote.common.Ballot;
 import ch.bfh.univote.common.BlindedGenerator;
 import ch.bfh.univote.common.EncryptionKeyShare;
+import ch.bfh.univote.common.MixedEncryptedVotes;
 import ch.bfh.univote.common.MixedVerificationKey;
 import ch.bfh.univote.common.MixedVerificationKeys;
+import ch.bfh.univote.common.PartiallyDecryptedVotes;
 import ch.bfh.univote.common.Proof;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Config;
@@ -46,22 +48,22 @@ public class ProofImplementer extends Implementer {
 	 * @param rn the RunnerName who used this implementer.
 	 */
 	public ProofImplementer(ElectionBoardProxy ebp, RunnerName rn) {
-		super(ebp, rn);
+		super(ebp, rn, ImplementerType.NIZKP);
 	}
 
 	/**
 	 * NIZKP for knowledge of discrete log.
 	 *
-	 * @param proof the Proof containing t and s.
+	 * @param t the commitment of a proof.
+	 * @param s the response of a proof.
 	 * @param c the "c" value.
-	 * @param param the paramter used to compute v and w.
+	 * @param param the parameter used to compute v and w.
 	 * @param prime the prime number used for modulo operations.
+	 * @param vExponentSign the sign of the exponent for the computation of
+	 * v, if true the "-" will be used, "+" if false.
 	 * @return true if the prover knows the discrete log, false otherwise.
 	 */
-	public boolean knowledgeOfDiscreteLog(Proof proof, BigInteger c, BigInteger paramV, BigInteger paramW, BigInteger prime) {
-		BigInteger t = proof.getCommitment().get(0);
-		BigInteger s = proof.getResponse().get(0);
-
+	public boolean knowledgeOfDiscreteLog(BigInteger t, BigInteger s, BigInteger c, BigInteger paramV, BigInteger paramW, BigInteger prime, boolean vExponentSign) {
 		//v = param^s mod prime
 		BigInteger v = paramV.modPow(s, prime);
 
@@ -129,6 +131,7 @@ public class ProofImplementer extends Implementer {
 		//get the proof and its paramters
 		Proof proof = eks.getProof();
 		BigInteger t = proof.getCommitment().get(0);
+		BigInteger s = proof.getResponse().get(0);
 
 		//concatenate to y_j|t|tallierName
 		sc.pushObjectDelimiter(y_j, StringConcatenator.INNER_DELIMITER);
@@ -145,9 +148,10 @@ public class ProofImplementer extends Implementer {
 		//c = H(y_j|t|tallierName) mod Q
 		BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
 
-		boolean result = knowledgeOfDiscreteLog(proof, c, elGamalG, y_j, elGamalP);
+		boolean result = knowledgeOfDiscreteLog(t, s, c, elGamalG, y_j, elGamalP, false);
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X, result, ebp.getElectionID(), rn, ImplementerType.NIZKP, EntityType.PARAMETER);
+
+		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X, result, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 		vr.setEntityName(tallierName);
 
 		if (!result) {
@@ -182,6 +186,7 @@ public class ProofImplementer extends Implementer {
 		//get the proof and its paramters
 		Proof proof = bg.getProof();
 		BigInteger t = proof.getCommitment().get(0);
+		BigInteger s = proof.getResponse().get(0);
 
 		//concatenate to g_k|t|mixerName
 		sc.pushObjectDelimiter(g_k, StringConcatenator.INNER_DELIMITER);
@@ -202,9 +207,9 @@ public class ProofImplementer extends Implementer {
 			previous_g_k = ebp.getBlindedGenerator(previousMixerName).getGenerator();
 		}
 
-		boolean result = knowledgeOfDiscreteLog(proof, c, previous_g_k, g_k, Config.p);
+		boolean result = knowledgeOfDiscreteLog(t, s, c, previous_g_k, g_k, Config.p, false);
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA, result, ebp.getElectionID(), rn, ImplementerType.NIZKP, EntityType.PARAMETER);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA, result, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 		vr.setEntityName(mixerName);
 
 		if (!result) {
@@ -228,7 +233,7 @@ public class ProofImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfLatelyVerificationKeysProof(String mixerName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public VerificationResult vrfLatelyVerificationKeysByProof(String mixerName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
 		List<MixedVerificationKey> mvk = ebp.getLatelyMixedVerificationKeysBy(mixerName);
 		boolean result = false;
 
@@ -264,7 +269,7 @@ public class ProofImplementer extends Implementer {
 			}
 		}
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF, result, ebp.getElectionID(), rn, ImplementerType.NIZKP, EntityType.PARAMETER);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF, result, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 		vr.setEntityName(mixerName);
 		vr.setImplemented(false);
 
@@ -285,14 +290,16 @@ public class ProofImplementer extends Implementer {
 	public boolean vrfBallotProof(Ballot b) throws NoSuchAlgorithmException, UnsupportedEncodingException, ElectionBoardServiceFault {
 		Proof proof = b.getProof();
 		BigInteger t = proof.getCommitment().get(0);
+		BigInteger s = proof.getResponse().get(0);
+		BigInteger aValue = b.getSignature().getFirstValue();
 		BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
 		BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
 		BigInteger elGamalG = ebp.getEncryptionParameters().getGenerator();
 
 		//concatenate to (a|t|vk)
-		//where is a?? - ToDo also ask how the hash for a proof are concatenated
+		//ToDo also ask how the hash for a proof are concatenated
 		sc.pushLeftDelim();
-		sc.pushObjectDelimiter("a", StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(aValue, StringConcatenator.INNER_DELIMITER);
 		sc.pushObjectDelimiter(t, StringConcatenator.INNER_DELIMITER);
 		sc.pushObject(b.getVerificationKey());
 		sc.pushRightDelim();
@@ -301,9 +308,122 @@ public class ProofImplementer extends Implementer {
 
 		BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
 
-		//replace BigInteger.ZERO with the a value
-		boolean proofVrf = knowledgeOfDiscreteLog(proof, c, elGamalG, BigInteger.ZERO, elGamalP);
+		boolean proofVrf = knowledgeOfDiscreteLog(t, s, c, elGamalG, aValue, elGamalP, false);
 
-		return false;
+		return proofVrf;
+	}
+
+	/**
+	 * Verify the NIZKP of the shuffled encrypted votes. WARNING: the proof
+	 * is not yet implemented, so some plausibility checks will be performed
+	 * instead of the real proof.
+	 *
+	 * Specification: 1.3.7, a.
+	 *
+	 * @param mixerName the name of the mixer.
+	 * @return a VerificationResult.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 */
+	public VerificationResult vrfShuffledEncryptedVotesByProof(String mixerName) throws ElectionBoardServiceFault {
+		MixedEncryptedVotes mev = ebp.getMixedEncryptedVotesBy(mixerName);
+
+		//ToDo - ask for plausibility check
+
+		boolean result = false;
+
+		VerificationResult vr = new VerificationResult(VerificationType.MT_M_ENC_VOTES_CHECK, result, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		vr.setEntityName(mixerName);
+
+		if (!result) {
+			vr.setFailureCode(FailureCode.ENCRYPTED_VOTES_PLAUSIBILITY_CHECK_FAILED);
+		}
+
+		return vr;
+	}
+
+	/**
+	 * Verify the NIZKP of decrypting the votes.
+	 *
+	 * Specification: 1.3.7, b.
+	 *
+	 * @param tallierName the name of the tallier.
+	 * @return a VerificationResult.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 */
+	public VerificationResult vrfDecryptedVotesByProof(String tallierName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+		PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tallierName);
+		BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
+		BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
+		BigInteger elGamalG = ebp.getEncryptionParameters().getGenerator();
+
+		//concatenate to y_j|a_j|t|T - ToDo find y_j, check array paranethesis
+		sc.pushObject("y_j");
+		sc.pushInnerDelim();
+
+		for (int i = 0; i < pdv.getVote().size(); i++) {
+			if (i > 0) {
+				sc.pushInnerDelim();
+			}
+
+			sc.pushObject(pdv.getVote().get(i));
+		}
+
+		sc.pushInnerDelim();
+
+		for (int i = 0; i < pdv.getProof().getCommitment().size(); i++) {
+			if (i > 0) {
+				sc.pushInnerDelim();
+			}
+
+			sc.pushObject(pdv.getProof().getCommitment().get(i));
+		}
+
+		sc.pushInnerDelim();
+		sc.pushObject(tallierName);
+
+		String res = sc.pullAll();
+
+		//compute the c value
+		BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
+
+		boolean result = true;
+
+		//compute the knowledge of discrete logfor each element in the list - ToDo find y_j and replace with BigInteger.ZERO
+		for (int i = 0; i < pdv.getProof().getCommitment().size(); i++) {
+			BigInteger commitment = pdv.getProof().getCommitment().get(i);
+			BigInteger response = pdv.getProof().getResponse().get(i);
+			BigInteger a = pdv.getVote().get(i);
+
+			//the computation of v and w for this proof, are a sequence of knowledge of discrete log
+			if (i == 0) {
+				result = knowledgeOfDiscreteLog(commitment, response, c, elGamalG, BigInteger.ZERO, elGamalP, false);
+			} else {
+				result = knowledgeOfDiscreteLog(commitment, response, c, a, a, elGamalP, true);
+			}
+
+			//if the result is false, break
+			if (!result) {
+				break;
+			}
+		}
+
+		VerificationResult vr = new VerificationResult(VerificationType.MT_T_NIZKP_OF_X, result, ebp.getElectionID(), rn, it, EntityType.TALLIER);
+		vr.setEntityName(tallierName);
+
+		if (!result) {
+			vr.setFailureCode(FailureCode.INVALID_NIZKP);
+		}
+
+		return vr;
 	}
 }

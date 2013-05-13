@@ -12,8 +12,11 @@ package ch.bfh.univoteverifier.runner;
 import ch.bfh.univote.common.Ballot;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.EntityType;
+import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
+import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.implementer.ProofImplementer;
@@ -64,10 +67,10 @@ public class ElectionPeriodRunner extends Runner {
 	@Override
 	public List<VerificationResult> run() {
 		try {
-			//lately registered voters certificate
-			VerificationResult v1 = certImpl.vrfLatelyRegisteredVotersCertificate();
-			msgr.sendVrfMsg(v1);
-			partialResults.add(v1);
+			//lately registered voters certificate - ToDo decomment when it will be available
+//			VerificationResult v1 = certImpl.vrfLatelyRegisteredVotersCertificate();
+//			msgr.sendVrfMsg(v1);
+//			partialResults.add(v1);
 
 			//RSA signature of lately registered voters certificate and id
 			VerificationResult v2 = rsaImpl.vrfLatelyRegisteredVotersCertificateSign();
@@ -75,21 +78,21 @@ public class ElectionPeriodRunner extends Runner {
 			partialResults.add(v2);
 
 			//NIZKP of late registered verification key and signature - Proof Not yet available
-			for (String mName : ebp.getElectionDefinition().getMixerId()) {
-				VerificationResult v3 = proofImpl.vrfLatelyVerificationKeysProof(mName);
-				msgr.sendVrfMsg(v3);
-				partialResults.add(v3);
+//			for (String mName : ebp.getElectionDefinition().getMixerId()) {
+//				VerificationResult v3 = proofImpl.vrfLatelyVerificationKeysProof(mName);
+//				msgr.sendVrfMsg(v3);
+//				partialResults.add(v3);
+//
+//				//signature
+//				VerificationResult v4 = rsaImpl.vrfLatelyVerificationKeysBySign(mName);
+//				msgr.sendVrfMsg(v4);
+//				partialResults.add(v4);
+//			}
 
-				//signature
-				VerificationResult v4 = rsaImpl.vrfLatelyVerificationKeysBySign(mName);
-				msgr.sendVrfMsg(v4);
-				partialResults.add(v4);
-			}
-
-			//check that the late mixed verification key set is equal to the set of last mixer
-			VerificationResult v5 = prmImpl.vrfLatelyVerificatonKeys();
-			msgr.sendVrfMsg(v5);
-			partialResults.add(v5);
+			//check that the late mixed verification key set is equal to the set of last mixer - ToDo decomment when it will be available
+//			VerificationResult v5 = prmImpl.vrfLatelyVerificatonKeys();
+//			msgr.sendVrfMsg(v5);
+//			partialResults.add(v5);
 
 			//signature over late mixed verification key set
 			VerificationResult v6 = rsaImpl.vrfLatelyVerificationKeysSign();
@@ -113,11 +116,14 @@ public class ElectionPeriodRunner extends Runner {
 				}
 			}
 
-			//ToDo create verification result for BallotsVerification
+			VerificationResult v7 = new VerificationResult(VerificationType.EL_PERIOD_BALLOT, result, ebp.getElectionID(), runnerName, ImplementerType.PARAMETER, EntityType.VOTERS);
+			msgr.sendVrfMsg(v7);
+			partialResults.add(v7);
 
 
 			return Collections.unmodifiableList(partialResults);
-		} catch (UnsupportedEncodingException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
+		} catch (UnsupportedEncodingException | ElectionBoardServiceFault | NoSuchAlgorithmException ex) {
+			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 			Logger.getLogger(ElectionPeriodRunner.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
