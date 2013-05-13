@@ -27,6 +27,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.naming.InvalidNameException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -49,12 +50,8 @@ public class CertImplTest {
 		ci = new CertificatesImplementer(ebp, RunnerName.UNSET);
 
 		fBfh = new File(this.getClass().getResource("/www.bfh.ch").getPath());
-
 		fQuoVadisG = new File(this.getClass().getResource("/QuoVadisGlobalSSLICA").getPath());
-
 		fQuoVadisRoot = new File(this.getClass().getResource("/QuoVadisRootCA2").getPath());
-
-		cacert = new File(this.getClass().getResource("/CACertificate.pem").getPath());
 	}
 
 	/**
@@ -83,7 +80,8 @@ public class CertImplTest {
 	 * Test the certificate chain without the Root CA. This must be throw an
 	 * exception since we cannot verify the intermediate certificate.
 	 *
-	 * @throws CertPathValidatorException
+	 * @throws CertPathValidatorException if the path cannot be validate for
+	 * a specific reason.
 	 */
 	@Test(expected = CertPathValidatorException.class)
 	public void testUnvalidCertificateChain() throws CertPathValidatorException {
@@ -104,14 +102,17 @@ public class CertImplTest {
 	/**
 	 * Test the CA certificate.
 	 *
-	 * @throws ElectionBoardServiceFault
-	 * @throws CertificateException
-	 * @throws InvalidAlgorithmParameterException
-	 * @throws NoSuchAlgorithmException
-	 * @throws IOException
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory used in this verification cannot be found.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws InvalidAlgorithmParameterException if the parameters for the
+	 * PKIX algorithm are not correct.
 	 */
 	@Test
-	public void testCaCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IOException {
+	public void testCACertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IOException {
 		VerificationResult vr = ci.vrfCACertificate();
 		assertTrue(vr.getResult());
 	}
@@ -119,10 +120,14 @@ public class CertImplTest {
 	/**
 	 * Test the EA Certificate.
 	 *
-	 * @throws ElectionBoardServiceFault
-	 * @throws CertificateException
-	 * @throws InvalidAlgorithmParameterException
-	 * @throws NoSuchAlgorithmException
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory used in this verification cannot be found.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws InvalidAlgorithmParameterException if the parameters for the
+	 * PKIX algorithm are not correct.
 	 */
 	@Test
 	public void testEACertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
@@ -133,14 +138,94 @@ public class CertImplTest {
 	/**
 	 * Test the EM Certificate.
 	 *
-	 * @throws ElectionBoardServiceFault
-	 * @throws CertificateException
-	 * @throws InvalidAlgorithmParameterException
-	 * @throws NoSuchAlgorithmException
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory used in this verification cannot be found.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws InvalidAlgorithmParameterException if the parameters for the
+	 * PKIX algorithm are not correct.
 	 */
 	@Test
 	public void testEMCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
 		VerificationResult vr = ci.vrfEMCertificate();
+		assertTrue(vr.getResult());
+	}
+
+	/**
+	 * Test the Mixers certificates.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory used in this verification cannot be found.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws InvalidAlgorithmParameterException if the parameters for the
+	 * PKIX algorithm are not correct.
+	 */
+	@Test
+	public void testMixersCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, InvalidNameException, NoSuchAlgorithmException {
+		for (String mName : ebp.getElectionDefinition().getMixerId()) {
+			VerificationResult vr = ci.vrfMixerCertificate(mName);
+			assertTrue(vr.getResult());
+		}
+	}
+
+	/**
+	 * Test the Talliers certificates.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory used in this verification cannot be found.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws InvalidAlgorithmParameterException if the parameters for the
+	 * PKIX algorithm are not correct.
+	 */
+	@Test
+	public void testTalliersCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, InvalidNameException, NoSuchAlgorithmException {
+		for (String tName : ebp.getElectionDefinition().getTallierId()) {
+			VerificationResult vr = ci.vrfTallierCertificate(tName);
+			assertTrue(vr.getResult());
+		}
+	}
+
+	/**
+	 * Test the Voters certificates.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory used in this verification cannot be found.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws InvalidAlgorithmParameterException if the parameters for the
+	 * PKIX algorithm are not correct.
+	 */
+	@Test
+	public void testVotersCert() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
+		VerificationResult vr = ci.vrfVotersCertificate();
+		assertTrue(vr.getResult());
+	}
+
+	/**
+	 * Test the Lately registered voters certificates.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory used in this verification cannot be found.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws InvalidAlgorithmParameterException if the parameters for the
+	 * PKIX algorithm are not correct.
+	 */
+	@Test
+	public void testLatelyVotersCerts() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
+		VerificationResult vr = ci.vrfLatelyRegisteredVotersCertificate();
 		assertTrue(vr.getResult());
 	}
 }

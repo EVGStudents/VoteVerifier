@@ -26,6 +26,7 @@ public class MixerTallierRunner extends Runner {
 	 * Construct an MixerTallierRunner with a given ElectionBoardProxy.
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data.
+	 * @param msgr the Messenger used to send the results.
 	 */
 	public MixerTallierRunner(ElectionBoardProxy ebp, Messenger msgr) {
 		super(RunnerName.MIXING_TALLING, msgr);

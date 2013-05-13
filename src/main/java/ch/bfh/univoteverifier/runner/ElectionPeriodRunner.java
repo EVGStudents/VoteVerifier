@@ -9,11 +9,26 @@
  */
 package ch.bfh.univoteverifier.runner;
 
+import ch.bfh.univote.common.Ballot;
+import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
+import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
+import ch.bfh.univoteverifier.implementer.ParametersImplementer;
+import ch.bfh.univoteverifier.implementer.ProofImplementer;
+import ch.bfh.univoteverifier.implementer.RSAImplementer;
+import ch.bfh.univoteverifier.implementer.SchnorrImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.InvalidNameException;
 
 /**
  * This class represent an ElectionPeriodRunner.
@@ -22,17 +37,90 @@ import java.util.List;
  */
 public class ElectionPeriodRunner extends Runner {
 
+	private final CertificatesImplementer certImpl;
+	private final RSAImplementer rsaImpl;
+	private final ElectionBoardProxy ebp;
+	private final ProofImplementer proofImpl;
+	private final ParametersImplementer prmImpl;
+	private final SchnorrImplementer schnImpl;
+
 	/**
-	 * Construct an ElectionPeriodRunner with a given ElectionBoardProxy.
+	 * Construct an ElectionPeriodRunner with a given ElectionBoardProxy and
+	 * Messenger.
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data.
+	 * @param msgr the Messenger used to send the results.
 	 */
-	public ElectionPeriodRunner(ElectionBoardProxy ebp, Messenger msgr) {
+	public ElectionPeriodRunner(ElectionBoardProxy ebp, Messenger msgr) throws CertificateException, ElectionBoardServiceFault, InvalidNameException {
 		super(RunnerName.ELECTION_PERIOD, msgr);
+		this.ebp = ebp;
+		certImpl = new CertificatesImplementer(ebp, runnerName);
+		rsaImpl = new RSAImplementer(ebp, runnerName);
+		proofImpl = new ProofImplementer(ebp, runnerName);
+		prmImpl = new ParametersImplementer(ebp, runnerName);
+		schnImpl = new SchnorrImplementer(ebp, runnerName);
 	}
 
 	@Override
 	public List<VerificationResult> run() {
-		return null;
+		try {
+			//lately registered voters certificate
+			VerificationResult v1 = certImpl.vrfLatelyRegisteredVotersCertificate();
+			msgr.sendVrfMsg(v1);
+			partialResults.add(v1);
+
+			//RSA signature of lately registered voters certificate and id
+			VerificationResult v2 = rsaImpl.vrfLatelyRegisteredVotersCertificateSign();
+			msgr.sendVrfMsg(v2);
+			partialResults.add(v2);
+
+			//NIZKP of late registered verification key and signature - Proof Not yet available
+			for (String mName : ebp.getElectionDefinition().getMixerId()) {
+				VerificationResult v3 = proofImpl.vrfLatelyVerificationKeysProof(mName);
+				msgr.sendVrfMsg(v3);
+				partialResults.add(v3);
+
+				//signature
+				VerificationResult v4 = rsaImpl.vrfLatelyVerificationKeysBySign(mName);
+				msgr.sendVrfMsg(v4);
+				partialResults.add(v4);
+			}
+
+			//check that the late mixed verification key set is equal to the set of last mixer
+			VerificationResult v5 = prmImpl.vrfLatelyVerificatonKeys();
+			msgr.sendVrfMsg(v5);
+			partialResults.add(v5);
+
+			//signature over late mixed verification key set
+			VerificationResult v6 = rsaImpl.vrfLatelyVerificationKeysSign();
+			msgr.sendVrfMsg(v6);
+			partialResults.add(v6);
+
+			//NIZKP of late  renewal of registration and signature - ToDO
+			//M7,M8,EM16,EM17
+
+			//Ballots verifications
+			boolean result = true;
+			for (Ballot b : ebp.getBallots().getBallot()) {
+				boolean vkVerification = prmImpl.vrfBallotVerificationKey(b);
+				boolean signatureVerification = schnImpl.vrfBallotSignature(b);
+				boolean proofVerification = proofImpl.vrfBallotProof(b);
+
+				//if one of these checks fail, break and set the verification result as failed
+				if (!(vkVerification && signatureVerification && proofVerification)) {
+					result = false;
+					break;
+				}
+			}
+
+			//ToDo create verification result for BallotsVerification
+
+
+			return Collections.unmodifiableList(partialResults);
+		} catch (UnsupportedEncodingException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
+			Logger.getLogger(ElectionPeriodRunner.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return Collections.unmodifiableList(partialResults);
 	}
 }

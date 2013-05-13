@@ -32,9 +32,10 @@ public class ParamImplTest {
 
 	ParametersImplementer pi;
 	BigInteger p, q, g;
+	ElectionBoardProxy ebp;
 
 	public ParamImplTest() throws FileNotFoundException {
-		ElectionBoardProxy ebp = new ElectionBoardProxy();
+		ebp = new ElectionBoardProxy();
 		pi = new ParametersImplementer(ebp, RunnerName.UNSET);
 
 		//change the value of p,q and g - all the test must fail
@@ -92,5 +93,69 @@ public class ParamImplTest {
 		VerificationResult v = pi.vrfGenerator(p, q, g, VerificationType.SETUP_SCHNORR_G);
 		assertFalse(v.getResult());
 		assertEquals(v.getFailureCode(), FailureCode.NOT_A_GENERATOR);
+	}
+
+	/**
+	 * Test that the distributed key y correspond to the partial y_j of each
+	 * tallier.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testDistributedKey() throws ElectionBoardServiceFault {
+		VerificationResult v = pi.vrfDistributedKey();
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test that the elction generator g^ is equal to the blinded generator
+	 * of the last mixer.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testElectionGenerator() throws ElectionBoardServiceFault {
+		VerificationResult v = pi.vrfElectionGenerator();
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test the mixed verification keys by a given mixer.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testMixedVerificationKeysBy() throws ElectionBoardServiceFault {
+		for (String mName : ebp.getElectionDefinition().getMixerId()) {
+			VerificationResult v = pi.vrfVerificationKeysMixedBy(mName);
+			assertTrue(v.getResult());
+		}
+	}
+
+	/**
+	 * Test the mixed verification keys.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testMixedVerificationKeys() throws ElectionBoardServiceFault {
+		VerificationResult v = pi.vrfVerificationKeysMixed();
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test the lately mixed verification keys.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testLatelyMixerVerificationKeys() throws ElectionBoardServiceFault {
+		VerificationResult v = pi.vrfLatelyVerificatonKeys();
+		assertTrue(v.getResult());
 	}
 }

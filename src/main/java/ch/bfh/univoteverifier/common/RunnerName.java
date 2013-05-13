@@ -23,11 +23,6 @@ public enum RunnerName {
 	ELECTION_PREPARATION(3),
 	ELECTION_PERIOD(4),
 	MIXING_TALLING(5),
-	CA(6),
-	EM(7),
-	EA(8),
-	MIXER(9),
-	TALLIER(10),
 	RESULT(11);
 	private final int id;
 

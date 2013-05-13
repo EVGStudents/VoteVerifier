@@ -10,6 +10,8 @@
  */
 package ch.bfh.univoteverifier.verificationtest;
 
+import ch.bfh.univoteverifier.common.EntityType;
+import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.verification.UniversalVerification;
@@ -39,13 +41,13 @@ public class UniversalVerificationTester {
 		realList = v.runVerification();
 
 		mockList = new ArrayList<>();
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID, RunnerName.SYSTEM_SETUP));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true, eID, RunnerName.SYSTEM_SETUP));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID, RunnerName.SYSTEM_SETUP));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID, RunnerName.SYSTEM_SETUP));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID, RunnerName.SYSTEM_SETUP));
-		mockList.add(new VerificationResult(VerificationType.SETUP_CA_CERT, true, eID, RunnerName.SYSTEM_SETUP));
-		mockList.add(new VerificationResult(VerificationType.SETUP_EM_CERT, true, eID, RunnerName.SYSTEM_SETUP));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID, RunnerName.SYSTEM_SETUP, ImplementerType.PARAMETER, EntityType.PARAMETER));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true, eID, RunnerName.SYSTEM_SETUP, ImplementerType.PARAMETER, EntityType.PARAMETER));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID, RunnerName.SYSTEM_SETUP, ImplementerType.PARAMETER, EntityType.PARAMETER));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID, RunnerName.SYSTEM_SETUP, ImplementerType.PARAMETER, EntityType.PARAMETER));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID, RunnerName.SYSTEM_SETUP, ImplementerType.PARAMETER, EntityType.PARAMETER));
+		mockList.add(new VerificationResult(VerificationType.SETUP_CA_CERT, true, eID, RunnerName.SYSTEM_SETUP, ImplementerType.CERTIFICATE, EntityType.CA));
+		mockList.add(new VerificationResult(VerificationType.SETUP_EM_CERT, true, eID, RunnerName.SYSTEM_SETUP, ImplementerType.CERTIFICATE, EntityType.EM));
 		//ToDO add all the results when they are available
 	}
 

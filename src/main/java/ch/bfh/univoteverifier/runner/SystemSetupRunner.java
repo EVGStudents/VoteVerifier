@@ -27,8 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class represent a MixerTallierRunner.
- *
+ * This class represent a the SystemSetupRunner.
  *
  * @author snake
  */
@@ -38,58 +37,63 @@ public class SystemSetupRunner extends Runner {
 	private final CertificatesImplementer certImpl;
 
 	/**
-	 * Construct an SystemSetupRunner with a given Messenger.
+	 * Construct an SystemSetupRunner with a given ElectionBoardProxy and
+	 * Messenger.
 	 *
+	 * @param ebp the ElectionBoardProxy from where get the data.
+	 * @param msgr the Messenger used to send the results.
 	 */
 	public SystemSetupRunner(ElectionBoardProxy ebp, Messenger msgr) {
 		super(RunnerName.SYSTEM_SETUP, msgr);
 
-		//create the implementer we want
 		paramImpl = new ParametersImplementer(ebp, runnerName);
 		certImpl = new CertificatesImplementer(ebp, runnerName);
 	}
 
 	@Override
 	public List<VerificationResult> run() {
-
 		try {
-			//ToDo add comments
+			//is Schnorr p prime
 			VerificationResult v1 = paramImpl.vrfPrime(Config.p, VerificationType.SETUP_SCHNORR_P);
 			msgr.sendVrfMsg(v1);
+			partialResults.add(v1);
 			Thread.sleep(1000);
 
+			//is Schnorr q prime
 			VerificationResult v2 = paramImpl.vrfPrime(Config.q, VerificationType.SETUP_SCHNORR_Q);
 			msgr.sendVrfMsg(v2);
+			partialResults.add(v2);
 			Thread.sleep(1000);
 
+			//is Schnorr g a generator
 			VerificationResult v3 = paramImpl.vrfGenerator(Config.p, Config.q, Config.g, VerificationType.SETUP_SCHNORR_G);
 			msgr.sendVrfMsg(v3);
+			partialResults.add(v3);
 			Thread.sleep(1000);
 
+			//is Schnorr p a safe prime
 			VerificationResult v4 = paramImpl.vrfSafePrime(Config.p, Config.q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
 			msgr.sendVrfMsg(v4);
+			partialResults.add(v4);
 			Thread.sleep(1000);
 
+			//are the Schnorr paramters long enough
 			VerificationResult v5 = paramImpl.vrfSchnorrParamLen(Config.p, Config.q, Config.g);
 			msgr.sendVrfMsg(v5);
+			partialResults.add(v5);
 			Thread.sleep(1000);
 
+			//verifiy CA certificate
 			VerificationResult v6 = certImpl.vrfCACertificate();
 			msgr.sendVrfMsg(v6);
-			Thread.sleep(1000);
+			partialResults.add(v6);
 			Thread.sleep(1000);
 
+			//verifiy EM certificate
 			VerificationResult v7 = certImpl.vrfEMCertificate();
 			msgr.sendVrfMsg(v7);
-
-			//cache the results
-			partialResults.add(v1);
-			partialResults.add(v2);
-			partialResults.add(v3);
-			partialResults.add(v4);
-			partialResults.add(v5);
-			partialResults.add(v6);
 			partialResults.add(v7);
+
 		} catch (InterruptedException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
 			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
 		}

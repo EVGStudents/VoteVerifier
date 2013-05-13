@@ -26,12 +26,12 @@ public class OldPrimitives {
 	private static final Logger LOGGER = Logger.getLogger(OldPrimitives.class.getName());
 
 	/**
-	 * ToDo - This method is used in the class utils. Maybe move it there in
-	 * another class
+	 * Verify a RSA signature.
 	 *
-	 * @param s
-	 * @param mIn
-	 * @return
+	 * @param s the RSASignature
+	 * @param mIn the hash to be checked.
+	 * @return return true if the signature is verified correctly, false
+	 * otherwise.
 	 */
 	public boolean vrfRSASign(RSASignature s, BigInteger mIn) {
 		BigInteger ver = s.getSig().modPow(s.getE(), s.getN());
@@ -44,14 +44,13 @@ public class OldPrimitives {
 	}
 
 	/**
-	 * Verify the given signature. - ToDo move this in a class in the utils
-	 * package
+	 * Verify a Schnorr signature.
 	 *
 	 * @param signature the signature to check
 	 * @param message the content to sign
 	 * @param publicKey the public key used to verify the signature
-	 * @return boolean return true if the signature is verified correctly,
-	 * false otherwise
+	 * @return return true if the signature is verified correctly, false
+	 * otherwise
 	 */
 	public boolean vrfSchnorrSign(SchnorrSignature signature, BigInteger message, BigInteger publicKey) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
@@ -101,8 +100,6 @@ public class OldPrimitives {
 	 * @return and String value of the concatenated contents of the array
 	 */
 	private BigInteger concatArrayContents(BigInteger[] c) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-		//TODO the calls to this method from NIZKP need to also send the Vi Voter ID?
-		//		BigInteger bigConcat=  BigInteger.ZERO;
 		String concat = "";
 		for (BigInteger ci : c) {
 			//001100 similates padding

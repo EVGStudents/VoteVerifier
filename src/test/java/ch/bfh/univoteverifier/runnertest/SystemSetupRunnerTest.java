@@ -11,6 +11,8 @@
 package ch.bfh.univoteverifier.runnertest;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.EntityType;
+import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.common.RunnerName;
@@ -23,39 +25,47 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Test the runner of the system setup
+ * Test the runner of the system setup.
  *
  * @author snake
  */
 public class SystemSetupRunnerTest {
 
-	SystemSetupRunner ssr;
-	List<VerificationResult> mockList;
-	List<VerificationResult> realList;
-	Messenger gm;
-	ElectionBoardProxy ebp;
-	String eID;
+	private final SystemSetupRunner ssr;
+	private final List<VerificationResult> mockList;
+	private final List<VerificationResult> realList;
+	private final ElectionBoardProxy ebp;
+	private final String eID;
+	private final RunnerName rn;
 
 	public SystemSetupRunnerTest() throws FileNotFoundException {
-		gm = new Messenger();
 		eID = "vsbfh-2013";
 		ebp = new ElectionBoardProxy();
-		ssr = new SystemSetupRunner(ebp, gm);
+		ssr = new SystemSetupRunner(ebp, new Messenger());
 		realList = ssr.run();
 		mockList = new ArrayList<>();
+		rn = RunnerName.SYSTEM_SETUP;
 
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID, RunnerName.SYSTEM_SETUP));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true, eID, RunnerName.SYSTEM_SETUP));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID, RunnerName.SYSTEM_SETUP));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID, RunnerName.SYSTEM_SETUP));
-		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID, RunnerName.SYSTEM_SETUP));
-		mockList.add(new VerificationResult(VerificationType.SETUP_CA_CERT, true, eID, RunnerName.SYSTEM_SETUP));
-		mockList.add(new VerificationResult(VerificationType.SETUP_EM_CERT, true, eID, RunnerName.SYSTEM_SETUP));
-
+		buildMockList();
 	}
 
 	/**
-	 * Test if the size of the result list correspond
+	 * Build the mock list.
+	 *
+	 * @throws ElectionBoardServiceFault
+	 */
+	private void buildMockList() {
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID, rn, ImplementerType.PARAMETER, EntityType.PARAMETER));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_Q, true, eID, rn, ImplementerType.PARAMETER, EntityType.PARAMETER));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_G, true, eID, rn, ImplementerType.PARAMETER, EntityType.PARAMETER));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P_SAFE_PRIME, true, eID, rn, ImplementerType.PARAMETER, EntityType.PARAMETER));
+		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, true, eID, rn, ImplementerType.PARAMETER, EntityType.PARAMETER));
+		mockList.add(new VerificationResult(VerificationType.SETUP_CA_CERT, true, eID, rn, ImplementerType.CERTIFICATE, EntityType.CA));
+		mockList.add(new VerificationResult(VerificationType.SETUP_EM_CERT, true, eID, rn, ImplementerType.CERTIFICATE, EntityType.EM));
+	}
+
+	/**
+	 * Test if the size of the result list correspond.
 	 */
 	@Test
 	public void testSizeOfResults() {
@@ -63,15 +73,15 @@ public class SystemSetupRunnerTest {
 	}
 
 	/**
-	 * Test if the runner name correspond
+	 * Test if the runner name correspond.
 	 */
 	@Test
 	public void testRunnerType() {
-		assertEquals(ssr.getRunnerName(), RunnerName.SYSTEM_SETUP);
+		assertEquals(ssr.getRunnerName(), rn);
 	}
 
 	/**
-	 * Test if the result list correspond with the one we have built
+	 * Test if the result list correspond with the one we have built.
 	 */
 	@Test
 	public void testResultList() {

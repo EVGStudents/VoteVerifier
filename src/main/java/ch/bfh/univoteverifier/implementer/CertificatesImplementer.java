@@ -9,9 +9,15 @@
  */
 package ch.bfh.univoteverifier.implementer;
 
+import ch.bfh.univote.common.Certificate;
+import ch.bfh.univote.common.VoterCertificate;
+import ch.bfh.univote.common.VoterCertificates;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.EntityType;
+import ch.bfh.univoteverifier.common.FailureCode;
+import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -28,7 +34,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
 
 /**
@@ -113,7 +120,7 @@ public class CertificatesImplementer extends Implementer {
 			r = false;
 		}
 
-		return new VerificationResult(VerificationType.SETUP_CA_CERT, r, ebp.getElectionID(), rn);
+		return new VerificationResult(VerificationType.SETUP_CA_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.CA);
 	}
 
 	/**
@@ -128,6 +135,8 @@ public class CertificatesImplementer extends Implementer {
 	 * PKIX algorithm are not correct.
 	 * @throws NoSuchAlgorithmException if the algorithm specified for the
 	 * certificate path validator doesn't exist.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfEMCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
 		X509Certificate emCert = ebp.getEMCert();
@@ -142,7 +151,7 @@ public class CertificatesImplementer extends Implementer {
 			r = false;
 		}
 
-		return new VerificationResult(VerificationType.SETUP_EM_CERT, r, ebp.getElectionID(), rn);
+		return new VerificationResult(VerificationType.SETUP_EM_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.EM);
 	}
 
 	/**
@@ -157,6 +166,8 @@ public class CertificatesImplementer extends Implementer {
 	 * PKIX algorithm are not correct.
 	 * @throws NoSuchAlgorithmException if the algorithm specified for the
 	 * certificate path validator doesn't exist.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfEACertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
 		X509Certificate eaCert = ebp.getEACert();
@@ -171,84 +182,181 @@ public class CertificatesImplementer extends Implementer {
 			r = false;
 		}
 
-		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT, r, ebp.getElectionID(), rn);
+		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.EA);
 	}
 
 	/**
-	 * Verify the certificate of the talliers.
+	 * Verify the certificate of a talliers
 	 *
 	 * Specification: 1.3.4, b.
 	 *
-	 * @return a list of VerificationResult for each tallier.
+	 * @param tallierName The name of tallier.
+	 * @return a VerificationResult.
 	 * @throws CertificateException if the specified instance for the
 	 * certificate factory cannot be found.
 	 * @throws InvalidAlgorithmParameterException if the parameters for the
 	 * PKIX algorithm are not correct.
 	 * @throws NoSuchAlgorithmException if the algorithm specified for the
 	 * certificate path validator doesn't exist.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public List<VerificationResult> vrfTalliersCertificates() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, InvalidNameException {
-		List<VerificationResult> talliersCert = new ArrayList<>();
+	public VerificationResult vrfTallierCertificate(String tallierName) throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, InvalidNameException {
 		boolean r;
 
-		//iterate through the certificates of the talliers
-		for (Entry e : ebp.getTalliersCerts().entrySet()) {
-			//check the certificate path
-			try {
-				List<X509Certificate> certPath = new ArrayList<>();
-				certPath.add((X509Certificate) e.getValue());
-				r = vrfCert(certPath);
-			} catch (CertPathValidatorException ex) {
-				//we now that the certificate path verification has failed so the result is false
-				r = false;
-			}
-
-			//create a VerificationResult and then set the entity name to the one we have
-			VerificationResult vTallier = new VerificationResult(VerificationType.EL_SETUP_TALLIERS_CERT, r, ebp.getElectionID(), rn);
-			vTallier.setEntityName((String) e.getKey());
-
-			talliersCert.add(vTallier);
+		//check the certificate path
+		try {
+			List<X509Certificate> certPath = new ArrayList<>();
+			certPath.add(ebp.getTalliersCerts().get(tallierName));
+			r = vrfCert(certPath);
+		} catch (CertPathValidatorException ex) {
+			//we now that the certificate path verification has failed so the result is false
+			r = false;
 		}
 
-		return talliersCert;
+		//create a VerificationResult and then set the entity name to the one we have
+		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_TALLIERS_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.TALLIER);
+		vr.setEntityName(tallierName);
+
+		if (!r) {
+			vr.setFailureCode(FailureCode.INVALID_CERTIFICATE);
+		}
+
+
+		return vr;
 	}
 
 	/**
-	 * Verify the certificate of the mixers.
+	 * Verify the certificate of a mixer.
 	 *
 	 * Specification: 1.3.4, b.
 	 *
-	 * @return a list of VerificationResult for each mixer.
+	 * @param mixerName The name of the mixer.
+	 * @return a VerificationResult.
 	 * @throws CertificateException if the specified instance for the
 	 * certificate factory cannot be found.
 	 * @throws InvalidAlgorithmParameterException if the parameters for the
 	 * PKIX algorithm are not correct.
 	 * @throws NoSuchAlgorithmException if the algorithm specified for the
 	 * certificate path validator doesn't exist.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public List<VerificationResult> vrfMixersCertificates() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, InvalidNameException {
-		List<VerificationResult> mixersCert = new ArrayList<>();
+	public VerificationResult vrfMixerCertificate(String mixerName) throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, InvalidNameException {
 		boolean r;
 
-		//iterate through the certificates of the mixer
-		for (Entry e : ebp.getTalliersCerts().entrySet()) {
+		//check the certificate path
+		try {
+			List<X509Certificate> certPath = new ArrayList<>();
+			certPath.add(ebp.getMixersCerts().get(mixerName));
+			r = vrfCert(certPath);
+		} catch (CertPathValidatorException ex) {
+			//we now that the certificate path verification has failed so the result is false
+			r = false;
+		}
+
+		//create a VerificationResult and then set the entity name to the one we have
+		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_MIXERS_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.MIXER);
+		vr.setEntityName(mixerName);
+
+		if (!r) {
+			vr.setFailureCode(FailureCode.INVALID_CERTIFICATE);
+		}
+
+		return vr;
+	}
+
+	/**
+	 * Verify the certificate of the voters.
+	 *
+	 * Specification: 1.3.5, c.
+	 *
+	 * @return a VerificationResult.
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory cannot be found.
+	 * @throws InvalidAlgorithmParameterException if the parameters for the
+	 * PKIX algorithm are not correct.
+	 * @throws NoSuchAlgorithmException if the algorithm specified for the
+	 * certificate path validator doesn't exist.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	public VerificationResult vrfVotersCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
+		VoterCertificates vc = ebp.getVoterCerts();
+		boolean r = false;
+
+		for (Certificate c : vc.getCertificate()) {
+			X509Certificate xCert = CryptoFunc.getX509Certificate(c.getValue(), false);
+
 			//check the certificate path
 			try {
 				List<X509Certificate> certPath = new ArrayList<>();
-				certPath.add((X509Certificate) e.getValue());
+				certPath.add(xCert);
+				certPath.add(ebp.getCACert());
 				r = vrfCert(certPath);
+
 			} catch (CertPathValidatorException ex) {
+				//ToDo - remove
+				Logger.getLogger(this.getClass().getName()).log(Level.INFO, ex.getMessage());
 				//we now that the certificate path verification has failed so the result is false
 				r = false;
+				break;
 			}
-
-			//create a VerificationResult and then set the entity name to the one we have
-			VerificationResult vMixer = new VerificationResult(VerificationType.EL_SETUP_MIXERS_CERT, r, ebp.getElectionID(), rn);
-			vMixer.setEntityName((String) e.getKey());
-
-			mixersCert.add(vMixer);
 		}
 
-		return mixersCert;
+		//create a VerificationResult and then set the entity name to the one we have
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.CA);
+
+		if (!r) {
+			vr.setFailureCode(FailureCode.INVALID_CERTIFICATE);
+		}
+
+		return vr;
+	}
+
+	/**
+	 * Verify the certificates of lately registered voters.
+	 *
+	 * Specification: 1.3.6, a.
+	 *
+	 * @return a VerificationResult.
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory cannot be found.
+	 * @throws InvalidAlgorithmParameterException if the parameters for the
+	 * PKIX algorithm are not correct.
+	 * @throws NoSuchAlgorithmException if the algorithm specified for the
+	 * certificate path validator doesn't exist.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	public VerificationResult vrfLatelyRegisteredVotersCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
+		List<VoterCertificate> vc = ebp.getLatelyRegisteredVoterCerts();
+		boolean r = false;
+
+		for (VoterCertificate c : vc) {
+			X509Certificate xCert = CryptoFunc.getX509Certificate(c.getCertificate().getValue(), false);
+			//check the certificate path
+			try {
+				List<X509Certificate> certPath = new ArrayList<>();
+				certPath.add(xCert);
+				certPath.add(ebp.getCACert());
+				r = vrfCert(certPath);
+			} catch (CertPathValidatorException ex) {
+				//ToDo - remove
+				Logger.getLogger(this.getClass().getName()).log(Level.INFO, ex.getMessage());
+				//we now that the certificate path verification has failed so the result is false
+				r = false;
+				break;
+			}
+		}
+
+		//create a VerificationResult and then set the entity name to the one we have
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.CA);
+
+		if (!r) {
+			vr.setFailureCode(FailureCode.INVALID_CERTIFICATE);
+		}
+
+		return vr;
 	}
 }
