@@ -53,7 +53,7 @@ public class CertificatesImplementer extends Implementer {
 	 * @param rn the RunnerName who needs this implementer.
 	 */
 	public CertificatesImplementer(ElectionBoardProxy ebp, RunnerName rn) {
-		super(ebp, rn);
+		super(ebp, rn, ImplementerType.CERTIFICATE);
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class CertificatesImplementer extends Implementer {
 			r = false;
 		}
 
-		return new VerificationResult(VerificationType.SETUP_CA_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.CA);
+		return new VerificationResult(VerificationType.SETUP_CA_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class CertificatesImplementer extends Implementer {
 			r = false;
 		}
 
-		return new VerificationResult(VerificationType.SETUP_EM_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.EM);
+		return new VerificationResult(VerificationType.SETUP_EM_CERT, r, ebp.getElectionID(), rn, it, EntityType.EM);
 	}
 
 	/**
@@ -182,7 +182,7 @@ public class CertificatesImplementer extends Implementer {
 			r = false;
 		}
 
-		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.EA);
+		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT, r, ebp.getElectionID(), rn, it, EntityType.EA);
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class CertificatesImplementer extends Implementer {
 		}
 
 		//create a VerificationResult and then set the entity name to the one we have
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_TALLIERS_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.TALLIER);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_TALLIERS_CERT, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
 		vr.setEntityName(tallierName);
 
 		if (!r) {
@@ -256,7 +256,7 @@ public class CertificatesImplementer extends Implementer {
 		}
 
 		//create a VerificationResult and then set the entity name to the one we have
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_MIXERS_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.MIXER);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_MIXERS_CERT, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
 		vr.setEntityName(mixerName);
 
 		if (!r) {
@@ -305,7 +305,7 @@ public class CertificatesImplementer extends Implementer {
 		}
 
 		//create a VerificationResult and then set the entity name to the one we have
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.CA);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.INVALID_CERTIFICATE);
@@ -351,7 +351,7 @@ public class CertificatesImplementer extends Implementer {
 		}
 
 		//create a VerificationResult and then set the entity name to the one we have
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT, r, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.CA);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.INVALID_CERTIFICATE);

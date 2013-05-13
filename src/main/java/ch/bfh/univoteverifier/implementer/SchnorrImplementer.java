@@ -14,6 +14,7 @@ import ch.bfh.univote.common.VoterSignature;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import java.io.UnsupportedEncodingException;
@@ -35,7 +36,7 @@ public class SchnorrImplementer extends Implementer {
 	 * @param ebp the election board proxy from where get the data.
 	 */
 	public SchnorrImplementer(ElectionBoardProxy ebp, RunnerName rn) {
-		super(ebp, rn);
+		super(ebp, rn, ImplementerType.SCHNORR);
 		p = Config.p;
 		q = Config.q;
 		g = Config.g;

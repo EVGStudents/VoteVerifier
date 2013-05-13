@@ -18,10 +18,12 @@ import ch.bfh.univote.common.ElectionDefinition;
 import ch.bfh.univote.common.ElectionGenerator;
 import ch.bfh.univote.common.ElectionOptions;
 import ch.bfh.univote.common.ElectoralRoll;
+import ch.bfh.univote.common.EncryptedVote;
 import ch.bfh.univote.common.EncryptionKey;
 import ch.bfh.univote.common.EncryptionKeyShare;
 import ch.bfh.univote.common.ForallRule;
 import ch.bfh.univote.common.LocalizedText;
+import ch.bfh.univote.common.MixedEncryptedVotes;
 import ch.bfh.univote.common.MixedVerificationKey;
 import ch.bfh.univote.common.MixedVerificationKeys;
 import ch.bfh.univote.common.PoliticalList;
@@ -48,6 +50,8 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
 
 /**
@@ -68,7 +72,7 @@ public class RSAImplementer extends Implementer {
 	 * @param ebp the election board proxy from where get the data.
 	 */
 	public RSAImplementer(ElectionBoardProxy ebp, RunnerName rn) throws CertificateException, ElectionBoardServiceFault, InvalidNameException {
-		super(ebp, rn);
+		super(ebp, rn, ImplementerType.RSA);
 		emPubKey = (RSAPublicKey) ebp.getEMCert().getPublicKey();
 		eaPubKey = (RSAPublicKey) ebp.getEACert().getPublicKey();
 		talliersCerts = ebp.getTalliersCerts();
@@ -94,12 +98,12 @@ public class RSAImplementer extends Implementer {
 		//compute signature^e mod s, this must be equal to the hash we have computed
 		BigInteger decSign = signature.modPow(pubKey.getPublicExponent(), pubKey.getModulus());
 
-//		System.out.println("Public key: " + s);
-//		System.out.println("Signature value: " + signature);
-//		System.out.println("Hash:\t\t\t" + hash);
-//		System.out.println("Decripted signature:\t" + decSign);
-		System.out.println(clearText);
-		System.out.println("===========");
+		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Concat string {0}", clearText);
+		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Public key {0}", pubKey);
+		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Signature value {0}", signature);
+		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "My computed hash {0}", hash);
+		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Decrypted signature {0}", decSign);
+		Logger.getLogger(this.getClass().getName()).log(Level.INFO, clearText);
 
 		boolean result = decSign.equals(hash);
 
@@ -143,7 +147,7 @@ public class RSAImplementer extends Implementer {
 
 		boolean r = vrfRSASign(emPubKey, res, signature);
 
-		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM);
+		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 	}
 
 	/**
@@ -189,7 +193,7 @@ public class RSAImplementer extends Implementer {
 		boolean r = vrfRSASign(eaPubKey, res, signature.getValue());
 
 		//create the VerificationResult
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EA);
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (!r) {
 			v.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
@@ -233,7 +237,7 @@ public class RSAImplementer extends Implementer {
 		boolean r = false;
 
 		//create the VerificationResult
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_CERT_M_CERT_ID_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM);
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_CERT_M_CERT_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
 			v.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
@@ -276,7 +280,7 @@ public class RSAImplementer extends Implementer {
 		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
 
 		//create the VerificationResult
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_ELGAMAL_PARAMS_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM);
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_ELGAMAL_PARAMS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
 			v.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
@@ -319,7 +323,7 @@ public class RSAImplementer extends Implementer {
 		RSAPublicKey tallierPubKey = (RSAPublicKey) talliersCerts.get(tallierName).getPublicKey();
 		boolean r = vrfRSASign(tallierPubKey, res, signature.getValue());
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.TALLIER);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X_SIGN, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
 		vr.setEntityName(tallierName);
 
 		if (!r) {
@@ -358,7 +362,7 @@ public class RSAImplementer extends Implementer {
 		//verify the signature
 		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
@@ -400,7 +404,7 @@ public class RSAImplementer extends Implementer {
 		RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
 		boolean r = vrfRSASign(mixerPubKey, res, signature.getValue());
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.MIXER);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
 		vr.setEntityName(mixerName);
 
 		if (!r) {
@@ -439,7 +443,7 @@ public class RSAImplementer extends Implementer {
 		//verify the signature
 		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_ANON_GEN_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_ANON_GEN_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
@@ -480,7 +484,7 @@ public class RSAImplementer extends Implementer {
 		//verify the signature
 		boolean r = vrfRSASign(eaPubKey, res, signature.getValue());
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_C_AND_R_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EA);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_C_AND_R_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
@@ -683,7 +687,7 @@ public class RSAImplementer extends Implementer {
 		//verify the signature
 		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_EDATA_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_EDATA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
@@ -722,7 +726,7 @@ public class RSAImplementer extends Implementer {
 		//verify the signature
 		boolean r = vrfRSASign(eaPubKey, res, signature.getValue());
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_ELECTORAL_ROLL_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EA);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_ELECTORAL_ROLL_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
@@ -750,7 +754,7 @@ public class RSAImplementer extends Implementer {
 		Signature signature = vc.getSignature();
 
 		//ToDo - Find the signature
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT_SIGN, false, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.CA);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT_SIGN, false, ebp.getElectionID(), rn, it, EntityType.CA);
 		return vr;
 	}
 
@@ -788,7 +792,7 @@ public class RSAImplementer extends Implementer {
 		RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
 		boolean r = vrfRSASign(mixerPubKey, res, signature.getValue());
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.MIXER);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
 		vr.setEntityName(mixerName);
 
 		if (!r) {
@@ -828,7 +832,7 @@ public class RSAImplementer extends Implementer {
 		//verify the signature
 		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
@@ -854,7 +858,7 @@ public class RSAImplementer extends Implementer {
 	public VerificationResult vrfLatelyRegisteredVotersCertificateSign() {
 		//ToDo - Find the signature
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT_SIGN, false, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT_SIGN, false, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		return vr;
 	}
@@ -900,7 +904,7 @@ public class RSAImplementer extends Implementer {
 			}
 		}
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.MIXER);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
 		vr.setEntityName(mixerName);
 
 		if (!r) {
@@ -951,7 +955,125 @@ public class RSAImplementer extends Implementer {
 			}
 		}
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY_SIGN, r, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		if (!r) {
+			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+		}
+
+		return vr;
+	}
+
+	/**
+	 *
+	 * Verify the signature of the shuffled encrypted votes for a given
+	 * mixer.
+	 *
+	 * Specification: 1.3.7, a.
+	 *
+	 * @param mixerName the name of the mixer
+	 * @return a VerificationResult.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 */
+	public VerificationResult vrfShuffledEncryptedVotesBySign(String mixerName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+		MixedEncryptedVotes mev = ebp.getMixedEncryptedVotesBy(mixerName);
+		Signature signature = mev.getSignature();
+		List<EncryptedVote> ev = mev.getVote();
+
+		//concatenate to (id|((firstValue|secondValue)|.......|(nfirstValue|nSecondValue)))|timestamp
+		sc.pushLeftDelim();
+		sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
+		sc.pushLeftDelim();
+
+		for (int i = 0; i < ev.size(); i++) {
+			EncryptedVote e = ev.get(i);
+
+			if (i > 0) {
+				sc.pushInnerDelim();
+			}
+
+			sc.pushLeftDelim();
+			sc.pushObject(e.getFirstValue());
+			sc.pushInnerDelim();
+			sc.pushObject(e.getSecondValue());
+			sc.pushRightDelim();
+		}
+
+		sc.pushRightDelim();
+		sc.pushRightDelim();
+		sc.pushInnerDelim();
+		sc.pushObject(signature.getTimestamp());
+
+		String res = sc.pullAll();
+
+		//verifiy the signature
+		RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
+		boolean r = vrfRSASign(mixerPubKey, res, signature.getValue());
+
+		VerificationResult vr = new VerificationResult(VerificationType.MT_M_ENC_VOTES_CHECK_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		vr.setEntityName(mixerName);
+
+		if (!r) {
+			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+		}
+
+		return vr;
+	}
+
+	/**
+	 *
+	 * Verify the signature of the shuffled encrypted votes.
+	 *
+	 * Specification: 1.3.7, a.
+	 *
+	 * @return a VerificationResult.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 */
+	public VerificationResult vrfShuffledEncryptedVotesSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+		MixedEncryptedVotes mev = ebp.getMixedEncryptedVotes();
+		Signature signature = mev.getSignature();
+		List<EncryptedVote> ev = mev.getVote();
+
+		//concatenate to (id|((firstValue|secondValue)|.......|(nfirstValue|nSecondValue)))|timestamp
+		sc.pushLeftDelim();
+		sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
+		sc.pushLeftDelim();
+
+		for (int i = 0; i < ev.size(); i++) {
+			EncryptedVote e = ev.get(i);
+
+			if (i > 0) {
+				sc.pushInnerDelim();
+			}
+
+			sc.pushLeftDelim();
+			sc.pushObject(e.getFirstValue());
+			sc.pushInnerDelim();
+			sc.pushObject(e.getSecondValue());
+			sc.pushRightDelim();
+		}
+
+		sc.pushRightDelim();
+		sc.pushRightDelim();
+		sc.pushInnerDelim();
+		sc.pushObject(signature.getTimestamp());
+
+		String res = sc.pullAll();
+
+		//verifiy the signature
+		boolean r = vrfRSASign(eaPubKey, res, signature.getValue());
+
+		VerificationResult vr = new VerificationResult(VerificationType.MT_ENC_VOTES_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);

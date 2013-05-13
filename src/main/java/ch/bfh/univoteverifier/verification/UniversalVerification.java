@@ -54,6 +54,7 @@ public class UniversalVerification extends Verification {
 			runners.add(ssr);
 			runners.add(esr);
 			runners.add(epr);
+			runners.add(eperiodr);
 		} catch (InvalidNameException | CertificateException | ElectionBoardServiceFault ex) {
 			msgr.sendElectionSpecError(geteID(), ex);
 		}

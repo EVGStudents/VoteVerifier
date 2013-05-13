@@ -18,5 +18,6 @@ public enum EntityType {
 	EM,
 	MIXER,
 	TALLIER,
+	VOTERS,
 	PARAMETER;
 }

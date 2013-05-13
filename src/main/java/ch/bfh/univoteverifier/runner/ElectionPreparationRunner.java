@@ -80,26 +80,26 @@ public class ElectionPreparationRunner extends Runner {
 			msgr.sendVrfMsg(v5);
 			partialResults.add(v5);
 
-			//Plausibility check and signature of mixed verifiction keys by
-			for (String mName : ebp.getElectionDefinition().getMixerId()) {
-				VerificationResult v6 = prmImpl.vrfVerificationKeysMixedBy(mName);
-				msgr.sendVrfMsg(v6);
-				partialResults.add(v6);
+			//Plausibility check and signature of mixed verifiction keys by - ToDo decomment when it will be available
+//			for (String mName : ebp.getElectionDefinition().getMixerId()) {
+//				VerificationResult v6 = prmImpl.vrfVerificationKeysMixedBy(mName);
+//				msgr.sendVrfMsg(v6);
+//				partialResults.add(v6);
+//
+//			VerificationResult v7 = rsaImpl.vrfMixedVerificationKeysBySign(mName);
+//				msgr.sendVrfMsg(v7);
+//				partialResults.add(v7);
+//			}
 
-				VerificationResult v7 = rsaImpl.vrfMixedVerificationKeysBySign(mName);
-				msgr.sendVrfMsg(v7);
-				partialResults.add(v7);
-			}
-
-			//mixed verification keys
-			VerificationResult v8 = prmImpl.vrfVerificationKeysMixed();
-			msgr.sendVrfMsg(v8);
-			partialResults.add(v8);
-
-			//mixed verification keys signature
-			VerificationResult v9 = rsaImpl.vrfMixedVerificationKeysSign();
-			msgr.sendVrfMsg(v9);
-			partialResults.add(v9);
+//			//mixed verification keys
+//			VerificationResult v8 = prmImpl.vrfVerificationKeysMixed();
+//			msgr.sendVrfMsg(v8);
+//			partialResults.add(v8);
+//
+//			//mixed verification keys signature
+//			VerificationResult v9 = rsaImpl.vrfMixedVerificationKeysSign();
+//			msgr.sendVrfMsg(v9);
+//			partialResults.add(v9);
 
 		} catch (InvalidAlgorithmParameterException | CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
