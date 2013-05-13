@@ -61,13 +61,22 @@ public class ResultSet {
     }
 
     /**
-     * Get the entity for to which data belongs..
+     * Get the entity for to which data belongs.
      *
-     * @return String the description.
+     * @return String the entity.
      */
-    public String getEntityName() {
-        LOGGER.log(Level.INFO, "Entity Name : {0}", vr.getEntityName());
-        return vr.getEntityName();
+    public String getEntityType() {
+        return vr.getEntityType().toString();
+    }
+
+    /**
+     * Get the implementer type to which data belongs.
+     *
+     * @return String the implementer type.
+     */
+    public String getImplementerType() {
+        LOGGER.log(Level.INFO, "GET IMPLEMENTER TYPE: {0}", vr.getImplementerType().toString());
+        return vr.getImplementerType().toString();
     }
 
     /**

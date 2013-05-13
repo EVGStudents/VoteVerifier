@@ -74,7 +74,7 @@ public class ResultTablePanel extends JPanel {
         panel.setBackground(Color.WHITE);
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
-        JRadioButton btnSpec, btnEntity, btnRSA;
+        JRadioButton btnSpec, btnEntity, btnType;
         ButtonGroup btnGrp = new ButtonGroup();
 
         btnSpec = new JRadioButton(rb.getString("orgSpec"));
@@ -85,16 +85,26 @@ public class ResultTablePanel extends JPanel {
         btnEntity.setBackground(GUIconstants.GREY);
         btnEntity.setName("btnEntity");
 
+        btnType = new JRadioButton(rb.getString("orgType"));
+        btnType.setBackground(GUIconstants.GREY);
+        btnType.setName("btnType");
+
+
+
         btnGrp.add(btnSpec);
         btnGrp.add(btnEntity);
+        btnGrp.add(btnType);
+
         btnSpec.setSelected(true);
 
         ActionListener toggle = new ToggleResultOrganizationAction(this);
         btnSpec.addActionListener(toggle);
         btnEntity.addActionListener(toggle);
+        btnType.addActionListener(toggle);
 
         panel.add(btnSpec);
         panel.add(btnEntity);
+        panel.add(btnType);
 
         JPanel fillerPanel = new JPanel();
         fillerPanel.setBackground(GUIconstants.GREY);
@@ -123,11 +133,11 @@ public class ResultTablePanel extends JPanel {
         rs.setSectionName(rs.getRunnerName().toString());
         rpSpec.addData(rs);
 
-        rs.setSectionName(rs.getEntityName());
+        rs.setSectionName(rs.getEntityType());
         rpEntity.addData(rs);
 
-//        rs.setSectionName(rs.getType());
-//        rpType.addData(rs);
+        rs.setSectionName(rs.getImplementerType());
+        rpType.addData(rs);
 
     }
 

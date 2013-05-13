@@ -13,7 +13,6 @@ package ch.bfh.univoteverifier.gui;
 import ch.bfh.univoteverifier.action.ActionManager;
 import ch.bfh.univoteverifier.action.SelectIndVrfAction;
 import ch.bfh.univoteverifier.action.SelectUniVrfAction;
-import com.sun.java.swing.plaf.motif.MotifBorders;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -33,7 +32,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
 
 /**
  * Create several panels within this class that contain images, buttons and
