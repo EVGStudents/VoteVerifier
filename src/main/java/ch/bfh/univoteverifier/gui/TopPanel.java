@@ -36,7 +36,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
 /**
- * Create several panels within this class that contain images, buttons and labels.
+ * Create several panels within this class that contain images, buttons and
+ * labels.
+ *
  * @author prinstin
  */
 public class TopPanel extends JPanel {
@@ -48,19 +50,23 @@ public class TopPanel extends JPanel {
     JPanel dynamicChoicePanel;
     JComboBox comboBox;
     boolean selectionMade = false;
+    JButton btnFileSelector;
 
-    
     /**
      * Create an instance of this panel class.
+     *
      * @param btnUni a button to add to the button panel.
      * @param btnInd a button to add to the button panel.
      * @param btnStart a button to add to the button panel.
      * @param comboBox The comboBox that contains election ID choices.
-     * @param btnGrp The ButtonGroup containing the RadioButtons btnUni and btnInd.
+     * @param btnGrp The ButtonGroup containing the RadioButtons btnUni and
+     * btnInd.
      */
     public TopPanel(JRadioButton btnUni, JRadioButton btnInd, JButton btnStart, JComboBox comboBox, ButtonGroup btnGrp) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         this.comboBox = comboBox;
+        btnFileSelector = new JButton(rb.getString("selectFile"));
+        btnFileSelector.setAction(ActionManager.getInstance().getAction("fileChooser"));
 
         this.setBackground(Color.WHITE);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -79,13 +85,12 @@ public class TopPanel extends JPanel {
         dynamicChoicePanel = createDynamicChoicePanel();
         this.add(dynamicChoicePanel);
         panelModified();
-        selectionMade=true;
+        selectionMade = true;
     }
-    
-    public void setupErrorMsg(String text){
+
+    public void setupErrorMsg(String text) {
         vrfDescLabel.setText(text);
         vrfDescLabel.setForeground(new Color(240, 70, 20));
-               
     }
 
     /**
@@ -101,12 +106,11 @@ public class TopPanel extends JPanel {
      * Verification.
      */
     public void indVrfSelected() {
-        JButton btnFileSelector = new JButton(rb.getString("selectFile"));
-        btnFileSelector.setAction(ActionManager.getInstance().getAction("fileChooser"));
         changeContent("descQRCode", "descInd", btnFileSelector);
     }
-    
+
     public void changeContent(String descLabel, String descName, JComponent c) {
+        vrfDescLabel.setForeground(Color.BLACK);
         vrfDescLabel.setText(rb.getString(descName));
         if (!selectionMade) {
             showChoicePanel();
@@ -125,34 +129,37 @@ public class TopPanel extends JPanel {
     }
 
     /**
-     * Repaints and revalidates the GUI when changes have been made that must be shown.
+     * Repaints and revalidates the GUI when changes have been made that must be
+     * shown.
      */
-    public void panelModified(){
-            this.revalidate();
+    public void panelModified() {
+        this.revalidate();
         this.repaint();
     }
+
     /**
      * Create the button panel with the verification buttons in it.
      *
      * @return JPanel the panel, which contains the buttons in the topPanel.
      */
     public JPanel createButtonPanel(JRadioButton btnUni, JRadioButton btnInd, JButton btnStart, ButtonGroup btnGroup) {
-         Action selectUniVrfAction = new SelectUniVrfAction(this);
+        Action selectUniVrfAction = new SelectUniVrfAction(this);
         ActionManager.getInstance().addActions("selectUniVrf", selectUniVrfAction);
         btnUni.setAction(selectUniVrfAction);
-        
+
         Action selectIndVrfAction = new SelectIndVrfAction(this);
         ActionManager.getInstance().addActions("selectIndVrf", selectIndVrfAction);
         btnInd.setAction(selectIndVrfAction);
-        
+
         JPanel panel = new JPanel();
+//        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+
         panel.setBackground(GUIconstants.GREY);
         panel.add(btnUni);
         panel.add(btnInd);
         panel.add(btnStart);
         return panel;
     }
-    
 
     /**
      * Create the title panel with white background and image
@@ -161,8 +168,10 @@ public class TopPanel extends JPanel {
      */
     public JPanel createTitlePanel() {
         JPanel titlePanel = new JPanel();
-        titlePanel.setLayout(new GridLayout(1, 1));
-        titlePanel.setBackground(Color.white);
+//        titlePanel.setLayout(new GridLayout(1, 1));
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.X_AXIS));
+        titlePanel.setBackground(new Color(255, 200, 200));
+
         titlePanel.add(getTitleImage());
         titlePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
         return titlePanel;
@@ -170,6 +179,7 @@ public class TopPanel extends JPanel {
 
     /**
      * Create a panel where description of the verification options is shown.
+     *
      * @return A JPanel which shows verification options.
      */
     public JPanel createVrfDescPanel() {
@@ -202,24 +212,23 @@ public class TopPanel extends JPanel {
      *
      * @return a JPanel title image
      */
-    private JPanel getTitleImage() {
-        JPanel imgPanel = new JPanel();
-        imgPanel.setBackground(Color.WHITE);
-        java.net.URL img = MainGUI.class.getResource("/univoteTitle.jpeg");
+    private JLabel getTitleImage() {
+        JLabel imgLabel = new JLabel();
+        java.net.URL img = UniVoteVerifierRunner.class.getResource("/univoteTitle.jpeg");
         if (img != null) {
             ImageIcon logo = new ImageIcon(img);
-            JLabel imgLab = new JLabel(logo);
-            imgPanel.setMaximumSize(new Dimension(300, 114));
-            imgPanel.add(imgLab);
-            imgPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            imgLabel = new JLabel(logo);
+//            imgLabel.setMaximumSize(new Dimension(300, 114));
+            imgLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         } else {
             LOGGER.log(Level.INFO, "IMAGE NOT FOUND");
         }
-        return imgPanel;
+        return imgLabel;
     }
 
     /**
      * Change the text of the description label.
+     *
      * @param str The next text to show in the description label.
      */
     public void setDescription(String str) {
@@ -228,6 +237,7 @@ public class TopPanel extends JPanel {
 
     /**
      * Get the text of the description label.
+     *
      * @return A String of the text in the description label.
      */
     public String getDescription() {
