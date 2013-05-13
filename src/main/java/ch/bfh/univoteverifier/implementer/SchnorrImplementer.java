@@ -9,23 +9,24 @@
  */
 package ch.bfh.univoteverifier.implementer;
 
+import ch.bfh.univote.common.Ballot;
+import ch.bfh.univote.common.VoterSignature;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.DSAPublicKey;
 
 /**
  * This class contains all the methods that need a Schnorr verification.
  *
  * @author snake
  */
-public class SchnorrImplementer {
+public class SchnorrImplementer extends Implementer {
 
-	private final ElectionBoardProxy ebp;
 	private BigInteger p, q, g;
 
 	/**
@@ -33,8 +34,8 @@ public class SchnorrImplementer {
 	 *
 	 * @param ebp the election board proxy from where get the data.
 	 */
-	public SchnorrImplementer(ElectionBoardProxy ebp) {
-		this.ebp = ebp;
+	public SchnorrImplementer(ElectionBoardProxy ebp, RunnerName rn) {
+		super(ebp, rn);
 		p = Config.p;
 		q = Config.q;
 		g = Config.g;
@@ -46,35 +47,31 @@ public class SchnorrImplementer {
 	 *
 	 *
 	 * @param publicKey the public key we must use to verify the signature.
-	 * @param m the message to sign.
-	 * @param s the first value of a valid Schnorr signature.
-	 * @param e the second value of a valid Schnorr signature.
+	 * @param m the message to be verified.
+	 * @param a the first value of a valid Schnorr signature.
+	 * @param b the second value of a valid Schnorr signature.
 	 * @return true if the verification succeed, false otherwise
 	 * @throws NoSuchAlgorithmException if the hash function used in this
 	 * method does not find the algorithm.
 	 * @throws UnsupportedEncodingException if the hash function used in
 	 * this method does not find the encoding.
 	 */
-	public boolean vrfSchnorrSign(DSAPublicKey publicKey, BigInteger m, BigInteger s, BigInteger e) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-		BigInteger pubKeyValue = publicKey.getY();
+	public boolean vrfSchnorrSign(BigInteger verificationKey, String message, BigInteger a, BigInteger b) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
-		//compute r = g^s * y^e mod p - ToDO check s and e
-		BigInteger r = g.modPow(s, p).multiply(pubKeyValue.modPow(e, p)).mod(p);
+		//compute r = g^b * vk^a mod p
+		BigInteger r = g.modPow(b, p).multiply(verificationKey.modPow(a, p)).mod(p);
 
 		//concatenate clear text with r: (m|r)
-		StringConcatenator sc = new StringConcatenator();
 		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(m, StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(message, StringConcatenator.INNER_DELIMITER);
 		sc.pushObjectDelimiter(r, StringConcatenator.RIGHT_DELIMITER);
 		String concat = sc.pullAll();
 
-		//hashResult = sha-256(concat) mod q => this must be equal to e
-		BigInteger hashResult = CryptoFunc.sha256(concat);
+		//hashResult = sha-256(concat) mod q => this must be equal to a
+		BigInteger hashResult = CryptoFunc.sha256(concat).mod(q);
 
-		//check that hashResult = e
-		boolean res = hashResult.equals(e);
-
-		return res;
+		//return the result of hashResult == a
+		return hashResult.equals(a);
 	}
 
 	/**
@@ -102,5 +99,32 @@ public class SchnorrImplementer {
 	 */
 	public void setG(BigInteger g) {
 		this.g = g;
+	}
+
+	/**
+	 * Verify the signature of the given Ballot.
+	 *
+	 * @param b the Ballot we want to verify the signature.
+	 * @return true if the signature is verified correctly, false otherwise.
+	 */
+	public boolean vrfBallotSignature(Ballot b) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		VoterSignature signature = b.getSignature();
+
+		//concatenate to (id|(firstValue|secondValue)|proof)
+		sc.pushLeftDelim();
+		sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
+
+		sc.pushLeftDelim();
+		sc.pushObjectDelimiter(b.getEncryptedVote().getFirstValue(), StringConcatenator.INNER_DELIMITER);
+		sc.pushObject(b.getEncryptedVote().getSecondValue());
+		sc.pushRightDelim();
+
+		sc.pushInnerDelim();
+		sc.pushObjectDelimiter(b.getProof(), StringConcatenator.RIGHT_DELIMITER);
+
+		//Timestamp for the schnorr signature??? - ToDo timestamp, and string format
+		boolean signVrf = vrfSchnorrSign(b.getVerificationKey(), sc.pullAll(), signature.getFirstValue(), signature.getSecondValue());
+
+		return signVrf;
 	}
 }

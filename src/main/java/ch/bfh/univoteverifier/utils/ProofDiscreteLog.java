@@ -221,8 +221,6 @@ public class ProofDiscreteLog {
 	 * @return and String value of the concatenated contents of the array
 	 */
 	public BigInteger concatArrayContents(BigInteger[] c) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-		//TODO the calls to this method from NIZKP need to also send the Vi Voter ID?
-		//		BigInteger bigConcat=  BigInteger.ZERO;
 		String concat = "";
 		for (BigInteger ci : c) {
 			//001100 similates padding

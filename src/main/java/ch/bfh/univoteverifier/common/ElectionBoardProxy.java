@@ -47,9 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.InvalidNameException;
-import javax.naming.ldap.LdapName;
-import javax.naming.ldap.Rdn;
 
 /**
  * This class is used as a proxy for the ElectionBoard of UniVote. It is used as
@@ -161,33 +158,34 @@ public class ElectionBoardProxy {
 		XStream xstream = new XStream();
 		String dataPath = "src/test/java/ch/bfh/univoteverifier/testresources/";
 		String EXT = ".xml";
+		String eIDSeparator = "-" + eID;
 
 		//read the object from the XML file and store it in the relative object
 //		this.ballot = (Map<BigInteger, Ballot>) xstream.fromXML(new FileInputStream(dataPath + "SingleBallot" + eID + EXT));
 //		this.ballots = (Ballots) xstream.fromXML(new FileInputStream(dataPath + "Ballots" + eID + EXT));
-		this.blindGen = (Map<String, BlindedGenerator>) xstream.fromXML(new FileInputStream(dataPath + "BlindedGenerator" + eID + EXT));
-		this.decodedVotes = (DecodedVotes) xstream.fromXML(new FileInputStream(dataPath + "DecodedVotes" + eID + EXT));
-		this.decryptedVotes = (DecryptedVotes) xstream.fromXML(new FileInputStream(dataPath + "DecryptedVotes" + eID + EXT));
-		this.elData = (ElectionData) xstream.fromXML(new FileInputStream(dataPath + "ElectionData" + eID + EXT));
-		this.elDef = (ElectionDefinition) xstream.fromXML(new FileInputStream(dataPath + "ElectionDefinition" + eID + EXT));
-		this.elGen = (ElectionGenerator) xstream.fromXML(new FileInputStream(dataPath + "ElectionGenerator" + eID + EXT));
-		this.elOpt = (ElectionOptions) xstream.fromXML(new FileInputStream(dataPath + "ElectionOptions" + eID + EXT));
-		this.elRoll = (ElectoralRoll) xstream.fromXML(new FileInputStream(dataPath + "ElectoralRoll" + eID + EXT));
-		this.elSysInfo = (ElectionSystemInfo) xstream.fromXML(new FileInputStream(dataPath + "ElectionSystemInfo" + eID + EXT));
-		this.encKey = (EncryptionKey) xstream.fromXML(new FileInputStream(dataPath + "EncryptionKey" + eID + EXT));
-		this.encKeyShare = (Map<String, EncryptionKeyShare>) xstream.fromXML(new FileInputStream(dataPath + "EncryptionKeyShare" + eID + EXT));
-		this.encParam = (EncryptionParameters) xstream.fromXML(new FileInputStream(dataPath + "EncryptionParameters" + eID + EXT));
-		this.latelyMixVerKey = (List<MixedVerificationKey>) xstream.fromXML(new FileInputStream(dataPath + "LatelyMixedVerificationKeys" + eID + EXT));
-//		this.latelyMixVerKeyBy = (Map<String, List<MixedVerificationKey>>) xstream.fromXML(new FileInputStream(dataPath + "LatelyMixedVerificationKeysBy" + eID + EXT));
-//		this.latelyRegVoteCerts = (List<VoterCertificate>) xstream.fromXML(new FileInputStream(dataPath + "LatelyRegisteredVoterCerts" + eID + EXT));
-//		this.mixEncVotes = (MixedEncryptedVotes) xstream.fromXML(new FileInputStream(dataPath + "MixedEncryptedVotes" + eID + EXT));
-		this.mixEncVotesBy = (Map<String, MixedEncryptedVotes>) xstream.fromXML(new FileInputStream(dataPath + "MixedEncryptedVotesBy" + eID + EXT));
-//		this.mixVerKey = (MixedVerificationKeys) xstream.fromXML(new FileInputStream(dataPath + "MixedVerificationKeys" + eID + EXT));
-		this.mixVerKeyBy = (Map<String, MixedVerificationKeys>) xstream.fromXML(new FileInputStream(dataPath + "MixedVerificationKeysBy" + eID + EXT));
-		this.parDecVotes = (Map<String, PartiallyDecryptedVotes>) xstream.fromXML(new FileInputStream(dataPath + "PartiallyDecryptedVotes" + eID + EXT));
-//		this.rootCert = (Certificate) xstream.fromXML(new FileInputStream(dataPath + "RootCertificate" + eID + EXT));
-//		this.signParam = (SignatureParameters) xstream.fromXML(new FileInputStream(dataPath + "SignatureParameters" + eID + EXT));
-		this.voterCerts = (VoterCertificates) xstream.fromXML(new FileInputStream(dataPath + "VoterCerts" + eID + EXT));
+		this.blindGen = (Map<String, BlindedGenerator>) xstream.fromXML(new FileInputStream(dataPath + "BlindedGenerator" + eIDSeparator + EXT));
+		this.decodedVotes = (DecodedVotes) xstream.fromXML(new FileInputStream(dataPath + "DecodedVotes" + eIDSeparator + EXT));
+		this.decryptedVotes = (DecryptedVotes) xstream.fromXML(new FileInputStream(dataPath + "DecryptedVotes" + eIDSeparator + EXT));
+		this.elData = (ElectionData) xstream.fromXML(new FileInputStream(dataPath + "ElectionData" + eIDSeparator + EXT));
+		this.elDef = (ElectionDefinition) xstream.fromXML(new FileInputStream(dataPath + "ElectionDefinition" + eIDSeparator + EXT));
+		this.elGen = (ElectionGenerator) xstream.fromXML(new FileInputStream(dataPath + "ElectionGenerator" + eIDSeparator + EXT));
+		this.elOpt = (ElectionOptions) xstream.fromXML(new FileInputStream(dataPath + "ElectionOptions" + eIDSeparator + EXT));
+		this.elRoll = (ElectoralRoll) xstream.fromXML(new FileInputStream(dataPath + "ElectoralRoll" + eIDSeparator + EXT));
+		this.elSysInfo = (ElectionSystemInfo) xstream.fromXML(new FileInputStream(dataPath + "ElectionSystemInfo" + eIDSeparator + EXT));
+		this.encKey = (EncryptionKey) xstream.fromXML(new FileInputStream(dataPath + "EncryptionKey" + eIDSeparator + EXT));
+		this.encKeyShare = (Map<String, EncryptionKeyShare>) xstream.fromXML(new FileInputStream(dataPath + "EncryptionKeyShare" + eIDSeparator + EXT));
+		this.encParam = (EncryptionParameters) xstream.fromXML(new FileInputStream(dataPath + "EncryptionParameters" + eIDSeparator + EXT));
+		this.latelyMixVerKey = (List<MixedVerificationKey>) xstream.fromXML(new FileInputStream(dataPath + "LatelyMixedVerificationKeys" + eIDSeparator + EXT));
+//		this.latelyMixVerKeyBy = (Map<String, List<MixedVerificationKey>>) xstream.fromXML(new FileInputStream(dataPath + "LatelyMixedVerificationKeysBy" + eIDSeparator + EXT));
+//		this.latelyRegVoteCerts = (List<VoterCertificate>) xstream.fromXML(new FileInputStream(dataPath + "LatelyRegisteredVoterCerts" + eIDSeparator + EXT));
+//		this.mixEncVotes = (MixedEncryptedVotes) xstream.fromXML(new FileInputStream(dataPath + "MixedEncryptedVotes" + eIDSeparator + EXT));
+		this.mixEncVotesBy = (Map<String, MixedEncryptedVotes>) xstream.fromXML(new FileInputStream(dataPath + "MixedEncryptedVotesBy" + eIDSeparator + EXT));
+//		this.mixVerKey = (MixedVerificationKeys) xstream.fromXML(new FileInputStream(dataPath + "MixedVerificationKeys" + eIDSeparator + EXT));
+		this.mixVerKeyBy = (Map<String, MixedVerificationKeys>) xstream.fromXML(new FileInputStream(dataPath + "MixedVerificationKeysBy" + eIDSeparator + EXT));
+		this.parDecVotes = (Map<String, PartiallyDecryptedVotes>) xstream.fromXML(new FileInputStream(dataPath + "PartiallyDecryptedVotes" + eIDSeparator + EXT));
+//		this.rootCert = (Certificate) xstream.fromXML(new FileInputStream(dataPath + "RootCertificate" + eIDSeparator + EXT));
+//		this.signParam = (SignatureParameters) xstream.fromXML(new FileInputStream(dataPath + "SignatureParameters" + eIDSeparator + EXT));
+		this.voterCerts = (VoterCertificates) xstream.fromXML(new FileInputStream(dataPath + "VoterCerts" + eIDSeparator + EXT));
 	}
 
 	/**
@@ -685,25 +683,16 @@ public class ElectionBoardProxy {
 	 * @throws ElectionBoardServiceFault if there is a problem with the
 	 * public board such as a network connection problem or a wrong
 	 * parameter.
-	 * @throws InvalidNameException if the DN used to get the tallier name
-	 * is not valid.
 	 */
-	public Map<String, X509Certificate> getTalliersCerts() throws ElectionBoardServiceFault, CertificateException, InvalidNameException {
+	public Map<String, X509Certificate> getTalliersCerts() throws ElectionBoardServiceFault, CertificateException {
 		if (talliersCerts == null) {
 			talliersCerts = new HashMap<>();
+			int counter = 0;
 
 			for (Certificate cert : getElectionSystemInfo().getTallier()) {
 				X509Certificate xCert = CryptoFunc.getX509Certificate(cert.getValue(), true);
-				String princ = xCert.getSubjectX500Principal().getName();
-
-				//use ldap to parse the Dn and get the CN
-				LdapName ldapDN = new LdapName(princ);
-				for (Rdn rdn : ldapDN.getRdns()) {
-					if (rdn.getType().equals("CN")) {
-						talliersCerts.put((String) rdn.getValue(), xCert);
-						break;
-					}
-				}
+				talliersCerts.put(getElectionDefinition().getTallierId().get(counter), xCert);
+				counter++;
 			}
 		}
 
@@ -720,25 +709,16 @@ public class ElectionBoardProxy {
 	 * @throws ElectionBoardServiceFault if there is a problem with the
 	 * public board such as a network connection problem or a wrong
 	 * parameter.
-	 * @throws InvalidNameException if the DN used to get the mixer name is
-	 * not valid.
 	 */
-	public Map<String, X509Certificate> getMixersCerts() throws ElectionBoardServiceFault, CertificateException, InvalidNameException {
+	public Map<String, X509Certificate> getMixersCerts() throws ElectionBoardServiceFault, CertificateException {
 		if (mixersCerts == null) {
 			mixersCerts = new HashMap<>();
+			int counter = 0;
 
 			for (Certificate cert : getElectionSystemInfo().getMixer()) {
 				X509Certificate xCert = CryptoFunc.getX509Certificate(cert.getValue(), true);
-				String princ = xCert.getSubjectX500Principal().getName();
-
-				//use ldap to parse the Dn and get the CN
-				LdapName ldapDN = new LdapName(princ);
-				for (Rdn rdn : ldapDN.getRdns()) {
-					if (rdn.getType().equals("CN")) {
-						mixersCerts.put((String) rdn.getValue(), xCert);
-						break;
-					}
-				}
+				mixersCerts.put(getElectionDefinition().getMixerId().get(counter), xCert);
+				counter++;
 			}
 		}
 

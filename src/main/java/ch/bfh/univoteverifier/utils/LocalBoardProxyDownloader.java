@@ -100,7 +100,7 @@ public class LocalBoardProxyDownloader {
 	 */
 	private void realWrite(Object o, String suffix) {
 		try {
-			xstream.toXML(o, new FileOutputStream(DES_PATH + "/" + suffix + ELECTION_ID + EXT));
+			xstream.toXML(o, new FileOutputStream(DES_PATH + "/" + suffix + "-" + ELECTION_ID + EXT));
 		} catch (FileNotFoundException ex) {
 			Logger.getLogger(LocalBoardProxyDownloader.class.getName()).log(Level.SEVERE, null, ex);
 		}

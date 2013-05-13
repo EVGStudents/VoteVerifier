@@ -16,6 +16,7 @@ import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
+import ch.bfh.univoteverifier.implementer.ProofImplementer;
 import ch.bfh.univoteverifier.implementer.RSAImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.UnsupportedEncodingException;
@@ -39,19 +40,23 @@ public class ElectionSetupRunner extends Runner {
 	private final RSAImplementer rsaImpl;
 	private final CertificatesImplementer certImpl;
 	private final ParametersImplementer prmImpl;
+	private final ProofImplementer proofImpl;
 	private final ElectionBoardProxy ebp;
 
 	/**
-	 * Construct an ElectionSetupRunner with a given ElectionBoardProxy.
+	 * Construct an ElectionSetupRunner with a given ElectionBoardProxy and
+	 * Messenger.
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data.
+	 * @param msgr the Messenger used to send the results.
 	 */
-	public ElectionSetupRunner(ElectionBoardProxy ebp, Messenger msgr) throws CertificateException, ElectionBoardServiceFault {
+	public ElectionSetupRunner(ElectionBoardProxy ebp, Messenger msgr) throws CertificateException, ElectionBoardServiceFault, InvalidNameException {
 		super(RunnerName.ELECTION_SETUP, msgr);
 		this.ebp = ebp;
 		rsaImpl = new RSAImplementer(ebp, runnerName);
 		certImpl = new CertificatesImplementer(ebp, runnerName);
 		prmImpl = new ParametersImplementer(ebp, runnerName);
+		proofImpl = new ProofImplementer(ebp, runnerName);
 
 	}
 
@@ -64,10 +69,10 @@ public class ElectionSetupRunner extends Runner {
 			msgr.sendVrfMsg(v1);
 			partialResults.add(v1);
 
-			//RSA signature of (id|EA|timestamp) - ToDo decomment when we find the signature
-//			VerificationResult v2 = rsaImpl.vrfEACertIDSign();
-//			msgr.sendVrfMsg(v2);
-//			partialResults.add(v2);
+			//RSA signature of EA Cert with ID - ToDo when we find the signature
+			VerificationResult v2 = rsaImpl.vrfEACertIDSign();
+			msgr.sendVrfMsg(v2);
+			partialResults.add(v2);
 
 			//RSA signature of (id|descr|l|T|M|timestamp)
 			VerificationResult v3 = rsaImpl.vrfBasicParamSign();
@@ -75,25 +80,24 @@ public class ElectionSetupRunner extends Runner {
 			partialResults.add(v3);
 
 			//talliers certificates
-			List<VerificationResult> tCertsRes = certImpl.vrfTalliersCertificates();
-
-			for (VerificationResult v : tCertsRes) {
-				msgr.sendVrfMsg(v);
-				partialResults.add(v);
+			for (String tName : ebp.getElectionDefinition().getTallierId()) {
+				VerificationResult vr = certImpl.vrfTallierCertificate(tName);
+				msgr.sendVrfMsg(vr);
+				partialResults.add(vr);
 			}
 
 			//mixers certificates
-			List<VerificationResult> mCertsRes = certImpl.vrfMixersCertificates();
-
-			for (VerificationResult v : mCertsRes) {
-				msgr.sendVrfMsg(v);
-				partialResults.add(v);
+			for (String mName : ebp.getElectionDefinition().getMixerId()) {
+				VerificationResult vr = certImpl.vrfMixerCertificate(mName);
+				msgr.sendVrfMsg(vr);
+				partialResults.add(vr);
 			}
 
-			//RSA Signature of (id|Z_T|Z_M|timestamp) - ToDo decomment when we find the signature
-//			VerificationResult v4 = rsaImpl.vrfTMCertsSign();
-//			msgr.sendVrfMsg(v4);
-//			partialResults.add(v4);
+
+			//RSA Signature of Mixers and Talliers Certs with ID - ToDo we find the signature
+			VerificationResult v4 = rsaImpl.vrfTMCertsSign();
+			msgr.sendVrfMsg(v4);
+			partialResults.add(v4);
 
 			//ElGamal parameters
 			BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
@@ -115,7 +119,6 @@ public class ElectionSetupRunner extends Runner {
 			msgr.sendVrfMsg(v7);
 			partialResults.add(v7);
 
-
 			//is P a safe prime
 			VerificationResult v8 = prmImpl.vrfSafePrime(elGamalP, elGamalQ, VerificationType.EL_SETUP_ELGAMAL_SAFE_PRIME);
 			msgr.sendVrfMsg(v8);
@@ -126,40 +129,62 @@ public class ElectionSetupRunner extends Runner {
 			msgr.sendVrfMsg(v9);
 			partialResults.add(v9);
 
-			//RSA Signature of (id|P|Q|G|timestamp)
+			//RSA Signature of ElGamal paramters
 			VerificationResult v10 = rsaImpl.vrfElGamalParamSign();
 			msgr.sendVrfMsg(v10);
 			partialResults.add(v10);
 
-			//Encryption Key Share Proof
-			//ToDo
+			//Encryption Key Share Proof and Signature
+			for (String tName : ebp.getElectionDefinition().getTallierId()) {
+				VerificationResult vr = proofImpl.vrfDistributedKeyByProof(tName);
+				msgr.sendVrfMsg(vr);
+				partialResults.add(vr);
 
-			//Encryption Key Share Signature
-			//ToDo
+				VerificationResult vrSign = rsaImpl.vrfDistributedKeyBySign(tName);
+				msgr.sendVrfMsg(vrSign);
+				partialResults.add(vrSign);
+			}
 
 			//Encryption Key
-			//ToDo
+			VerificationResult v11 = prmImpl.vrfDistributedKey();
+			msgr.sendVrfMsg(v11);
+			partialResults.add(v11);
 
 			//Encryption Key Signature
-			//ToDo
+			VerificationResult v12 = rsaImpl.vrfDistributedKeySign();
+			msgr.sendVrfMsg(v12);
+			partialResults.add(v12);
 
-			//Election Generator Share Proof
-			//ToDo
+			//Election Generator Share Proof and Signature
+			for (int i = 0; i <= ebp.getElectionDefinition().getMixerId().size() - 1; i++) {
+				String actualName = ebp.getElectionDefinition().getMixerId().get(i);
+				String previousName;
 
-			//Election Generator Share Proof Signature
-			//ToDo
+				if (i == 0) {
+					previousName = "schnorr_generator";
+				} else {
+					previousName = ebp.getElectionDefinition().getMixerId().get(i - 1);
+				}
+
+				VerificationResult vr = proofImpl.vrfElectionGeneratorByProof(actualName, previousName);
+				msgr.sendVrfMsg(vr);
+				partialResults.add(vr);
+
+
+				VerificationResult vrSign = rsaImpl.vrfElectionGeneratorBySign(actualName);
+				msgr.sendVrfMsg(vrSign);
+				partialResults.add(vrSign);
+			}
 
 			//Election Generator
-			//ToDo
+			VerificationResult v13 = prmImpl.vrfElectionGenerator();
+			msgr.sendVrfMsg(v13);
+			partialResults.add(v13);
 
 			//Election Generator Signature
-			//ToDo
-
-
-
-
-
-
+			VerificationResult v14 = rsaImpl.vrfElectionGeneratorSign();
+			msgr.sendVrfMsg(v14);
+			partialResults.add(v14);
 
 		} catch (ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | InvalidNameException | UnsupportedEncodingException ex) {
 			Logger.getLogger(ElectionSetupRunner.class.getName()).log(Level.SEVERE, null, ex);

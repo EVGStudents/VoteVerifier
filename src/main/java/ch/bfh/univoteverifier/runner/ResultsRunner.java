@@ -4,9 +4,9 @@
  * Applied Sciences, Engineering and Information Technology, Research Institute
  * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
  *
-* Project independent UniVoteVerifier.
+ * Project independent UniVoteVerifier.
  *
-*/
+ */
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
@@ -24,9 +24,11 @@ import java.util.List;
 public class ResultsRunner extends Runner {
 
 	/**
-	 * Construct a ResultRunner with a given ElectionBoardProxy.
+	 * Construct a ResultRunner with a given ElectionBoardProxy and
+	 * Messenger.
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data.
+	 * @param msgr the Messenger used to send the results.
 	 */
 	public ResultsRunner(ElectionBoardProxy ebp, Messenger msgr) {
 		super(RunnerName.RESULT, msgr);

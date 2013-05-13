@@ -9,9 +9,11 @@
  */
 package ch.bfh.univoteverifier.verification;
 
+import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.common.FailureCode;
+import ch.bfh.univoteverifier.common.ImplementerType;
 
 /*
  *This class is a VerificationResult and it represent the result of a single
@@ -22,13 +24,15 @@ import ch.bfh.univoteverifier.common.FailureCode;
 public class VerificationResult {
 
 	private final VerificationType v;
-	private RunnerName rn;
+	private final RunnerName rn;
 	private String msg;
 	private boolean impl;
 	private final boolean result;
 	private FailureCode fc;
 	private String entityName;
 	private final String eID;
+	private final ImplementerType it;
+	private final EntityType et;
 
 	/**
 	 * Create a new VerificationResult.
@@ -39,13 +43,15 @@ public class VerificationResult {
 	 * @param rn The name of the runner who wants to have this
 	 * VerificationResult.
 	 */
-	public VerificationResult(VerificationType v, boolean res, String eID, RunnerName rn) {
+	public VerificationResult(VerificationType v, boolean res, String eID, RunnerName rn, ImplementerType it, EntityType et) {
 		this.v = v;
 		this.result = res;
 		this.impl = true;
 		this.fc = null;
 		this.eID = eID;
 		this.rn = rn;
+		this.it = it;
+		this.et = et;
 	}
 
 	/**
@@ -142,12 +148,21 @@ public class VerificationResult {
 		return this.eID;
 	}
 
-	//ToDo check if is useful
-	public String toString() {
-		String s = "\n\tVerification Event"
-			+ "" + getRunnerName()
-			+ "" + getResult();
+	/**
+	 * Get the EntityType.
+	 *
+	 * @return the EntityType.
+	 */
+	public EntityType getEntityType() {
+		return this.et;
+	}
 
-		return s;
+	/**
+	 * Get the ImplementerType.
+	 *
+	 * @return the ImplementerType.
+	 */
+	public ImplementerType getImplementerType() {
+		return this.it;
 	}
 }
