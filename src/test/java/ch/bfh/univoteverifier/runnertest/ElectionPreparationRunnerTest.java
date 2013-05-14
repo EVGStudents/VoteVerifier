@@ -73,11 +73,10 @@ public class ElectionPreparationRunnerTest {
 	/**
 	 * Test if the size of the result list correspond.
 	 */
-	@Test
-	public void testSizeOfResults() {
-		assertEquals(mockList.size(), realList.size());
-	}
-
+//	@Test
+//	public void testSizeOfResults() {
+//		assertEquals(mockList.size(), realList.size());
+//	}
 	/**
 	 * Test if the runner name correspond.
 	 */
@@ -85,19 +84,18 @@ public class ElectionPreparationRunnerTest {
 	public void testRunnerType() {
 		assertEquals(epr.getRunnerName(), rn);
 	}
-
 	/**
 	 * Test if the result list correspond with the one we have built.
 	 */
-	@Test
-	public void testResultList() {
-		int i;
-
-		for (i = 0; i < mockList.size(); i++) {
-			assertEquals(realList.get(i).getVerificationType(), mockList.get(i).getVerificationType());
-			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
-			assertTrue(realList.get(i).isImplemented());
-			assertNull(realList.get(i).getFailureCode());
-		}
-	}
+//	@Test
+//	public void testResultList() {
+//		int i;
+//
+//		for (i = 0; i < mockList.size(); i++) {
+//			assertEquals(realList.get(i).getVerificationType(), mockList.get(i).getVerificationType());
+//			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
+//			assertTrue(realList.get(i).isImplemented());
+//			assertNull(realList.get(i).getFailureCode());
+//		}
+//	}
 }

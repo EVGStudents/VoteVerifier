@@ -120,42 +120,39 @@ public class ParamImplTest {
 		VerificationResult v = pi.vrfElectionGenerator();
 		assertTrue(v.getResult());
 	}
-
 	/**
 	 * Test the mixed verification keys by a given mixer.
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	@Test
-	public void testMixedVerificationKeysBy() throws ElectionBoardServiceFault {
-		for (String mName : ebp.getElectionDefinition().getMixerId()) {
-			VerificationResult v = pi.vrfVerificationKeysMixedBy(mName);
-			assertTrue(v.getResult());
-		}
-	}
-
+//	@Test
+//	public void testMixedVerificationKeysBy() throws ElectionBoardServiceFault {
+//		for (String mName : ebp.getElectionDefinition().getMixerId()) {
+//			VerificationResult v = pi.vrfVerificationKeysMixedBy(mName);
+//			assertTrue(v.getResult());
+//		}
+//	}
 	/**
 	 * Test the mixed verification keys.
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	@Test
-	public void testMixedVerificationKeys() throws ElectionBoardServiceFault {
-		VerificationResult v = pi.vrfVerificationKeysMixed();
-		assertTrue(v.getResult());
-	}
-
+//	@Test
+//	public void testMixedVerificationKeys() throws ElectionBoardServiceFault {
+//		VerificationResult v = pi.vrfVerificationKeysMixed();
+//		assertTrue(v.getResult());
+//	}
 	/**
 	 * Test the lately mixed verification keys.
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	@Test
-	public void testLatelyMixerVerificationKeys() throws ElectionBoardServiceFault {
-		VerificationResult v = pi.vrfLatelyVerificatonKeys();
-		assertTrue(v.getResult());
-	}
+//	@Test
+//	public void testLatelyMixerVerificationKeys() throws ElectionBoardServiceFault {
+//		VerificationResult v = pi.vrfLatelyVerificatonKeys();
+//		assertTrue(v.getResult());
+//	}
 }

@@ -62,7 +62,7 @@ public class MixerTallierRunner extends Runner {
 				msgr.sendVrfMsg(v1);
 				partialResults.add(v1);
 
-				VerificationResult v2 = rsaImpl.vrfShuffledEncryptedVotesBySign(mName);
+				VerificationResult v2 = rsaImpl.vrfMixedEncryptedVotesBySign(mName);
 				msgr.sendVrfMsg(v2);
 				partialResults.add(v2);
 			}
@@ -73,7 +73,7 @@ public class MixerTallierRunner extends Runner {
 			partialResults.add(v3);
 
 			//signature of shuffled mixed encrypted votes set
-			VerificationResult v4 = rsaImpl.vrfShuffledEncryptedVotesSign();
+			VerificationResult v4 = rsaImpl.vrfMixedEncryptedVotesSign();
 			msgr.sendVrfMsg(v4);
 			partialResults.add(v4);
 
@@ -88,8 +88,15 @@ public class MixerTallierRunner extends Runner {
 				partialResults.add(v6);
 			}
 
+			//plaintext votes set
+			VerificationResult v7 = prmImpl.vrfVotes();
+			msgr.sendVrfMsg(v7);
+			partialResults.add(v7);
 
-
+			//plaintext votes set signature
+			VerificationResult v8 = rsaImpl.vrfPlaintextVotesSign();
+			msgr.sendVrfMsg(v8);
+			partialResults.add(v8);
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException | ElectionBoardServiceFault ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 			Logger.getLogger(MixerTallierRunner.class.getName()).log(Level.SEVERE, null, ex);

@@ -120,8 +120,11 @@ public class ElectionPeriodRunner extends Runner {
 			msgr.sendVrfMsg(v7);
 			partialResults.add(v7);
 
+			//signature over ballots set
+			VerificationResult v8 = rsaImpl.vrfBallotsSetSign();
+			msgr.sendVrfMsg(v8);
+			partialResults.add(v8);
 
-			return Collections.unmodifiableList(partialResults);
 		} catch (UnsupportedEncodingException | ElectionBoardServiceFault | NoSuchAlgorithmException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 			Logger.getLogger(ElectionPeriodRunner.class.getName()).log(Level.SEVERE, null, ex);

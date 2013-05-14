@@ -1,6 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
+ * Applied Sciences, Engineering and Information Technology, Research Institute
+ * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ *
+ * Project independent UniVoteVerifier.
+ *
  */
 package ch.bfh.univoteverifier.implementertest;
 
@@ -22,12 +27,12 @@ import static org.junit.Assert.*;
  *
  * @author snake
  */
-public class RSAImplementerTest {
+public class RSAImplTest {
 
 	RSAImplementer ri;
 	ElectionBoardProxy ebp;
 
-	public RSAImplementerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException {
+	public RSAImplTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException {
 		ebp = new ElectionBoardProxy();
 		ri = new RSAImplementer(ebp, RunnerName.UNSET);
 	}
@@ -312,6 +317,76 @@ public class RSAImplementerTest {
 	@Test
 	public void testLatelyRegisteredVotersKeysSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
 		VerificationResult vr = ri.vrfLatelyVerificationKeysSign();
+		assertTrue(vr.getResult());
+	}
+
+	/**
+	 * Test the result of vrfShuffledEncryptedVotesBySign().
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 */
+	@Test
+	public void testShuffledEncVotesBySign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+		for (String mName : ebp.getElectionDefinition().getMixerId()) {
+
+			VerificationResult vr = ri.vrfMixedEncryptedVotesBySign(mName);
+			assertTrue(vr.getResult());
+		}
+	}
+
+	/**
+	 * Test the result of vrfMixedEncryptedVotesSign().
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 */
+	@Test
+	public void testShuffledEncVotesSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+		VerificationResult vr = ri.vrfMixedEncryptedVotesSign();
+		assertTrue(vr.getResult());
+	}
+
+	/**
+	 * Test the result of vrfDecryptedVotesBySign().
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 */
+	@Test
+	public void testDecryptedVotesBySign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+		for (String tName : ebp.getElectionDefinition().getTallierId()) {
+
+			VerificationResult vr = ri.vrfDecryptedVotesBySign(tName);
+			assertTrue(vr.getResult());
+		}
+	}
+
+	/**
+	 * Test the result of vrfPlaintextVotesSign().
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 */
+	@Test
+	public void testPlaintextVotesSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+		VerificationResult vr = ri.vrfPlaintextVotesSign();
 		assertTrue(vr.getResult());
 	}
 }

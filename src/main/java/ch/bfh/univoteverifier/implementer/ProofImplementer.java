@@ -133,9 +133,9 @@ public class ProofImplementer extends Implementer {
 		BigInteger t = proof.getCommitment().get(0);
 		BigInteger s = proof.getResponse().get(0);
 
-		//concatenate to y_j|t|tallierName
-		sc.pushObjectDelimiter(y_j, StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(t, StringConcatenator.INNER_DELIMITER);
+		//concatenate to y_jttallierName
+		sc.pushObject(y_j);
+		sc.pushObject(t);
 		sc.pushObject(tallierName);
 
 		String res = sc.pullAll();
@@ -162,7 +162,7 @@ public class ProofImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the NIZKP of the elction generator for each mixer.
+	 * Verify the NIZKP of the election generator for each mixer.
 	 *
 	 * Specification: 1.3.4, e.
 	 *
@@ -188,9 +188,9 @@ public class ProofImplementer extends Implementer {
 		BigInteger t = proof.getCommitment().get(0);
 		BigInteger s = proof.getResponse().get(0);
 
-		//concatenate to g_k|t|mixerName
-		sc.pushObjectDelimiter(g_k, StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(t, StringConcatenator.INNER_DELIMITER);
+		//concatenate to g_ktmixerName
+		sc.pushObject(g_k);
+		sc.pushObject(t);
 		sc.pushObject(mixerName);
 
 		String res = sc.pullAll();
@@ -298,11 +298,9 @@ public class ProofImplementer extends Implementer {
 
 		//concatenate to (a|t|vk)
 		//ToDo also ask how the hash for a proof are concatenated
-		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(aValue, StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(t, StringConcatenator.INNER_DELIMITER);
+		sc.pushObject(aValue);
+		sc.pushList(proof.getCommitment(), false);
 		sc.pushObject(b.getVerificationKey());
-		sc.pushRightDelim();
 
 		String res = sc.pullAll();
 
@@ -336,7 +334,7 @@ public class ProofImplementer extends Implementer {
 
 		boolean result = false;
 
-		VerificationResult vr = new VerificationResult(VerificationType.MT_M_ENC_VOTES_CHECK, result, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		VerificationResult vr = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET, result, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 		vr.setEntityName(mixerName);
 
 		if (!result) {
@@ -362,13 +360,13 @@ public class ProofImplementer extends Implementer {
 	 */
 	public VerificationResult vrfDecryptedVotesByProof(String tallierName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
 		PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tallierName);
+
 		BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
 		BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
 		BigInteger elGamalG = ebp.getEncryptionParameters().getGenerator();
 
 		//concatenate to y_j|a_j|t|T - ToDo find y_j, check array paranethesis
 		sc.pushObject("y_j");
-		sc.pushInnerDelim();
 
 		for (int i = 0; i < pdv.getVote().size(); i++) {
 			if (i > 0) {

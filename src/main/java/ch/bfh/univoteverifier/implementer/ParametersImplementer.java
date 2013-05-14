@@ -10,7 +10,9 @@
 package ch.bfh.univoteverifier.implementer;
 
 import ch.bfh.univote.common.Ballot;
+import ch.bfh.univote.common.Ballots;
 import ch.bfh.univote.common.BlindedGenerator;
+import ch.bfh.univote.common.DecodedVotes;
 import ch.bfh.univote.common.ElectionGenerator;
 import ch.bfh.univote.common.EncryptionKey;
 import ch.bfh.univote.common.EncryptionKeyShare;
@@ -353,11 +355,35 @@ public class ParametersImplementer extends Implementer {
 
 		boolean r = false;
 
-		VerificationResult vr = new VerificationResult(VerificationType.MT_ENC_VOTES, r, ebp.getElectionID(), rn, it, EntityType.EA);
+		VerificationResult vr = new VerificationResult(VerificationType.MT_ENC_VOTES_SET, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.ENCRYPTED_VOTES_NOT_EQUALS);
 		}
+
+		return vr;
+	}
+
+	/**
+	 * Verify the validity of the ballots.
+	 *
+	 * Specification: 1.3.7, b.
+	 *
+	 * @return a VerificationResult.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	public VerificationResult vrfVotes() throws ElectionBoardServiceFault {
+		Ballots ballots = ebp.getBallots();
+
+
+		for (Ballot b : ballots.getBallot()) {
+			//ToDo
+		}
+
+		VerificationResult vr = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES, false, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+
+		//set failure code
 
 		return vr;
 	}

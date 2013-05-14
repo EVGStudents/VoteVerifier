@@ -9,6 +9,8 @@
  */
 package ch.bfh.univoteverifier.common;
 
+import ch.bfh.univote.common.LocalizedText;
+import ch.bfh.univote.common.Proof;
 import java.util.List;
 
 /**
@@ -92,6 +94,9 @@ public class StringConcatenator {
 	 * Push a the elements of a list in the same way as the push() method
 	 * do.
 	 *
+	 * Example with delimiter: (obj1|obj2|....|objn) Example without
+	 * delimiter: obj1obj2objn
+	 *
 	 * @param l the list containing the elements
 	 * @param setDelimiter if true the string will be concatenated using the
 	 * delimiters otherwise no
@@ -103,32 +108,49 @@ public class StringConcatenator {
 			return;
 		}
 
-		//if we have only 1 element, push it in the normal way then return
-		if (l.size() == 1) {
-			strB.append(l.get(0).toString());
-			return;
-		}
-
 		if (setDelimiter) {
 			strB.append(LEFT_DELIMITER);
 		}
 
-		int iteration = 0;
 
-		for (Object o : l) {
-			iteration++;
-			strB.append(o.toString());
+		for (int i = 0; i < l.size(); i++) {
+			Object o = l.get(i);
 
-
-			if (setDelimiter && iteration != l.size()) {
+			if (i > 0 && setDelimiter) {
 				strB.append(INNER_DELIMITER);
 			}
+
+			strB.append(o.toString());
+
 		}
 
 		if (setDelimiter) {
 			strB.append(RIGHT_DELIMITER);
 		}
 
+	}
+
+	/**
+	 * Push the localized list for some signatures
+	 *
+	 * @param l the list of LocalixedText
+	 */
+	public void pushLocalizedText(List<LocalizedText> l) {
+		pushLeftDelim();
+
+		for (int i = 0; i < l.size(); i++) {
+			if (i > 0) {
+				pushInnerDelim();
+			}
+
+			pushLeftDelim();
+			pushObject(l.get(i).getLanguage());
+			pushInnerDelim();
+			pushObject(l.get(i).getText());
+			pushRightDelim();
+		}
+
+		pushRightDelim();
 	}
 
 	/**
