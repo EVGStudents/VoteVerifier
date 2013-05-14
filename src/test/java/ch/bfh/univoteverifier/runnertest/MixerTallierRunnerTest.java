@@ -11,8 +11,8 @@ import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
-import ch.bfh.univoteverifier.runner.ElectionPreparationRunner;
-import ch.bfh.univoteverifier.runner.SystemSetupRunner;
+import ch.bfh.univoteverifier.runner.ElectionPeriodRunner;
+import ch.bfh.univoteverifier.runner.MixerTallierRunner;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.FileNotFoundException;
 import java.security.cert.CertificateException;
@@ -23,28 +23,26 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *  * Test the runner of the election preparation.
  *
  * @author snake
  */
-public class ElectionPreparationRunnerTest {
+public class MixerTallierRunnerTest {
 
-	private final ElectionPreparationRunner epr;
+	private final MixerTallierRunner epr;
 	private final List<VerificationResult> mockList;
 	private final List<VerificationResult> realList;
 	private final ElectionBoardProxy ebp;
 	private final String eID;
 	private final RunnerName rn;
 
-	public ElectionPreparationRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException {
+	public MixerTallierRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException {
 		eID = "vsbfh-2013";
 		ebp = new ElectionBoardProxy();
-		epr = new ElectionPreparationRunner(ebp, new Messenger());
+		epr = new MixerTallierRunner(ebp, new Messenger());
 		realList = epr.run();
 		mockList = new ArrayList<>();
-		rn = RunnerName.ELECTION_PREPARATION;
+		rn = RunnerName.MIXING_TALLING;
 
-		buildMockList();
 	}
 
 	/**
@@ -53,21 +51,28 @@ public class ElectionPreparationRunnerTest {
 	 * @throws ElectionBoardServiceFault
 	 */
 	private void buildMockList() throws ElectionBoardServiceFault {
-		mockList.add(new VerificationResult(VerificationType.EL_PREP_C_AND_R_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EA));
-		mockList.add(new VerificationResult(VerificationType.EL_PREP_EDATA_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM));
-		mockList.add(new VerificationResult(VerificationType.EL_PREP_ELECTORAL_ROLL_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EA));
-		mockList.add(new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT, true, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.CA));
-		mockList.add(new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT_SIGN, false, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.CA));
+		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT, true, eID, rn, ImplementerType.CERTIFICATE, EntityType.CA));
+		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT_SIGN, true, eID, rn, ImplementerType.RSA, EntityType.EM));
 
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
-			VerificationResult v = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS, true, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.PARAMETER);
+			VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF, false, ebp.getElectionID(), rn, ImplementerType.NIZKP, EntityType.PARAMETER);
 			v.setEntityName(mName);
+			v.setImplemented(false);
+
 			mockList.add(v);
 
-			VerificationResult vSign = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.MIXER);
+			VerificationResult vSign = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.MIXER);
 			vSign.setEntityName(mName);
 			mockList.add(vSign);
 		}
+
+		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY, true, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.EM));
+
+		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM));
+
+		//ToDo - Check M7,M8, EM16, EM17
+
+		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_BALLOT, true, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.VOTERS));
 	}
 
 	/**

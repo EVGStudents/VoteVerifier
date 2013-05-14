@@ -119,18 +119,19 @@ public class ElectionSetupRunnerTest {
 	public void testRunnerType() {
 		assertEquals(esr.getRunnerName(), rn);
 	}
+
 	/**
 	 * Test if the result list correspond with the one we have built.
 	 */
-//	@Test
-//	public void testResultList() {
-//		int i;
-//
-//		for (i = 0; i < mockList.size(); i++) {
-//			assertEquals(realList.get(i).getVerificationType(), mockList.get(i).getVerificationType());
-//			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
-//			assertTrue(realList.get(i).isImplemented());
-//			assertNull(realList.get(i).getFailureCode());
-//		}
-//	}
+	@Test
+	public void testResultList() {
+		int i;
+
+		for (i = 0; i < mockList.size(); i++) {
+			assertEquals(realList.get(i).getVerificationType(), mockList.get(i).getVerificationType());
+			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
+			assertTrue(realList.get(i).isImplemented());
+			assertNull(realList.get(i).getFailureCode());
+		}
+	}
 }

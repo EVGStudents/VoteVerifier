@@ -326,16 +326,24 @@ public class ParametersImplementer extends Implementer {
 	 * verified.
 	 * @return true if the checks have been successfully executed.
 	 */
-	public boolean vrfBallotVerificationKey(Ballot b) {
-		BigInteger vk = b.getVerificationKey();
+	public boolean vrfBallotVerificationKey(BigInteger verificationKey) throws ElectionBoardServiceFault {
+		MixedVerificationKeys mvk = ebp.getMixedVerificationKeys();
+		boolean result = false;
 
-		//check that vk belongs to VK' - ToDo
+		//check that vk belongs to VK'
+		for (BigInteger key : mvk.getKey()) {
+			if (key.equals(verificationKey)) {
+				result = true;
+				break;
+			}
+
+		}
 
 		//check that no other recent ballots contain this vk - ToDo
 
 		//if vk is in the late renewal key set, check that no other recent ballots contain this v in the late renewal key set - ToDo
 
-		return false;
+		return result;
 	}
 
 	/**

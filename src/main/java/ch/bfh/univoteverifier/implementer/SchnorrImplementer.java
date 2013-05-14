@@ -126,7 +126,7 @@ public class SchnorrImplementer extends Implementer {
 
 		//Timestamp for the schnorr signature??? - ToDo timestamp, and string format
 		boolean signVrf = vrfSchnorrSign(b.getVerificationKey(), sc.pullAll(), signature.getFirstValue(), signature.getSecondValue());
-		String[][] s = null;
+
 		return signVrf;
 
 	}

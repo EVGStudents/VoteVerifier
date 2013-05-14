@@ -32,7 +32,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Test if the pull works
+	 * Test if the pull works.
 	 */
 	@Test
 	public void pullConcatenation() {
@@ -46,7 +46,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Test a simple concatenation
+	 * Test a simple concatenation.
 	 */
 	@Test
 	public void simpleConcatenation() {
@@ -79,7 +79,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Test a concatenation with an array inside
+	 * Test a concatenation with an array inside.
 	 */
 	@Test
 	public void simpleConcatenationTwo() {
@@ -107,7 +107,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Test a concatenation with some BigInteger objects
+	 * Test a concatenation with some BigInteger objects.
 	 */
 	@Test
 	public void pushListObject() {
@@ -129,7 +129,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Push a list with one element
+	 * Push a list with one element.
 	 */
 	@Test
 	public void pushListSimple() {
@@ -142,7 +142,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Push a list with two elements
+	 * Push a list with two elements.
 	 */
 	@Test
 	public void pushListObjectTwo() {
@@ -156,7 +156,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Push an empty list
+	 * Push an empty list.
 	 */
 	@Test
 	public void pushListObjectEmpty() {
@@ -168,7 +168,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Push two object without separators
+	 * Push two object without separators.
 	 */
 	@Test
 	public void pushListWithoutSeparators() {

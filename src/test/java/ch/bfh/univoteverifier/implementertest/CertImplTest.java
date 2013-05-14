@@ -192,6 +192,7 @@ public class CertImplTest {
 			assertTrue(vr.getResult());
 		}
 	}
+
 	/**
 	 * Test the Voters certificates.
 	 *
@@ -204,11 +205,12 @@ public class CertImplTest {
 	 * @throws InvalidAlgorithmParameterException if the parameters for the
 	 * PKIX algorithm are not correct.
 	 */
-//	@Test
-//	public void testVotersCert() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
-//		VerificationResult vr = ci.vrfVotersCertificate();
-//		assertTrue(vr.getResult());
-//	}
+	@Test
+	public void testVotersCert() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
+		VerificationResult vr = ci.vrfVotersCertificate();
+		assertTrue(vr.getResult());
+	}
+
 	/**
 	 * Test the Lately registered voters certificates.
 	 *
@@ -221,9 +223,9 @@ public class CertImplTest {
 	 * @throws InvalidAlgorithmParameterException if the parameters for the
 	 * PKIX algorithm are not correct.
 	 */
-//	@Test
-//	public void testLatelyVotersCerts() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
-//		VerificationResult vr = ci.vrfLatelyRegisteredVotersCertificate();
-//		assertTrue(vr.getResult());
-//	}
+	@Test
+	public void testLatelyVotersCerts() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
+		VerificationResult vr = ci.vrfLatelyRegisteredVotersCertificate();
+		assertTrue(vr.getResult());
+	}
 }
