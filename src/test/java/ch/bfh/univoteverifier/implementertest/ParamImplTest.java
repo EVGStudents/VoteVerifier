@@ -14,10 +14,14 @@ import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.FailureCode;
+import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
+import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import org.junit.Test;
@@ -30,13 +34,18 @@ import static org.junit.Assert.*;
  */
 public class ParamImplTest {
 
-	ParametersImplementer pi;
-	BigInteger p, q, g;
-	ElectionBoardProxy ebp;
+	private final ParametersImplementer pi;
+	private final BigInteger p, q, g;
+	private final ElectionBoardProxy ebp;
+	private final ElectionReceipt er;
 
 	public ParamImplTest() throws FileNotFoundException {
 		ebp = new ElectionBoardProxy();
 		pi = new ParametersImplementer(ebp, RunnerName.UNSET);
+
+		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
+		QRCode qrCode = new QRCode(new Messenger());
+		er = qrCode.decodeReceipt(qrCodeFile);
 
 		//change the value of p,q and g - all the test must fail
 		p = Config.p.multiply(new BigInteger("2"));
@@ -157,5 +166,17 @@ public class ParamImplTest {
 	public void testLatelyMixerVerificationKeys() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfLatelyVerificatonKeys();
 		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test the verification key of a ballot.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testBallotVerificationKey() throws ElectionBoardServiceFault {
+		boolean v = pi.vrfBallotVerificationKey(er.getVk());
+		assertTrue(v);
 	}
 }

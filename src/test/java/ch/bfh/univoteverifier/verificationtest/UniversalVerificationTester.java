@@ -24,7 +24,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * This class test the behavior of a UniversalVerification
+ * This class test the behavior of a UniversalVerification.
  *
  * @author snake
  */
@@ -34,7 +34,6 @@ public class UniversalVerificationTester {
 	List<VerificationResult> mockList;
 	List<VerificationResult> realList;
 	String eID = "sub-2013";
-	final int RES_COUNT = 7;
 
 	public UniversalVerificationTester() {
 		v = new UniversalVerification(new Messenger(), eID);
@@ -56,7 +55,7 @@ public class UniversalVerificationTester {
 	 */
 	@Test
 	public void testListSize() {
-		assertEquals(RES_COUNT, realList.size());
+		assertEquals(mockList.size(), realList.size());
 	}
 
 	/**

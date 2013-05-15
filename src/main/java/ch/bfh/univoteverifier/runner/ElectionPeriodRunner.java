@@ -71,33 +71,39 @@ public class ElectionPeriodRunner extends Runner {
 //			VerificationResult v1 = certImpl.vrfLatelyRegisteredVotersCertificate();
 //			msgr.sendVrfMsg(v1);
 //			partialResults.add(v1);
+//				Thread.sleep(1000);
 
 			//RSA signature of lately registered voters certificate and id
 			VerificationResult v2 = rsaImpl.vrfLatelyRegisteredVotersCertificateSign();
 			msgr.sendVrfMsg(v2);
 			partialResults.add(v2);
+			Thread.sleep(1000);
 
 			//NIZKP of late registered verification key and signature - Proof Not yet available
 //			for (String mName : ebp.getElectionDefinition().getMixerId()) {
 //				VerificationResult v3 = proofImpl.vrfLatelyVerificationKeysProof(mName);
 //				msgr.sendVrfMsg(v3);
 //				partialResults.add(v3);
+//			Thread.sleep(1000);
 //
 //				//signature
 //				VerificationResult v4 = rsaImpl.vrfLatelyVerificationKeysBySign(mName);
 //				msgr.sendVrfMsg(v4);
 //				partialResults.add(v4);
+//			Thread.sleep(1000);
 //			}
 
 			//check that the late mixed verification key set is equal to the set of last mixer - ToDo decomment when it will be available
 //			VerificationResult v5 = prmImpl.vrfLatelyVerificatonKeys();
 //			msgr.sendVrfMsg(v5);
 //			partialResults.add(v5);
+//			Thread.sleep(1000);
 
 			//signature over late mixed verification key set
 			VerificationResult v6 = rsaImpl.vrfLatelyVerificationKeysSign();
 			msgr.sendVrfMsg(v6);
 			partialResults.add(v6);
+			Thread.sleep(1000);
 
 			//NIZKP of late  renewal of registration and signature - ToDO
 			//M7,M8,EM16,EM17
@@ -105,7 +111,7 @@ public class ElectionPeriodRunner extends Runner {
 			//Ballots verifications
 			boolean result = true;
 			for (Ballot b : ebp.getBallots().getBallot()) {
-				boolean vkVerification = prmImpl.vrfBallotVerificationKey(b);
+				boolean vkVerification = prmImpl.vrfBallotVerificationKey(b.getVerificationKey());
 				boolean signatureVerification = schnImpl.vrfBallotSignature(b);
 				boolean proofVerification = proofImpl.vrfBallotProof(b);
 
@@ -119,10 +125,15 @@ public class ElectionPeriodRunner extends Runner {
 			VerificationResult v7 = new VerificationResult(VerificationType.EL_PERIOD_BALLOT, result, ebp.getElectionID(), runnerName, ImplementerType.PARAMETER, EntityType.VOTERS);
 			msgr.sendVrfMsg(v7);
 			partialResults.add(v7);
+			Thread.sleep(1000);
 
+			//signature over ballots set
+			VerificationResult v8 = rsaImpl.vrfBallotsSetSign();
+			msgr.sendVrfMsg(v8);
+			partialResults.add(v8);
+			Thread.sleep(1000);
 
-			return Collections.unmodifiableList(partialResults);
-		} catch (UnsupportedEncodingException | ElectionBoardServiceFault | NoSuchAlgorithmException ex) {
+		} catch (InterruptedException | UnsupportedEncodingException | ElectionBoardServiceFault | NoSuchAlgorithmException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 			Logger.getLogger(ElectionPeriodRunner.class.getName()).log(Level.SEVERE, null, ex);
 		}

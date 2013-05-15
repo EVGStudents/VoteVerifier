@@ -17,6 +17,7 @@ import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.StringConcatenator;
+import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
@@ -127,5 +128,6 @@ public class SchnorrImplementer extends Implementer {
 		boolean signVrf = vrfSchnorrSign(b.getVerificationKey(), sc.pullAll(), signature.getFirstValue(), signature.getSecondValue());
 
 		return signVrf;
+
 	}
 }

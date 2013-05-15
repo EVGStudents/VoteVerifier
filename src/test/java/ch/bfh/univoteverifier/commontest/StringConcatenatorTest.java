@@ -10,6 +10,7 @@
  */
 package ch.bfh.univoteverifier.commontest;
 
+import ch.bfh.univote.common.Proof;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Test if the pull works
+	 * Test if the pull works.
 	 */
 	@Test
 	public void pullConcatenation() {
@@ -45,7 +46,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Test a simple concatenation
+	 * Test a simple concatenation.
 	 */
 	@Test
 	public void simpleConcatenation() {
@@ -78,7 +79,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Test a concatenation with an array inside
+	 * Test a concatenation with an array inside.
 	 */
 	@Test
 	public void simpleConcatenationTwo() {
@@ -106,7 +107,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Test a concatenation with some BigInteger objects
+	 * Test a concatenation with some BigInteger objects.
 	 */
 	@Test
 	public void pushListObject() {
@@ -128,7 +129,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Push a list with one element
+	 * Push a list with one element.
 	 */
 	@Test
 	public void pushListSimple() {
@@ -137,11 +138,11 @@ public class StringConcatenatorTest {
 
 		sc.pushList(bi, true);
 
-		assertEquals("1", sc.pullAll());
+		assertEquals("(1)", sc.pullAll());
 	}
 
 	/**
-	 * Push a list with two elements
+	 * Push a list with two elements.
 	 */
 	@Test
 	public void pushListObjectTwo() {
@@ -155,7 +156,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Push an empty list
+	 * Push an empty list.
 	 */
 	@Test
 	public void pushListObjectEmpty() {
@@ -167,7 +168,7 @@ public class StringConcatenatorTest {
 	}
 
 	/**
-	 * Push two object without separators
+	 * Push two object without separators.
 	 */
 	@Test
 	public void pushListWithoutSeparators() {
@@ -178,5 +179,29 @@ public class StringConcatenatorTest {
 		sc.pushList(bi, false);
 
 		assertEquals("8458347593847978797879871445363641", sc.pullAll());
+	}
+
+	/**
+	 * Push two list as if they were a Proof object
+	 */
+	@Test
+	public void pushProof() {
+		List<BigInteger> commit = new ArrayList<>();
+		List<BigInteger> response = new ArrayList<>();
+
+		commit.add(new BigInteger("435355"));
+		commit.add(new BigInteger("7657623"));
+		commit.add(new BigInteger("1425634612"));
+
+		response.add(new BigInteger("4759475695634978563758397465"));
+
+		sc.pushLeftDelim();
+		sc.pushList(commit, true);
+		sc.pushInnerDelim();
+		sc.pushList(response, true);
+		sc.pushRightDelim();
+
+		assertEquals("((435355|7657623|1425634612)|(4759475695634978563758397465))", sc.pullAll());
+
 	}
 }

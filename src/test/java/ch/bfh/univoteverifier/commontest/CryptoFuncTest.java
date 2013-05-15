@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 public class CryptoFuncTest {
 
 	/**
-	 * Test if the sha1 function produces the correct results
+	 * Test if the sha1 function produces the correct results.
 	 *
 	 * @throws NoSuchAlgorithmException
 	 * @throws UnsupportedEncodingException
@@ -51,7 +51,7 @@ public class CryptoFuncTest {
 	}
 
 	/**
-	 * Test if the sha256 function produces the correct results
+	 * Test if the sha256 function produces the correct results.
 	 *
 	 * @throws NoSuchAlgorithmException
 	 * @throws UnsupportedEncodingException
@@ -84,7 +84,7 @@ public class CryptoFuncTest {
 	}
 
 	/**
-	 * Test if the decode function for base64 works
+	 * Test if the decode function for base64 works.
 	 */
 	@Test
 	public void testBase64() throws UnsupportedEncodingException {
