@@ -42,17 +42,14 @@ public class VerificationEvent {
     }
 
     /**
-     * Create an instance of this helper class to send a message about a problem
-     * with the setup of the verification to be performed. A message of this
-     * type will be displayed below the buttons for Universal or Individual
-     * verification.
+     * Create an instance of this helper class to send a message that is
+     * specific to an given election ID.
      *
      * @param vm The type of message that this VerificationEvent contains
-     * @param msg The message to be shown in the GUI or console
      */
-    public VerificationEvent(VerificationMessage vm, String msg) {
+    public VerificationEvent(VerificationMessage vm, String eID) {
+        this.eID = eID;
         this.vm = vm;
-        this.msg = msg;
         this.vr = null;
     }
 
