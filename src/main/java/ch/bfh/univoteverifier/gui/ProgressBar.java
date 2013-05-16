@@ -14,11 +14,20 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
+/**
+ * Create a new progress bar to visualize the progress of the verification
+ * process.
+ *
+ * @author prinstin
+ */
 public class ProgressBar extends JPanel {
 
     private JProgressBar progressBar;
     int progress = 0;
 
+    /**
+     * Create an instance of this class.
+     */
     public ProgressBar() {
         this.setLayout(new BorderLayout());
         progressBar = new JProgressBar(0, 100);
@@ -27,6 +36,11 @@ public class ProgressBar extends JPanel {
         this.add(progressBar, BorderLayout.CENTER);
     }
 
+    /**
+     * Increase the progress of the progress bar.
+     *
+     * @param chunkProgressed
+     */
     public void increaseProgress(int chunkProgressed) {
         progress += chunkProgressed;
         progressBar.setValue(progress);

@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Organizes the various threads that have been started which are responsible
+ * for different elections being verified.
  *
  * @author prinstin
  */
@@ -19,10 +21,19 @@ public class ThreadManager {
 
     List<VerificationThread> threads;
 
+    /**
+     * Create a new instance of this class.
+     */
     public ThreadManager() {
         threads = new ArrayList<>();
     }
 
+    /**
+     * End a thread, for example if a tab is closed, the verification process is
+     * no longer needed.
+     *
+     * @param eID The election ID for which to end a thread.
+     */
     public void killThread(String eID) {
         VerificationThread vtFound = null;
         for (VerificationThread vtI : threads) {
@@ -36,6 +47,12 @@ public class ThreadManager {
         }
     }
 
+    /**
+     * A new verification process has begun and its thread should be registered
+     * with this class.
+     *
+     * @param vt VerificationThread to register.
+     */
     public void addThread(VerificationThread vt) {
         threads.add(vt);
     }

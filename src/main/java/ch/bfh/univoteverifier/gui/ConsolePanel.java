@@ -10,18 +10,13 @@
  */
 package ch.bfh.univoteverifier.gui;
 
-import ch.bfh.univoteverifier.table.SectionResultsTable;
-import ch.bfh.univoteverifier.table.ResultTab;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -61,7 +56,6 @@ public class ConsolePanel extends JPanel implements ChangeListener {
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         textArea = createStatusTextBox();
-
 
         scrollPane = new JScrollPane(textArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

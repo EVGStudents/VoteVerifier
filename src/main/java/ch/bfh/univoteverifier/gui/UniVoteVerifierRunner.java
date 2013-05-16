@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * This class simply provides a point of departure when the program is started.
  *
  * @author prinstin
  */
@@ -21,12 +22,25 @@ public class UniVoteVerifierRunner {
     ResourceBundle rb;
 
     /**
-     * @param args
+     * @param args To tell the command line verifier what to do and where to get
+     * data. Usage: uvv [OPTION] [FILE] uvv -i /home/username/qrcode \t# Verify
+     * a single election receipt from a QR code. uvv -u vsbfh-2013 \t\t# Verify
+     * the results from the election with ID vsbfh-2013
+     *
+     * Commands:\n"
+     *
+     * -i, --individual [file] \tVerify an election receipt. -u, --universal
+     * \"election id\"\tVerify an an entire election.
      */
     public static void main(String[] args) {
         UniVoteVerifierRunner runner = new UniVoteVerifierRunner(args);
     }
 
+    /**
+     * Begin a new verification.
+     *
+     * @param args
+     */
     public UniVoteVerifierRunner(String[] args) {
         if (args.length > 0) {
             ConsoleRunner cr = new ConsoleRunner();

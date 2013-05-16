@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
+ * This is the information that is displayed in a tab of the TabbedPane.
  *
  * @author prinstin
  */
@@ -46,6 +47,11 @@ public class TabBackground extends JPanel {
 
     }
 
+    /**
+     * Set the font color of this component.
+     *
+     * @param c
+     */
     public void setFontColor(Color c) {
         lblTitle.setForeground(c);
     }

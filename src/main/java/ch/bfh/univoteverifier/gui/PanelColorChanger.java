@@ -16,6 +16,7 @@ import java.awt.EventQueue;
 import javax.swing.JComponent;
 
 /**
+ * Changes the color of a components text as a background task.
  *
  * @author prinstin
  */
@@ -24,6 +25,9 @@ public class PanelColorChanger {
     JComponent fComponent;
     Color fOriginalColor;
 
+    /*
+     * Create a new PanelColorChanger with the component for which to change text color.
+     */
     public PanelColorChanger(JComponent aComponent) {
 
         fComponent = aComponent;
@@ -31,6 +35,9 @@ public class PanelColorChanger {
 
     }
 
+    /**
+     * Start the thread.
+     */
     public void start() {
 
         Thread thread = new Thread(new Worker());
@@ -38,6 +45,9 @@ public class PanelColorChanger {
         thread.start();
     }
 
+    /**
+     * Run a color changer class in the background.
+     */
     private class Worker implements Runnable {
 
         ColorCalculator cc = new ColorCalculator(fOriginalColor, Color.RED);
@@ -55,6 +65,9 @@ public class PanelColorChanger {
         }
     }
 
+    /**
+     * Changes the color of a component's text.
+     */
     private class ChangeColor implements Runnable {
 
         Color c;
@@ -65,21 +78,14 @@ public class PanelColorChanger {
 
         @Override
         public void run() {
-//            fComponent.setOpaque(true);
             ((TabBackground) fComponent).setFontColor(c);
-//            fComponent.setBackground(c);
         }
     }
 
-    private class RevertColor implements Runnable {
-
-        @Override
-        public void run() {
-//            fComponent.setBackground(fOriginalColor);
-//            fComponent.setOpaque(fOriginalOpacity);
-        }
-    }
-
+    /**
+     * This class calculates a new color within a certain range to create a fade
+     * effect.
+     */
     private class ColorCalculator {
 
         int stepR, stepG, stepB;
@@ -89,6 +95,12 @@ public class PanelColorChanger {
         Color[] colors = {fComponent.getForeground(), Color.RED};
         int index = 0;
 
+        /**
+         * Create a new ColorCalculator
+         *
+         * @param cBegin the color at the beginning.
+         * @param cEnd the color at the end.
+         */
         public ColorCalculator(Color cBegin, Color cEnd) {
 
             this.cbR = cBegin.getRed();
@@ -108,6 +120,14 @@ public class PanelColorChanger {
             stepB = calculateStep(cbB, ceB);
         }
 
+        /**
+         * Calculate the interval between the colors. How much the color should
+         * change at each round.
+         *
+         * @param cb
+         * @param ce
+         * @return
+         */
         public int calculateStep(int cb, int ce) {
             int diff = cb - ce;
 //            int step = -1 * (diff / 5);
@@ -119,6 +139,11 @@ public class PanelColorChanger {
             return step;
         }
 
+        /**
+         * Get the next color to be displayed.
+         *
+         * @return A new color.
+         */
         public Color nextColor() {
             int newR = nextColorComponent(crntR, stepR, cbR, ceR);
             int newG = nextColorComponent(crntG, stepG, cbG, ceG);
@@ -131,6 +156,15 @@ public class PanelColorChanger {
             return colors[index++ % 2];
         }
 
+        /**
+         * Get the next level of a given color component.
+         *
+         * @param crnt current level of the component.
+         * @param step The level to change the component value.
+         * @param begin The intitial level of the color component.
+         * @param end The final limit of the color component.
+         * @return The new level of the color component.
+         */
         public int nextColorComponent(int crnt, int step, int begin, int end) {
 
             int larger, smaller, direction;

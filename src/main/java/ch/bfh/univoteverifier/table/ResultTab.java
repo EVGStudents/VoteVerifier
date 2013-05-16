@@ -78,6 +78,14 @@ public class ResultTab extends JPanel {
 
     }
 
+    /**
+     * Create the header for the panel with in the tab. It contains a header
+     * above the verification results which allows the user to change the
+     * organisation styles, see the progress of the verification and view the
+     * election results for votes.
+     *
+     * @return
+     */
     public JPanel createTabHeader() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -181,14 +189,23 @@ public class ResultTab extends JPanel {
 
     }
 
+    /**
+     * Show the panel that is organized according to entity.
+     */
     public void showPanelEntity() {
         showPanel(rpEntity);
     }
 
+    /**
+     * Show the panel that is organized according to specification.
+     */
     public void showPanelSpec() {
         showPanel(rpSpec);
     }
 
+    /**
+     * Show the panel that is organized according to type.
+     */
     public void showPanelType() {
         showPanel(rpType);
     }

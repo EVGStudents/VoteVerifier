@@ -44,10 +44,6 @@ public class MiddlePanel extends JPanel {
         this.setPreferredSize(new Dimension(696, 500));
         this.setBorder(new EmptyBorder(10, 30, 10, 30)); //top left bottom right
         resultPanelManager.setBackground(Color.WHITE);
-//        backgroundPanel = new JPanel();
-//        backgroundPanel.setBackground(Color.WHITE);
-//        backgroundPanel.setLayout(new GridLayout(1, 1));
-//        backgroundPanel.add(resultPanelManager);
         this.add(resultPanelManager);
     }
 
