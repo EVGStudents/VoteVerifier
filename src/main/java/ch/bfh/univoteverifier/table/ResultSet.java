@@ -79,6 +79,10 @@ public class ResultSet {
         return vr.getImplementerType().toString();
     }
 
+    public String getEntityName() {
+        return vr.getEntityName();
+    }
+
     /**
      * Get the section name for which this data is to be displayed in the GUI.
      *

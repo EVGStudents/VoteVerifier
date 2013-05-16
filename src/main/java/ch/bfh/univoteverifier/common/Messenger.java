@@ -116,6 +116,14 @@ public class Messenger {
         return this.ss;
     }
 
+    /*
+     * Send a message that the verificaiton process has finished for a given election.
+     */
+    public void sendVerificationFinished(String eID) {
+        VerificationEvent ve = new VerificationEvent(VerificationMessage.VRF_FINISHED, eID);
+        ss.notifyListeners(ve);
+    }
+
     /**
      * a subject that is used in an observer pattern with the GUI information
      * used to display messages in the status console of the GUI as well as

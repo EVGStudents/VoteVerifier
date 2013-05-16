@@ -114,7 +114,7 @@ public class LocalBoardProxyDownloader {
 		File f = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		System.out.println(f);
 		ElectionReceipt er = qr.decodeReceipt(f);
-		BigInteger verificationKey = er.getVk();
+		BigInteger verificationKey = er.getVerificationKey();
 
 		realWrite(ebp.getBallot(verificationKey), "SingleBallot");
 

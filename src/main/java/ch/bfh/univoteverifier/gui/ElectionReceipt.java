@@ -63,7 +63,7 @@ public class ElectionReceipt {
      *
      * @return String of the election ID
      */
-    public String geteID() {
+    public String getElectionID() {
         return eID;
     }
 
@@ -73,7 +73,7 @@ public class ElectionReceipt {
      *
      * @return BigInteger of the 'a'-value of an encryption pair
      */
-    public BigInteger getEncVa() {
+    public BigInteger getEncValueA() {
         return encVa;
     }
 
@@ -83,16 +83,16 @@ public class ElectionReceipt {
      *
      * @return BigInteger of the 'b'-value of an encryption pair
      */
-    public BigInteger getEncVb() {
+    public BigInteger getEncValueB() {
         return encVb;
     }
 
     /**
-     * Get the vk value from this Election Receipt.
+     * Get the verification key value from this Election Receipt.
      *
-     * @return the BigInteger value of vk
+     * @return the BigInteger value of the verification key
      */
-    public BigInteger getVk() {
+    public BigInteger getVerificationKey() {
         return vk;
     }
 
@@ -101,7 +101,7 @@ public class ElectionReceipt {
      *
      * @return BigInteger the commitment value of a proof
      */
-    public BigInteger getpC() {
+    public BigInteger getProofCommitment() {
         return pC;
     }
 
@@ -110,7 +110,7 @@ public class ElectionReceipt {
      *
      * @return BigInteger of the response value of a proof
      */
-    public BigInteger getpR() {
+    public BigInteger getProofResponse() {
         return pR;
     }
 
@@ -120,7 +120,7 @@ public class ElectionReceipt {
      *
      * @return BigInteger the 'a'-value of a schnorr signature
      */
-    public BigInteger getvSA() {
+    public BigInteger getSchnorrValueA() {
         return vSA;
     }
 
@@ -130,7 +130,7 @@ public class ElectionReceipt {
      *
      * @return BigInteger the 'b'-value of a schnorr signature
      */
-    public BigInteger getvSB() {
+    public BigInteger getSchnorrValueB() {
         return vSB;
     }
 
@@ -139,7 +139,7 @@ public class ElectionReceipt {
      *
      * @return
      */
-    public String getsSId() {
+    public String getSignatureIssuerID() {
         return sSId;
     }
 
@@ -149,7 +149,7 @@ public class ElectionReceipt {
      * @return the string representation of the timestamp in this Election
      * Receipt
      */
-    public String getsT() {
+    public String getTimeStamp() {
         return sT;
     }
 
@@ -159,7 +159,7 @@ public class ElectionReceipt {
      * @return the BigInteger value of this signature value in this Election
      * Receipt
      */
-    public BigInteger getsV() {
+    public BigInteger getSignatureValue() {
         return sV;
     }
 }

@@ -11,12 +11,14 @@
 package ch.bfh.univoteverifier.table;
 
 import ch.bfh.univoteverifier.action.RemoveTabAction;
+import ch.bfh.univoteverifier.gui.PanelColorChanger;
 import ch.bfh.univoteverifier.gui.ThreadManager;
 import java.util.logging.Logger;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -34,7 +36,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
  */
 public class ResultTabbedPane extends JTabbedPane {
 
-    ArrayList<ResultTablePanel> resultsPanels;
+    ArrayList<ResultTab> resultsPanels;
     private static final Logger LOGGER = Logger.getLogger(ResultTabbedPane.class.getName());
     RemoveTabAction removeTabAction;
 
@@ -68,10 +70,18 @@ public class ResultTabbedPane extends JTabbedPane {
     public void addData(ResultSet rs) {
         //Find is pane with eID exists
         if (hasTable(rs.getEID())) {
-            ResultTablePanel rtp = getTableByName(rs.getEID());
+            ResultTab rtp = getTableByName(rs.getEID());
             rtp.addData(rs);
+            if (rs.getResult() == false) {
+                //make tab flash
+                int index = this.indexOfTab(rs.getEID());
+                JPanel tabComponent = (JPanel) this.getTabComponentAt(index);
+                LOGGER.log(Level.INFO, "TAB BACKGROUND COLOR :{0}", tabComponent.getBackground());
+                PanelColorChanger pcc = new PanelColorChanger(tabComponent);
+                pcc.start();
+            }
         } else {
-            addAndCreateNewTab(rs);
+            CreateNewTab(rs);
         }
 
     }
@@ -81,39 +91,23 @@ public class ResultTabbedPane extends JTabbedPane {
      *
      * @param rs ResultSet contains the data to add.
      */
-    public void addAndCreateNewTab(ResultSet rs) {
+    public void CreateNewTab(ResultSet rs) {
 
         String title = rs.getEID();
-        ResultTablePanel newRTP = new ResultTablePanel(title);
+        ResultTab newRTP = new ResultTab(title);
         newRTP.addData(rs);
 
         this.resultsPanels.add(newRTP);
         this.addTab(title, newRTP);
 
         int index = this.indexOfTab(title);
-        JPanel tab = new JPanel();
-        tab.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        tab.setOpaque(false);
-        JLabel lblTitle = new JLabel(title);
-        lblTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+        TabBackground tabPanel = new TabBackground(title, removeTabAction);
 
-        JButton btnClose = new JButton("x");
-        btnClose.setBorderPainted(true);
-        btnClose.setName(title);
-        btnClose.setPreferredSize(new Dimension(17, 17));
-        btnClose.setToolTipText("close this tab");
-        btnClose.setUI(new BasicButtonUI());
-        btnClose.setContentAreaFilled(false);
-        btnClose.setFocusable(false);
-        btnClose.setBorder(BorderFactory.createEtchedBorder());
-        btnClose.setRolloverEnabled(true);
+        JPanel panel = ((JPanel) tabPanel);
+        this.setTabComponentAt(index, panel);
+        this.setSelectedIndex(index);
 
-        tab.add(lblTitle);
-        tab.add(btnClose);
 
-        this.setTabComponentAt(index, tab);
-
-        btnClose.addActionListener(removeTabAction);
     }
 
     /**
@@ -122,8 +116,8 @@ public class ResultTabbedPane extends JTabbedPane {
      * @param eID the name of the table to find.
      * @return The table whose name is eID.
      */
-    public ResultTablePanel getTableByName(String eID) {
-        for (ResultTablePanel r : resultsPanels) {
+    public ResultTab getTableByName(String eID) {
+        for (ResultTab r : resultsPanels) {
             String thisEID = r.getEID();
             if (eID.compareTo(thisEID) == 0) {
                 return r;
@@ -142,8 +136,8 @@ public class ResultTabbedPane extends JTabbedPane {
         if (!hasTable(eID)) {
             return false;
         }
-        ResultTablePanel rFound = null;
-        for (ResultTablePanel r : resultsPanels) {
+        ResultTab rFound = null;
+        for (ResultTab r : resultsPanels) {
             String thisEID = r.getEID();
             if (eID.compareTo(thisEID) == 0) {
                 rFound = r;
@@ -164,7 +158,7 @@ public class ResultTabbedPane extends JTabbedPane {
         if (resultsPanels.isEmpty()) {
             return found;
         }
-        for (ResultTablePanel r : resultsPanels) {
+        for (ResultTab r : resultsPanels) {
             String thisEID = r.getEID();
             if (eID.compareTo(thisEID) == 0) {
                 found = true;

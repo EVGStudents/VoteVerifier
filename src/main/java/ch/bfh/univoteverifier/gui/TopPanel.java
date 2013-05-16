@@ -72,7 +72,6 @@ public class TopPanel extends JPanel {
         this.add(createTitlePanel());
         this.add(createButtonPanel(btnUni, btnInd, btnStart, btnGrp));
         this.add(createVrfDescPanel());
-
     }
 
     /**

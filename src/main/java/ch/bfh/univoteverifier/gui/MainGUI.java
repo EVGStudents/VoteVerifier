@@ -272,6 +272,7 @@ public class MainGUI extends JFrame {
                 topPanel.setupErrorMsg(text);
             } else {
                 resultProccessor.showResultInGUI(ve);
+
             }
         }
     }

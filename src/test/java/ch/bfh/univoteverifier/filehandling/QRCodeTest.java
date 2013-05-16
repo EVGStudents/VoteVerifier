@@ -192,46 +192,46 @@ public class QRCodeTest {
 		ElectionReceipt ercp = qr.decodeReceipt(file);
 
 		BigInteger actual, expected;
-		String str = ercp.geteID();
+		String str = ercp.getElectionID();
 		assertTrue(0 == str.compareTo("vsbfh-2013"));
 
-		actual = ercp.getEncVa();
+		actual = ercp.getEncValueA();
 		expected = new BigInteger(CryptoFunc.decodeBase64("72w86v8UbkIKBaoN6sPQPSP1a7dQf2ivaiU91L5Orindc4XqfVVznFRegKiK2G3P3tYqjijaLdBQjZEJSU0lXVkDDCbl_fGOt=DxlXNNGgdUn_IfhSefshyNHFzYnOHDPlFeZwOmO91zFt3woxWjSwMI0UhbnezFgvrpXp5fuYY"));
 		assertTrue(0 == expected.compareTo(actual));
 
-		actual = ercp.getEncVb();
+		actual = ercp.getEncValueB();
 		expected = new BigInteger(CryptoFunc.decodeBase64("A38NYQfzQSA=73rLcStNKQCatMgXJyJ0sMa9wjPLkz92oGoQERk4ItanwOEXyyKEIfpu2nwqRhuGKpn9GU39h2_myjliO04Egz1DiS1ZaO7RrjU7fKSMlXU1hQbHOHvyDAZXX9EqY1gBVpT=u=eMVCf6TI0OFf8P86pDni=MB8Y"));
 		assertTrue(0 == expected.compareTo(actual));
 
-		actual = ercp.getVk();
+		actual = ercp.getVerificationKey();
 
 		expected = new BigInteger(CryptoFunc.decodeBase64("4lfTbadkitS1NOXSiDhLKrTUh1J=gdOupOzFHgexC4LdYRuV9PIzblQgHfLYNtlEW8i6Tjr1FVv6HJZ902PHeyG8vrkTCJJEODOdZJ7TFzo8WCIywtyqXcFF52n_sg70FNRSLZcEBY6lCcRWWzBJxdGnbBLpl11QGcJ25cG6RKP"));
 		assertTrue(0 == expected.compareTo(actual));
 
-		actual = ercp.getpC();
+		actual = ercp.getProofCommitment();
 		expected = new BigInteger(CryptoFunc.decodeBase64("2Qz1K9y14qGzBRQqJ7gAyezta3bi7pHY7307sHQxDYVlF6aQlwJDABY16gIYZNnTo121Lt8SXKpsn_rhGgkSqQMGmPnUkieepqyPg9ulkwEAvKBK80dlxzEFvNfaw9_a0SRR2aKIgWhuvAouPHlN9FMzLexlNApbKTTHNQ7dvR"));
 		assertTrue(0 == expected.compareTo(actual));
 
 
-		actual = ercp.getpR();
+		actual = ercp.getProofResponse();
 		expected = new BigInteger(CryptoFunc.decodeBase64("B4YMumm5bLYnT6iYhrQJT6fcMyCOtqQJOMsNxyhncpLCYIkhEVumA4tbB5HitapQU7nVXP_ZrS51VacXbkGU6LZ_BHy3je_iZoMY=5FjLNppoOWitzzkToFkL=bhlIsnMHQhJizXSNAGpRLPTvkI7bhGb=FxousxxCx0=RGYH3"));
 		assertTrue(0 == expected.compareTo(actual));
 
-		actual = ercp.getvSA();
+		actual = ercp.getSchnorrValueA();
 		expected = new BigInteger(CryptoFunc.decodeBase64("6rQltQyKPrzIAPaZnCBp0x2F0N2AC4g5JprF_R_Qycs"));
 		assertTrue(0 == expected.compareTo(actual));
 
-		actual = ercp.getvSB();
+		actual = ercp.getSchnorrValueB();
 		expected = new BigInteger(CryptoFunc.decodeBase64("3x73szdurz40HjfaYTBF42ecyL9mN56wFTZDGF8a3FN"));
 		assertTrue(0 == expected.compareTo(actual));
 
-		str = ercp.getsSId();
+		str = ercp.getSignatureIssuerID();
 		assertTrue(0 == str.compareTo("electionmanager"));
 
-		str = ercp.getsT();
+		str = ercp.getTimeStamp();
 		assertTrue(0 == str.compareTo("2013-03-25T10:58:11.000Z"));
 
-		actual = ercp.getsV();
+		actual = ercp.getSignatureValue();
 		expected = new BigInteger(CryptoFunc.decodeBase64("ShZKrcEYQnsA2Ks352oLIUABAaglxmNsCaYIfKzM_tfRARyYPgNSxNLtNcaQf10VqEq57DArGrhvjLjJwmU5mfip3FRUqZ1hGNFxkqdYM8bLC0uhoiALyHVFkLu4etQG4Dp8RuJ5dmp5UTs0QcEHEIIQcd8_=J7iIeqRLAlcU6"));
 		assertTrue(0 == expected.compareTo(actual));
 	}

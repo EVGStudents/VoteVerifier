@@ -176,7 +176,7 @@ public class ParamImplTest {
 	 */
 	@Test
 	public void testBallotVerificationKey() throws ElectionBoardServiceFault {
-		boolean v = pi.vrfBallotVerificationKey(er.getVk());
+		boolean v = pi.vrfBallotVerificationKey(er.getVerificationKey());
 		assertTrue(v);
 	}
 }

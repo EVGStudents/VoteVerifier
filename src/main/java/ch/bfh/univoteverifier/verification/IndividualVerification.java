@@ -37,7 +37,7 @@ public class IndividualVerification extends Verification {
 	 *
 	 */
 	public IndividualVerification(Messenger msgr, ElectionReceipt er) {
-		super(msgr, er.geteID());
+		super(msgr, er.getElectionID());
 		this.er = er;
 	}
 

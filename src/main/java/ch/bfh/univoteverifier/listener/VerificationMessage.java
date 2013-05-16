@@ -17,31 +17,32 @@ package ch.bfh.univoteverifier.listener;
  */
 public enum VerificationMessage {
 
-	/**
-	 * the type of StatusMessages possible. Used by the GUI to identify
-	 * incoming messages and take the appropriate action
-	 */
-	RESULT(10), //  for hte verification results
-	SETUP_ERROR(20),
-	ELECTION_SPECIFIC_ERROR(30);
+    /**
+     * the type of StatusMessages possible. Used by the GUI to identify incoming
+     * messages and take the appropriate action
+     */
+    RESULT(10), //  for hte verification results
+    SETUP_ERROR(20),
+    ELECTION_SPECIFIC_ERROR(30),
+    VRF_FINISHED(40);
 //The code of the message
-	private int code;
+    private int code;
 
-	/**
-	 * Construct a Message
-	 *
-	 * @param c the code for the message
-	 */
-	private VerificationMessage(int c) {
-		code = c;
-	}
+    /**
+     * Construct a Message
+     *
+     * @param c the code for the message
+     */
+    private VerificationMessage(int c) {
+        code = c;
+    }
 
-	/**
-	 * Get the code of the message
-	 *
-	 * @return an integer with the code of this message
-	 */
-	public int getInt() {
-		return code;
-	}
+    /**
+     * Get the code of the message
+     *
+     * @return an integer with the code of this message
+     */
+    public int getInt() {
+        return code;
+    }
 }

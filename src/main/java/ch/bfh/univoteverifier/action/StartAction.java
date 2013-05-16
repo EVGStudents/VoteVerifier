@@ -104,7 +104,7 @@ public class StartAction extends AbstractAction {
                     msg += rb.getString("ballotProvided");
 
                     vt = new VerificationThread(msgr, er);
-                    vt.setName(er.geteID());
+                    vt.setName(er.getElectionID());
                     vt.start();
                     tm.addThread(vt);
                 }

@@ -19,7 +19,7 @@ import javax.swing.table.TableColumn;
  *
  * @author prinstin
  */
-public class ResultTable extends JTable {
+public class SectionResultsTable extends JTable {
 
     private String sectionName;
     private ResultTableModel rtm;
@@ -29,7 +29,7 @@ public class ResultTable extends JTable {
      *
      * @param rtm A ResultTableModel which manages the table's data.
      */
-    public ResultTable(ResultTableModel rtm, String sectionName) {
+    public SectionResultsTable(ResultTableModel rtm, String sectionName) {
         super(rtm);
         setShowGrid(false);
         this.rtm = rtm;
