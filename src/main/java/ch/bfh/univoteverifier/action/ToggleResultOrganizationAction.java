@@ -10,7 +10,7 @@
  */
 package ch.bfh.univoteverifier.action;
 
-import ch.bfh.univoteverifier.table.ResultTablePanel;
+import ch.bfh.univoteverifier.table.ResultTab;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComponent;
@@ -21,9 +21,9 @@ import javax.swing.JComponent;
  */
 public class ToggleResultOrganizationAction implements ActionListener {
 
-    ResultTablePanel rtp;
+    ResultTab rtp;
 
-    public ToggleResultOrganizationAction(ResultTablePanel rtp) {
+    public ToggleResultOrganizationAction(ResultTab rtp) {
         this.rtp = rtp;
     }
 

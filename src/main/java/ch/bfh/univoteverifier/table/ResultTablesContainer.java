@@ -17,13 +17,13 @@ import javax.swing.JPanel;
  *
  * @author prinstin
  */
-public class ResultPanel extends JPanel {
+public class ResultTablesContainer extends JPanel {
 
     private ResultTableModel masterTableModel;
-    private ArrayList<ResultTable> tables;
-    private static final Logger LOGGER = Logger.getLogger(ResultPanel.class.getName());
+    private ArrayList<SectionResultsTable> tables;
+    private static final Logger LOGGER = Logger.getLogger(ResultTablesContainer.class.getName());
 
-    public ResultPanel() {
+    public ResultTablesContainer() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         tables = new ArrayList<>();
     }
@@ -36,7 +36,7 @@ public class ResultPanel extends JPanel {
     public void addData(ResultSet r) {
         String tableSectionName = r.getSectionName();
         if (hasTable(tableSectionName)) {
-            ResultTable rt = getTableByName(tableSectionName);
+            SectionResultsTable rt = getTableByName(tableSectionName);
             addDataToTable(rt, r);
         } else {
             addTable(r);
@@ -49,7 +49,7 @@ public class ResultPanel extends JPanel {
      * @param rt The table to which to add data.
      * @param r The data to add.
      */
-    public void addDataToTable(ResultTable rt, ResultSet r) {
+    public void addDataToTable(SectionResultsTable rt, ResultSet r) {
         rt.getTableModel().addResultSet(r);
         rt.revalidate();
         this.revalidate();
@@ -62,8 +62,8 @@ public class ResultPanel extends JPanel {
      * @param eID the name of the table to find.
      * @return The table whose name is eID.
      */
-    public ResultTable getTableByName(String tableSectionName) {
-        for (ResultTable tbl : tables) {
+    public SectionResultsTable getTableByName(String tableSectionName) {
+        for (SectionResultsTable tbl : tables) {
             String tableSectionNameFound = tbl.getSectionName();
             if (0 == tableSectionNameFound.compareTo(tableSectionName)) {
                 return tbl;
@@ -84,7 +84,7 @@ public class ResultPanel extends JPanel {
         data.add(r);
 
         masterTableModel = new ResultTableModel(data);
-        ResultTable rt = new ResultTable(masterTableModel, data.get(0).getSectionName());
+        SectionResultsTable rt = new SectionResultsTable(masterTableModel, data.get(0).getSectionName());
         tables.add(rt);
 
         tablePanel.add(rt, BorderLayout.CENTER);
@@ -110,7 +110,7 @@ public class ResultPanel extends JPanel {
             LOGGER.log(Level.INFO, "hasTable: No, list empty");
             return found;
         }
-        for (ResultTable tbl : tables) {
+        for (SectionResultsTable tbl : tables) {
             String tableSectionNameFound = tbl.getSectionName();
             if (0 == tableSectionNameFound.compareTo(tableSectionName)) {
                 found = true;

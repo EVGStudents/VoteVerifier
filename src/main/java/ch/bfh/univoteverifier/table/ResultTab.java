@@ -12,16 +12,23 @@ package ch.bfh.univoteverifier.table;
 
 import ch.bfh.univoteverifier.action.ToggleResultOrganizationAction;
 import ch.bfh.univoteverifier.gui.GUIconstants;
+import ch.bfh.univoteverifier.gui.ProgressBar;
 import java.util.logging.Logger;
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
  * This class is a panel which contains all the results from the verifications.
@@ -30,22 +37,24 @@ import javax.swing.JScrollPane;
  *
  * @author prinstin
  */
-public class ResultTablePanel extends JPanel {
+public class ResultTab extends JPanel {
 
     private JScrollPane scroll;
     private JPanel tabHeader;
     private String eID;
-    private static final Logger LOGGER = Logger.getLogger(ResultTablePanel.class.getName());
-    private ResultPanel rpEntity, rpSpec, rpType;
+    private static final Logger LOGGER = Logger.getLogger(ResultTab.class.getName());
+    private ResultTablesContainer rpEntity, rpSpec, rpType;
     private ResourceBundle rb;
+    private ProgressBar progressBar;
 
     /**
      * Create an instance of this panel.
      */
-    public ResultTablePanel(String eID) {
+    public ResultTab(String eID) {
         this.eID = eID;
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         createContentPanel();
+
     }
 
     /**
@@ -57,9 +66,9 @@ public class ResultTablePanel extends JPanel {
         this.setLayout(new BorderLayout());
         tabHeader = createTabHeader();
 
-        rpSpec = new ResultPanel();
-        rpEntity = new ResultPanel();
-        rpType = new ResultPanel();
+        rpSpec = new ResultTablesContainer();
+        rpEntity = new ResultTablesContainer();
+        rpType = new ResultTablesContainer();
         scroll = new JScrollPane();
         scroll.getViewport().add(rpSpec);
         scroll.getVerticalScrollBar().setUnitIncrement(16);
@@ -70,9 +79,10 @@ public class ResultTablePanel extends JPanel {
     }
 
     public JPanel createTabHeader() {
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.WHITE);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        panel.setBackground(GUIconstants.GREY);
+
 
         JRadioButton btnSpec, btnEntity, btnType;
         ButtonGroup btnGrp = new ButtonGroup();
@@ -80,36 +90,64 @@ public class ResultTablePanel extends JPanel {
         btnSpec = new JRadioButton(rb.getString("orgSpec"));
         btnSpec.setBackground(GUIconstants.GREY);
         btnSpec.setName("btnSpec");
+        btnSpec.setSelected(true);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 0;
+        panel.add(btnSpec);
+
 
         btnEntity = new JRadioButton(rb.getString("orgEntity"));
         btnEntity.setBackground(GUIconstants.GREY);
         btnEntity.setName("btnEntity");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 0;
+        panel.add(btnEntity);
+
 
         btnType = new JRadioButton(rb.getString("orgType"));
         btnType.setBackground(GUIconstants.GREY);
         btnType.setName("btnType");
-
-
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 2;
+        c.gridy = 0;
+        panel.add(btnType);
 
         btnGrp.add(btnSpec);
         btnGrp.add(btnEntity);
         btnGrp.add(btnType);
-
-        btnSpec.setSelected(true);
 
         ActionListener toggle = new ToggleResultOrganizationAction(this);
         btnSpec.addActionListener(toggle);
         btnEntity.addActionListener(toggle);
         btnType.addActionListener(toggle);
 
-        panel.add(btnSpec);
-        panel.add(btnEntity);
-        panel.add(btnType);
+        JButton btnClose = new JButton(rb.getString("viewCandidateResults"));
+        btnClose.setBorderPainted(true);
+        btnClose.setBackground(GUIconstants.DARK_GREY);
+        btnClose.setName("CandidateResults");
+        //btnClose.setPreferredSize(new Dimension(17, 17));
+        btnClose.setToolTipText("close this tab");
+        btnClose.setUI(new BasicButtonUI());
+        btnClose.setContentAreaFilled(false);
+        btnClose.setFocusable(false);
+        btnClose.setBorder(BorderFactory.createEtchedBorder());
+        btnClose.setRolloverEnabled(true);
 
-        JPanel fillerPanel = new JPanel();
-        fillerPanel.setBackground(GUIconstants.GREY);
-        fillerPanel.add(panel);
-        return fillerPanel;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 3;
+        c.gridy = 0;
+        c.weightx = .5;
+//        panel.add(Box.createHorizontalGlue(), c);
+        progressBar = new ProgressBar();
+        panel.add(progressBar, c);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 3;
+        c.gridy = 0;
+        panel.add(btnClose);
+
+        return panel;
     }
 
     /**
@@ -118,7 +156,7 @@ public class ResultTablePanel extends JPanel {
      *
      * @param str Identifier to declare which result panel to show.
      */
-    public void showPanel(ResultPanel rp) {
+    public void showPanel(ResultTablesContainer rp) {
         scroll.getViewport().removeAll();
         scroll.getViewport().add(rp);
         scroll.revalidate();
@@ -130,6 +168,8 @@ public class ResultTablePanel extends JPanel {
      * @param rs Data to add.
      */
     public void addData(ResultSet rs) {
+        progressBar.increaseProgress(2);
+
         rs.setSectionName(rs.getRunnerName().toString());
         rpSpec.addData(rs);
 

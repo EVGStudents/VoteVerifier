@@ -10,8 +10,8 @@
  */
 package ch.bfh.univoteverifier.gui;
 
-import ch.bfh.univoteverifier.table.ResultTable;
-import ch.bfh.univoteverifier.table.ResultTablePanel;
+import ch.bfh.univoteverifier.table.SectionResultsTable;
+import ch.bfh.univoteverifier.table.ResultTab;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;

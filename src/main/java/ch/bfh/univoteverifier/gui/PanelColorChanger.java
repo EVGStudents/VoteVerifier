@@ -1,10 +1,16 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *
+ *  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+ *   Bern University of Applied Sciences, Engineering and Information Technology,
+ *   Research Institute for Security in the Information Society, E-Voting Group,
+ *   Biel, Switzerland.
+ *
+ *   Project independent UniVoteVerifier.
+ *
  */
 package ch.bfh.univoteverifier.gui;
 
-import ch.bfh.univoteverifier.table.TabPanel;
+import ch.bfh.univoteverifier.table.TabBackground;
 import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JComponent;
@@ -60,7 +66,7 @@ public class PanelColorChanger {
         @Override
         public void run() {
 //            fComponent.setOpaque(true);
-            ((TabPanel) fComponent).setFontColor(c);
+            ((TabBackground) fComponent).setFontColor(c);
 //            fComponent.setBackground(c);
         }
     }
@@ -80,7 +86,7 @@ public class PanelColorChanger {
         int cbR, cbG, cbB, ceR, ceG, ceB;
         int crntR, crntG, crntB;
         int allHere = 0;
-        Color[] colors = {fOriginalColor, Color.RED};
+        Color[] colors = {fComponent.getForeground(), Color.RED};
         int index = 0;
 
         public ColorCalculator(Color cBegin, Color cEnd) {

@@ -18,11 +18,11 @@ import javax.swing.plaf.basic.BasicButtonUI;
  *
  * @author prinstin
  */
-public class TabPanel extends JPanel {
+public class TabBackground extends JPanel {
 
     JLabel lblTitle;
 
-    public TabPanel(String title, RemoveTabAction removeTabAction) {
+    public TabBackground(String title, RemoveTabAction removeTabAction) {
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
         this.setOpaque(false);
         lblTitle = new JLabel(title);

@@ -36,7 +36,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
  */
 public class ResultTabbedPane extends JTabbedPane {
 
-    ArrayList<ResultTablePanel> resultsPanels;
+    ArrayList<ResultTab> resultsPanels;
     private static final Logger LOGGER = Logger.getLogger(ResultTabbedPane.class.getName());
     RemoveTabAction removeTabAction;
 
@@ -70,7 +70,7 @@ public class ResultTabbedPane extends JTabbedPane {
     public void addData(ResultSet rs) {
         //Find is pane with eID exists
         if (hasTable(rs.getEID())) {
-            ResultTablePanel rtp = getTableByName(rs.getEID());
+            ResultTab rtp = getTableByName(rs.getEID());
             rtp.addData(rs);
             if (rs.getResult() == false) {
                 //make tab flash
@@ -94,14 +94,14 @@ public class ResultTabbedPane extends JTabbedPane {
     public void CreateNewTab(ResultSet rs) {
 
         String title = rs.getEID();
-        ResultTablePanel newRTP = new ResultTablePanel(title);
+        ResultTab newRTP = new ResultTab(title);
         newRTP.addData(rs);
 
         this.resultsPanels.add(newRTP);
         this.addTab(title, newRTP);
 
         int index = this.indexOfTab(title);
-        TabPanel tabPanel = new TabPanel(title, removeTabAction);
+        TabBackground tabPanel = new TabBackground(title, removeTabAction);
 
         JPanel panel = ((JPanel) tabPanel);
         this.setTabComponentAt(index, panel);
@@ -116,8 +116,8 @@ public class ResultTabbedPane extends JTabbedPane {
      * @param eID the name of the table to find.
      * @return The table whose name is eID.
      */
-    public ResultTablePanel getTableByName(String eID) {
-        for (ResultTablePanel r : resultsPanels) {
+    public ResultTab getTableByName(String eID) {
+        for (ResultTab r : resultsPanels) {
             String thisEID = r.getEID();
             if (eID.compareTo(thisEID) == 0) {
                 return r;
@@ -136,8 +136,8 @@ public class ResultTabbedPane extends JTabbedPane {
         if (!hasTable(eID)) {
             return false;
         }
-        ResultTablePanel rFound = null;
-        for (ResultTablePanel r : resultsPanels) {
+        ResultTab rFound = null;
+        for (ResultTab r : resultsPanels) {
             String thisEID = r.getEID();
             if (eID.compareTo(thisEID) == 0) {
                 rFound = r;
@@ -158,7 +158,7 @@ public class ResultTabbedPane extends JTabbedPane {
         if (resultsPanels.isEmpty()) {
             return found;
         }
-        for (ResultTablePanel r : resultsPanels) {
+        for (ResultTab r : resultsPanels) {
             String thisEID = r.getEID();
             if (eID.compareTo(thisEID) == 0) {
                 found = true;
