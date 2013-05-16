@@ -58,8 +58,8 @@ public class SchnorrImplTest {
 	 */
 	@Test
 	public void testSignatureVerification() throws NoSuchAlgorithmException, UnsupportedEncodingException, ElectionBoardServiceFault {
-		System.out.println(er.getVk());
-		Ballot b = ebp.getBallot(er.getVk());
+		System.out.println(er.getVerificationKey());
+		Ballot b = ebp.getBallot(er.getVerificationKey());
 
 		boolean vr = si.vrfBallotSignature(b);
 		assertTrue(vr);

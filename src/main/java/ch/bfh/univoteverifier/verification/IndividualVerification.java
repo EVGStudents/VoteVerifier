@@ -27,7 +27,7 @@ public class IndividualVerification extends Verification {
 	 * @param File the file with a path to a QR Code
 	 */
 	public IndividualVerification(Messenger msgr, ElectionReceipt er) {
-		super(msgr, er.geteID());
+		super(msgr, er.getElectionID());
 		this.er = er;
 	}
 
