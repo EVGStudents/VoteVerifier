@@ -83,6 +83,9 @@ public abstract class Verification {
 	 */
 	public List<VerificationResult> runVerification() {
 
+		//crate the runners
+		createRunners();
+
 		if (runners.isEmpty()) {
 			LOGGER.log(Level.INFO, "There aren't runners. The verification will not run.");
 		}
@@ -102,4 +105,9 @@ public abstract class Verification {
 
 		return Collections.unmodifiableList(res);
 	}
+
+	/**
+	 * Create the necessaries runners.
+	 */
+	public abstract void createRunners();
 }

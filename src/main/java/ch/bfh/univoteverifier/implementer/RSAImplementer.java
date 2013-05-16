@@ -45,6 +45,7 @@ import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import ch.bfh.univoteverifier.common.VerificationType;
+import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import com.sun.org.apache.bcel.internal.generic.PUSH;
 import java.io.UnsupportedEncodingException;
@@ -1326,7 +1327,7 @@ public class RSAImplementer extends Implementer {
 		sc.pushLeftDelim();
 		sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
 
-		//( ((cID|count)|(cID|count))|...|((cID|count)|(cID|count)))
+		//( ((cID|count)|(cID|count))|...|((cID|count)|(cID|count)) )
 		sc.pushLeftDelim();
 		for (int i = 0; i < dv.getDecodedVote().size(); i++) {
 			if (i > 0) {
@@ -1362,6 +1363,39 @@ public class RSAImplementer extends Implementer {
 		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
 
 		VerificationResult vr = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		if (!r) {
+			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+		}
+
+		return vr;
+	}
+
+	/**
+	 * Verify the signature of a single ballot from a QR-Code.
+	 *
+	 * Specification: individual verification.
+	 *
+	 * @param er the ElectionReceipt containing the necessary information.
+	 * @return a VerificationResult.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 *
+	 */
+	public VerificationResult vrfSingleBallotSign(ElectionReceipt er) throws
+		NoSuchAlgorithmException, UnsupportedEncodingException {
+		BigInteger signatureValue = er.getsV();
+
+		//concatenate to - ToDo
+
+		String res = "";
+
+		boolean r = vrfRSASign(emPubKey, res, signatureValue);
+
+		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_SIGN, r,
+			ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);

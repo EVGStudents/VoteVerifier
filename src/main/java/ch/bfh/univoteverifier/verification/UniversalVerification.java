@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
 
 /**
- * This class is used to perform an universal verification
+ * This class is used to perform an universal verification.
  *
  * @author snake
  */
@@ -36,14 +36,10 @@ public class UniversalVerification extends Verification {
 	 */
 	public UniversalVerification(Messenger msgr, String eID) {
 		super(msgr, eID);
-		createRunnerBySpec();
 	}
 
-	/**
-	 * Create the necessaries runners used to print the results ordered by
-	 * the specification.
-	 */
-	private void createRunnerBySpec() {
+	@Override
+	public void createRunners() {
 		try {
 			SystemSetupRunner ssr = new SystemSetupRunner(ebproxy, msgr);
 			ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy, msgr);
@@ -55,6 +51,7 @@ public class UniversalVerification extends Verification {
 			runners.add(esr);
 			runners.add(epr);
 			runners.add(eperiodr);
+			runners.add(mtr);
 		} catch (InvalidNameException | CertificateException | ElectionBoardServiceFault ex) {
 			msgr.sendElectionSpecError(geteID(), ex);
 		}

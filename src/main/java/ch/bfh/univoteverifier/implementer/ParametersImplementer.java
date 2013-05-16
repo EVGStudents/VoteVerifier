@@ -395,4 +395,36 @@ public class ParametersImplementer extends Implementer {
 
 		return vr;
 	}
+
+	/**
+	 * Verify that a ballot from a verification key belongs to the set of
+	 * all ballots.
+	 *
+	 * Specification: individual verification.
+	 *
+	 * @param verificationKey the verification key of the ballot.
+	 * @return a VerificationResult.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	public VerificationResult vrfBallotInSet(BigInteger verificationKey) throws ElectionBoardServiceFault {
+		Ballot qrCodeBallot = ebp.getBallot(verificationKey);
+		boolean r = false;
+
+		//check if the ballot belongs to the set of all ballots
+		for (Ballot b : ebp.getBallots().getBallot()) {
+			if (qrCodeBallot.equals(b)) {
+				r = true;
+				break;
+			}
+		}
+
+		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_IN_BALLOTS, r, ebp.getElectionID(), rn, it, EntityType.EA);
+
+		if (!r) {
+			vr.setFailureCode(FailureCode.BALLOT_NOT_IN_SET);
+		}
+
+		return vr;
+	}
 }

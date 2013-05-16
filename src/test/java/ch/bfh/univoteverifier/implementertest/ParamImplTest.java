@@ -105,8 +105,8 @@ public class ParamImplTest {
 	}
 
 	/**
-	 * Test that the distributed key y correspond to the partial y_j of each
-	 * tallier.
+	 * Test that the distributed key y correspond to the partial y_j of the
+	 * last tallier.
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
@@ -118,7 +118,7 @@ public class ParamImplTest {
 	}
 
 	/**
-	 * Test that the elction generator g^ is equal to the blinded generator
+	 * Test that the election generator g^ is equal to the blinded generator
 	 * of the last mixer.
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
