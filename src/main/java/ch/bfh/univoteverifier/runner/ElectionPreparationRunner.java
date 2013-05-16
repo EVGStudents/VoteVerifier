@@ -61,13 +61,11 @@ public class ElectionPreparationRunner extends Runner {
 			partialResults.add(v1);
 			Thread.sleep(1000);
 
-
 			//RSA signature of election data
 			VerificationResult v2 = rsaImpl.vrfElectionDataSign();
 			msgr.sendVrfMsg(v2);
 			partialResults.add(v2);
 			Thread.sleep(1000);
-
 
 			//RSA signature of electoral roll
 			VerificationResult v3 = rsaImpl.vrfElectoralRollSign();
@@ -75,13 +73,11 @@ public class ElectionPreparationRunner extends Runner {
 			partialResults.add(v3);
 			Thread.sleep(1000);
 
-
 			//Voters certificate
 			VerificationResult v4 = certImpl.vrfVotersCertificate();
 			msgr.sendVrfMsg(v4);
 			partialResults.add(v4);
 			Thread.sleep(1000);
-
 
 			//RSA signature of election ID and voters certificate
 			VerificationResult v5 = rsaImpl.vrfVotersCertIDSign();
@@ -91,34 +87,30 @@ public class ElectionPreparationRunner extends Runner {
 
 
 			//Plausibility check and signature of mixed verifiction keys by - ToDo decomment when it will be available
-//			for (String mName : ebp.getElectionDefinition().getMixerId()) {
-//				VerificationResult v6 = prmImpl.vrfVerificationKeysMixedBy(mName);
-//				msgr.sendVrfMsg(v6);
-//				partialResults.add(v6);
-//									Thread.sleep(1000);
+			for (String mName : ebp.getElectionDefinition().getMixerId()) {
+				VerificationResult v6 = prmImpl.vrfVerificationKeysMixedBy(mName);
+				msgr.sendVrfMsg(v6);
+				partialResults.add(v6);
+				Thread.sleep(1000);
 
-//
-//			VerificationResult v7 = rsaImpl.vrfMixedVerificationKeysBySign(mName);
-//				msgr.sendVrfMsg(v7);
-//				partialResults.add(v7);
-//									Thread.sleep(1000);
+				VerificationResult v7 = rsaImpl.vrfMixedVerificationKeysBySign(mName);
+				msgr.sendVrfMsg(v7);
+				partialResults.add(v7);
+				Thread.sleep(1000);
 
-//			}
+			}
 
-//			//mixed verification keys
-//			VerificationResult v8 = prmImpl.vrfVerificationKeysMixed();
-//			msgr.sendVrfMsg(v8);
-//			partialResults.add(v8);
-//								Thread.sleep(1000);
+			//mixed verification keys
+			VerificationResult v8 = prmImpl.vrfVerificationKeysMixed();
+			msgr.sendVrfMsg(v8);
+			partialResults.add(v8);
+			Thread.sleep(1000);
 
-//
-//			//mixed verification keys signature
-//			VerificationResult v9 = rsaImpl.vrfMixedVerificationKeysSign();
-//			msgr.sendVrfMsg(v9);
-//			partialResults.add(v9);
-//									Thread.sleep(1000);
-
-
+			//mixed verification keys signature
+			VerificationResult v9 = rsaImpl.vrfMixedVerificationKeysSign();
+			msgr.sendVrfMsg(v9);
+			partialResults.add(v9);
+			Thread.sleep(1000);
 
 		} catch (InterruptedException | InvalidAlgorithmParameterException | CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);

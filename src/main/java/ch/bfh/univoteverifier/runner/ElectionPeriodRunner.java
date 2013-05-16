@@ -29,8 +29,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
 
 /**
@@ -68,10 +66,10 @@ public class ElectionPeriodRunner extends Runner {
 	public List<VerificationResult> run() {
 		try {
 			//lately registered voters certificate - ToDo decomment when it will be available
-//			VerificationResult v1 = certImpl.vrfLatelyRegisteredVotersCertificate();
-//			msgr.sendVrfMsg(v1);
-//			partialResults.add(v1);
-//				Thread.sleep(1000);
+			VerificationResult v1 = certImpl.vrfLatelyRegisteredVotersCertificate();
+			msgr.sendVrfMsg(v1);
+			partialResults.add(v1);
+			Thread.sleep(1000);
 
 			//RSA signature of lately registered voters certificate and id
 			VerificationResult v2 = rsaImpl.vrfLatelyRegisteredVotersCertificateSign();
@@ -80,24 +78,24 @@ public class ElectionPeriodRunner extends Runner {
 			Thread.sleep(1000);
 
 			//NIZKP of late registered verification key and signature - Proof Not yet available
-//			for (String mName : ebp.getElectionDefinition().getMixerId()) {
-//				VerificationResult v3 = proofImpl.vrfLatelyVerificationKeysProof(mName);
-//				msgr.sendVrfMsg(v3);
-//				partialResults.add(v3);
-//			Thread.sleep(1000);
-//
-//				//signature
-//				VerificationResult v4 = rsaImpl.vrfLatelyVerificationKeysBySign(mName);
-//				msgr.sendVrfMsg(v4);
-//				partialResults.add(v4);
-//			Thread.sleep(1000);
-//			}
+			for (String mName : ebp.getElectionDefinition().getMixerId()) {
+				VerificationResult v3 = proofImpl.vrfLatelyVerificationKeysByProof(mName);
+				msgr.sendVrfMsg(v3);
+				partialResults.add(v3);
+				Thread.sleep(1000);
+
+				//signature
+				VerificationResult v4 = rsaImpl.vrfLatelyVerificationKeysBySign(mName);
+				msgr.sendVrfMsg(v4);
+				partialResults.add(v4);
+				Thread.sleep(1000);
+			}
 
 			//check that the late mixed verification key set is equal to the set of last mixer - ToDo decomment when it will be available
-//			VerificationResult v5 = prmImpl.vrfLatelyVerificatonKeys();
-//			msgr.sendVrfMsg(v5);
-//			partialResults.add(v5);
-//			Thread.sleep(1000);
+			VerificationResult v5 = prmImpl.vrfLatelyVerificatonKeys();
+			msgr.sendVrfMsg(v5);
+			partialResults.add(v5);
+			Thread.sleep(1000);
 
 			//signature over late mixed verification key set
 			VerificationResult v6 = rsaImpl.vrfLatelyVerificationKeysSign();
@@ -111,9 +109,11 @@ public class ElectionPeriodRunner extends Runner {
 			//Ballots verifications
 			boolean result = true;
 			for (Ballot b : ebp.getBallots().getBallot()) {
-				boolean vkVerification = prmImpl.vrfBallotVerificationKey(b.getVerificationKey());
-				boolean signatureVerification = schnImpl.vrfBallotSignature(b);
-				boolean proofVerification = proofImpl.vrfBallotProof(b);
+				boolean vkVerification = prmImpl.vrfBallotVerificationKey(b.getVerificationKey()).getResult();
+
+				//we want to verify the proof that come from a ballot and not from a QR-Code so ElectionReceipt is null.
+				boolean signatureVerification = schnImpl.vrfBallotSignature(b, null, true).getResult();
+				boolean proofVerification = proofImpl.vrfBallotProof(b, null).getResult();
 
 				//if one of these checks fail, break and set the verification result as failed
 				if (!(vkVerification && signatureVerification && proofVerification)) {
@@ -133,9 +133,8 @@ public class ElectionPeriodRunner extends Runner {
 			partialResults.add(v8);
 			Thread.sleep(1000);
 
-		} catch (InterruptedException | UnsupportedEncodingException | ElectionBoardServiceFault | NoSuchAlgorithmException ex) {
+		} catch (InvalidAlgorithmParameterException | CertificateException | InterruptedException | UnsupportedEncodingException | ElectionBoardServiceFault | NoSuchAlgorithmException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
-			Logger.getLogger(ElectionPeriodRunner.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 		return Collections.unmodifiableList(partialResults);

@@ -23,8 +23,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class represent a the SystemSetupRunner.
@@ -35,6 +33,7 @@ public class SystemSetupRunner extends Runner {
 
 	private final ParametersImplementer paramImpl;
 	private final CertificatesImplementer certImpl;
+	private final ElectionBoardProxy ebp;
 
 	/**
 	 * Construct an SystemSetupRunner with a given ElectionBoardProxy and
@@ -45,6 +44,7 @@ public class SystemSetupRunner extends Runner {
 	 */
 	public SystemSetupRunner(ElectionBoardProxy ebp, Messenger msgr) {
 		super(RunnerName.SYSTEM_SETUP, msgr);
+		this.ebp = ebp;
 
 		paramImpl = new ParametersImplementer(ebp, runnerName);
 		certImpl = new CertificatesImplementer(ebp, runnerName);
@@ -95,7 +95,7 @@ public class SystemSetupRunner extends Runner {
 			partialResults.add(v7);
 
 		} catch (InterruptedException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
-			Logger.getLogger(SystemSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
+			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 
 		return Collections.unmodifiableList(partialResults);

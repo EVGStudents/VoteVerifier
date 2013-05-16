@@ -326,7 +326,7 @@ public class ParametersImplementer extends Implementer {
 	 * verified.
 	 * @return true if the checks have been successfully executed.
 	 */
-	public boolean vrfBallotVerificationKey(BigInteger verificationKey) throws ElectionBoardServiceFault {
+	public VerificationResult vrfBallotVerificationKey(BigInteger verificationKey) throws ElectionBoardServiceFault {
 		MixedVerificationKeys mvk = ebp.getMixedVerificationKeys();
 		boolean result = false;
 
@@ -343,7 +343,13 @@ public class ParametersImplementer extends Implementer {
 
 		//if vk is in the late renewal key set, check that no other recent ballots contain this v in the late renewal key set - ToDo
 
-		return result;
+		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_VERIFICATION_KEY, result, ebp.getElectionID(), rn, it, EntityType.VOTERS);
+
+		if (!result) {
+			vr.setFailureCode(FailureCode.INVALID_BALLOT_VK);
+		}
+
+		return vr;
 	}
 
 	/**
@@ -419,7 +425,7 @@ public class ParametersImplementer extends Implementer {
 			}
 		}
 
-		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_IN_BALLOTS, r, ebp.getElectionID(), rn, it, EntityType.EA);
+		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_IN_BALLOTS, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.BALLOT_NOT_IN_SET);

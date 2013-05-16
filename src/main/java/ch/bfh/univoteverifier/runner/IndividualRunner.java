@@ -9,19 +9,21 @@
  */
 package ch.bfh.univoteverifier.runner;
 
+import ch.bfh.univote.common.Ballot;
+import ch.bfh.univote.common.Proof;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
-import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.Messenger;
-import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
+import ch.bfh.univoteverifier.implementer.ProofImplementer;
 import ch.bfh.univoteverifier.implementer.RSAImplementer;
 import ch.bfh.univoteverifier.implementer.SchnorrImplementer;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -44,6 +46,8 @@ public class IndividualRunner extends Runner {
 	private final ElectionReceipt er;
 	private final RSAImplementer rsaImpl;
 	private final SchnorrImplementer schnorrImpl;
+	private final ProofImplementer proofImpl;
+	private final ElectionBoardProxy ebp;
 
 	/**
 	 * Construct an IndividualRunner with a given ElectionBoardProxy and
@@ -55,11 +59,13 @@ public class IndividualRunner extends Runner {
 	public IndividualRunner(ElectionBoardProxy ebp, Messenger msgr, ElectionReceipt er) throws CertificateException, ElectionBoardServiceFault, InvalidNameException {
 		super(RunnerName.INDIVIDUAL, msgr);
 		this.er = er;
+		this.ebp = ebp;
 
 		paramImpl = new ParametersImplementer(ebp, runnerName);
 		certImpl = new CertificatesImplementer(ebp, runnerName);
 		rsaImpl = new RSAImplementer(ebp, runnerName);
 		schnorrImpl = new SchnorrImplementer(ebp, runnerName);
+		proofImpl = new ProofImplementer(ebp, runnerName);
 	}
 
 	@Override
@@ -71,20 +77,32 @@ public class IndividualRunner extends Runner {
 			partialResults.add(v1);
 			Thread.sleep(1000);
 
-			//RSA Signature - ToDo
+			//RSA Signature
 			VerificationResult v2 = rsaImpl.vrfSingleBallotSign(er);
 			msgr.sendVrfMsg(v2);
 			partialResults.add(v2);
 			Thread.sleep(1000);
 
-			//B belongs to ballots - ToDo
-			VerificationResult v3 = paramImpl.vrfBallotInSet(er.getVk());
+			//B belongs to ballots
+			VerificationResult v3 = paramImpl.vrfBallotInSet(er.getVerificationKey());
+			msgr.sendVrfMsg(v3);
+			partialResults.add(v3);
+			Thread.sleep(1000);
 
-			//Schnorr signature - ToDo
-			VerificationResult v4;
+			//Schnorr signature
+			VerificationResult v4 = schnorrImpl.vrfBallotSignature(null, er, true);
+			msgr.sendVrfMsg(v4);
+			partialResults.add(v4);
+			Thread.sleep(1000);
+
+			//proof
+			VerificationResult v5 = proofImpl.vrfBallotProof(null, er);
+			msgr.sendVrfMsg(v5);
+			partialResults.add(v5);
+			Thread.sleep(1000);
 
 		} catch (UnsupportedEncodingException | InterruptedException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
-			Logger.getLogger(IndividualRunner.class.getName()).log(Level.SEVERE, null, ex);
+			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 
 		return Collections.unmodifiableList(partialResults);

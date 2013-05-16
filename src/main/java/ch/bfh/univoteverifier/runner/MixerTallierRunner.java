@@ -50,7 +50,6 @@ public class MixerTallierRunner extends Runner {
 		rsaImpl = new RSAImplementer(ebp, runnerName);
 		proofImpl = new ProofImplementer(ebp, runnerName);
 		prmImpl = new ParametersImplementer(ebp, runnerName);
-
 	}
 
 	@Override
@@ -58,11 +57,10 @@ public class MixerTallierRunner extends Runner {
 		try {
 			//shuffled encrypted votes by mixer and signature
 			for (String mName : ebp.getElectionDefinition().getMixerId()) {
-				VerificationResult v1 = proofImpl.vrfShuffledEncryptedVotesByProof(mName);
+				VerificationResult v1 = proofImpl.vrfEncryptedVotesByProof(mName);
 				msgr.sendVrfMsg(v1);
 				partialResults.add(v1);
 				Thread.sleep(1000);
-
 
 				VerificationResult v2 = rsaImpl.vrfMixedEncryptedVotesBySign(mName);
 				msgr.sendVrfMsg(v2);
@@ -71,7 +69,7 @@ public class MixerTallierRunner extends Runner {
 
 			}
 
-			//shuffled mixed encrypted votes set
+			//shuffled mixed encrypted votes set - ToDo ask if it has to be done
 			VerificationResult v3 = prmImpl.vrfMixedEncryptedVotes();
 			msgr.sendVrfMsg(v3);
 			partialResults.add(v3);
@@ -83,7 +81,6 @@ public class MixerTallierRunner extends Runner {
 			msgr.sendVrfMsg(v4);
 			partialResults.add(v4);
 			Thread.sleep(1000);
-
 
 			//NIZKP of decrypted votes and signature
 			for (String tName : ebp.getElectionDefinition().getTallierId()) {
@@ -115,7 +112,6 @@ public class MixerTallierRunner extends Runner {
 
 		} catch (InterruptedException | NoSuchAlgorithmException | UnsupportedEncodingException | ElectionBoardServiceFault ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
-			Logger.getLogger(MixerTallierRunner.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 		return Collections.unmodifiableList(partialResults);

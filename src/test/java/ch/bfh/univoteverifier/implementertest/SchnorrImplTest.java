@@ -18,6 +18,7 @@ import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.implementer.SchnorrImplementer;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
@@ -58,10 +59,7 @@ public class SchnorrImplTest {
 	 */
 	@Test
 	public void testSignatureVerification() throws NoSuchAlgorithmException, UnsupportedEncodingException, ElectionBoardServiceFault {
-		System.out.println(er.getVerificationKey());
-		Ballot b = ebp.getBallot(er.getVerificationKey());
-
-		boolean vr = si.vrfBallotSignature(b);
-		assertTrue(vr);
+		VerificationResult vr = si.vrfBallotSignature(null, er, true);
+		assertTrue(vr.getResult());
 	}
 }

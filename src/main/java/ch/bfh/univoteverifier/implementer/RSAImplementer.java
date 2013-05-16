@@ -1386,16 +1386,16 @@ public class RSAImplementer extends Implementer {
 	 */
 	public VerificationResult vrfSingleBallotSign(ElectionReceipt er) throws
 		NoSuchAlgorithmException, UnsupportedEncodingException {
-		BigInteger signatureValue = er.getsV();
+		BigInteger signatureValue = er.getSignatureValue();
 
-		//concatenate to - ToDo
+		//concatenate to - ToDo ask if is the same as Schnorr.
 
 		String res = "";
 
 		boolean r = vrfRSASign(emPubKey, res, signatureValue);
 
-		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_SIGN, r,
-			ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_RSA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
 
 		if (!r) {
 			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);

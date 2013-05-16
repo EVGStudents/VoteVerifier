@@ -1,6 +1,12 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *
+ *  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+ *   Bern University of Applied Sciences, Engineering and Information Technology,
+ *   Research Institute for Security in the Information Society, E-Voting Group,
+ *   Biel, Switzerland.
+ *
+ *   Project independent UniVoteVerifier.
+ *
  */
 package ch.bfh.univoteverifier.runnertest;
 
@@ -12,7 +18,6 @@ import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.runner.ElectionPreparationRunner;
-import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.FileNotFoundException;
 import java.security.cert.CertificateException;
@@ -68,6 +73,9 @@ public class ElectionPreparationRunnerTest {
 			vSign.setEntityName(mName);
 			mockList.add(vSign);
 		}
+
+		mockList.add(new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS, true, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.EM));
+		mockList.add(new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM));
 	}
 
 	/**

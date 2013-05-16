@@ -27,10 +27,12 @@ import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import ch.bfh.univoteverifier.common.VerificationType;
+import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,11 +69,8 @@ public class ProofImplementer extends Implementer {
 		//v = param^s mod prime
 		BigInteger v = paramV.modPow(s, prime);
 
-		System.out.println("v: " + v);
-
 		//w = t*param^c mod prime
 		BigInteger w = t.multiply(paramW.modPow(c, prime)).mod(prime);
-		System.out.println("w: " + w);
 
 		return v.equals(w);
 	}
@@ -283,32 +282,54 @@ public class ProofImplementer extends Implementer {
 	/**
 	 * Verify the NIZKP of the proof for a ballot.
 	 *
-	 * @param b the Ballot.
-	 * @return true if the prove has been verified successfully, false
-	 * otherwise.
+	 * Specification 1.3.6, d.
+	 *
+	 * @param b the Ballot. otherwise.
+	 * @return a VerificationResult.
 	 */
-	public boolean vrfBallotProof(Ballot b) throws NoSuchAlgorithmException, UnsupportedEncodingException, ElectionBoardServiceFault {
-		Proof proof = b.getProof();
-		BigInteger t = proof.getCommitment().get(0);
-		BigInteger s = proof.getResponse().get(0);
-		BigInteger aValue = b.getSignature().getFirstValue();
+	public VerificationResult vrfBallotProof(Ballot b, ElectionReceipt er) throws NoSuchAlgorithmException, UnsupportedEncodingException, ElectionBoardServiceFault {
+
+		BigInteger t = null, s = null, aValue = null, verificationKey = null;
 		BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
 		BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
 		BigInteger elGamalG = ebp.getEncryptionParameters().getGenerator();
 
-		//concatenate to (a|t|vk)
+		//if we have a Ballot or an ElectionReceipt initialize the variables
+		if (b != null) {
+			Proof proof = b.getProof();
+			t = proof.getCommitment().get(0);
+			s = proof.getResponse().get(0);
+			aValue = b.getSignature().getFirstValue();
+			verificationKey = b.getVerificationKey();
+
+		} else if (er != null) {
+			t = er.getProofCommitment();
+			s = er.getProofResponse();
+			aValue = er.getSchnorrValueA();
+			verificationKey = er.getVerificationKey();
+		}
+
+		//concatenate to a|t|vk
 		//ToDo also ask how the hash for a proof are concatenated
-		sc.pushObject(aValue);
-		sc.pushList(proof.getCommitment(), false);
-		sc.pushObject(b.getVerificationKey());
+		sc.pushObjectDelimiter(aValue, StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(t, StringConcatenator.INNER_DELIMITER);
+		sc.pushObject(verificationKey);
+
 
 		String res = sc.pullAll();
 
 		BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
 
-		boolean proofVrf = knowledgeOfDiscreteLog(t, s, c, elGamalG, aValue, elGamalP, false);
+		boolean result = knowledgeOfDiscreteLog(t, s, c, elGamalG, aValue, elGamalP, false);
 
-		return proofVrf;
+		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_PROOF, result, ebp.getElectionID(), rn, it, EntityType.VOTERS);
+
+
+		if (!result) {
+			vr.setFailureCode(FailureCode.INVALID_NIZKP);
+		}
+
+		return vr;
 	}
 
 	/**
@@ -327,7 +348,7 @@ public class ProofImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfShuffledEncryptedVotesByProof(String mixerName) throws ElectionBoardServiceFault {
+	public VerificationResult vrfEncryptedVotesByProof(String mixerName) throws ElectionBoardServiceFault {
 		MixedEncryptedVotes mev = ebp.getMixedEncryptedVotesBy(mixerName);
 
 		//ToDo - ask for plausibility check

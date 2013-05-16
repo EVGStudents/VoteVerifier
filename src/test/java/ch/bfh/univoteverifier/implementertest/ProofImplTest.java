@@ -5,12 +5,18 @@
 package ch.bfh.univoteverifier.implementertest;
 
 import ch.bfh.univote.election.ElectionBoardServiceFault;
+import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.common.RunnerName;
+import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.implementer.ProofImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -87,6 +93,45 @@ public class ProofImplTest {
 			VerificationResult vr = pi.vrfLatelyVerificationKeysByProof(mName);
 			assertFalse(vr.getResult());
 			assertFalse(vr.isImplemented());
+		}
+	}
+
+	/**
+	 * Test the result of vrfBallotProof().
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 */
+	@Test
+	public void testBallotProof() throws NoSuchAlgorithmException, UnsupportedEncodingException, ElectionBoardServiceFault {
+		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
+		QRCode qrCode = new QRCode(new Messenger());
+		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
+
+		VerificationResult v = pi.vrfBallotProof(null, er);
+
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test the result of vrfDecryptedVotesByProof().
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
+	 */
+	@Test
+	public void testDecryptedVotes() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+		for (String mName : ebp.getElectionDefinition().getMixerId()) {
+			VerificationResult vr = pi.vrfDecryptedVotesByProof(mName);
+			assertTrue(vr.getResult());
 		}
 	}
 }
