@@ -34,7 +34,7 @@ import javax.naming.InvalidNameException;
 /**
  * This class represent an ElectionPeriodRunner.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ElectionPeriodRunner extends Runner {
 
@@ -65,7 +65,7 @@ public class ElectionPeriodRunner extends Runner {
 	@Override
 	public List<VerificationResult> run() {
 		try {
-			//lately registered voters certificate - ToDo decomment when it will be available
+			//lately registered voters certificate
 			VerificationResult v1 = certImpl.vrfLatelyRegisteredVotersCertificate();
 			msgr.sendVrfMsg(v1);
 			partialResults.add(v1);
@@ -91,7 +91,7 @@ public class ElectionPeriodRunner extends Runner {
 				Thread.sleep(1000);
 			}
 
-			//check that the late mixed verification key set is equal to the set of last mixer - ToDo decomment when it will be available
+			//check that the late mixed verification key set is equal to the set of last mixer
 			VerificationResult v5 = prmImpl.vrfLatelyVerificatonKeys();
 			msgr.sendVrfMsg(v5);
 			partialResults.add(v5);
@@ -112,7 +112,7 @@ public class ElectionPeriodRunner extends Runner {
 				boolean vkVerification = prmImpl.vrfBallotVerificationKey(b.getVerificationKey()).getResult();
 
 				//we want to verify the proof that come from a ballot and not from a QR-Code so ElectionReceipt is null.
-				boolean signatureVerification = schnImpl.vrfBallotSignature(b, null, true).getResult();
+				boolean signatureVerification = schnImpl.vrfBallotSignature(b, null).getResult();
 				boolean proofVerification = proofImpl.vrfBallotProof(b, null).getResult();
 
 				//if one of these checks fail, break and set the verification result as failed

@@ -41,7 +41,7 @@ import javax.naming.InvalidNameException;
 /**
  * This class is used to check X509 certificates.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class CertificatesImplementer extends Implementer {
 

@@ -13,7 +13,7 @@ import ch.bfh.univoteverifier.common.StringConcatenator;
  * This abstract class represent an Implementer. An implementer has the
  * implementation of the mathematical operations.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public abstract class Implementer {
 

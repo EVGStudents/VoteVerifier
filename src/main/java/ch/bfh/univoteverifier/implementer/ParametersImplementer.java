@@ -19,6 +19,7 @@ import ch.bfh.univote.common.EncryptionKeyShare;
 import ch.bfh.univote.common.MixedEncryptedVotes;
 import ch.bfh.univote.common.MixedVerificationKey;
 import ch.bfh.univote.common.MixedVerificationKeys;
+import ch.bfh.univote.common.PartiallyDecryptedVotes;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
@@ -34,7 +35,7 @@ import java.util.List;
  * This class is used to check the validity of the parameters, like ElGamal,
  * Schnorr or other things, like encryption key.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ParametersImplementer extends Implementer {
 
@@ -225,39 +226,6 @@ public class ParametersImplementer extends Implementer {
 	}
 
 	/**
-	 * Check the set of mixer verification keys by the given mixer.
-	 *
-	 * Specification: 1.3.5, d.
-	 *
-	 * @param mixerName the name of the mixer.
-	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 */
-	public VerificationResult vrfVerificationKeysMixedBy(String mixerName) throws ElectionBoardServiceFault {
-		MixedVerificationKeys vk = ebp.getMixedVerificationKeysBy(mixerName);
-
-		//plausibility check 1: size of the set against the number of voter certificates
-		boolean size = vk.getKey().size() == ebp.getVoterCerts().getCertificate().size();
-
-		//plausibility check 2: values in G_q - ToDo
-		boolean valuesInG = false;
-
-		//plausibility check 3: different values - ToDo
-		boolean differentValues = false;
-
-		boolean r = size && valuesInG && differentValues;
-
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
-
-		if (!r) {
-			vr.setFailureCode(FailureCode.VK_PLAUSIBILITY_CHECK_FAILED);
-		}
-
-		return vr;
-	}
-
-	/**
 	 * Check the set of public mixed verification keys against the set of
 	 * public keys of last mixer.
 	 *
@@ -365,9 +333,12 @@ public class ParametersImplementer extends Implementer {
 	public VerificationResult vrfMixedEncryptedVotes() throws ElectionBoardServiceFault {
 		MixedEncryptedVotes mev = ebp.getMixedEncryptedVotes();
 
-		//ToDo - ask if it has to be done
+		//get last mixer encrypted votes
+		List<String> mixersName = ebp.getElectionDefinition().getMixerId();
+		MixedEncryptedVotes lastMixerEncVotes = ebp.getMixedEncryptedVotesBy(mixersName.get(mixersName.size() - 1));
 
-		boolean r = false;
+		//check if the two set correspond
+		boolean r = mev.equals(lastMixerEncVotes);
 
 		VerificationResult vr = new VerificationResult(VerificationType.MT_ENC_VOTES_SET, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
@@ -389,10 +360,29 @@ public class ParametersImplementer extends Implementer {
 	 */
 	public VerificationResult vrfVotes() throws ElectionBoardServiceFault {
 		Ballots ballots = ebp.getBallots();
+		BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
 
 
-		for (Ballot b : ballots.getBallot()) {
+		for (int i = 0; i < ballots.getBallot().size(); i++) {
+			Ballot b = ballots.getBallot().get(i);
+			BigInteger bValue = b.getEncryptedVote().getSecondValue();
+
+			BigInteger m = bValue.mod(elGamalP);
+
+			//get the a value for each tallier
+			for (int j = 0; j < ebp.getElectionDefinition().getTallierId().size(); i++) {
+				String tName = ebp.getElectionDefinition().getTallierId().get(j);
+				PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tName);
+
+				//get the a value
+				BigInteger aValue = pdv.getVote().get(i);
+				m = m.multiply(aValue).mod(elGamalP);
+			}
+
 			//ToDo
+			System.out.println(m);
+
+
 		}
 
 		VerificationResult vr = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES, false, ebp.getElectionID(), rn, it, EntityType.PARAMETER);

@@ -1,6 +1,12 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *
+ *  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+ *   Bern University of Applied Sciences, Engineering and Information Technology,
+ *   Research Institute for Security in the Information Society, E-Voting Group,
+ *   Biel, Switzerland.
+ *
+ *   Project independent UniVoteVerifier.
+ *
  */
 package ch.bfh.univoteverifier.runnertest;
 
@@ -25,8 +31,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Test the runner for the individual verification.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class IndividualRunnerTest {
 
@@ -55,7 +62,8 @@ public class IndividualRunnerTest {
 	/**
 	 * Build the mock list.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	private void buildMockList() {
 		mockList.add(new VerificationResult(VerificationType.SETUP_EM_CERT, true, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.EM));

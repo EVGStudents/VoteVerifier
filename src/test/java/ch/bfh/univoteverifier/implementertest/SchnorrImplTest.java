@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 /**
  * This class test the behavior of the SchnorrImplementer.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class SchnorrImplTest {
 
@@ -59,7 +59,7 @@ public class SchnorrImplTest {
 	 */
 	@Test
 	public void testSignatureVerification() throws NoSuchAlgorithmException, UnsupportedEncodingException, ElectionBoardServiceFault {
-		VerificationResult vr = si.vrfBallotSignature(null, er, true);
+		VerificationResult vr = si.vrfBallotSignature(null, er);
 		assertTrue(vr.getResult());
 	}
 }

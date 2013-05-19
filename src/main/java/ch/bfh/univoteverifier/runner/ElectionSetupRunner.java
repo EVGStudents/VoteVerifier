@@ -31,7 +31,7 @@ import javax.naming.InvalidNameException;
 /**
  * This class represent an ElectionSetupRunner.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ElectionSetupRunner extends Runner {
 

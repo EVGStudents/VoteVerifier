@@ -53,7 +53,7 @@ import java.util.logging.Logger;
  * a connection point in order to download the relative data needed to perform
  * verifications.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ElectionBoardProxy {
 

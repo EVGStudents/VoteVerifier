@@ -11,7 +11,6 @@ package ch.bfh.univoteverifier.verification;
 
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
-import java.io.File;
 
 /**
  * This class represent a thread that is responsible to start a verification so
@@ -42,7 +41,7 @@ public class VerificationThread extends Thread {
 	 * @param qrCodeFile the file with the path to the QRCode
 	 */
 	public VerificationThread(Messenger msgr, ElectionReceipt er) {
-		this.v = new IndividualVerification(msgr, er);
+		this.v = new IndividualVerification(msgr, er.getElectionID(), er);
 	}
 
 	@Override

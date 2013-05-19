@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
 /**
  * Test the runner of the system setup.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class SystemSetupRunnerTest {
 
@@ -52,7 +52,8 @@ public class SystemSetupRunnerTest {
 	/**
 	 * Build the mock list.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	private void buildMockList() {
 		mockList.add(new VerificationResult(VerificationType.SETUP_SCHNORR_P, true, eID, rn, ImplementerType.PARAMETER, EntityType.PARAMETER));

@@ -17,7 +17,7 @@ import ch.bfh.univoteverifier.verification.VerificationResult;
  * sent to the GUI this class is part of the observer pattern
  *
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class VerificationEvent {
 

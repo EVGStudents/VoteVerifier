@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  * that can be later converted into real java objects. These objects can be used
  * as a source data for the univote verifier.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class LocalBoardProxyDownloader {
 

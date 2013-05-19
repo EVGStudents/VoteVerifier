@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * This class is used to concatenate a string in different ways.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class StringConcatenator {
 
@@ -35,7 +35,7 @@ public class StringConcatenator {
 	public static final String INNER_DELIMITER = "|";
 
 	/**
-	 * Construct a new string concatenator
+	 * Construct a new string concatenator.
 	 */
 	public StringConcatenator() {
 		strB = new StringBuilder();

@@ -19,7 +19,7 @@ import java.util.List;
  * This class represent a Runner. A runner is used to perform the verifications
  * with a precise order.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public abstract class Runner {
 

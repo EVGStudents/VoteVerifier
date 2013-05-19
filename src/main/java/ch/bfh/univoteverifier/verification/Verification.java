@@ -9,11 +9,11 @@
  */
 package ch.bfh.univoteverifier.verification;
 
-import ch.bfh.univoteverifier.common.VerificationOrder;
 import ch.bfh.univoteverifier.listener.VerificationSubject;
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +31,6 @@ public abstract class Verification {
 	private final String eID;
 	protected List<Runner> runners;
 	protected ElectionBoardProxy ebproxy;
-	protected VerificationOrder displayType = VerificationOrder.BY_SPEC;
 	protected Messenger msgr;
 	//used to store the results of a verification
 	protected List<VerificationResult> res;
@@ -45,19 +44,19 @@ public abstract class Verification {
 	 */
 	public Verification(Messenger msgr, String eID) {
 		this.eID = eID;
-		this.ebproxy = new ElectionBoardProxy(eID);
+
+		if (eID.equals("")) { //the election ID must be null only for the JUnit test.
+			try {
+				this.ebproxy = new ElectionBoardProxy();
+			} catch (FileNotFoundException ex) {
+				Logger.getLogger(Verification.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		} else {
+			this.ebproxy = new ElectionBoardProxy(eID);
+		}
 		runners = new ArrayList<>();
 		res = new ArrayList<>();
 		this.msgr = msgr;
-	}
-
-	/**
-	 * Set the view type for the verification.
-	 *
-	 * @param t the verification view.
-	 */
-	public void setViewType(VerificationOrder t) {
-		displayType = t;
 	}
 
 	/**
@@ -102,6 +101,7 @@ public abstract class Verification {
 			}
 		}
 
+		msgr.sendVerificationFinished(eID);
 
 		return Collections.unmodifiableList(res);
 	}

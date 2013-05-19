@@ -19,7 +19,7 @@ import java.util.List;
  * This class represent a ResultRunner that is responsible to compute the
  * results of an election.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ResultsRunner extends Runner {
 

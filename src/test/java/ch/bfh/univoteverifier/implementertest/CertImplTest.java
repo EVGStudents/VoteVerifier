@@ -34,7 +34,7 @@ import static org.junit.Assert.*;
 /**
  * This class test the behavior of the CertificateImplementer.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class CertImplTest {
 

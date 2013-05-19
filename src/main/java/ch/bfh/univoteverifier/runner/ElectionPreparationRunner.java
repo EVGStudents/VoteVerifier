@@ -15,6 +15,7 @@ import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
+import ch.bfh.univoteverifier.implementer.ProofImplementer;
 import ch.bfh.univoteverifier.implementer.RSAImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.UnsupportedEncodingException;
@@ -28,7 +29,7 @@ import javax.naming.InvalidNameException;
 /**
  * This class represent an ElectionPreparationRunner.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ElectionPreparationRunner extends Runner {
 
@@ -36,6 +37,7 @@ public class ElectionPreparationRunner extends Runner {
 	private final CertificatesImplementer certImpl;
 	private final ParametersImplementer prmImpl;
 	private final ElectionBoardProxy ebp;
+	private final ProofImplementer proofImpl;
 
 	/**
 	 * Construct an ElectionPreparationRunner with a given
@@ -50,6 +52,7 @@ public class ElectionPreparationRunner extends Runner {
 		rsaImpl = new RSAImplementer(ebp, runnerName);
 		certImpl = new CertificatesImplementer(ebp, runnerName);
 		prmImpl = new ParametersImplementer(ebp, runnerName);
+		proofImpl = new ProofImplementer(ebp, runnerName);
 	}
 
 	@Override
@@ -86,9 +89,9 @@ public class ElectionPreparationRunner extends Runner {
 			Thread.sleep(1000);
 
 
-			//Plausibility check and signature of mixed verifiction keys by - ToDo decomment when it will be available
+			//Plausibility check and signature of mixed verifiction keys by
 			for (String mName : ebp.getElectionDefinition().getMixerId()) {
-				VerificationResult v6 = prmImpl.vrfVerificationKeysMixedBy(mName);
+				VerificationResult v6 = proofImpl.vrfVerificationKeysMixedByProof(mName);
 				msgr.sendVrfMsg(v6);
 				partialResults.add(v6);
 				Thread.sleep(1000);
@@ -97,7 +100,6 @@ public class ElectionPreparationRunner extends Runner {
 				msgr.sendVrfMsg(v7);
 				partialResults.add(v7);
 				Thread.sleep(1000);
-
 			}
 
 			//mixed verification keys

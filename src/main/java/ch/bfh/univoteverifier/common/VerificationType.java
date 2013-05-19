@@ -12,7 +12,7 @@ package ch.bfh.univoteverifier.common;
 /**
  * This enumeration contains the list of the different verifications.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public enum VerificationType {
 
@@ -76,11 +76,7 @@ public enum VerificationType {
 	SINGLE_BALLOT_IN_BALLOTS(610),
 	SINGLE_BALLOT_VERIFICATION_KEY(620),
 	SINGLE_BALLOT_PROOF(630),
-	SINGLE_BALLOT_SCHNORR_SIGN(640),
-	//ToDO check if it is useful
-	ERROR(666),
-	FATAL_ERROR(667);
-	//the ID of the verification
+	SINGLE_BALLOT_SCHNORR_SIGN(640);
 	private final int id;
 
 	/**

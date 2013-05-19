@@ -30,7 +30,7 @@ import static org.junit.Assert.*;
 /**
  * This class test the behavior of the ParametersImplementer.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ParamImplTest {
 
@@ -131,20 +131,6 @@ public class ParamImplTest {
 	}
 
 	/**
-	 * Test the mixed verification keys by a given mixer.
-	 *
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 */
-	@Test
-	public void testMixedVerificationKeysBy() throws ElectionBoardServiceFault {
-		for (String mName : ebp.getElectionDefinition().getMixerId()) {
-			VerificationResult v = pi.vrfVerificationKeysMixedBy(mName);
-			assertTrue(v.getResult());
-		}
-	}
-
-	/**
 	 * Test the mixed verification keys.
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
@@ -177,6 +163,18 @@ public class ParamImplTest {
 	@Test
 	public void testBallotVerificationKey() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfBallotVerificationKey(er.getVerificationKey());
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test the votes.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testVotes() throws ElectionBoardServiceFault {
+		VerificationResult v = pi.vrfVotes();
 		assertTrue(v.getResult());
 	}
 }

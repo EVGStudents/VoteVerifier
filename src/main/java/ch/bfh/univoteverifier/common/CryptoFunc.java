@@ -24,7 +24,7 @@ import javax.xml.bind.DatatypeConverter;
 /**
  * This class contains some functions used by other classes.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class CryptoFunc {
 

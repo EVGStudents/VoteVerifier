@@ -32,7 +32,7 @@ import org.junit.Test;
 /**
  * Test the runner of the election period.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ElectionPeriodRunnerTest {
 
@@ -57,7 +57,8 @@ public class ElectionPeriodRunnerTest {
 	/**
 	 * Build the mock list.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	private void buildMockList() throws ElectionBoardServiceFault {
 		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT, true, eID, rn, ImplementerType.CERTIFICATE, EntityType.CA));

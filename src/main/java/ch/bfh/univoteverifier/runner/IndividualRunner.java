@@ -37,7 +37,7 @@ import javax.naming.InvalidNameException;
  * This class represent the IndividualRunner used for an individual
  * verification.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class IndividualRunner extends Runner {
 
@@ -90,7 +90,7 @@ public class IndividualRunner extends Runner {
 			Thread.sleep(1000);
 
 			//Schnorr signature
-			VerificationResult v4 = schnorrImpl.vrfBallotSignature(null, er, true);
+			VerificationResult v4 = schnorrImpl.vrfBallotSignature(null, er);
 			msgr.sendVrfMsg(v4);
 			partialResults.add(v4);
 			Thread.sleep(1000);

@@ -14,14 +14,12 @@ import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.runner.IndividualRunner;
 import java.security.cert.CertificateException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
 
 /**
  * This class is used to perform an individual verification.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class IndividualVerification extends Verification {
 
@@ -32,12 +30,13 @@ public class IndividualVerification extends Verification {
 	 * ElectionReceipt.
 	 *
 	 * @param msgr the Messenger used to send messages.
+	 * @param eID the election ID
 	 * @param er the ElectionReceipt that contains the information about the
 	 * ballot.
 	 *
 	 */
-	public IndividualVerification(Messenger msgr, ElectionReceipt er) {
-		super(msgr, er.getElectionID());
+	public IndividualVerification(Messenger msgr, String eID, ElectionReceipt er) {
+		super(msgr, eID);
 		this.er = er;
 	}
 

@@ -24,7 +24,7 @@ import javax.naming.InvalidNameException;
 /**
  * This class is used to perform an universal verification.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class UniversalVerification extends Verification {
 

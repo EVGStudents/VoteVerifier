@@ -30,7 +30,7 @@ import static org.junit.Assert.*;
 /**
  * Test the runner of the election setup.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ElectionSetupRunnerTest {
 
@@ -55,7 +55,8 @@ public class ElectionSetupRunnerTest {
 	/**
 	 * Build the mock list.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	private void buildMockList() throws ElectionBoardServiceFault {
 

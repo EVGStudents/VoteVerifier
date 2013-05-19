@@ -23,7 +23,7 @@ import org.junit.Test;
 /**
  * Test the schnorr signature verifier
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class SchnorrTest {
 

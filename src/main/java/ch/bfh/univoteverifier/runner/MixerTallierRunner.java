@@ -22,14 +22,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
 
 /**
  * This class represent a MixerTallierRunner.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class MixerTallierRunner extends Runner {
 
@@ -66,15 +64,13 @@ public class MixerTallierRunner extends Runner {
 				msgr.sendVrfMsg(v2);
 				partialResults.add(v2);
 				Thread.sleep(1000);
-
 			}
 
-			//shuffled mixed encrypted votes set - ToDo ask if it has to be done
+			//shuffled mixed encrypted votes set
 			VerificationResult v3 = prmImpl.vrfMixedEncryptedVotes();
 			msgr.sendVrfMsg(v3);
 			partialResults.add(v3);
 			Thread.sleep(1000);
-
 
 			//signature of shuffled mixed encrypted votes set
 			VerificationResult v4 = rsaImpl.vrfMixedEncryptedVotesSign();
@@ -89,12 +85,10 @@ public class MixerTallierRunner extends Runner {
 				partialResults.add(v5);
 				Thread.sleep(1000);
 
-
 				VerificationResult v6 = rsaImpl.vrfDecryptedVotesBySign(tName);
 				msgr.sendVrfMsg(v6);
 				partialResults.add(v6);
 				Thread.sleep(1000);
-
 			}
 
 			//plaintext votes set
@@ -102,7 +96,6 @@ public class MixerTallierRunner extends Runner {
 			msgr.sendVrfMsg(v7);
 			partialResults.add(v7);
 			Thread.sleep(1000);
-
 
 			//plaintext votes set signature
 			VerificationResult v8 = rsaImpl.vrfPlaintextVotesSign();

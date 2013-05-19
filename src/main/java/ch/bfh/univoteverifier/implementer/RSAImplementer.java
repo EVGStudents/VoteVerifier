@@ -47,7 +47,6 @@ import ch.bfh.univoteverifier.common.StringConcatenator;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.verification.VerificationResult;
-import com.sun.org.apache.bcel.internal.generic.PUSH;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
@@ -56,14 +55,12 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
 
 /**
  * This class contains all the methods that need a RSA Verification.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class RSAImplementer extends Implementer {
 
@@ -103,13 +100,6 @@ public class RSAImplementer extends Implementer {
 
 		//compute signature^e mod s, this must be equal to the hash we have computed
 		BigInteger decSign = signature.modPow(pubKey.getPublicExponent(), pubKey.getModulus());
-
-//		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Concat string {0}", clearText);
-//		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Public key {0}", pubKey);
-//		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Signature value {0}", signature);
-//		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "My computed hash {0}", hash);
-//		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Decrypted signature {0}", decSign);
-//		Logger.getLogger(this.getClass().getName()).log(Level.INFO, clearText);
 
 		boolean result = decSign.equals(hash);
 
@@ -1388,9 +1378,37 @@ public class RSAImplementer extends Implementer {
 		NoSuchAlgorithmException, UnsupportedEncodingException {
 		BigInteger signatureValue = er.getSignatureValue();
 
-		//concatenate to - ToDo ask if is the same as Schnorr.
 
-		String res = "";
+		//concatenate to - (id|(encValueA|encValueB)|((t)|(s)))|timestamp
+		sc.pushLeftDelim();
+		//election ID
+		sc.pushObjectDelimiter(er.getElectionID(), StringConcatenator.INNER_DELIMITER);
+		//(encValueA|encValueB)
+		sc.pushLeftDelim();
+		sc.pushObjectDelimiter(er.getEncValueA(), StringConcatenator.INNER_DELIMITER);
+		sc.pushObject(er.getEncValueB());
+		sc.pushRightDelim();
+		sc.pushInnerDelim();
+		//((t)|(s))
+		sc.pushLeftDelim();
+
+		sc.pushLeftDelim();
+		sc.pushObject(er.getProofCommitment());
+		sc.pushRightDelim();
+
+		sc.pushInnerDelim();
+
+		sc.pushLeftDelim();
+		sc.pushObject(er.getProofResponse());
+		sc.pushRightDelim();
+
+		sc.pushRightDelim();
+		//right parenthesis
+		sc.pushRightDelim();
+		sc.pushInnerDelim();
+		sc.pushObject(er.getTimeStamp());
+
+		String res = sc.pullAll();
 
 		boolean r = vrfRSASign(emPubKey, res, signatureValue);
 

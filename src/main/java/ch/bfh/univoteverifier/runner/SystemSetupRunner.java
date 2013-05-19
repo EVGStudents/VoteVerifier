@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * This class represent a the SystemSetupRunner.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class SystemSetupRunner extends Runner {
 

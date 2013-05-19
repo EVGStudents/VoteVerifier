@@ -14,45 +14,45 @@ import ch.bfh.univoteverifier.verification.Verification;
 
 /**
  * This class is the controller who is responsible for the communication between
- * the GUI and the internal infrastructure
+ * the GUI and the internal infrastructure.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class MainController {
 
-    private Verification v;
+	private Verification v;
 
-    /**
-     * Create an universal verification
-     *
-     * @param eID String the ID of a election
-     */
-    public void universalVerification(String eID) {
+	/**
+	 * Create an universal verification
+	 *
+	 * @param eID String the ID of a election
+	 */
+	public void universalVerification(String eID) {
 //		this.v = new UniversalVerification(eID);
-    }
+	}
 
-    /**
-     * Run a verification
-     */
-    public void runVerifcation() {
-        v.runVerification();
-    }
+	/**
+	 * Run a verification
+	 */
+	public void runVerifcation() {
+		v.runVerification();
+	}
 
-    /**
-     * Create an individual verification
-     *
-     * @param eID String the ID of a election
-     */
-    public void individualVerification(String eID) {
+	/**
+	 * Create an individual verification
+	 *
+	 * @param eID String the ID of a election
+	 */
+	public void individualVerification(String eID) {
 //		this.v = new IndividualVerification(eID);
-    }
+	}
 
-    /**
-     * Get the status subject on which to register a listener.
-     *
-     * @return The inner class which implements VerificationSubject
-     */
-    public VerificationSubject getStatusSubject() {
-        return v.getStatusSubject();
-    }
+	/**
+	 * Get the status subject on which to register a listener.
+	 *
+	 * @return The inner class which implements VerificationSubject
+	 */
+	public VerificationSubject getStatusSubject() {
+		return v.getStatusSubject();
+	}
 }

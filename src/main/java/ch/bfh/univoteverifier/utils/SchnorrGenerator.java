@@ -19,7 +19,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * This class generates a Schnorr's signature
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class SchnorrGenerator {
 

@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 /**
  * This class test the behavior of a UniversalVerification.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class UniversalVerificationTester {
 
@@ -41,7 +41,7 @@ public class UniversalVerificationTester {
 
 	public UniversalVerificationTester() throws FileNotFoundException, ElectionBoardServiceFault {
 		ebp = new ElectionBoardProxy();
-		v = new UniversalVerification(new Messenger(), eID);
+		v = new UniversalVerification(new Messenger(), "");
 		realList = v.runVerification();
 
 		mockList = new ArrayList<>();
@@ -169,7 +169,6 @@ public class UniversalVerificationTester {
 			v2.setEntityName(mName);
 		}
 
-		//ToDo ask if it has to be done
 		mockList.add(new VerificationResult(VerificationType.MT_ENC_VOTES_SET, true, ebp.getElectionID(), RunnerName.MIXING_TALLING, ImplementerType.PARAMETER, EntityType.EA));
 
 		mockList.add(new VerificationResult(VerificationType.MT_ENC_VOTES_ID_SIGN, true, ebp.getElectionID(), RunnerName.MIXING_TALLING, ImplementerType.RSA, EntityType.EA));

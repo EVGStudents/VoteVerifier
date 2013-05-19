@@ -12,7 +12,7 @@ package ch.bfh.univoteverifier.common;
 /**
  * This class represent the failure codes for a VerificationEvent.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public enum FailureCode {
 

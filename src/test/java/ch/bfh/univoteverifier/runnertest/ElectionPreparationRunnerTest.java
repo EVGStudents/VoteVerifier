@@ -30,7 +30,7 @@ import static org.junit.Assert.*;
 /**
  *  * Test the runner of the election preparation.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ElectionPreparationRunnerTest {
 
@@ -55,7 +55,8 @@ public class ElectionPreparationRunnerTest {
 	/**
 	 * Build the mock list.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	private void buildMockList() throws ElectionBoardServiceFault {
 		mockList.add(new VerificationResult(VerificationType.EL_PREP_C_AND_R_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EA));

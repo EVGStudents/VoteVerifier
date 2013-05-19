@@ -30,7 +30,7 @@ import static org.junit.Assert.*;
 /**
  * Test the runner of mixer and tallier.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class MixerTallierRunnerTest {
 
@@ -54,7 +54,8 @@ public class MixerTallierRunnerTest {
 	/**
 	 * Build the mock list.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	private void buildMockList() throws ElectionBoardServiceFault {
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
@@ -66,7 +67,6 @@ public class MixerTallierRunnerTest {
 			v2.setEntityName(mName);
 		}
 
-		//ToDo ask if it has to be done
 		mockList.add(new VerificationResult(VerificationType.MT_ENC_VOTES_SET, true, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.EA));
 
 		mockList.add(new VerificationResult(VerificationType.MT_ENC_VOTES_ID_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EA));

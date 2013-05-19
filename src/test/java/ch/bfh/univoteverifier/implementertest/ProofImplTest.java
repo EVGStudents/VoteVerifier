@@ -5,7 +5,6 @@
 package ch.bfh.univoteverifier.implementertest;
 
 import ch.bfh.univote.election.ElectionBoardServiceFault;
-import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.QRCode;
@@ -16,7 +15,6 @@ import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -25,7 +23,7 @@ import static org.junit.Assert.*;
  * This class test the behavior of the ProofImplementer.
  *
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ProofImplTest {
 
@@ -129,9 +127,37 @@ public class ProofImplTest {
 	 */
 	@Test
 	public void testDecryptedVotes() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		for (String mName : ebp.getElectionDefinition().getMixerId()) {
-			VerificationResult vr = pi.vrfDecryptedVotesByProof(mName);
+		for (String tName : ebp.getElectionDefinition().getTallierId()) {
+			VerificationResult vr = pi.vrfDecryptedVotesByProof(tName);
 			assertTrue(vr.getResult());
+		}
+	}
+
+	/**
+	 * Test the mixed verification keys by a given mixer.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testMixedVerificationKeysBy() throws ElectionBoardServiceFault {
+		for (String mName : ebp.getElectionDefinition().getMixerId()) {
+			VerificationResult v = pi.vrfVerificationKeysMixedByProof(mName);
+			assertTrue(v.getResult());
+		}
+	}
+
+	/**
+	 * Test the result of vrfEncryptedVotesByProof().
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testEncryptedVotesBy() throws ElectionBoardServiceFault {
+		for (String mName : ebp.getElectionDefinition().getMixerId()) {
+			VerificationResult v = pi.vrfEncryptedVotesByProof(mName);
+			assertTrue(v.getResult());
 		}
 	}
 }

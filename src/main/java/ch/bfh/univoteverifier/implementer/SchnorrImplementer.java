@@ -30,7 +30,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * This class contains all the methods that need a Schnorr verification.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class SchnorrImplementer extends Implementer {
 
@@ -53,11 +53,12 @@ public class SchnorrImplementer extends Implementer {
 	 * computed.
 	 *
 	 *
-	 * @param publicKey the public key we must use to verify the signature.
-	 * @param m the message to be verified.
+	 * @param verificationKey the public key we must use to verify the
+	 * signature.
+	 * @param messagem the message to be verified.
 	 * @param a the first value of a valid Schnorr signature.
 	 * @param b the second value of a valid Schnorr signature.
-	 * @paragm gen the chosed generator.
+	 * @paragm gen the chose generator.
 	 * @return true if the verification succeed, false otherwise
 	 * @throws NoSuchAlgorithmException if the hash function used in this
 	 * method does not find the algorithm.
@@ -72,7 +73,9 @@ public class SchnorrImplementer extends Implementer {
 		//concatenate clear text with r: (m|r)
 		sc.pushLeftDelim();
 		sc.pushObjectDelimiter(message, StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(r, StringConcatenator.RIGHT_DELIMITER);
+		sc.pushObject(r);
+		sc.pushRightDelim();
+
 		String concat = sc.pullAll();
 
 		//hashResult = sha-256(concat) mod q => this must be equal to a
@@ -121,12 +124,11 @@ public class SchnorrImplementer extends Implementer {
 	 *
 	 * @param b the Ballot we want to verify the signature.
 	 * @param er the ElectionReceipt that contains the necessary data.
-	 * @param useElectionGenerator tells if we want to use the election
 	 * generator instead of the normal generator g from the config file
 	 * @return a VerificationResult.
 	 */
-	public VerificationResult vrfBallotSignature(Ballot b, ElectionReceipt er, boolean useElectionGenerator) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		BigInteger encFirstValue = null, encSecondValue = null, proofCommitment = null, proofResponse = null, schnorrFirstValue = null, schnorrSecondValue = null, verificationKey = null, gen;
+	public VerificationResult vrfBallotSignature(Ballot b, ElectionReceipt er) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+		BigInteger encFirstValue = null, encSecondValue = null, proofCommitment = null, proofResponse = null, schnorrFirstValue = null, schnorrSecondValue = null, verificationKey = null;
 
 		//get the different values for the object that is not null.
 		if (b != null) {
@@ -149,46 +151,31 @@ public class SchnorrImplementer extends Implementer {
 
 		//concatenate to ( id | (firstValue|secondValue) | ((t)|(s)) )
 		sc.pushLeftDelim();
-
 		//election ID
 		sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
-
 		//encrypted vote
 		sc.pushLeftDelim();
 		sc.pushObjectDelimiter(encFirstValue, StringConcatenator.INNER_DELIMITER);
 		sc.pushObject(encSecondValue);
 		sc.pushRightDelim();
-
 		sc.pushInnerDelim();
-
 		//proof
 		sc.pushLeftDelim();
-
 		sc.pushLeftDelim();
 		sc.pushObject(proofCommitment);
 		sc.pushRightDelim();
-
 		sc.pushInnerDelim();
-
 		sc.pushLeftDelim();
 		sc.pushObject(proofResponse);
 		sc.pushRightDelim();
-
 		sc.pushRightDelim();
-
+		//right parenthesis
 		sc.pushRightDelim();
 
 		String res = sc.pullAll();
 
-		if (useElectionGenerator) {
-			gen = ebp.getElectionData().getElectionGenerator();
-		} else {
-			gen = g;
-		}
-
-
-		//verify the signature
-		boolean result = vrfSchnorrSign(verificationKey, res, schnorrFirstValue, schnorrSecondValue, gen);
+		//verify the signature - ToDo test with value from a real ballot and not from a QR-Code.
+		boolean result = vrfSchnorrSign(verificationKey, res, schnorrFirstValue, schnorrSecondValue, ebp.getElectionData().getElectionGenerator());
 
 		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_SCHNORR_SIGN, result, ebp.getElectionID(), rn, it, EntityType.VOTERS);
 
