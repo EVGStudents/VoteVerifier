@@ -141,6 +141,7 @@ public class ResultTableModel extends AbstractTableModel {
      */
     public void addResultSet(ResultSet r) {
         data.add(r);
+
         int row = data.size();
         fireTableDataChanged();
     }
