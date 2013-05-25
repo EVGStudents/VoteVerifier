@@ -38,7 +38,7 @@ public class SystemSetupRunnerTest {
 	private final String eID;
 	private final RunnerName rn;
 
-	public SystemSetupRunnerTest() throws FileNotFoundException {
+	public SystemSetupRunnerTest() throws FileNotFoundException, InterruptedException {
 		eID = "vsbfh-2013";
 		ebp = new ElectionBoardProxy();
 		ssr = new SystemSetupRunner(ebp, new Messenger());
@@ -92,7 +92,7 @@ public class SystemSetupRunnerTest {
 			assertEquals(realList.get(i).getVerificationType(), mockList.get(i).getVerificationType());
 			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
 			assertTrue(realList.get(i).isImplemented());
-			assertNull(realList.get(i).getFailureCode());
+			assertNull(realList.get(i).getReport());
 		}
 	}
 }

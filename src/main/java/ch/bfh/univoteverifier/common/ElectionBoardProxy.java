@@ -24,6 +24,7 @@ import ch.bfh.univote.common.ElectoralRoll;
 import ch.bfh.univote.common.EncryptionKey;
 import ch.bfh.univote.common.EncryptionKeyShare;
 import ch.bfh.univote.common.EncryptionParameters;
+import ch.bfh.univote.common.KnownElectionIds;
 import ch.bfh.univote.common.MixedEncryptedVotes;
 import ch.bfh.univote.common.MixedVerificationKey;
 import ch.bfh.univote.common.MixedVerificationKeys;
@@ -42,11 +43,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.security.auth.x500.X500Principal;
 
 /**
  * This class is used as a proxy for the ElectionBoard of UniVote. It is used as
@@ -91,6 +95,8 @@ public class ElectionBoardProxy {
 	private VoterCertificates voterCerts;
 	private Map<String, X509Certificate> talliersCerts;
 	private Map<String, X509Certificate> mixersCerts;
+	private KnownElectionIds electionIds;
+	private List<X509Certificate> revokedCertificates;
 
 	/**
 	 * Construct an ElectionBoardProxy with a given election id.
@@ -134,6 +140,9 @@ public class ElectionBoardProxy {
 	 * board.
 	 *
 	 * USE FOR TEST ONLY!
+	 *
+	 * @throws FileNotFoundException if the files where the election data
+	 * are stored cannot be found.
 	 */
 	public ElectionBoardProxy() throws FileNotFoundException {
 		//this eID must correspond to the suffix in the name of the XML file
@@ -153,6 +162,10 @@ public class ElectionBoardProxy {
 	/**
 	 * Read the relative data for the generated web service artifacts from
 	 * XML files instead of from the network.
+	 *
+	 * @throws FileNotFoundException if the files where the election data
+	 * are stored cannot be found.
+	 *
 	 */
 	private void readElectionDataFromXML() throws FileNotFoundException {
 		XStream xstream = new XStream();
@@ -228,7 +241,7 @@ public class ElectionBoardProxy {
 	/**
 	 * Get the blinded generator of a given mixerID.
 	 *
-	 * @param mixerID.
+	 * @param mixerID the name of the mixer.
 	 * @return the blinded generator of mixerID.
 	 * @throws ElectionBoardServiceFault if there is a problem with the
 	 * public board such as a network connection problem or a wrong
@@ -723,6 +736,87 @@ public class ElectionBoardProxy {
 		}
 
 		return mixersCerts;
+	}
+
+	/**
+	 * Get all the known election Ids.
+	 *
+	 * @return the known election Ids.
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
+	 */
+	public KnownElectionIds getElectionsID() throws ElectionBoardServiceFault {
+		if (electionIds == null) {
+			electionIds = eb.getKnownElectionIds();
+		}
+
+		return electionIds;
+	}
+
+	/**
+	 * Get the revoked certificates.
+	 *
+	 * @return the list o revoked certificates
+	 * @throws ElectionBoardServiceFault if there is a problem with the
+	 * public board such as a network connection problem or a wrong
+	 * parameter.
+	 * @throws CertificateException if the specified instance for the
+	 * certificate factory cannot be found.
+	 */
+	public List<X509Certificate> getRevokedCertificates() throws ElectionBoardServiceFault, CertificateException {
+		if (revokedCertificates == null) {
+			List<X509Certificate> allCert = new ArrayList<>();
+			revokedCertificates = new ArrayList<>();
+			Map<X500Principal, List<X509Certificate>> certsPerVoter = new HashMap<>();
+
+			//add voter certs
+			for (Certificate c : getVoterCerts().getCertificate()) {
+				allCert.add(CryptoFunc.getX509Certificate(c.getValue(), false));
+			}
+
+			//add lately registered voters certs - ToDo decommetn when it will be available
+//			for (VoterCertificate c : getLatelyRegisteredVoterCerts()) {
+//				allCert.add(CryptoFunc.getX509Certificate(c.getCertificate().getValue(), false));
+//			}
+
+			//now take all the certificates of one voter and build a map "subject => certificate list"
+			for (X509Certificate c : allCert) {
+				X500Principal certSubject = c.getSubjectX500Principal();
+
+				if (certsPerVoter.get(certSubject) == null) {
+					certsPerVoter.put(certSubject, new ArrayList());
+				}
+
+				//get the actual list and add the certificate for this subject
+				List<X509Certificate> certList = certsPerVoter.get(certSubject);
+				certList.add(c);
+				certsPerVoter.put(certSubject, certList);
+			}
+
+			//remove the most recent
+			for (Entry<X500Principal, List<X509Certificate>> e : certsPerVoter.entrySet()) {
+				List<X509Certificate> subjectCerts = e.getValue();
+				X509Certificate moreRecent = subjectCerts.get(0);
+
+				for (int i = 1; i < subjectCerts.size(); i++) {
+					if (subjectCerts.get(i).getNotBefore().after(moreRecent.getNotBefore())) {
+						moreRecent = subjectCerts.get(i);
+					}
+				}
+
+				//delete the most recent
+				subjectCerts.remove(moreRecent);
+				certsPerVoter.put(e.getKey(), subjectCerts);
+			}
+
+			//finally build the list of revoked certs
+			for (Entry<X500Principal, List<X509Certificate>> e : certsPerVoter.entrySet()) {
+				revokedCertificates.addAll(e.getValue());
+			}
+		}
+
+		return revokedCertificates;
 	}
 
 	/**

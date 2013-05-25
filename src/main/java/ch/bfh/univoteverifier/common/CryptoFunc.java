@@ -9,6 +9,7 @@
  */
 package ch.bfh.univoteverifier.common;
 
+import ch.bfh.univote.common.Choice;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -18,6 +19,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 import javax.xml.bind.DatatypeConverter;
 
@@ -103,5 +106,9 @@ public class CryptoFunc {
 		X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(is);
 
 		return cert;
+	}
+
+	public List<Entry<Choice, Integer>> mergeSortElectionResult(List<Entry<Choice, Integer>> notSortedList) {
+		return null;
 	}
 }

@@ -53,5 +53,5 @@ public abstract class Runner {
 	 *
 	 * @return the list of results.
 	 */
-	public abstract List<VerificationResult> run();
+	public abstract List<VerificationResult> run() throws InterruptedException;
 }

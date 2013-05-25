@@ -18,6 +18,7 @@ import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.ImplementerType;
+import ch.bfh.univoteverifier.common.Report;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -219,7 +220,7 @@ public class CertificatesImplementer extends Implementer {
 		vr.setEntityName(tallierName);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_CERTIFICATE);
+			vr.setReport(new Report(FailureCode.INVALID_CERTIFICATE));
 		}
 
 
@@ -260,7 +261,7 @@ public class CertificatesImplementer extends Implementer {
 		vr.setEntityName(mixerName);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_CERTIFICATE);
+			vr.setReport(new Report(FailureCode.INVALID_CERTIFICATE));
 		}
 
 		return vr;
@@ -296,8 +297,6 @@ public class CertificatesImplementer extends Implementer {
 				r = vrfCert(certPath);
 
 			} catch (CertPathValidatorException ex) {
-				//ToDo - remove
-				Logger.getLogger(this.getClass().getName()).log(Level.INFO, ex.getMessage());
 				//we now that the certificate path verification has failed so the result is false
 				r = false;
 				break;
@@ -308,7 +307,7 @@ public class CertificatesImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_CERTIFICATE);
+			vr.setReport(new Report(FailureCode.INVALID_CERTIFICATE));
 		}
 
 		return vr;
@@ -342,8 +341,6 @@ public class CertificatesImplementer extends Implementer {
 				certPath.add(ebp.getCACert());
 				r = vrfCert(certPath);
 			} catch (CertPathValidatorException ex) {
-				//ToDo - remove
-				Logger.getLogger(this.getClass().getName()).log(Level.INFO, ex.getMessage());
 				//we now that the certificate path verification has failed so the result is false
 				r = false;
 				break;
@@ -354,7 +351,7 @@ public class CertificatesImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_CERTIFICATE);
+			vr.setReport(new Report(FailureCode.INVALID_CERTIFICATE));
 		}
 
 		return vr;

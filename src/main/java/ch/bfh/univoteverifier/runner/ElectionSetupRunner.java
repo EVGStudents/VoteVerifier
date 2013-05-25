@@ -58,7 +58,7 @@ public class ElectionSetupRunner extends Runner {
 	}
 
 	@Override
-	public List<VerificationResult> run() {
+	public List<VerificationResult> run() throws InterruptedException {
 
 		try {
 			//EA certificate verification
@@ -223,7 +223,7 @@ public class ElectionSetupRunner extends Runner {
 			Thread.sleep(1000);
 
 
-		} catch (InterruptedException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | InvalidNameException | UnsupportedEncodingException ex) {
+		} catch (ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | InvalidNameException | UnsupportedEncodingException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 

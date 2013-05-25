@@ -25,6 +25,7 @@ import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.ImplementerType;
+import ch.bfh.univoteverifier.common.Report;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -70,7 +71,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult ve = new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			ve.setFailureCode(FailureCode.FALSE_PARAMETERS_LENGTH);
+			ve.setReport(new Report(FailureCode.FALSE_PARAMETERS_LENGTH));
 		}
 
 		return ve;
@@ -90,7 +91,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult ve = new VerificationResult(VerificationType.EL_SETUP_ELGAMAL_PARAM_LEN, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			ve.setFailureCode(FailureCode.FALSE_PARAMETERS_LENGTH);
+			ve.setReport(new Report(FailureCode.FALSE_PARAMETERS_LENGTH));
 		}
 
 		return ve;
@@ -109,7 +110,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			ve.setFailureCode(FailureCode.COMPOSITE_PRIME_NUMBER);
+			ve.setReport(new Report(FailureCode.COMPOSITE_PRIME_NUMBER));
 		}
 
 		return ve;
@@ -131,7 +132,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			ve.setFailureCode(FailureCode.NOT_SAFE_PRIME);
+			ve.setReport(new Report(FailureCode.NOT_SAFE_PRIME));
 		}
 
 		return ve;
@@ -151,7 +152,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			ve.setFailureCode(FailureCode.NOT_A_GENERATOR);
+			ve.setReport(new Report(FailureCode.NOT_A_GENERATOR));
 		}
 
 		return ve;
@@ -188,7 +189,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.ENC_KEY_SHARE_NOT_EQUALS);
+			vr.setReport(new Report(FailureCode.ENC_KEY_SHARE_NOT_EQUALS));
 		}
 
 		return vr;
@@ -219,7 +220,7 @@ public class ParametersImplementer extends Implementer {
 
 		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_ANON_GEN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 		if (!r) {
-			vr.setFailureCode(FailureCode.ELECTION_GEN_NOT_EQUALS);
+			vr.setReport(new Report(FailureCode.ELECTION_GEN_NOT_EQUALS));
 		}
 
 		return vr;
@@ -249,7 +250,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.SET_VERIFICATION_KEYS_NOT_EQUALS);
+			vr.setReport(new Report(FailureCode.SET_VERIFICATION_KEYS_NOT_EQUALS));
 		}
 
 		return vr;
@@ -272,13 +273,13 @@ public class ParametersImplementer extends Implementer {
 		List<String> mixerID = ebp.getElectionDefinition().getMixerId();
 		List<MixedVerificationKey> lastMixerKeys = ebp.getLatelyMixedVerificationKeysBy(mixerID.get(mixerID.size() - 1));
 
-		//check that vk'_i = vk_i,m
+		//check that vk'_i = vk_i,m => we compare the two list rather than every signle key
 		boolean r = mk.equals(lastMixerKeys);
 
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.NEW_SET_VERIFICATION_KEYS_NOT_EQUALS);
+			vr.setReport(new Report(FailureCode.NEW_SET_VERIFICATION_KEYS_NOT_EQUALS));
 		}
 
 		return vr;
@@ -307,14 +308,14 @@ public class ParametersImplementer extends Implementer {
 
 		}
 
-		//check that no other recent ballots contain this vk - ToDo
+		//check that no other recent ballots contain this vk -  Not yet available
 
-		//if vk is in the late renewal key set, check that no other recent ballots contain this v in the late renewal key set - ToDo
+		//if vk is in the late renewal key set, check that no other recent ballots contain this v in the late renewal key set -  Not yet availble
 
 		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_VERIFICATION_KEY, result, ebp.getElectionID(), rn, it, EntityType.VOTERS);
 
 		if (!result) {
-			vr.setFailureCode(FailureCode.INVALID_BALLOT_VK);
+			vr.setReport(new Report(FailureCode.INVALID_BALLOT_VK));
 		}
 
 		return vr;
@@ -343,7 +344,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.MT_ENC_VOTES_SET, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.ENCRYPTED_VOTES_NOT_EQUALS);
+			vr.setReport(new Report(FailureCode.ENCRYPTED_VOTES_NOT_EQUALS));
 		}
 
 		return vr;
@@ -361,7 +362,6 @@ public class ParametersImplementer extends Implementer {
 	public VerificationResult vrfVotes() throws ElectionBoardServiceFault {
 		Ballots ballots = ebp.getBallots();
 		BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
-
 
 		for (int i = 0; i < ballots.getBallot().size(); i++) {
 			Ballot b = ballots.getBallot().get(i);
@@ -418,7 +418,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_IN_BALLOTS, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.BALLOT_NOT_IN_SET);
+			vr.setReport(new Report(FailureCode.BALLOT_NOT_IN_SET));
 		}
 
 		return vr;

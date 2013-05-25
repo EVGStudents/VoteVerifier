@@ -56,7 +56,7 @@ public class ElectionPreparationRunner extends Runner {
 	}
 
 	@Override
-	public List<VerificationResult> run() {
+	public List<VerificationResult> run() throws InterruptedException {
 		try {
 			//RSA signature of election options
 			VerificationResult v1 = rsaImpl.vrfElectionOptionsSign();
@@ -114,7 +114,7 @@ public class ElectionPreparationRunner extends Runner {
 			partialResults.add(v9);
 			Thread.sleep(1000);
 
-		} catch (InterruptedException | InvalidAlgorithmParameterException | CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (InvalidAlgorithmParameterException | CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 

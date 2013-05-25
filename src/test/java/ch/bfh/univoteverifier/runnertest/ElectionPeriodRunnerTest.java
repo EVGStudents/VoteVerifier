@@ -43,7 +43,7 @@ public class ElectionPeriodRunnerTest {
 	private final String eID;
 	private final RunnerName rn;
 
-	public ElectionPeriodRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException {
+	public ElectionPeriodRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException, InterruptedException {
 		eID = "vsbfh-2013";
 		ebp = new ElectionBoardProxy();
 		epr = new ElectionPeriodRunner(ebp, new Messenger());
@@ -114,7 +114,7 @@ public class ElectionPeriodRunnerTest {
 			assertEquals(realList.get(i).getVerificationType(), mockList.get(i).getVerificationType());
 			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
 			assertTrue(realList.get(i).isImplemented());
-			assertNull(realList.get(i).getFailureCode());
+			assertNull(realList.get(i).getReport());
 		}
 	}
 }

@@ -42,7 +42,7 @@ public class LocalBoardProxyDownloader {
 	private final XStream xstream;
 	private final ElectionBoardProxy ebp;
 	private final String DES_PATH = "src/test/java/ch/bfh/univoteverifier/testresources";
-	private final String ELECTION_ID = "vsbfh-2013";
+	private final String ELECTION_ID = "sub-2013";
 	private final List<String> mixerIdentifier;
 	private final List<String> tallierIdentifier;
 	private final String EXT = ".xml";

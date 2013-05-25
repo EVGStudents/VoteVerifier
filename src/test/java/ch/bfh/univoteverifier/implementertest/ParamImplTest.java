@@ -60,7 +60,7 @@ public class ParamImplTest {
 	public void testParamNotLen() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfSchnorrParamLen(p, q, g);
 		assertFalse(v.getResult());
-		assertEquals(v.getFailureCode(), FailureCode.FALSE_PARAMETERS_LENGTH);
+		assertEquals(v.getReport().getFailureCode(), FailureCode.FALSE_PARAMETERS_LENGTH);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class ParamImplTest {
 	public void testPisNotSafePrime() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfSafePrime(p, q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
 		assertFalse(v.getResult());
-		assertEquals(v.getFailureCode(), FailureCode.NOT_SAFE_PRIME);
+		assertEquals(v.getReport().getFailureCode(), FailureCode.NOT_SAFE_PRIME);
 
 	}
 
@@ -81,7 +81,7 @@ public class ParamImplTest {
 	public void testPisNotPrime() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfPrime(p, VerificationType.SETUP_SCHNORR_P);
 		assertFalse(v.getResult());
-		assertEquals(v.getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
+		assertEquals(v.getReport().getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class ParamImplTest {
 	public void testQisNotPrime() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfPrime(q, VerificationType.SETUP_SCHNORR_Q);
 		assertFalse(v.getResult());
-		assertEquals(v.getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
+		assertEquals(v.getReport().getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class ParamImplTest {
 	public void testGisNotGenerator() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfGenerator(p, q, g, VerificationType.SETUP_SCHNORR_G);
 		assertFalse(v.getResult());
-		assertEquals(v.getFailureCode(), FailureCode.NOT_A_GENERATOR);
+		assertEquals(v.getReport().getFailureCode(), FailureCode.NOT_A_GENERATOR);
 	}
 
 	/**

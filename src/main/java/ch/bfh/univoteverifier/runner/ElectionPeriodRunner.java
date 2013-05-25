@@ -13,8 +13,10 @@ import ch.bfh.univote.common.Ballot;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
+import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.Report;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
@@ -63,7 +65,7 @@ public class ElectionPeriodRunner extends Runner {
 	}
 
 	@Override
-	public List<VerificationResult> run() {
+	public List<VerificationResult> run() throws InterruptedException {
 		try {
 			//lately registered voters certificate
 			VerificationResult v1 = certImpl.vrfLatelyRegisteredVotersCertificate();
@@ -108,6 +110,7 @@ public class ElectionPeriodRunner extends Runner {
 
 			//Ballots verifications
 			boolean result = true;
+
 			for (Ballot b : ebp.getBallots().getBallot()) {
 				boolean vkVerification = prmImpl.vrfBallotVerificationKey(b.getVerificationKey()).getResult();
 
@@ -115,7 +118,7 @@ public class ElectionPeriodRunner extends Runner {
 				boolean signatureVerification = schnImpl.vrfBallotSignature(b, null).getResult();
 				boolean proofVerification = proofImpl.vrfBallotProof(b, null).getResult();
 
-				//if one of these checks fail, break and set the verification result as failed
+				//if one of these checks fail, break andcreate the verification result
 				if (!(vkVerification && signatureVerification && proofVerification)) {
 					result = false;
 					break;
@@ -123,9 +126,14 @@ public class ElectionPeriodRunner extends Runner {
 			}
 
 			VerificationResult v7 = new VerificationResult(VerificationType.EL_PERIOD_BALLOT, result, ebp.getElectionID(), runnerName, ImplementerType.PARAMETER, EntityType.VOTERS);
+
+			if (!result) {
+				v7.setReport(new Report(FailureCode.INVALID_BALLOT));
+			}
 			msgr.sendVrfMsg(v7);
 			partialResults.add(v7);
 			Thread.sleep(1000);
+
 
 			//signature over ballots set
 			VerificationResult v8 = rsaImpl.vrfBallotsSetSign();
@@ -133,7 +141,7 @@ public class ElectionPeriodRunner extends Runner {
 			partialResults.add(v8);
 			Thread.sleep(1000);
 
-		} catch (InvalidAlgorithmParameterException | CertificateException | InterruptedException | UnsupportedEncodingException | ElectionBoardServiceFault | NoSuchAlgorithmException ex) {
+		} catch (InvalidAlgorithmParameterException | CertificateException | UnsupportedEncodingException | ElectionBoardServiceFault | NoSuchAlgorithmException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 

@@ -69,7 +69,7 @@ public class IndividualRunner extends Runner {
 	}
 
 	@Override
-	public List<VerificationResult> run() {
+	public List<VerificationResult> run() throws InterruptedException {
 		try {
 			//Em certificate
 			VerificationResult v1 = certImpl.vrfEMCertificate();
@@ -101,7 +101,7 @@ public class IndividualRunner extends Runner {
 			partialResults.add(v5);
 			Thread.sleep(1000);
 
-		} catch (UnsupportedEncodingException | InterruptedException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
+		} catch (UnsupportedEncodingException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 

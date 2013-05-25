@@ -25,6 +25,7 @@ import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.ImplementerType;
+import ch.bfh.univoteverifier.common.Report;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import ch.bfh.univoteverifier.common.VerificationType;
@@ -80,7 +81,6 @@ public class ProofImplementer extends Implementer {
 		//if we want the negative s, negate it
 		if (vExponentSign) {
 			s = s.negate();
-			System.out.println("NEGATION: " + s);
 		}
 
 		//v = param^s mod prime
@@ -169,7 +169,7 @@ public class ProofImplementer extends Implementer {
 		vr.setEntityName(tallierName);
 
 		if (!result) {
-			vr.setFailureCode(FailureCode.INVALID_NIZKP);
+			vr.setReport(new Report(FailureCode.INVALID_NIZKP));
 		}
 
 		return vr;
@@ -227,7 +227,7 @@ public class ProofImplementer extends Implementer {
 		vr.setEntityName(mixerName);
 
 		if (!result) {
-			vr.setFailureCode(FailureCode.INVALID_NIZKP);
+			vr.setReport(new Report(FailureCode.INVALID_NIZKP));
 		}
 
 		return vr;
@@ -274,7 +274,7 @@ public class ProofImplementer extends Implementer {
 		vr.setImplemented(false);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.VK_PLAUSIBILITY_CHECK_FAILED);
+			vr.setReport(new Report(FailureCode.VK_PLAUSIBILITY_CHECK_FAILED));
 		}
 
 		return vr;
@@ -298,36 +298,13 @@ public class ProofImplementer extends Implementer {
 		List<MixedVerificationKey> mvk = ebp.getLatelyMixedVerificationKeysBy(mixerName);
 		boolean result = false;
 
-		//for each key in the set - ToDo check how to get the values from the previous mixer
-		for (MixedVerificationKey key : mvk) {
-			Proof proof = key.getProof();
-			List<BigInteger> t = proof.getCommitment();
-			BigInteger s = proof.getResponse().get(0);
+		//this proof is not yet implemented - but the equalityOfDiscreteLog() method should do the  computation for this kind of proof
 
-			//change this when it will be available
-			BigInteger g_k = BigInteger.ONE;
-			BigInteger previous_g_k = BigInteger.ONE;
-			BigInteger previous_key = BigInteger.ONE;
+		//plausibility check instead - check that vk_i belongs to VK (lately mixed verification keys of late registration)
+		List<MixedVerificationKey> allMvk = ebp.getLateyMixedVerificationKeys();
 
-			//concatenate to g_k|vk_i,k|t|mixerName
-			sc.pushObject(g_k);
-			sc.pushInnerDelim();
-			sc.pushObject(key);
-			sc.pushInnerDelim();
-			sc.pushList(t, true);
-			sc.pushInnerDelim();
-			sc.pushObject(mixerName);
-
-			String res = sc.pullAll();
-
-			BigInteger c = CryptoFunc.sha256(res).mod(Config.q);
-
-			result = equalityOfDiscreteLog(proof, c, previous_g_k, previous_key, g_k, key.getKey(), Config.p);
-
-			//if one does not succeed, break.
-			if (!result) {
-				break;
-			}
+		if (mvk.size() == allMvk.size()) {
+			result = true;
 		}
 
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF, result, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
@@ -335,7 +312,7 @@ public class ProofImplementer extends Implementer {
 		vr.setImplemented(false);
 
 		if (!result) {
-			vr.setFailureCode(FailureCode.INVALID_NIZKP);
+			vr.setReport(new Report(FailureCode.INVALID_NIZKP));
 		}
 
 		return vr;
@@ -383,7 +360,7 @@ public class ProofImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_PROOF, result, ebp.getElectionID(), rn, it, EntityType.VOTERS);
 
 		if (!result) {
-			vr.setFailureCode(FailureCode.INVALID_NIZKP);
+			vr.setReport(new Report(FailureCode.INVALID_NIZKP));
 		}
 
 		return vr;
@@ -441,7 +418,7 @@ public class ProofImplementer extends Implementer {
 		vr.setEntityName(mixerName);
 
 		if (!result) {
-			vr.setFailureCode(FailureCode.ENCRYPTED_VOTES_PLAUSIBILITY_CHECK_FAILED);
+			vr.setReport(new Report(FailureCode.ENCRYPTED_VOTES_PLAUSIBILITY_CHECK_FAILED));
 		}
 
 		return vr;
@@ -506,7 +483,7 @@ public class ProofImplementer extends Implementer {
 
 			//if the result is false, break
 			if (!result) {
-				System.out.println("BREAK IN THE LOOP");
+				Logger.getLogger(this.getClass().getName()).log(Level.INFO, "BREAK IN THE LOOP");
 				break;
 			}
 		}
@@ -515,7 +492,7 @@ public class ProofImplementer extends Implementer {
 		vr.setEntityName(tallierName);
 
 		if (!result) {
-			vr.setFailureCode(FailureCode.INVALID_NIZKP);
+			vr.setReport(new Report(FailureCode.INVALID_NIZKP));
 		}
 
 		return vr;

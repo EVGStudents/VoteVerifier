@@ -18,6 +18,7 @@ import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.ImplementerType;
+import ch.bfh.univoteverifier.common.Report;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import ch.bfh.univoteverifier.common.VerificationType;
@@ -84,6 +85,7 @@ public class SchnorrImplementer extends Implementer {
 		System.out.println("VK: " + verificationKey);
 		System.out.println("Message: " + message);
 		System.out.println("a: " + a);
+		System.out.println("Hashresult: " + hashResult);
 		System.out.println("bK: " + b);
 		System.out.println("gen: " + gen);
 
@@ -140,13 +142,13 @@ public class SchnorrImplementer extends Implementer {
 			schnorrSecondValue = b.getSignature().getSecondValue();
 			verificationKey = b.getVerificationKey();
 		} else if (er != null) {
-			encFirstValue = er.getEncValueA();
-			encSecondValue = er.getEncValueB();
-			proofCommitment = er.getProofCommitment();
-			proofResponse = er.getProofResponse();
-			schnorrFirstValue = er.getSchnorrValueA();
-			schnorrSecondValue = er.getSchnorrValueB();
-			verificationKey = er.getVerificationKey();
+			encFirstValue = new BigInteger(1, er.getEncValueA().toByteArray());
+			encSecondValue = new BigInteger(1, er.getEncValueB().toByteArray());
+			proofCommitment = new BigInteger(1, er.getProofCommitment().toByteArray());
+			proofResponse = new BigInteger(1, er.getProofResponse().toByteArray());
+			schnorrFirstValue = new BigInteger(1, er.getSchnorrValueA().toByteArray());
+			schnorrSecondValue = new BigInteger(1, er.getSchnorrValueB().toByteArray());
+			verificationKey = new BigInteger(1, er.getVerificationKey().toByteArray());
 		}
 
 		//concatenate to ( id | (firstValue|secondValue) | ((t)|(s)) )
@@ -180,7 +182,7 @@ public class SchnorrImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_SCHNORR_SIGN, result, ebp.getElectionID(), rn, it, EntityType.VOTERS);
 
 		if (!result) {
-			vr.setFailureCode(FailureCode.INVALID_SCHNORR_SIGN);
+			vr.setReport(new Report(FailureCode.INVALID_SCHNORR_SIGN));
 		}
 
 		return vr;

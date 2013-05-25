@@ -13,7 +13,6 @@ package ch.bfh.univoteverifier.common;
  * This enum represent the type of entities. Used to have a view by "entities
  * type".
  *
- *
  * @author Scalzi Giuseppe
  */
 public enum EntityType {

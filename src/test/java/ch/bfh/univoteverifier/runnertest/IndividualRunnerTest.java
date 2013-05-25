@@ -44,7 +44,7 @@ public class IndividualRunnerTest {
 	private final String eID;
 	private final RunnerName rn;
 
-	public IndividualRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException {
+	public IndividualRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException, InterruptedException {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
@@ -100,7 +100,7 @@ public class IndividualRunnerTest {
 			assertEquals(realList.get(i).getVerificationType(), mockList.get(i).getVerificationType());
 			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
 			assertTrue(realList.get(i).isImplemented());
-			assertNull(realList.get(i).getFailureCode());
+			assertNull(realList.get(i).getReport());
 		}
 	}
 }

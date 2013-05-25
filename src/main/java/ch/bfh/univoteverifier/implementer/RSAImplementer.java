@@ -42,6 +42,7 @@ import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.ImplementerType;
+import ch.bfh.univoteverifier.common.Report;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import ch.bfh.univoteverifier.common.VerificationType;
@@ -188,7 +189,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (!r) {
-			v.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return v;
@@ -234,7 +235,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_CERT_M_CERT_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			v.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return v;
@@ -277,7 +278,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_ELGAMAL_PARAMS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			v.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return v;
@@ -329,7 +330,7 @@ public class RSAImplementer extends Implementer {
 		vr.setEntityName(tallierName);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -367,7 +368,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -418,7 +419,7 @@ public class RSAImplementer extends Implementer {
 		vr.setEntityName(mixerName);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -456,7 +457,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_ANON_GEN_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -594,7 +595,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_C_AND_R_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -617,7 +618,7 @@ public class RSAImplementer extends Implementer {
 		ElectionData ed = ebp.getElectionData();
 		Signature signature = ed.getSignature();
 
-		//ToDo - change this when it will be available
+		//change this when it will be available
 		String eaIdentifier = ebp.getElectionOptions().getSignature().getSignerId();
 
 		//concatenate to (id|EA|descr|P|Q|G|y|g^|(c1|...|cn)|(r1|...|rn))|timestamp
@@ -743,7 +744,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_EDATA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -784,7 +785,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_ELECTORAL_ROLL_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -853,7 +854,7 @@ public class RSAImplementer extends Implementer {
 		vr.setEntityName(mixerName);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -894,7 +895,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -974,7 +975,7 @@ public class RSAImplementer extends Implementer {
 		vr.setEntityName(mixerName);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -1027,7 +1028,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -1112,7 +1113,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_BALLOT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -1173,7 +1174,7 @@ public class RSAImplementer extends Implementer {
 		vr.setEntityName(mixerName);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -1229,7 +1230,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.MT_ENC_VOTES_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -1290,7 +1291,7 @@ public class RSAImplementer extends Implementer {
 		vr.setEntityName(tallierName);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -1355,7 +1356,7 @@ public class RSAImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;
@@ -1416,7 +1417,7 @@ public class RSAImplementer extends Implementer {
 
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
 		}
 
 		return vr;

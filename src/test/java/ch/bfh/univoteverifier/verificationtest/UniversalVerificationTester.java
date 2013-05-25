@@ -10,6 +10,9 @@
  */
 package ch.bfh.univoteverifier.verificationtest;
 
+import ch.bfh.univote.common.Candidate;
+import ch.bfh.univote.common.Choice;
+import ch.bfh.univote.common.PoliticalList;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
@@ -19,10 +22,16 @@ import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.verification.UniversalVerification;
 import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.common.VerificationType;
+import ch.bfh.univoteverifier.verification.UniversalVerification.ElectionResult;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.FileNotFoundException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -33,10 +42,10 @@ import static org.junit.Assert.*;
  */
 public class UniversalVerificationTester {
 
-	private final Verification v;
+	private final UniversalVerification v;
 	private final List<VerificationResult> mockList;
 	private final List<VerificationResult> realList;
-	private final String eID = "sub-2013";
+	private final String eID = "vsbfh-2013";
 	private final ElectionBoardProxy ebp;
 
 	public UniversalVerificationTester() throws FileNotFoundException, ElectionBoardServiceFault {
@@ -215,5 +224,32 @@ public class UniversalVerificationTester {
 			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
 			assertTrue(realList.get(i).isImplemented());
 		}
+	}
+
+	/**
+	 * Test the result of an election
+	 */
+	@Test
+	public void testGetResults() throws ElectionBoardServiceFault {
+		//build a list of precomputed vote count for each choice ID
+		Map<Integer, Integer> precomputedVotesCount = new LinkedHashMap();
+
+		//pre computed vote count per choice - these comes from the cvs file for the election of BFH
+		int[] voteCount = {44, 105, 109, 88, 93, 87, 99, 12, 105, 9, 67, 80, 29, 91, 134, 84, 60, 137, 129, 122, 126, 135, 89, 130, 15, 87, 82, 31, 113, 113, 108, 115};
+
+		for (int i = 0; i < 32; i++) {
+			precomputedVotesCount.put(i, voteCount[i]);
+		}
+
+		Map<Choice, Integer> er = v.getElectionResults();
+
+		for (Entry<Choice, Integer> e : er.entrySet()) {
+			Choice c = e.getKey();
+			Integer count = e.getValue();
+
+			//check if the choice id is correct
+			assertEquals(count, precomputedVotesCount.get(c.getChoiceId() - 1));
+		}
+
 	}
 }

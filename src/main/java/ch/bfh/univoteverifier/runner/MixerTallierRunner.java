@@ -51,7 +51,7 @@ public class MixerTallierRunner extends Runner {
 	}
 
 	@Override
-	public List<VerificationResult> run() {
+	public List<VerificationResult> run() throws InterruptedException {
 		try {
 			//shuffled encrypted votes by mixer and signature
 			for (String mName : ebp.getElectionDefinition().getMixerId()) {

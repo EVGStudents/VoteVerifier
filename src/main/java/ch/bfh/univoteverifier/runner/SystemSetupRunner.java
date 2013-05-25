@@ -51,7 +51,7 @@ public class SystemSetupRunner extends Runner {
 	}
 
 	@Override
-	public List<VerificationResult> run() {
+	public List<VerificationResult> run() throws InterruptedException {
 		try {
 			//is Schnorr p prime
 			VerificationResult v1 = paramImpl.vrfPrime(Config.p, VerificationType.SETUP_SCHNORR_P);
@@ -94,7 +94,7 @@ public class SystemSetupRunner extends Runner {
 			msgr.sendVrfMsg(v7);
 			partialResults.add(v7);
 
-		} catch (InterruptedException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
+		} catch (ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 

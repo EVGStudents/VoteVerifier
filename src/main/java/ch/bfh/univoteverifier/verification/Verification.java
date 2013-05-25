@@ -83,25 +83,31 @@ public abstract class Verification {
 	public List<VerificationResult> runVerification() {
 
 		//crate the runners
-		createRunners();
+		try {
+			createRunners();
 
-		if (runners.isEmpty()) {
-			LOGGER.log(Level.INFO, "There aren't runners. The verification will not run.");
-		}
-
-		//run the runners  and get the results
-		for (Runner r : runners) {
-			List<VerificationResult> l = r.run();
-
-			//check that a list isn't empty
-			if (l != null) {
-				res.addAll(l);
-			} else {
-				LOGGER.log(Level.INFO, "The runner {0} does not contain any verification.", r.getRunnerName());
+			if (runners.isEmpty()) {
+				LOGGER.log(Level.INFO, "There aren't runners. The verification will not run.");
 			}
-		}
 
-		msgr.sendVerificationFinished(eID);
+			//run the runners  and get the results
+			for (Runner r : runners) {
+				List<VerificationResult> l = r.run();
+
+				//check that a list isn't empty
+				if (l != null) {
+					res.addAll(l);
+				} else {
+					LOGGER.log(Level.INFO, "The runner {0} does not contain any verification.", r.getRunnerName());
+				}
+			}
+
+			msgr.sendVerificationFinished(eID);
+		} catch (InterruptedException ex) {
+			//stop the thread and end verification.
+			Thread.currentThread().interrupt();
+			return null;
+		}
 
 		return Collections.unmodifiableList(res);
 	}
