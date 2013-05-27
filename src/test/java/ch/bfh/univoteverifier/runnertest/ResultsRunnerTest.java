@@ -55,7 +55,7 @@ public class ResultsRunnerTest {
 			Choice c = e.getKey();
 			Integer count = e.getValue();
 
-			//check if the choice id is correct
+			//check if the voute count per choice is correct
 			assertEquals(count, precomputedVotesCount.get(c.getChoiceId() - 1));
 		}
 

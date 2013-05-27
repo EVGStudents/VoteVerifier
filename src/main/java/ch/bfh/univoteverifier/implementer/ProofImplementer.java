@@ -271,10 +271,21 @@ public class ProofImplementer extends Implementer {
 		boolean r = size && valuesInG && differentValues;
 
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		vr.setEntityName(mixerName);
 		vr.setImplemented(false);
 
-		if (!r) {
-			vr.setReport(new Report(FailureCode.VK_PLAUSIBILITY_CHECK_FAILED));
+		if (vr.isImplemented()) {
+			Report rep = null;
+
+			if (r) {
+				rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+			} else if (!r) {
+				rep = new Report(FailureCode.VK_PLAUSIBILITY_CHECK_FAILED);
+			}
+
+			//remove this when the proof will be implemented
+			rep.setAdditionalInformation("The NIZKP is not implemented, so thw following plausibility checks are performed: size of verification key set, each verificaition key belongs to G_q, there aren't duplicate keys in the set.");
+			vr.setReport(rep);
 		}
 
 		return vr;
