@@ -21,7 +21,7 @@ import javax.swing.JComponent;
  */
 public class ToggleResultOrganizationAction implements ActionListener {
 
-    ResultTab rtp;
+    private ResultTab rtp;
 
     public ToggleResultOrganizationAction(ResultTab rtp) {
         this.rtp = rtp;
@@ -30,8 +30,6 @@ public class ToggleResultOrganizationAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String name = ((JComponent) e.getSource()).getName();
-//        rtp.showPanel(name);
-
         if (0 == name.compareTo("btnEntity")) {
             rtp.showPanelEntity();
         }
@@ -40,6 +38,9 @@ public class ToggleResultOrganizationAction implements ActionListener {
         }
         if (0 == name.compareTo("btnType")) {
             rtp.showPanelType();
+        }
+        if (0 == name.compareTo("btnViewResults")) {
+            rtp.showCandidateResults();
         }
     }
 }

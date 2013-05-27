@@ -11,6 +11,7 @@
 package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.gui.GUIconstants;
+import ch.bfh.univoteverifier.gui.MiddlePanel;
 import ch.bfh.univoteverifier.gui.TopPanel;
 import java.awt.event.ActionEvent;
 import java.util.Locale;
@@ -19,26 +20,26 @@ import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
 
 /**
- * An Action Class that manages the action of clicking on the universal verification
- * button.
+ * An Action Class that manages the action of clicking on the universal
+ * verification button.
  *
  * @author prinstin
  */
 public class SelectUniVrfAction extends AbstractAction {
 
-    ResourceBundle rb;
-    TopPanel topPanel;
+    private ResourceBundle rb;
+    private MiddlePanel middlePanel;
 
     /**
      * Create an instance of this Action class.
      *
-     * @param topPanel the top panel of the GUI which is used to access
-     * references to objects there.
+     * @param panel the top panel of the GUI which is used to access references
+     * to objects there.
      */
-    public SelectUniVrfAction(TopPanel topPanel) {
+    public SelectUniVrfAction(MiddlePanel middlePanel) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         this.putValue(NAME, rb.getString("btnUni"));
-        this.topPanel = topPanel;
+        this.middlePanel = middlePanel;
 
     }
 
@@ -51,6 +52,6 @@ public class SelectUniVrfAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        topPanel.uniVrfSelected();
+        middlePanel.uniVrfSelected();
     }
 }

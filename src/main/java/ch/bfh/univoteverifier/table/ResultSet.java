@@ -11,6 +11,7 @@
 package ch.bfh.univoteverifier.table;
 
 import ch.bfh.univoteverifier.common.RunnerName;
+import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,6 +59,15 @@ public class ResultSet {
      */
     public String getTxt() {
         return txt;
+    }
+
+    /**
+     * Get the verification type of this result.
+     *
+     * @return VerificationType of the result.
+     */
+    public VerificationType getVerificationType() {
+        return vr.getVerificationType();
     }
 
     /**

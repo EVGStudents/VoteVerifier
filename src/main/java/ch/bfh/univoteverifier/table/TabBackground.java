@@ -1,6 +1,12 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *
+ *  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+ *   Bern University of Applied Sciences, Engineering and Information Technology,
+ *   Research Institute for Security in the Information Society, E-Voting Group,
+ *   Biel, Switzerland.
+ *
+ *   Project independent UniVoteVerifier.
+ *
  */
 package ch.bfh.univoteverifier.table;
 
@@ -21,7 +27,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
  */
 public class TabBackground extends JPanel {
 
-    JLabel lblTitle;
+    private JLabel lblTitle;
 
     public TabBackground(String title, RemoveTabAction removeTabAction) {
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));

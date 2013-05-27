@@ -11,21 +11,13 @@
 package ch.bfh.univoteverifier.table;
 
 import ch.bfh.univoteverifier.action.RemoveTabAction;
-import ch.bfh.univoteverifier.gui.PanelColorChanger;
 import ch.bfh.univoteverifier.gui.ThreadManager;
 import java.util.logging.Logger;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
  * This class manages the various JTabbedPanes which contain verification
@@ -36,9 +28,10 @@ import javax.swing.plaf.basic.BasicButtonUI;
  */
 public class ResultTabbedPane extends JTabbedPane {
 
-    ArrayList<ResultTab> resultsPanels;
+    private ArrayList<ResultTab> resultsPanels;
     private static final Logger LOGGER = Logger.getLogger(ResultTabbedPane.class.getName());
-    RemoveTabAction removeTabAction;
+    private RemoveTabAction removeTabAction;
+    private JPanel welcomePanel = new JPanel();
 
     /**
      * Create an instance of this class.
@@ -50,7 +43,7 @@ public class ResultTabbedPane extends JTabbedPane {
      * currently being viewed.
      */
     public ResultTabbedPane(ThreadManager tm, ChangeListener cl) {
-        JPanel welcomePanel = new JPanel();
+        welcomePanel = new JPanel();
         welcomePanel.setBackground(Color.WHITE);
         this.addTab("Welcome", welcomePanel);
 
@@ -73,15 +66,13 @@ public class ResultTabbedPane extends JTabbedPane {
             ResultTab rtp = getTableByName(rs.getEID());
             rtp.addData(rs);
             if (rs.getResult() == false) {
-                //make tab flash
+                //if a there was a problem in the verification, change tab text to red.
                 int index = this.indexOfTab(rs.getEID());
                 JPanel tabComponent = (JPanel) this.getTabComponentAt(index);
-                LOGGER.log(Level.INFO, "TAB BACKGROUND COLOR :{0}", tabComponent.getBackground());
-                PanelColorChanger pcc = new PanelColorChanger(tabComponent);
-                pcc.start();
+                tabComponent.setForeground(Color.red);
             }
         } else {
-            CreateNewTab(rs);
+            createNewTab(rs);
         }
 
     }
@@ -91,7 +82,7 @@ public class ResultTabbedPane extends JTabbedPane {
      *
      * @param rs ResultSet contains the data to add.
      */
-    public void CreateNewTab(ResultSet rs) {
+    public void createNewTab(ResultSet rs) {
 
         String title = rs.getEID();
         ResultTab newRTP = new ResultTab(title);

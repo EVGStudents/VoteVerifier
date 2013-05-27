@@ -15,19 +15,22 @@ import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.ProgressBar;
 import java.util.logging.Logger;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
@@ -40,12 +43,15 @@ import javax.swing.plaf.basic.BasicButtonUI;
 public class ResultTab extends JPanel {
 
     private JScrollPane scroll;
-    private JPanel tabHeader;
+    private JPanel tabHeader, returnPanel;
+    private JLabel resultsErrorLabel;
     private String eID;
     private static final Logger LOGGER = Logger.getLogger(ResultTab.class.getName());
     private ResultTablesContainer rpEntity, rpSpec, rpType;
+    private CandidateResultsPanel candidateResultsPanel;
     private ResourceBundle rb;
     private ProgressBar progressBar;
+    private JTextArea errorText;
 
     /**
      * Create an instance of this panel.
@@ -54,7 +60,6 @@ public class ResultTab extends JPanel {
         this.eID = eID;
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         createContentPanel();
-
     }
 
     /**
@@ -69,6 +74,8 @@ public class ResultTab extends JPanel {
         rpSpec = new ResultTablesContainer();
         rpEntity = new ResultTablesContainer();
         rpType = new ResultTablesContainer();
+        candidateResultsPanel = new CandidateResultsPanel();
+        returnPanel = rpSpec;
         scroll = new JScrollPane();
         scroll.getViewport().add(rpSpec);
         scroll.getVerticalScrollBar().setUnitIncrement(16);
@@ -81,12 +88,30 @@ public class ResultTab extends JPanel {
     /**
      * Create the header for the panel with in the tab. It contains a header
      * above the verification results which allows the user to change the
-     * organisation styles, see the progress of the verification and view the
+     * organization styles, see the progress of the verification and view the
      * election results for votes.
      *
      * @return
      */
     public JPanel createTabHeader() {
+        JPanel errorPanel = new JPanel();
+
+
+        errorText = new JTextArea();
+        errorText.setText("Errors and Exceptions");
+        errorText.setWrapStyleWord(true);
+        errorText.setLineWrap(true);
+        errorText.setEditable(false);
+        errorText.setFont(new Font("Serif", Font.PLAIN, 10));
+
+        JScrollPane scrollPane = new JScrollPane(errorText);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//        scrollPane.setPreferredSize(new Dimension(300, 150));
+
+//        errorPanel.add(scrollPane);
+//        errorPanel.setBackground(Color.white);
+        scrollPane.setBorder(BorderFactory.createEtchedBorder());
+
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         panel.setBackground(GUIconstants.GREY);
@@ -99,6 +124,7 @@ public class ResultTab extends JPanel {
         btnSpec.setBackground(GUIconstants.GREY);
         btnSpec.setName("btnSpec");
         btnSpec.setSelected(true);
+        c.insets = new Insets(0, 20, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
@@ -126,34 +152,45 @@ public class ResultTab extends JPanel {
         btnGrp.add(btnEntity);
         btnGrp.add(btnType);
 
+
+        JButton btnViewResults = new JButton(rb.getString("viewCandidateResults"));
+        btnViewResults.setName("btnViewResults");
+        btnViewResults.setBorderPainted(true);
+        btnViewResults.setBackground(GUIconstants.DARK_GREY);
+        btnViewResults.setToolTipText("close this tab");
+        btnViewResults.setUI(new BasicButtonUI());
+        btnViewResults.setContentAreaFilled(false);
+        btnViewResults.setFocusable(false);
+        btnViewResults.setBorder(BorderFactory.createEtchedBorder());
+        btnViewResults.setRolloverEnabled(true);
+
         ActionListener toggle = new ToggleResultOrganizationAction(this);
         btnSpec.addActionListener(toggle);
         btnEntity.addActionListener(toggle);
         btnType.addActionListener(toggle);
-
-        JButton btnClose = new JButton(rb.getString("viewCandidateResults"));
-        btnClose.setBorderPainted(true);
-        btnClose.setBackground(GUIconstants.DARK_GREY);
-        btnClose.setName("CandidateResults");
-        //btnClose.setPreferredSize(new Dimension(17, 17));
-        btnClose.setToolTipText("close this tab");
-        btnClose.setUI(new BasicButtonUI());
-        btnClose.setContentAreaFilled(false);
-        btnClose.setFocusable(false);
-        btnClose.setBorder(BorderFactory.createEtchedBorder());
-        btnClose.setRolloverEnabled(true);
+        btnViewResults.addActionListener(toggle);
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 3;
         c.gridy = 0;
-        c.weightx = .5;
-//        panel.add(Box.createHorizontalGlue(), c);
+        c.weightx = .9;
+        c.insets = new Insets(4, 20, 4, 20);
         progressBar = new ProgressBar();
         panel.add(progressBar, c);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 3;
+
+        c.insets = new Insets(0, 0, 0, 20);
+        c.gridx = 4;
         c.gridy = 0;
-        panel.add(btnClose);
+        panel.add(btnViewResults, c);
+
+        c.insets = new Insets(0, 0, 0, 0);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.0;
+        c.gridwidth = 5;
+        c.ipady = 30;
+        c.gridx = 0;
+        c.gridy = 1;
+        panel.add(scrollPane, c);
 
         return panel;
     }
@@ -164,10 +201,19 @@ public class ResultTab extends JPanel {
      *
      * @param str Identifier to declare which result panel to show.
      */
-    public void showPanel(ResultTablesContainer rp) {
+    public void showPanel(JPanel panel) {
         scroll.getViewport().removeAll();
-        scroll.getViewport().add(rp);
+        scroll.getViewport().add(panel);
         scroll.revalidate();
+    }
+
+    /**
+     * Add text to the error message text area in a result pane.
+     *
+     * @param str The message to add.
+     */
+    public void addErrorText(String str) {
+        errorText.append(str);
     }
 
     /**
@@ -176,6 +222,11 @@ public class ResultTab extends JPanel {
      * @param rs Data to add.
      */
     public void addData(ResultSet rs) {
+        if (true) { //TODO ONLY DO THIS IF WHAT IS ENTERING IS A CANDIDATE RESULT
+            candidateResultsPanel.addData(rs);
+            //TODO next block should be else if when the real results are arriving.
+
+        }
         progressBar.increaseProgress(2);
 
         rs.setSectionName(rs.getRunnerName().toString());
@@ -193,6 +244,7 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to entity.
      */
     public void showPanelEntity() {
+        returnPanel = rpEntity;
         showPanel(rpEntity);
     }
 
@@ -200,6 +252,7 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to specification.
      */
     public void showPanelSpec() {
+        returnPanel = rpSpec;
         showPanel(rpSpec);
     }
 
@@ -207,7 +260,15 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to type.
      */
     public void showPanelType() {
+        returnPanel = rpType;
         showPanel(rpType);
+    }
+
+    /**
+     * Show the panel that is organized according to type.
+     */
+    public void showCandidateResults() {
+        showPanel(candidateResultsPanel);
     }
 
     /**

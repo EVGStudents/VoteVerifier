@@ -18,7 +18,6 @@ import ch.bfh.univoteverifier.action.ActionManager;
 import ch.bfh.univoteverifier.action.FileChooserAction;
 import ch.bfh.univoteverifier.action.ShowConsoleAction;
 import ch.bfh.univoteverifier.action.StartAction;
-import ch.bfh.univoteverifier.common.IFileManager;
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.common.Messenger;
 import java.awt.Dimension;
@@ -49,24 +48,19 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class MainGUI extends JFrame {
 
-    JFrame frame;
-    JPanel vrfDescPanel, dynamicChoicePanel, masterPanel;
-    TopPanel topPanel;
-    MiddlePanel middlePanel;
-    ConsolePanel consolePanel;
-    ResultTabbedPane resultPanelManager;
-    MainController mc;
-    VerificationListener sl;
-    JLabel vrfDescLabel, choiceDescLabel;
-    JButton btnStart, btnFileSelector;
-    JRadioButton btnUni, btnInd;
-    JComboBox comboBox;
-    String[] eIDlist;
-    String rawEIDlist;
-    Preferences prefs;
+    private JPanel masterPanel;
+    private TopPanel topPanel;
+    private MiddlePanel middlePanel;
+    private ConsolePanel consolePanel;
+    private ResultTabbedPane resultTabbedPane;
+    private VerificationListener sl;
+    private String[] eIDlist;
+    private String rawEIDlist;
+    private Preferences prefs;
     private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
-    ResourceBundle rb;
-    ResultProcessor resultProccessor;
+    private ResourceBundle rb;
+    private ResultProcessor resultProccessor;
+    private ThreadManager tm;
 
     /**
      * Construct the window and frame of this GUI and initialize certain base
@@ -108,6 +102,7 @@ public class MainGUI extends JFrame {
      */
     private void createContentPanel() {
         resetContentPanel();
+
     }
 
     /**
@@ -116,6 +111,7 @@ public class MainGUI extends JFrame {
      * is needed. The entire GUI will is recreated.
      */
     public void resetContentPanel() {
+        tm.killAllThreads();
         masterPanel = createUI();
         masterPanel.setOpaque(true); //content panes must be opaque
         this.setContentPane(masterPanel);
@@ -129,12 +125,12 @@ public class MainGUI extends JFrame {
      * Instantiates some basic resources needed in this class.
      */
     private void initResources() {
+        tm = new ThreadManager();
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         prefs = Preferences.userNodeForPackage(MainGUI.class);
         rawEIDlist = prefs.get("eIDList", "vsuzh-2013-1 vsbfh-2013");
         Pattern pattern = Pattern.compile("\\s");
         eIDlist = pattern.split(rawEIDlist);
-        mc = new MainController();
         sl = new StatusUpdate();
     }
 
@@ -150,21 +146,17 @@ public class MainGUI extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         consolePanel = new ConsolePanel();
-        createComboBox();
-        ButtonGroup btnGroup = new ButtonGroup();
         Messenger msgr = createMessengerAddListener();
 
-        ThreadManager tm = new ThreadManager();
+        resultTabbedPane = new ResultTabbedPane(tm, consolePanel);
+        resultProccessor = new ResultProcessor(consolePanel, resultTabbedPane);
 
-        resultPanelManager = new ResultTabbedPane(tm, consolePanel);
-        resultProccessor = new ResultProcessor(consolePanel, resultPanelManager);
-        middlePanel = new MiddlePanel(resultPanelManager);
+        topPanel = new TopPanel();
+
+        middlePanel = new MiddlePanel(resultTabbedPane, eIDlist, msgr, tm);
         middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
         middlePanel.setBackground(GUIconstants.GREY);
 
-        createActions(msgr, btnGroup, tm);
-
-        topPanel = getTopPanel(btnGroup);
         panel.add(topPanel);
         panel.add(middlePanel);
 
@@ -183,77 +175,6 @@ public class MainGUI extends JFrame {
     }
 
     /**
-     * Create the actions that are used in this GUI.
-     *
-     * @param msgr
-     */
-    private void createActions(Messenger msgr, ButtonGroup btnGroup, ThreadManager tm) {
-        ActionManager am = ActionManager.getInstance();
-        IFileManager fm = new FileManager();
-        Action fileChooserAction = new FileChooserAction(msgr, fm);
-        Action startAction = new StartAction(msgr, middlePanel, comboBox, btnGroup, fm, tm);
-        Action showConsoleAction = new ShowConsoleAction(this);
-
-        am.addActions("fileChooser", fileChooserAction);
-        am.addActions("start", startAction);
-        am.addActions("showConsole", showConsoleAction);
-    }
-
-    /**
-     * Creates the comboBox that allows new election IDs to be inputed as well
-     * as the selection of previously used election IDs.
-     */
-    private void createComboBox() {
-        comboBox = new JComboBox(eIDlist);
-        comboBox.setEditable(true);
-        comboBox.setSelectedIndex(0);
-        comboBox.setSize(30, 50);
-        comboBox.setFont(new Font("Serif", Font.PLAIN, 10));
-    }
-
-    /**
-     * Create the components necessary to display the topPanel.
-     *
-     * @return a JPanel which contains other components to be shown in the main
-     * window
-     */
-    private TopPanel getTopPanel(ButtonGroup btnGrp) {
-        createBtnGrp(btnGrp);
-        createStartButton();
-        TopPanel panel = new TopPanel(btnUni, btnInd, btnStart, comboBox, btnGrp);
-        return panel;
-    }
-
-    /**
-     * Create the button that starts the verification process.
-     *
-     * @return JButton the start button
-     */
-    private JButton createStartButton() {
-        btnStart = new JButton("START");
-        btnStart.setBackground(GUIconstants.BLUE);
-        btnStart.setAction(ActionManager.getInstance().getAction("start"));
-        return btnStart;
-    }
-
-    /**
-     * Create the button that select the verification type.
-     */
-    private void createBtnGrp(ButtonGroup btnGrp) {
-        btnUni = new JRadioButton();
-        btnUni.setBackground(GUIconstants.GREY);
-        btnUni.setName("btnUni");
-
-        btnInd = new JRadioButton();
-        btnInd.setBackground(GUIconstants.GREY);
-        btnInd.setName("btnInd");
-
-        btnGrp.add(btnUni);
-        btnGrp.add(btnInd);
-        btnUni.setSelected(true);
-    }
-
-    /**
      * This inner class represents the implementation of the observer pattern
      * for the status messages for the console and verification parts of the
      * GUI.
@@ -268,34 +189,14 @@ public class MainGUI extends JFrame {
                 consolePanel.appendToStatusText("\n" + ve.getMsg(), ve.getEID());
             } else if (ve.getVm() == VerificationMessage.SETUP_ERROR) {
                 String text = "\n" + ve.getMsg();
-//                    JOptionPane.showMessageDialog(middlePanel, text);
-                topPanel.setupErrorMsg(text);
+                middlePanel.setupErrorMsg(text);
+            } else if (ve.getVm() == VerificationMessage.FILE_SELECTED) {
+                middlePanel.showFileSelected(ve.getMsg());
+            } else if (ve.getVm() == VerificationMessage.SHOW_CONSOLE) {
+                showConsole(ve.getConsoleSelected());
             } else {
                 resultProccessor.showResultInGUI(ve);
-
             }
-        }
-    }
-
-    /**
-     * This inner class holds a reference to a file expected to be QRCode and
-     * which is sent to the verification thread when individual verification is
-     * selected.
-     *
-     * @author prinstin
-     */
-    class FileManager implements IFileManager {
-
-        File file;
-
-        @Override
-        public File getFile() {
-            return file;
-        }
-
-        @Override
-        public void setFile(File file) {
-            this.file = file;
         }
     }
 
@@ -306,8 +207,6 @@ public class MainGUI extends JFrame {
     public void setLookAndFeel() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainGUI.class
                     .getName()).log(Level.SEVERE, ex.getMessage());

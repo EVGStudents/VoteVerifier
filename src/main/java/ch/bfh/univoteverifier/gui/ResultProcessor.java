@@ -20,9 +20,9 @@ import javax.swing.ImageIcon;
  */
 public class ResultProcessor {
 
-    ConsolePanel consolePanel;
-    ResultTabbedPane resultPanelManager;
-    ImageIcon pass, fail, noImpl;
+    private ConsolePanel consolePanel;
+    private ResultTabbedPane resultPanelManager;
+    private ImageIcon pass, fail, noImpl;
 
     /**
      * Create a new instance of this class.

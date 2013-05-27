@@ -20,38 +20,26 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 /**
- * This panel contains the various tables which belong to a given election
- * verification process.
+ * This panel contains the election results for the number of votes each
+ * candidate received.
  *
  * @author prinstin
  */
-public class ResultTablesContainer extends JPanel {
+public class CandidateResultsPanel extends JPanel {
 
-    private ResultTableModel masterTableModel;
+    private ResultTableModel tableModel;
     private ArrayList<SectionResultsTable> tables;
     private static final Logger LOGGER = Logger.getLogger(ResultTablesContainer.class.getName());
+    private CandidateResultsTable activeTable;
 
     /**
      * Create an instance of this class.
      */
-    public ResultTablesContainer() {
+    public CandidateResultsPanel() {
+        this.setBackground(Color.PINK);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        tables = new ArrayList<>();
-    }
-
-    /**
-     * Find the appropriate table and add data to it.
-     *
-     * @param r data to insert into a table.
-     */
-    public void addData(ResultSet r) {
-        String tableSectionName = r.getSectionName();
-        if (hasTable(tableSectionName)) {
-            SectionResultsTable rt = getTableByName(tableSectionName);
-            addDataToTable(rt, r);
-        } else {
-            addTable(r);
-        }
+        ArrayList<ResultSet> data = new ArrayList<>();
+        createNewTable();
     }
 
     /**
@@ -60,11 +48,51 @@ public class ResultTablesContainer extends JPanel {
      * @param rt The table to which to add data.
      * @param r The data to add.
      */
-    public void addDataToTable(SectionResultsTable rt, ResultSet r) {
-        rt.getTableModel().addResultSet(r);
-        rt.revalidate();
+    public void addData(ResultSet rs) {
+//            public void addData(Entry e) {
+
+//         for (Entry<Choice, Integer> e : v.getElectionResults()) {
+//            Choice c = e.getKey();
+//            Integer count = e.getValue();
+//
+//            if (c instanceof PoliticalList) {
+//                //create new table
+//        createNewTable();
+//                PoliticalList pl = (PoliticalList) c;
+//                System.out.print(pl.getNumber() + " ");
+//                System.out.print("Political list: " + pl.getPartyName().get(0).getText());
+//            } else if (c instanceof Candidate) {
+//                //add to existing table
+//                Candidate can = (Candidate) c;
+//                System.out.print("\t");
+//                System.out.print(can.getNumber() + " ");
+//                System.out.print(can.getFirstName() + " ");
+//                System.out.print(can.getLastName());
+//            }
+//
+//            System.out.println("...................." + count);
+//        }
+
+//        createNewTable();
+
+
+        activeTable.getTableModel().addResultSet(rs);
+        activeTable.revalidate();
         this.revalidate();
         this.repaint();
+    }
+
+    public void createNewTable() {
+        CandidateResultsTableModel crtm = new CandidateResultsTableModel();
+        activeTable = new CandidateResultsTable(crtm);
+
+        JPanel tablePanel = new JPanel();
+        tablePanel.setBackground(Color.ORANGE);
+        tablePanel.setLayout(new BorderLayout());
+        tablePanel.add(activeTable, BorderLayout.CENTER);
+        tablePanel.add(activeTable.getTableHeader(), BorderLayout.NORTH);
+        activeTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+        this.add(tablePanel);
     }
 
     /**
@@ -84,30 +112,6 @@ public class ResultTablesContainer extends JPanel {
     }
 
     /**
-     * Add a table to this result panel
-     *
-     * @param data Data with which to initialize this table. It must contain at
-     * least one entry of a ResultPair.
-     */
-    public void addTable(ResultSet r) {
-        JPanel tablePanel = createTablePanel();
-        ArrayList<ResultSet> data = new ArrayList<>();
-        data.add(r);
-
-        masterTableModel = new ResultTableModel(data);
-        SectionResultsTable rt = new SectionResultsTable(masterTableModel, data.get(0).getSectionName());
-        tables.add(rt);
-
-        tablePanel.add(rt, BorderLayout.CENTER);
-        tablePanel.add(rt.getTableHeader(), BorderLayout.NORTH);
-        rt.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
-
-        this.add(tablePanel);
-        this.revalidate();
-        this.repaint();
-    }
-
-    /**
      * Check if a table with a given section name exists
      *
      * @param tableSectionName the section name for which to find a table.
@@ -118,30 +122,19 @@ public class ResultTablesContainer extends JPanel {
     public boolean hasTable(String tableSectionName) {
         boolean found = false;
         if (tables.isEmpty()) {
+            LOGGER.log(Level.INFO, "hasTable: No, list empty");
             return found;
         }
         for (SectionResultsTable tbl : tables) {
             String tableSectionNameFound = tbl.getSectionName();
             if (0 == tableSectionNameFound.compareTo(tableSectionName)) {
                 found = true;
+                LOGGER.log(Level.INFO, "hasTable: yes, match found");
             }
         }
         if (!found) {
+            LOGGER.log(Level.INFO, "hasTable: No, not found");
         }
         return found;
-    }
-
-    /**
-     * Create a new panel in which to place the individual tables. Border layout
-     * is used and then header of the tables are placed in the Border.NORTH area
-     * and the tables themselves are placed into Border.CENTER.
-     *
-     * @return JPanel which contains one table.
-     */
-    public JPanel createTablePanel() {
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.WHITE);
-        panel.setLayout(new BorderLayout());
-        return panel;
     }
 }

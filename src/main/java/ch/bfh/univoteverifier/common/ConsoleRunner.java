@@ -11,7 +11,6 @@ package ch.bfh.univoteverifier.common;
 
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.gui.GUIconstants;
-import ch.bfh.univoteverifier.gui.MainGUI;
 import ch.bfh.univoteverifier.listener.VerificationEvent;
 import ch.bfh.univoteverifier.listener.VerificationListener;
 import ch.bfh.univoteverifier.listener.VerificationMessage;
@@ -32,7 +31,7 @@ public class ConsoleRunner {
 
     private static final Logger LOGGER = Logger.getLogger(ConsoleRunner.class.getName());
     private final ResourceBundle rb;
-    Messenger msgr;
+    private Messenger msgr;
 
     /**
      * Create an instance of this class which checks the parameters passed and

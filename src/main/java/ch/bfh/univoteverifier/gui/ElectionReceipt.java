@@ -19,8 +19,8 @@ import java.math.BigInteger;
  */
 public class ElectionReceipt {
 
-    String eID, sSId, sT;
-    BigInteger encVa, encVb, vk, pC, pR, vSA, vSB, sV;
+    private String eID, sSId, sT;
+    private BigInteger encVa, encVb, vk, pC, pR, vSA, vSB, sV;
 
     public ElectionReceipt(String[][] values) {
         populateVariables(values);

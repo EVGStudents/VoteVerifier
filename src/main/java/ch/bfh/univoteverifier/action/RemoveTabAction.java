@@ -28,8 +28,8 @@ import javax.swing.JTabbedPane;
  */
 public class RemoveTabAction extends AbstractAction {
 
-    JTabbedPane jtp;
-    ThreadManager tm;
+    private JTabbedPane jtp;
+    private ThreadManager tm;
 
     /**
      * Create an instance of this class.

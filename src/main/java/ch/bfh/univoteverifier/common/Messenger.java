@@ -27,8 +27,8 @@ import java.util.ResourceBundle;
  */
 public class Messenger {
 
-    ResourceBundle rb;
-    VerificationSubject ss;
+    private ResourceBundle rb;
+    private VerificationSubject ss;
 
     /**
      * instantiate a GUIMessenger that is used to relay messages to the GUI
@@ -46,6 +46,16 @@ public class Messenger {
      */
     public void sendSetupError(String str) {
         VerificationEvent ve = new VerificationEvent(VerificationMessage.SETUP_ERROR, str);
+        ss.notifyListeners(ve);
+    }
+
+    public void sendFileSelected(String fileName) {
+        VerificationEvent ve = new VerificationEvent(VerificationMessage.FILE_SELECTED, fileName);
+        ss.notifyListeners(ve);
+    }
+
+    public void sendShowConsole(Boolean selected) {
+        VerificationEvent ve = new VerificationEvent(VerificationMessage.SHOW_CONSOLE, selected);
         ss.notifyListeners(ve);
     }
 

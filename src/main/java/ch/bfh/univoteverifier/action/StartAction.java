@@ -15,6 +15,7 @@ import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.gui.GUIconstants;
+import ch.bfh.univoteverifier.gui.MiddlePanel;
 import ch.bfh.univoteverifier.gui.ThreadManager;
 import ch.bfh.univoteverifier.verification.IndividualVerification;
 import ch.bfh.univoteverifier.verification.Verification;
@@ -41,31 +42,28 @@ import javax.swing.JPanel;
  */
 public class StartAction extends AbstractAction {
 
-    Messenger msgr;
-    JPanel innerPanel;
-    ResourceBundle rb;
-    JComboBox comboBox;
-    ButtonGroup btnGrp;
-    IFileManager fm;
-    ElectionReceipt er;
-    VerificationThread vt;
-    ThreadManager tm;
+    private Messenger msgr;
+    private MiddlePanel middlePanel;
+    private ResourceBundle rb;
+    private JComboBox comboBox;
+    private IFileManager fm;
+    private ElectionReceipt er;
+    private VerificationThread vt;
+    private ThreadManager tm;
     private static final Logger LOGGER = Logger.getLogger(StartAction.class.getName());
 
     /**
      * Create an instance of this Action class.
      *
      * @param msgr Messenger object used to send messages
-     * @param innerPanel
+     * @param middlePanel
      * @param comboBox
-     * @param btnGroup
      * @param qrCodeFile
      */
-    public StartAction(Messenger msgr, JPanel innerPanel, JComboBox comboBox, ButtonGroup btnGroup, IFileManager fm, ThreadManager tm) {
+    public StartAction(Messenger msgr, MiddlePanel middlePanel, JComboBox comboBox, IFileManager fm, ThreadManager tm) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
-        this.innerPanel = innerPanel;
+        this.middlePanel = middlePanel;
         this.msgr = msgr;
-        this.btnGrp = btnGroup;
         this.comboBox = comboBox;
         this.fm = fm;
         putValue(NAME, rb.getString("start"));
@@ -85,7 +83,7 @@ public class StartAction extends AbstractAction {
     }
 
     public void startVerification() {
-        String btnTxt = getSelectedButtonText(btnGrp);
+        String btnTxt = middlePanel.getSelectedVrfType();
         LOGGER.log(Level.INFO, "BTN TEXT RETURNED:" + btnTxt);
         String msg = "";
         if (0 == btnTxt.compareTo("btnUni")) {
@@ -97,6 +95,7 @@ public class StartAction extends AbstractAction {
             vt.setName(eID);
             tm.addThread(vt);
             vt.start();
+
         } else {
             if (fm.getFile() != null) {
 
@@ -110,7 +109,9 @@ public class StartAction extends AbstractAction {
                 }
             } else {
                 msgr.sendSetupError(rb.getString("pleaseSelectFile"));
+
             }
+            middlePanel.resetFileText();
         }
 
     }
@@ -124,22 +125,6 @@ public class StartAction extends AbstractAction {
     public boolean fileProvidedIsValid() {
         er = getElectionReceipt(fm.getFile(), msgr);
         return (er != null);
-    }
-
-    /**
-     * Get the name ID of the verification button that is selected.
-     *
-     * @param buttonGroup
-     * @return the name ID of the button selected.
-     */
-    public String getSelectedButtonText(ButtonGroup buttonGroup) {
-        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-            if (button.isSelected()) {
-                return button.getName();
-            }
-        }
-        return null;
     }
 
     /**

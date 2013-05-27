@@ -20,22 +20,22 @@ import javax.swing.table.TableColumn;
  *
  * @author prinstin
  */
-public class SectionResultsTable extends JTable {
+public class CandidateResultsTable extends JTable {
 
     private String sectionName;
-    private ResultTableModel rtm;
+    private CandidateResultsTableModel crtm;
 
     /**
      * Create an instance of this class.
      *
      * @param rtm A ResultTableModel which manages the table's data.
      */
-    public SectionResultsTable(ResultTableModel rtm, String sectionName) {
-        super(rtm);
+    public CandidateResultsTable(CandidateResultsTableModel crtm) {
+        super(crtm);
         setShowGrid(false);
         setDragEnabled(false);
-        this.rtm = rtm;
-        this.sectionName = sectionName;
+        this.crtm = crtm;
+        this.sectionName = "Results";
         setRowHeight(30);
         TableColumn tc = getColumnModel().getColumn(0);
         tc.setPreferredWidth(340);
@@ -43,9 +43,9 @@ public class SectionResultsTable extends JTable {
         tc.setPreferredWidth(30);
         tc.setMaxWidth(30);
 
-        ResultCellRendererImage rcri = new ResultCellRendererImage();
+        CandidateResultCellRendererImage rcri = new CandidateResultCellRendererImage();
         tc.setCellRenderer(rcri);
-        ResultCellRendererText rcrt = new ResultCellRendererText();
+        CandidateResultCellRendererText rcrt = new CandidateResultCellRendererText();
         getColumnModel().getColumn(0).setCellRenderer(rcrt);
     }
 
@@ -64,7 +64,7 @@ public class SectionResultsTable extends JTable {
      *
      * @return The tableModel for this table.
      */
-    public ResultTableModel getTableModel() {
-        return rtm;
+    public CandidateResultsTableModel getTableModel() {
+        return crtm;
     }
 }

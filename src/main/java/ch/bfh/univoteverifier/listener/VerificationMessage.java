@@ -24,7 +24,9 @@ public enum VerificationMessage {
     RESULT(10), //  for hte verification results
     SETUP_ERROR(20),
     ELECTION_SPECIFIC_ERROR(30),
-    VRF_FINISHED(40);
+    VRF_FINISHED(40),
+    FILE_SELECTED(50),
+    SHOW_CONSOLE(60);
 //The code of the message
     private int code;
 

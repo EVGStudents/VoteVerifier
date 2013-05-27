@@ -11,9 +11,8 @@
 package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.gui.GUIconstants;
-import ch.bfh.univoteverifier.gui.TopPanel;
+import ch.bfh.univoteverifier.gui.MiddlePanel;
 import java.awt.event.ActionEvent;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
@@ -26,8 +25,8 @@ import static javax.swing.Action.NAME;
  */
 public class SelectIndVrfAction extends AbstractAction {
 
-    ResourceBundle rb;
-    TopPanel topPanel;
+    private ResourceBundle rb;
+    private MiddlePanel middlePanel;
 
     /**
      * Create an instance of this Action class.
@@ -35,10 +34,10 @@ public class SelectIndVrfAction extends AbstractAction {
      * @param topPanel the top panel of the GUI which is used to access
      * references to objects there.
      */
-    public SelectIndVrfAction(TopPanel topPanel) {
+    public SelectIndVrfAction(MiddlePanel middlePanel) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         this.putValue(NAME, rb.getString("btnInd"));
-        this.topPanel = topPanel;
+        this.middlePanel = middlePanel;
 
     }
 
@@ -51,7 +50,6 @@ public class SelectIndVrfAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        topPanel.indVrfSelected();
-
+        middlePanel.indVrfSelected();
     }
 }

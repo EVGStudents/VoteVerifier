@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Organizes the various threads that have been started which are responsible
@@ -19,7 +21,8 @@ import java.util.Set;
  */
 public class ThreadManager {
 
-    List<VerificationThread> threads;
+    private List<VerificationThread> threads;
+    private static final Logger LOGGER = Logger.getLogger(ThreadManager.class.toString());
 
     /**
      * Create a new instance of this class.
@@ -36,7 +39,9 @@ public class ThreadManager {
      */
     public void killThread(String eID) {
         VerificationThread vtFound = null;
+        LOGGER.log(Level.OFF, "Looking for thread with name {0}", eID);
         for (VerificationThread vtI : threads) {
+            LOGGER.log(Level.OFF, "Iterated name {0}", vtI.getName());
             if (0 == vtI.getName().compareTo(eID)) {
                 vtFound = vtI;
             }
@@ -44,6 +49,8 @@ public class ThreadManager {
         if (vtFound != null) {
             threads.remove(vtFound);
             vtFound.interrupt();
+            LOGGER.log(Level.OFF, "INTERRUPTED THREAD {0}", vtFound.getName());
+            LOGGER.log(Level.OFF, "INTERRUPTED THREAD {0}", vtFound.getName());
         }
     }
 
@@ -55,5 +62,14 @@ public class ThreadManager {
      */
     public void addThread(VerificationThread vt) {
         threads.add(vt);
+    }
+
+    /**
+     * Kill all the threads running. Used when the language is changed.
+     */
+    public void killAllThreads() {
+        for (VerificationThread vtI : threads) {
+            vtI.interrupt();
+        }
     }
 }

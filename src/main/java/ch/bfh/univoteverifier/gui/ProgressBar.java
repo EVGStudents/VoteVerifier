@@ -23,7 +23,7 @@ import javax.swing.JProgressBar;
 public class ProgressBar extends JPanel {
 
     private JProgressBar progressBar;
-    int progress = 0;
+    private int progress = 0;
 
     /**
      * Create an instance of this class.

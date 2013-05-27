@@ -13,14 +13,15 @@ package ch.bfh.univoteverifier.action;
 import ch.bfh.univoteverifier.common.IFileManager;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.gui.GUIconstants;
-import ch.bfh.univoteverifier.gui.MainGUI;
+import ch.bfh.univoteverifier.gui.MiddlePanel;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
 import javax.swing.JFileChooser;
-import javax.swing.JPanel;
+import java.util.logging.Logger;
 
 /**
  * An Action that manages the action of choosing a file.
@@ -29,10 +30,11 @@ import javax.swing.JPanel;
  */
 public class FileChooserAction extends AbstractAction {
 
-    ResourceBundle rb;
-    JPanel innerPanel;
-    IFileManager fm;
-    Messenger msgr;
+    private ResourceBundle rb;
+    private MiddlePanel middlePanel;
+    private IFileManager fm;
+    private Messenger msgr;
+    private static final Logger LOGGER = Logger.getLogger(FileChooserAction.class.getName());
 
     /**
      * Create an instance of this Action.
@@ -41,7 +43,8 @@ public class FileChooserAction extends AbstractAction {
      * @param qrCodeFile The reference to the File object where the fileChooser
      * stores the path to the QRCode
      */
-    public FileChooserAction(Messenger msgr, IFileManager fm) {
+    public FileChooserAction(MiddlePanel middlePanel, Messenger msgr, IFileManager fm) {
+        this.middlePanel = middlePanel;
         this.msgr = msgr;
         this.fm = fm;
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
@@ -58,17 +61,19 @@ public class FileChooserAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         final JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showDialog(innerPanel, rb.getString("selectFile"));
+        int returnVal = fc.showDialog(middlePanel, rb.getString("selectFile"));
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             if (file == null) {
-                msgr.sendSetupError(rb.getString("invalidFile"));
+                String invalidFileMsg = rb.getString("invalidFile");
+                msgr.sendSetupError(invalidFileMsg);
             } else {
                 String path = "\n" + file.getPath();
-                msgr.sendSetupError("File Selected: "+path);
+                LOGGER.log(Level.OFF, "PATH OF FILE RECEIVED: " + path);
+                msgr.sendFileSelected(file.getName());
                 fm.setFile(file);
             }
-             
+
         }
     }
 }

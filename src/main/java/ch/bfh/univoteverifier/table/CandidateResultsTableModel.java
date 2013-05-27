@@ -23,7 +23,7 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author prinstin
  */
-public class ResultTableModel extends AbstractTableModel {
+public class CandidateResultsTableModel extends AbstractTableModel {
 
     private ArrayList<ResultSet> data;
     private String[] columnNames = {"", ""};
@@ -36,10 +36,10 @@ public class ResultTableModel extends AbstractTableModel {
      * @param section The description of the section from which this
      * verification result was produced.
      */
-    public ResultTableModel(ArrayList<ResultSet> data) {
-        this.data = data;
-        String sectionName = data.get(0).getSectionName();
-        columnNames[0] = sectionName;
+    public CandidateResultsTableModel() {
+        data = new ArrayList<>();
+        columnNames[0] = "Candidate Name";
+        columnNames[1] = "Votes";
 
     }
 

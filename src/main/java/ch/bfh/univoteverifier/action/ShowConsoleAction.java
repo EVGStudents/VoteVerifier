@@ -1,15 +1,15 @@
 /**
-*
-*  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
-*   Bern University of Applied Sciences, Engineering and Information Technology,
-*   Research Institute for Security in the Information Society, E-Voting Group,
-*   Biel, Switzerland.
-*
-*   Project independent UniVoteVerifier.
-*
-*/
+ *
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
+ * Applied Sciences, Engineering and Information Technology, Research Institute
+ * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ *
+ * Project independent UniVoteVerifier.
+ *
+ */
 package ch.bfh.univoteverifier.action;
 
+import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.MainGUI;
 import java.awt.event.ActionEvent;
@@ -18,15 +18,15 @@ import javax.swing.AbstractAction;
 import javax.swing.JCheckBoxMenuItem;
 
 /**
- * An Action class that manages the action of clicking on the show console menu time.
- * It toggles the visibility of the console-like GUI text area for system
+ * An Action class that manages the action of clicking on the show console menu
+ * time. It toggles the visibility of the console-like GUI text area for system
  * messages.
  *
  * @author prinstin
  */
 public class ShowConsoleAction extends AbstractAction {
 
-    MainGUI mainGUI;
+    private Messenger msgr;
 
     /**
      * Create an instance of this Action class.
@@ -34,10 +34,10 @@ public class ShowConsoleAction extends AbstractAction {
      * @param MainGUI Send as reference to be able to use the 'callback' type
      * method to toggle the visibility of the console.
      */
-    public ShowConsoleAction(MainGUI mainGUI) {
+    public ShowConsoleAction(Messenger msgr) {
         ResourceBundle rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         this.putValue(NAME, rb.getString("showConsole"));
-        this.mainGUI = mainGUI;
+        this.msgr = msgr;
     }
 
     /**
@@ -51,6 +51,6 @@ public class ShowConsoleAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         JCheckBoxMenuItem mItem = (JCheckBoxMenuItem) e.getSource();
         boolean selected = mItem.getState();
-        mainGUI.showConsole(selected);
+        msgr.sendShowConsole(selected);
     }
 }

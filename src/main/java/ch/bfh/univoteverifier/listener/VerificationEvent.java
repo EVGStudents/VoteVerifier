@@ -25,6 +25,7 @@ public class VerificationEvent {
     private String msg;
     private String eID;
     private final VerificationResult vr;
+    private Boolean consoleSelected;
 
     /**
      * Create an instance of this helper class to send a message that is
@@ -49,7 +50,21 @@ public class VerificationEvent {
      */
     public VerificationEvent(VerificationMessage vm, String eID) {
         this.eID = eID;
+        this.msg = eID;
         this.vm = vm;
+        this.vr = null;
+    }
+
+    /**
+     * Create an instance of this helper class to send a message that tells the
+     * GUI to toggle visibility of the console.
+     *
+     * @param vm The type of message that this VerificationEvent contains
+     * @param Boolean true if the console should be shown.
+     */
+    public VerificationEvent(VerificationMessage vm, Boolean selected) {
+        this.vm = vm;
+        this.consoleSelected = selected;
         this.vr = null;
     }
 
@@ -94,6 +109,15 @@ public class VerificationEvent {
      */
     public VerificationResult getVr() {
         return vr;
+    }
+
+    /**
+     * Get the status of the console visiblity.
+     *
+     * @return True if the console should be shown.
+     */
+    public boolean getConsoleSelected() {
+        return consoleSelected;
     }
 
     /**
