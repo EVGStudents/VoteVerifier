@@ -26,14 +26,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
 
 /**
  * This class represent an ElectionSetupRunner.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ElectionSetupRunner extends Runner {
 
@@ -60,7 +58,7 @@ public class ElectionSetupRunner extends Runner {
 	}
 
 	@Override
-	public List<VerificationResult> run() {
+	public List<VerificationResult> run() throws InterruptedException {
 
 		try {
 			//EA certificate verification
@@ -225,8 +223,8 @@ public class ElectionSetupRunner extends Runner {
 			Thread.sleep(1000);
 
 
-		} catch (InterruptedException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | InvalidNameException | UnsupportedEncodingException ex) {
-			Logger.getLogger(ElectionSetupRunner.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | InvalidNameException | UnsupportedEncodingException ex) {
+			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 
 		return Collections.unmodifiableList(partialResults);

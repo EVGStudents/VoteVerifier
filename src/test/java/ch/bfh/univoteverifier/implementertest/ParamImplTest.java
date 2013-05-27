@@ -30,7 +30,7 @@ import static org.junit.Assert.*;
 /**
  * This class test the behavior of the ParametersImplementer.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ParamImplTest {
 
@@ -60,7 +60,7 @@ public class ParamImplTest {
 	public void testParamNotLen() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfSchnorrParamLen(p, q, g);
 		assertFalse(v.getResult());
-		assertEquals(v.getFailureCode(), FailureCode.FALSE_PARAMETERS_LENGTH);
+		assertEquals(v.getReport().getFailureCode(), FailureCode.FALSE_PARAMETERS_LENGTH);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class ParamImplTest {
 	public void testPisNotSafePrime() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfSafePrime(p, q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
 		assertFalse(v.getResult());
-		assertEquals(v.getFailureCode(), FailureCode.NOT_SAFE_PRIME);
+		assertEquals(v.getReport().getFailureCode(), FailureCode.NOT_SAFE_PRIME);
 
 	}
 
@@ -81,7 +81,7 @@ public class ParamImplTest {
 	public void testPisNotPrime() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfPrime(p, VerificationType.SETUP_SCHNORR_P);
 		assertFalse(v.getResult());
-		assertEquals(v.getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
+		assertEquals(v.getReport().getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class ParamImplTest {
 	public void testQisNotPrime() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfPrime(q, VerificationType.SETUP_SCHNORR_Q);
 		assertFalse(v.getResult());
-		assertEquals(v.getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
+		assertEquals(v.getReport().getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
 	}
 
 	/**
@@ -101,12 +101,12 @@ public class ParamImplTest {
 	public void testGisNotGenerator() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfGenerator(p, q, g, VerificationType.SETUP_SCHNORR_G);
 		assertFalse(v.getResult());
-		assertEquals(v.getFailureCode(), FailureCode.NOT_A_GENERATOR);
+		assertEquals(v.getReport().getFailureCode(), FailureCode.NOT_A_GENERATOR);
 	}
 
 	/**
-	 * Test that the distributed key y correspond to the partial y_j of each
-	 * tallier.
+	 * Test that the distributed key y correspond to the partial y_j of the
+	 * last tallier.
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
@@ -118,7 +118,7 @@ public class ParamImplTest {
 	}
 
 	/**
-	 * Test that the elction generator g^ is equal to the blinded generator
+	 * Test that the election generator g^ is equal to the blinded generator
 	 * of the last mixer.
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
@@ -128,20 +128,6 @@ public class ParamImplTest {
 	public void testElectionGenerator() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfElectionGenerator();
 		assertTrue(v.getResult());
-	}
-
-	/**
-	 * Test the mixed verification keys by a given mixer.
-	 *
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 */
-	@Test
-	public void testMixedVerificationKeysBy() throws ElectionBoardServiceFault {
-		for (String mName : ebp.getElectionDefinition().getMixerId()) {
-			VerificationResult v = pi.vrfVerificationKeysMixedBy(mName);
-			assertTrue(v.getResult());
-		}
 	}
 
 	/**
@@ -176,7 +162,19 @@ public class ParamImplTest {
 	 */
 	@Test
 	public void testBallotVerificationKey() throws ElectionBoardServiceFault {
-		boolean v = pi.vrfBallotVerificationKey(er.getVerificationKey());
-		assertTrue(v);
+		VerificationResult v = pi.vrfBallotVerificationKey(er.getVerificationKey());
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test the votes.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testVotes() throws ElectionBoardServiceFault {
+		VerificationResult v = pi.vrfVotes();
+		assertTrue(v.getResult());
 	}
 }

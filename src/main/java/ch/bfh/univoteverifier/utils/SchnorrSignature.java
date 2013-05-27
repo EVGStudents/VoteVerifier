@@ -14,7 +14,7 @@ import java.math.BigInteger;
 
 /**
  * Class used to represent the Schnorr's signature
- * @author snake
+ * @author Scalzi Giuseppe
  *
  */
 public class SchnorrSignature{

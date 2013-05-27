@@ -10,7 +10,6 @@
  */
 package ch.bfh.univoteverifier.commontest;
 
-import ch.bfh.univote.common.Proof;
 import ch.bfh.univoteverifier.common.StringConcatenator;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ import static org.junit.Assert.*;
 /**
  * Test the string concatenator used to concatenate the strings.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class StringConcatenatorTest {
 

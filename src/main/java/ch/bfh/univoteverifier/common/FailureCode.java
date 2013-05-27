@@ -10,9 +10,9 @@
 package ch.bfh.univoteverifier.common;
 
 /**
- * This class represent the failure codes for a VerificationEvent.
+ * This class represent the failure codes for a VerificationResult.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public enum FailureCode {
 
@@ -30,13 +30,17 @@ public enum FailureCode {
 	NEW_SET_VERIFICATION_KEYS_NOT_EQUALS(110),
 	VK_PLAUSIBILITY_CHECK_FAILED(120),
 	ENCRYPTED_VOTES_PLAUSIBILITY_CHECK_FAILED(130),
-	ENCRYPTED_VOTES_NOT_EQUALS(140);
+	ENCRYPTED_VOTES_NOT_EQUALS(140),
+	BALLOT_NOT_IN_SET(150),
+	INVALID_BALLOT_VK(160),
+	INVALID_SCHNORR_SIGN(170),
+	INVALID_BALLOT(180);
 	private final int id;
 
 	/**
 	 * Construct a new failure code with a given ID.
 	 *
-	 * @param ID the ID for this failure.
+	 * @param id the id for this failure.
 	 */
 	private FailureCode(int id) {
 		this.id = id;

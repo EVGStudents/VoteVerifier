@@ -9,92 +9,99 @@
  */
 package ch.bfh.univoteverifier.runner;
 
+import ch.bfh.univote.common.Ballot;
+import ch.bfh.univote.common.Proof;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
-import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.Messenger;
-import ch.bfh.univoteverifier.common.VerificationType;
+import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
+import ch.bfh.univoteverifier.implementer.ProofImplementer;
+import ch.bfh.univoteverifier.implementer.RSAImplementer;
+import ch.bfh.univoteverifier.implementer.SchnorrImplementer;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.InvalidNameException;
 
 /**
- * This class represent a the SystemSetupRunner.
+ * This class represent the IndividualRunner used for an individual
+ * verification.
  *
  * @author Scalzi Giuseppe
  */
-public class SystemSetupRunner extends Runner {
+public class IndividualRunner extends Runner {
 
 	private final ParametersImplementer paramImpl;
 	private final CertificatesImplementer certImpl;
+	private final ElectionReceipt er;
+	private final RSAImplementer rsaImpl;
+	private final SchnorrImplementer schnorrImpl;
+	private final ProofImplementer proofImpl;
 	private final ElectionBoardProxy ebp;
 
 	/**
-	 * Construct an SystemSetupRunner with a given ElectionBoardProxy and
+	 * Construct an IndividualRunner with a given ElectionBoardProxy and
 	 * Messenger.
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data.
 	 * @param msgr the Messenger used to send the results.
 	 */
-	public SystemSetupRunner(ElectionBoardProxy ebp, Messenger msgr) {
-		super(RunnerName.SYSTEM_SETUP, msgr);
+	public IndividualRunner(ElectionBoardProxy ebp, Messenger msgr, ElectionReceipt er) throws CertificateException, ElectionBoardServiceFault, InvalidNameException {
+		super(RunnerName.INDIVIDUAL, msgr);
+		this.er = er;
 		this.ebp = ebp;
 
 		paramImpl = new ParametersImplementer(ebp, runnerName);
 		certImpl = new CertificatesImplementer(ebp, runnerName);
+		rsaImpl = new RSAImplementer(ebp, runnerName);
+		schnorrImpl = new SchnorrImplementer(ebp, runnerName);
+		proofImpl = new ProofImplementer(ebp, runnerName);
 	}
 
 	@Override
 	public List<VerificationResult> run() throws InterruptedException {
 		try {
-			//is Schnorr p prime
-			VerificationResult v1 = paramImpl.vrfPrime(Config.p, VerificationType.SETUP_SCHNORR_P);
+			//Em certificate
+			VerificationResult v1 = certImpl.vrfEMCertificate();
 			msgr.sendVrfMsg(v1);
 			partialResults.add(v1);
 			Thread.sleep(1000);
 
-			//is Schnorr q prime
-			VerificationResult v2 = paramImpl.vrfPrime(Config.q, VerificationType.SETUP_SCHNORR_Q);
+			//RSA Signature
+			VerificationResult v2 = rsaImpl.vrfSingleBallotSign(er);
 			msgr.sendVrfMsg(v2);
 			partialResults.add(v2);
 			Thread.sleep(1000);
 
-			//is Schnorr g a generator
-			VerificationResult v3 = paramImpl.vrfGenerator(Config.p, Config.q, Config.g, VerificationType.SETUP_SCHNORR_G);
+			//B belongs to ballots
+			VerificationResult v3 = paramImpl.vrfBallotInSet(er.getVerificationKey());
 			msgr.sendVrfMsg(v3);
 			partialResults.add(v3);
 			Thread.sleep(1000);
 
-			//is Schnorr p a safe prime
-			VerificationResult v4 = paramImpl.vrfSafePrime(Config.p, Config.q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
+			//Schnorr signature
+			VerificationResult v4 = schnorrImpl.vrfBallotSignature(null, er);
 			msgr.sendVrfMsg(v4);
 			partialResults.add(v4);
 			Thread.sleep(1000);
 
-			//are the Schnorr paramters long enough
-			VerificationResult v5 = paramImpl.vrfSchnorrParamLen(Config.p, Config.q, Config.g);
+			//proof
+			VerificationResult v5 = proofImpl.vrfBallotProof(null, er);
 			msgr.sendVrfMsg(v5);
 			partialResults.add(v5);
 			Thread.sleep(1000);
 
-			//verifiy CA certificate
-			VerificationResult v6 = certImpl.vrfCACertificate();
-			msgr.sendVrfMsg(v6);
-			partialResults.add(v6);
-			Thread.sleep(1000);
-
-			//verifiy EM certificate
-			VerificationResult v7 = certImpl.vrfEMCertificate();
-			msgr.sendVrfMsg(v7);
-			partialResults.add(v7);
-
-		} catch (ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
+		} catch (UnsupportedEncodingException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 

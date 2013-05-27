@@ -1,6 +1,12 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *
+ *  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+ *   Bern University of Applied Sciences, Engineering and Information Technology,
+ *   Research Institute for Security in the Information Society, E-Voting Group,
+ *   Biel, Switzerland.
+ *
+ *   Project independent UniVoteVerifier.
+ *
  */
 package ch.bfh.univoteverifier.runnertest;
 
@@ -11,7 +17,6 @@ import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
-import ch.bfh.univoteverifier.runner.ElectionPeriodRunner;
 import ch.bfh.univoteverifier.runner.MixerTallierRunner;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.FileNotFoundException;
@@ -23,8 +28,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Test the runner of mixer and tallier.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class MixerTallierRunnerTest {
 
@@ -35,44 +41,48 @@ public class MixerTallierRunnerTest {
 	private final String eID;
 	private final RunnerName rn;
 
-	public MixerTallierRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException {
+	public MixerTallierRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException, InterruptedException {
 		eID = "vsbfh-2013";
 		ebp = new ElectionBoardProxy();
 		epr = new MixerTallierRunner(ebp, new Messenger());
 		realList = epr.run();
 		mockList = new ArrayList<>();
 		rn = RunnerName.MIXING_TALLING;
-
+		buildMockList();
 	}
 
 	/**
 	 * Build the mock list.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	private void buildMockList() throws ElectionBoardServiceFault {
-		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT, true, eID, rn, ImplementerType.CERTIFICATE, EntityType.CA));
-		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT_SIGN, true, eID, rn, ImplementerType.RSA, EntityType.EM));
-
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
-			VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF, false, ebp.getElectionID(), rn, ImplementerType.NIZKP, EntityType.PARAMETER);
-			v.setEntityName(mName);
-			v.setImplemented(false);
+			VerificationResult v1 = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET, true, ebp.getElectionID(), rn, ImplementerType.NIZKP, EntityType.PARAMETER);
+			v1.setEntityName(mName);
+			mockList.add(v1);
 
-			mockList.add(v);
-
-			VerificationResult vSign = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.MIXER);
-			vSign.setEntityName(mName);
-			mockList.add(vSign);
+			VerificationResult v2 = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.MIXER);
+			v2.setEntityName(mName);
 		}
 
-		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY, true, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.EM));
+		mockList.add(new VerificationResult(VerificationType.MT_ENC_VOTES_SET, true, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.EA));
 
-		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM));
+		mockList.add(new VerificationResult(VerificationType.MT_ENC_VOTES_ID_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EA));
 
-		//ToDo - Check M7,M8, EM16, EM17
+		for (String tName : ebp.getElectionDefinition().getTallierId()) {
+			VerificationResult vr = new VerificationResult(VerificationType.MT_T_NIZKP_OF_X, true, ebp.getElectionID(), rn, ImplementerType.NIZKP, EntityType.TALLIER);
+			vr.setEntityName(tName);
+			mockList.add(vr);
 
-		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_BALLOT, true, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.VOTERS));
+			VerificationResult vr2 = new VerificationResult(VerificationType.MT_T_NIZKP_OF_X_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.TALLIER);
+			vr2.setEntityName(tName);
+			mockList.add(vr2);
+		}
+
+		mockList.add(new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES, true, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.PARAMETER));
+		mockList.add(new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM));
 	}
 
 	/**
@@ -102,7 +112,7 @@ public class MixerTallierRunnerTest {
 			assertEquals(realList.get(i).getVerificationType(), mockList.get(i).getVerificationType());
 			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
 			assertTrue(realList.get(i).isImplemented());
-			assertNull(realList.get(i).getFailureCode());
+			assertNull(realList.get(i).getReport());
 		}
 	}
 }

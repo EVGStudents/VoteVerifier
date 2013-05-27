@@ -13,7 +13,7 @@ package ch.bfh.univoteverifier.common;
  * This enum represent the type of implementer. Used to have a view by
  * "implementer type".
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public enum ImplementerType {
 

@@ -9,41 +9,45 @@
  */
 package ch.bfh.univoteverifier.verification;
 
+import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
+import ch.bfh.univoteverifier.runner.IndividualRunner;
+import java.security.cert.CertificateException;
+import javax.naming.InvalidNameException;
 
 /**
- * This class is used to perform an individual verification
+ * This class is used to perform an individual verification.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class IndividualVerification extends Verification {
 
-	ElectionReceipt er;
+	private final ElectionReceipt er;
 
 	/**
-	 * Construct an IndividualVerification with a given election ID
+	 * Construct an IndividualVerification with a given Messenger and
+	 * ElectionReceipt.
 	 *
-	 * @param File the file with a path to a QR Code
+	 * @param msgr the Messenger used to send messages.
+	 * @param eID the election ID
+	 * @param er the ElectionReceipt that contains the information about the
+	 * ballot.
+	 *
 	 */
-	public IndividualVerification(Messenger msgr, ElectionReceipt er) {
-		super(msgr, er.getElectionID());
+	public IndividualVerification(Messenger msgr, String eID, ElectionReceipt er) {
+		super(msgr, eID);
 		this.er = er;
 	}
 
-	/**
-	 * Create the necessaries runners used to print the results ordered by
-	 * the specification
-	 */
-	private void createRunnerBySpec() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
+	@Override
+	public void createRunners() {
+		try {
+			IndividualRunner ir = new IndividualRunner(ebproxy, msgr, er);
 
-	/**
-	 * Create the necessaries runners used to print the results ordered by
-	 * the entities
-	 */
-	private void createRunnerByEntities() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+			runners.add(ir);
+		} catch (CertificateException | ElectionBoardServiceFault | InvalidNameException ex) {
+			msgr.sendElectionSpecError(geteID(), ex);
+		}
 	}
 }

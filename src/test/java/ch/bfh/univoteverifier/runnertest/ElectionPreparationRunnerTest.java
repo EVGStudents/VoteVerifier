@@ -1,6 +1,12 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *
+ *  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+ *   Bern University of Applied Sciences, Engineering and Information Technology,
+ *   Research Institute for Security in the Information Society, E-Voting Group,
+ *   Biel, Switzerland.
+ *
+ *   Project independent UniVoteVerifier.
+ *
  */
 package ch.bfh.univoteverifier.runnertest;
 
@@ -12,7 +18,6 @@ import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.runner.ElectionPreparationRunner;
-import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.FileNotFoundException;
 import java.security.cert.CertificateException;
@@ -25,7 +30,7 @@ import static org.junit.Assert.*;
 /**
  *  * Test the runner of the election preparation.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ElectionPreparationRunnerTest {
 
@@ -36,7 +41,7 @@ public class ElectionPreparationRunnerTest {
 	private final String eID;
 	private final RunnerName rn;
 
-	public ElectionPreparationRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException {
+	public ElectionPreparationRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException, InterruptedException {
 		eID = "vsbfh-2013";
 		ebp = new ElectionBoardProxy();
 		epr = new ElectionPreparationRunner(ebp, new Messenger());
@@ -50,7 +55,8 @@ public class ElectionPreparationRunnerTest {
 	/**
 	 * Build the mock list.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	private void buildMockList() throws ElectionBoardServiceFault {
 		mockList.add(new VerificationResult(VerificationType.EL_PREP_C_AND_R_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EA));
@@ -68,6 +74,9 @@ public class ElectionPreparationRunnerTest {
 			vSign.setEntityName(mName);
 			mockList.add(vSign);
 		}
+
+		mockList.add(new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS, true, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.EM));
+		mockList.add(new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM));
 	}
 
 	/**
@@ -97,7 +106,7 @@ public class ElectionPreparationRunnerTest {
 			assertEquals(realList.get(i).getVerificationType(), mockList.get(i).getVerificationType());
 			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
 			assertTrue(realList.get(i).isImplemented());
-			assertNull(realList.get(i).getFailureCode());
+			assertNull(realList.get(i).getReport());
 		}
 	}
 }

@@ -14,6 +14,7 @@ import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.ImplementerType;
+import ch.bfh.univoteverifier.common.Report;
 
 /*
  *This class is a VerificationResult and it represent the result of a single
@@ -25,10 +26,9 @@ public class VerificationResult {
 
 	private final VerificationType v;
 	private final RunnerName rn;
-	private String msg;
 	private boolean impl;
 	private final boolean result;
-	private FailureCode fc;
+	private Report rep;
 	private String entityName;
 	private final String eID;
 	private final ImplementerType it;
@@ -42,12 +42,14 @@ public class VerificationResult {
 	 * @param eID The election ID who need this VerificationResult.
 	 * @param rn The name of the runner who wants to have this
 	 * VerificationResult.
+	 * @param it The implementer that created this VerificationResult
+	 * @param et The entity that has verified this VerificationResult
 	 */
 	public VerificationResult(VerificationType v, boolean res, String eID, RunnerName rn, ImplementerType it, EntityType et) {
 		this.v = v;
 		this.result = res;
 		this.impl = true;
-		this.fc = null;
+		this.rep = null;
 		this.eID = eID;
 		this.rn = rn;
 		this.it = it;
@@ -104,21 +106,21 @@ public class VerificationResult {
 	}
 
 	/**
-	 * Get the failure code for this VerificationResult.
+	 * Get the Report for this VerificationResult.
 	 *
-	 * @return the FailureCode.
+	 * @return the Report.
 	 */
-	public FailureCode getFailureCode() {
-		return this.fc;
+	public Report getReport() {
+		return this.rep;
 	}
 
 	/**
-	 * Set the failure code for this VerificationResult.
+	 * Set the Report for this VerificationResult.
 	 *
-	 * @param fc the FailureCode.
+	 * @param report the Report.
 	 */
-	public void setFailureCode(FailureCode fc) {
-		this.fc = fc;
+	public void setReport(Report report) {
+		this.rep = report;
 	}
 
 	/**

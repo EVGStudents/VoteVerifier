@@ -13,7 +13,7 @@ package ch.bfh.univoteverifier.common;
  * This enumeration specify the name of the sections for the verification
  * results.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public enum RunnerName {
 
@@ -23,13 +23,14 @@ public enum RunnerName {
 	ELECTION_PREPARATION(3),
 	ELECTION_PERIOD(4),
 	MIXING_TALLING(5),
-	RESULT(11);
+	RESULT(6),
+	INDIVIDUAL(7);
 	private final int id;
 
 	/**
 	 * Construct a new section name with a given ID.
 	 *
-	 * @param id the ID for this section name
+	 * @param id the ID for this section name.
 	 */
 	private RunnerName(int id) {
 		this.id = id;
@@ -38,7 +39,7 @@ public enum RunnerName {
 	/**
 	 * Get the ID of this RunnerName.
 	 *
-	 * @return the ID of the section name
+	 * @return the ID of the section name.
 	 */
 	public int getID() {
 		return this.id;

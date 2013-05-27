@@ -19,11 +19,13 @@ import ch.bfh.univote.common.EncryptionKeyShare;
 import ch.bfh.univote.common.MixedEncryptedVotes;
 import ch.bfh.univote.common.MixedVerificationKey;
 import ch.bfh.univote.common.MixedVerificationKeys;
+import ch.bfh.univote.common.PartiallyDecryptedVotes;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.ImplementerType;
+import ch.bfh.univoteverifier.common.Report;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -34,7 +36,7 @@ import java.util.List;
  * This class is used to check the validity of the parameters, like ElGamal,
  * Schnorr or other things, like encryption key.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class ParametersImplementer extends Implementer {
 
@@ -69,7 +71,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult ve = new VerificationResult(VerificationType.SETUP_SCHNORR_PARAM_LEN, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			ve.setFailureCode(FailureCode.FALSE_PARAMETERS_LENGTH);
+			ve.setReport(new Report(FailureCode.FALSE_PARAMETERS_LENGTH));
 		}
 
 		return ve;
@@ -89,7 +91,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult ve = new VerificationResult(VerificationType.EL_SETUP_ELGAMAL_PARAM_LEN, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			ve.setFailureCode(FailureCode.FALSE_PARAMETERS_LENGTH);
+			ve.setReport(new Report(FailureCode.FALSE_PARAMETERS_LENGTH));
 		}
 
 		return ve;
@@ -108,7 +110,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			ve.setFailureCode(FailureCode.COMPOSITE_PRIME_NUMBER);
+			ve.setReport(new Report(FailureCode.COMPOSITE_PRIME_NUMBER));
 		}
 
 		return ve;
@@ -130,7 +132,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			ve.setFailureCode(FailureCode.NOT_SAFE_PRIME);
+			ve.setReport(new Report(FailureCode.NOT_SAFE_PRIME));
 		}
 
 		return ve;
@@ -150,7 +152,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			ve.setFailureCode(FailureCode.NOT_A_GENERATOR);
+			ve.setReport(new Report(FailureCode.NOT_A_GENERATOR));
 		}
 
 		return ve;
@@ -187,7 +189,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.ENC_KEY_SHARE_NOT_EQUALS);
+			vr.setReport(new Report(FailureCode.ENC_KEY_SHARE_NOT_EQUALS));
 		}
 
 		return vr;
@@ -218,40 +220,7 @@ public class ParametersImplementer extends Implementer {
 
 		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_ANON_GEN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 		if (!r) {
-			vr.setFailureCode(FailureCode.ELECTION_GEN_NOT_EQUALS);
-		}
-
-		return vr;
-	}
-
-	/**
-	 * Check the set of mixer verification keys by the given mixer.
-	 *
-	 * Specification: 1.3.5, d.
-	 *
-	 * @param mixerName the name of the mixer.
-	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 */
-	public VerificationResult vrfVerificationKeysMixedBy(String mixerName) throws ElectionBoardServiceFault {
-		MixedVerificationKeys vk = ebp.getMixedVerificationKeysBy(mixerName);
-
-		//plausibility check 1: size of the set against the number of voter certificates
-		boolean size = vk.getKey().size() == ebp.getVoterCerts().getCertificate().size();
-
-		//plausibility check 2: values in G_q - ToDo
-		boolean valuesInG = false;
-
-		//plausibility check 3: different values - ToDo
-		boolean differentValues = false;
-
-		boolean r = size && valuesInG && differentValues;
-
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
-
-		if (!r) {
-			vr.setFailureCode(FailureCode.VK_PLAUSIBILITY_CHECK_FAILED);
+			vr.setReport(new Report(FailureCode.ELECTION_GEN_NOT_EQUALS));
 		}
 
 		return vr;
@@ -281,7 +250,7 @@ public class ParametersImplementer extends Implementer {
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.SET_VERIFICATION_KEYS_NOT_EQUALS);
+			vr.setReport(new Report(FailureCode.SET_VERIFICATION_KEYS_NOT_EQUALS));
 		}
 
 		return vr;
@@ -304,13 +273,13 @@ public class ParametersImplementer extends Implementer {
 		List<String> mixerID = ebp.getElectionDefinition().getMixerId();
 		List<MixedVerificationKey> lastMixerKeys = ebp.getLatelyMixedVerificationKeysBy(mixerID.get(mixerID.size() - 1));
 
-		//check that vk'_i = vk_i,m
+		//check that vk'_i = vk_i,m => we compare the two list rather than every signle key
 		boolean r = mk.equals(lastMixerKeys);
 
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.NEW_SET_VERIFICATION_KEYS_NOT_EQUALS);
+			vr.setReport(new Report(FailureCode.NEW_SET_VERIFICATION_KEYS_NOT_EQUALS));
 		}
 
 		return vr;
@@ -326,7 +295,7 @@ public class ParametersImplementer extends Implementer {
 	 * verified.
 	 * @return true if the checks have been successfully executed.
 	 */
-	public boolean vrfBallotVerificationKey(BigInteger verificationKey) throws ElectionBoardServiceFault {
+	public VerificationResult vrfBallotVerificationKey(BigInteger verificationKey) throws ElectionBoardServiceFault {
 		MixedVerificationKeys mvk = ebp.getMixedVerificationKeys();
 		boolean result = false;
 
@@ -339,11 +308,17 @@ public class ParametersImplementer extends Implementer {
 
 		}
 
-		//check that no other recent ballots contain this vk - ToDo
+		//check that no other recent ballots contain this vk -  Not yet available
 
-		//if vk is in the late renewal key set, check that no other recent ballots contain this v in the late renewal key set - ToDo
+		//if vk is in the late renewal key set, check that no other recent ballots contain this v in the late renewal key set -  Not yet availble
 
-		return result;
+		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_VERIFICATION_KEY, result, ebp.getElectionID(), rn, it, EntityType.VOTERS);
+
+		if (!result) {
+			vr.setReport(new Report(FailureCode.INVALID_BALLOT_VK));
+		}
+
+		return vr;
 	}
 
 	/**
@@ -359,14 +334,17 @@ public class ParametersImplementer extends Implementer {
 	public VerificationResult vrfMixedEncryptedVotes() throws ElectionBoardServiceFault {
 		MixedEncryptedVotes mev = ebp.getMixedEncryptedVotes();
 
-		//ToDo - ask if it has to be done
+		//get last mixer encrypted votes
+		List<String> mixersName = ebp.getElectionDefinition().getMixerId();
+		MixedEncryptedVotes lastMixerEncVotes = ebp.getMixedEncryptedVotesBy(mixersName.get(mixersName.size() - 1));
 
-		boolean r = false;
+		//check if the two set correspond
+		boolean r = mev.equals(lastMixerEncVotes);
 
 		VerificationResult vr = new VerificationResult(VerificationType.MT_ENC_VOTES_SET, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (!r) {
-			vr.setFailureCode(FailureCode.ENCRYPTED_VOTES_NOT_EQUALS);
+			vr.setReport(new Report(FailureCode.ENCRYPTED_VOTES_NOT_EQUALS));
 		}
 
 		return vr;
@@ -383,15 +361,65 @@ public class ParametersImplementer extends Implementer {
 	 */
 	public VerificationResult vrfVotes() throws ElectionBoardServiceFault {
 		Ballots ballots = ebp.getBallots();
+		BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
 
+		for (int i = 0; i < ballots.getBallot().size(); i++) {
+			Ballot b = ballots.getBallot().get(i);
+			BigInteger bValue = b.getEncryptedVote().getSecondValue();
 
-		for (Ballot b : ballots.getBallot()) {
+			BigInteger m = bValue.mod(elGamalP);
+
+			//get the a value for each tallier
+			for (int j = 0; j < ebp.getElectionDefinition().getTallierId().size(); i++) {
+				String tName = ebp.getElectionDefinition().getTallierId().get(j);
+				PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tName);
+
+				//get the a value
+				BigInteger aValue = pdv.getVote().get(i);
+				m = m.multiply(aValue).mod(elGamalP);
+			}
+
 			//ToDo
+			System.out.println(m);
+
+
 		}
 
 		VerificationResult vr = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES, false, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
 		//set failure code
+
+		return vr;
+	}
+
+	/**
+	 * Verify that a ballot from a verification key belongs to the set of
+	 * all ballots.
+	 *
+	 * Specification: individual verification.
+	 *
+	 * @param verificationKey the verification key of the ballot.
+	 * @return a VerificationResult.
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	public VerificationResult vrfBallotInSet(BigInteger verificationKey) throws ElectionBoardServiceFault {
+		Ballot qrCodeBallot = ebp.getBallot(verificationKey);
+		boolean r = false;
+
+		//check if the ballot belongs to the set of all ballots
+		for (Ballot b : ebp.getBallots().getBallot()) {
+			if (qrCodeBallot.equals(b)) {
+				r = true;
+				break;
+			}
+		}
+
+		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_IN_BALLOTS, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+
+		if (!r) {
+			vr.setReport(new Report(FailureCode.BALLOT_NOT_IN_SET));
+		}
 
 		return vr;
 	}

@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class OldPrimitives {
 

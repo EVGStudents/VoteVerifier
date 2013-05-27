@@ -1,6 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
+ * Applied Sciences, Engineering and Information Technology, Research Institute
+ * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ *
+ * Project independent UniVoteVerifier.
+ *
  */
 package ch.bfh.univoteverifier.commontest;
 
@@ -11,17 +16,19 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Test the behavior of the CryptoFunc
+ * Test the behavior of the CryptoFunc.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class CryptoFuncTest {
 
 	/**
 	 * Test if the sha1 function produces the correct results.
 	 *
-	 * @throws NoSuchAlgorithmException
-	 * @throws UnsupportedEncodingException
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
 	 */
 	@Test
 	public void testSHA1() throws NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -53,8 +60,10 @@ public class CryptoFuncTest {
 	/**
 	 * Test if the sha256 function produces the correct results.
 	 *
-	 * @throws NoSuchAlgorithmException
-	 * @throws UnsupportedEncodingException
+	 * @throws NoSuchAlgorithmException if the hash algorithm function used
+	 * in this verification cannot find the hash algorithm.
+	 * @throws UnsupportedEncodingException if the hash algorithm function
+	 * used in this verification cannot find the encoding.
 	 */
 	@Test
 	public void testSHA256() throws NoSuchAlgorithmException, UnsupportedEncodingException {

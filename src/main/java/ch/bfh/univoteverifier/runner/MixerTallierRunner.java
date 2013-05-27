@@ -22,14 +22,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
 
 /**
  * This class represent a MixerTallierRunner.
  *
- * @author snake
+ * @author Scalzi Giuseppe
  */
 public class MixerTallierRunner extends Runner {
 
@@ -50,25 +48,22 @@ public class MixerTallierRunner extends Runner {
 		rsaImpl = new RSAImplementer(ebp, runnerName);
 		proofImpl = new ProofImplementer(ebp, runnerName);
 		prmImpl = new ParametersImplementer(ebp, runnerName);
-
 	}
 
 	@Override
-	public List<VerificationResult> run() {
+	public List<VerificationResult> run() throws InterruptedException {
 		try {
 			//shuffled encrypted votes by mixer and signature
 			for (String mName : ebp.getElectionDefinition().getMixerId()) {
-				VerificationResult v1 = proofImpl.vrfShuffledEncryptedVotesByProof(mName);
+				VerificationResult v1 = proofImpl.vrfEncryptedVotesByProof(mName);
 				msgr.sendVrfMsg(v1);
 				partialResults.add(v1);
 				Thread.sleep(1000);
-
 
 				VerificationResult v2 = rsaImpl.vrfMixedEncryptedVotesBySign(mName);
 				msgr.sendVrfMsg(v2);
 				partialResults.add(v2);
 				Thread.sleep(1000);
-
 			}
 
 			//shuffled mixed encrypted votes set
@@ -77,13 +72,11 @@ public class MixerTallierRunner extends Runner {
 			partialResults.add(v3);
 			Thread.sleep(1000);
 
-
 			//signature of shuffled mixed encrypted votes set
 			VerificationResult v4 = rsaImpl.vrfMixedEncryptedVotesSign();
 			msgr.sendVrfMsg(v4);
 			partialResults.add(v4);
 			Thread.sleep(1000);
-
 
 			//NIZKP of decrypted votes and signature
 			for (String tName : ebp.getElectionDefinition().getTallierId()) {
@@ -92,12 +85,10 @@ public class MixerTallierRunner extends Runner {
 				partialResults.add(v5);
 				Thread.sleep(1000);
 
-
 				VerificationResult v6 = rsaImpl.vrfDecryptedVotesBySign(tName);
 				msgr.sendVrfMsg(v6);
 				partialResults.add(v6);
 				Thread.sleep(1000);
-
 			}
 
 			//plaintext votes set
@@ -105,7 +96,6 @@ public class MixerTallierRunner extends Runner {
 			msgr.sendVrfMsg(v7);
 			partialResults.add(v7);
 			Thread.sleep(1000);
-
 
 			//plaintext votes set signature
 			VerificationResult v8 = rsaImpl.vrfPlaintextVotesSign();
@@ -115,7 +105,6 @@ public class MixerTallierRunner extends Runner {
 
 		} catch (InterruptedException | NoSuchAlgorithmException | UnsupportedEncodingException | ElectionBoardServiceFault ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
-			Logger.getLogger(MixerTallierRunner.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 		return Collections.unmodifiableList(partialResults);
