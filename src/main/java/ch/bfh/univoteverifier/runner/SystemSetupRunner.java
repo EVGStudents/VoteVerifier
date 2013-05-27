@@ -57,37 +57,37 @@ public class SystemSetupRunner extends Runner {
 			VerificationResult v1 = paramImpl.vrfPrime(Config.p, VerificationType.SETUP_SCHNORR_P);
 			msgr.sendVrfMsg(v1);
 			partialResults.add(v1);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//is Schnorr q prime
 			VerificationResult v2 = paramImpl.vrfPrime(Config.q, VerificationType.SETUP_SCHNORR_Q);
 			msgr.sendVrfMsg(v2);
 			partialResults.add(v2);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//is Schnorr g a generator
 			VerificationResult v3 = paramImpl.vrfGenerator(Config.p, Config.q, Config.g, VerificationType.SETUP_SCHNORR_G);
 			msgr.sendVrfMsg(v3);
 			partialResults.add(v3);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//is Schnorr p a safe prime
 			VerificationResult v4 = paramImpl.vrfSafePrime(Config.p, Config.q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
 			msgr.sendVrfMsg(v4);
 			partialResults.add(v4);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//are the Schnorr paramters long enough
 			VerificationResult v5 = paramImpl.vrfSchnorrParamLen(Config.p, Config.q, Config.g);
 			msgr.sendVrfMsg(v5);
 			partialResults.add(v5);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//verifiy CA certificate
 			VerificationResult v6 = certImpl.vrfCACertificate();
 			msgr.sendVrfMsg(v6);
 			partialResults.add(v6);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//verifiy EM certificate
 			VerificationResult v7 = certImpl.vrfEMCertificate();

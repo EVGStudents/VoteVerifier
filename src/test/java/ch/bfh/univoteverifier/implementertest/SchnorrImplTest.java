@@ -41,7 +41,6 @@ public class SchnorrImplTest {
 		ebp = new ElectionBoardProxy();
 		si = new SchnorrImplementer(ebp, RunnerName.UNSET);
 
-
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		er = qrCode.decodeReceipt(qrCodeFile);

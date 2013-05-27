@@ -30,9 +30,9 @@ public class Report {
 	}
 
 	/**
-	 * Set the URL of a possible source of explanations for this Report
+	 * Set the URL of a possible source of explanations for this Report.
 	 *
-	 * @param url the url of the source
+	 * @param url the url of the source.
 	 */
 	public void setReportURL(String url) {
 		this.url = url;
