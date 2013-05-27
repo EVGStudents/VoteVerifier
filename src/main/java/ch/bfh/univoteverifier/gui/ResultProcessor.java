@@ -24,6 +24,7 @@ public class ResultProcessor {
     private ConsolePanel consolePanel;
     private ResultTabbedPane resultPanelManager;
     private ImageIcon pass, fail, noImpl;
+    private static final Logger LOGGER = Logger.getLogger(ResultProcessor.class.toString());
 
     /**
      * Create a new instance of this class.

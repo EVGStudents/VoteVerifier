@@ -51,11 +51,21 @@ public class Messenger {
         ss.notifyListeners(ve);
     }
 
+    /**
+     * Alert the GUI that a file has been selected.
+     *
+     * @param fileName The path to the file.
+     */
     public void sendFileSelected(String fileName) {
         VerificationEvent ve = new VerificationEvent(VerificationMessage.FILE_SELECTED, fileName);
         ss.notifyListeners(ve);
     }
 
+    /**
+     * Alert the GUI that the visibility of the console should be changed.
+     *
+     * @param selected
+     */
     public void sendShowConsole(Boolean selected) {
         VerificationEvent ve = new VerificationEvent(VerificationMessage.SHOW_CONSOLE, selected);
         ss.notifyListeners(ve);
@@ -75,10 +85,10 @@ public class Messenger {
     }
 
     /*
-     * send election results to the GUI
+     * Send election results to the GUI
      * @param Map<Choice,Integer> The election results.
      */
-    public void sendSetupError(Map<Choice, Integer> m) {
+    public void sendElectionResults(Map<Choice, Integer> m) {
         VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_RESULTS, m);
         ss.notifyListeners(ve);
     }
