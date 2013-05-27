@@ -10,6 +10,7 @@
  */
 package ch.bfh.univoteverifier.table;
 
+import ch.bfh.univote.common.Choice;
 import ch.bfh.univoteverifier.action.ToggleResultOrganizationAction;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.ProgressBar;
@@ -22,6 +23,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -217,16 +219,18 @@ public class ResultTab extends JPanel {
     }
 
     /**
+     * Add election results to the election result panel.
+     */
+    public void addElectionResults(Map<Choice, Integer> electionResult) {
+        candidateResultsPanel.addData(electionResult);
+    }
+
+    /**
      * Add data to the result panel.
      *
      * @param rs Data to add.
      */
     public void addData(ResultSet rs) {
-        if (true) { //TODO ONLY DO THIS IF WHAT IS ENTERING IS A CANDIDATE RESULT
-            candidateResultsPanel.addData(rs);
-            //TODO next block should be else if when the real results are arriving.
-
-        }
         progressBar.increaseProgress(2);
 
         rs.setSectionName(rs.getRunnerName().toString());

@@ -10,9 +10,11 @@
  */
 package ch.bfh.univoteverifier.table;
 
+import ch.bfh.univote.common.Choice;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -35,6 +37,7 @@ public class ResultSet {
     private String sectionName;
     private VerificationResult vr;
     private static final Logger LOGGER = Logger.getLogger(ResultSet.class.getName());
+    Map<Choice, Integer> electionResult;
 
     /**
      * Create an instance of this class.
@@ -108,6 +111,24 @@ public class ResultSet {
      */
     public void setSectionName(String str) {
         sectionName = str;
+    }
+
+    /**
+     * Set the election results for the candidate votes.
+     *
+     * @param electionResult
+     */
+    public void setElectionResult(Map<Choice, Integer> electionResult) {
+        this.electionResult = electionResult;
+    }
+
+    /**
+     * Get the election results for the candidate votes.
+     *
+     * @param electionResult
+     */
+    public Map<Choice, Integer> getElectionResult() {
+        return this.electionResult;
     }
 
     /**

@@ -10,10 +10,15 @@
  */
 package ch.bfh.univoteverifier.table;
 
+import ch.bfh.univote.common.Candidate;
+import ch.bfh.univote.common.Choice;
+import ch.bfh.univote.common.PoliticalList;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
@@ -39,7 +44,6 @@ public class CandidateResultsPanel extends JPanel {
         this.setBackground(Color.PINK);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         ArrayList<ResultSet> data = new ArrayList<>();
-        createNewTable();
     }
 
     /**
@@ -48,42 +52,37 @@ public class CandidateResultsPanel extends JPanel {
      * @param rt The table to which to add data.
      * @param r The data to add.
      */
-    public void addData(ResultSet rs) {
-//            public void addData(Entry e) {
+    public void addData(Map<Choice, Integer> electionResult) {
 
-//         for (Entry<Choice, Integer> e : v.getElectionResults()) {
-//            Choice c = e.getKey();
-//            Integer count = e.getValue();
-//
-//            if (c instanceof PoliticalList) {
-//                //create new table
-//        createNewTable();
-//                PoliticalList pl = (PoliticalList) c;
-//                System.out.print(pl.getNumber() + " ");
-//                System.out.print("Political list: " + pl.getPartyName().get(0).getText());
-//            } else if (c instanceof Candidate) {
-//                //add to existing table
-//                Candidate can = (Candidate) c;
-//                System.out.print("\t");
-//                System.out.print(can.getNumber() + " ");
-//                System.out.print(can.getFirstName() + " ");
-//                System.out.print(can.getLastName());
-//            }
-//
-//            System.out.println("...................." + count);
-//        }
+        for (Entry<Choice, Integer> e : electionResult.entrySet()) {
+            Choice c = e.getKey();
+            Integer count = e.getValue();
 
-//        createNewTable();
+            if (c instanceof PoliticalList) {
+                //create new table
+                createNewTable(e);
+                PoliticalList pl = (PoliticalList) c;
+                System.out.print(pl.getNumber() + " ");
+                System.out.print("Political list: " + pl.getPartyName().get(0).getText());
+            } else if (c instanceof Candidate) {
+                //add to existing table
+                activeTable.getTableModel().addEntry(e);
+                activeTable.revalidate();
+                Candidate can = (Candidate) c;
+                System.out.print("\t");
+                System.out.print(can.getNumber() + " ");
+                System.out.print(can.getFirstName() + " ");
+                System.out.print(can.getLastName());
+            }
 
-
-        activeTable.getTableModel().addResultSet(rs);
-        activeTable.revalidate();
+            System.out.println("...................." + count);
+        }
         this.revalidate();
         this.repaint();
     }
 
-    public void createNewTable() {
-        CandidateResultsTableModel crtm = new CandidateResultsTableModel();
+    public void createNewTable(Entry<Choice, Integer> e) {
+        CandidateResultsTableModel crtm = new CandidateResultsTableModel(e);
         activeTable = new CandidateResultsTable(crtm);
 
         JPanel tablePanel = new JPanel();

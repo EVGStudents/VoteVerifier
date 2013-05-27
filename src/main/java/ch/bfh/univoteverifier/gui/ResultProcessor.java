@@ -5,6 +5,7 @@
 package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.listener.VerificationEvent;
+import ch.bfh.univoteverifier.listener.VerificationMessage;
 import ch.bfh.univoteverifier.table.ResultSet;
 import ch.bfh.univoteverifier.table.ResultTabbedPane;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -44,7 +45,7 @@ public class ResultProcessor {
     /**
      * Display the incoming verification result information in the GUI
      *
-     * @param ve VerificationResult helper class containing verification
+     * @param ve VerificationEvent helper class containing verification
      * information.
      */
     public void showResultInGUI(VerificationEvent ve) {
@@ -54,9 +55,17 @@ public class ResultProcessor {
         String vrfType = GUIconstants.getTextFromVrfCode(code);
         ImageIcon img = getImage(vr);
         ResultSet rs = new ResultSet(vrfType, img, vr);
-        resultPanelManager.addData(rs);
-        String outputText = "\n" + vrfType + " ............. " + result;
-        consolePanel.appendToStatusText(outputText, ve.getEID());
+
+
+        if (ve.getVm() == VerificationMessage.ELECTION_RESULTS) {
+            rs.setElectionResult(ve.getElectionResults());
+            resultPanelManager.addElectionResults(rs);
+        } else {
+
+            resultPanelManager.addData(rs);
+            String outputText = "\n" + vrfType + " ............. " + result;
+            consolePanel.appendToStatusText(outputText, ve.getEID());
+        }
     }
 
     /**

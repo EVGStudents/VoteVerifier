@@ -10,11 +10,13 @@
  */
 package ch.bfh.univoteverifier.table;
 
+import ch.bfh.univote.common.Choice;
 import ch.bfh.univoteverifier.action.RemoveTabAction;
 import ch.bfh.univoteverifier.gui.ThreadManager;
 import java.util.logging.Logger;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeListener;
@@ -62,8 +64,8 @@ public class ResultTabbedPane extends JTabbedPane {
      */
     public void addData(ResultSet rs) {
         //Find is pane with eID exists
-        if (hasTable(rs.getEID())) {
-            ResultTab rtp = getTableByName(rs.getEID());
+        if (hasTabPane(rs.getEID())) {
+            ResultTab rtp = getTabPaneByName(rs.getEID());
             rtp.addData(rs);
             if (rs.getResult() == false) {
                 //if a there was a problem in the verification, change tab text to red.
@@ -74,7 +76,15 @@ public class ResultTabbedPane extends JTabbedPane {
         } else {
             createNewTab(rs);
         }
+    }
 
+    public void addElectionResults(ResultSet rs) {
+        if (hasTabPane(rs.getEID())) {
+            ResultTab rtp = getTabPaneByName(rs.getEID());
+            rtp.addElectionResults(rs.getElectionResult());
+        } else {
+            createNewTab(rs);
+        }
     }
 
     /**
@@ -107,7 +117,7 @@ public class ResultTabbedPane extends JTabbedPane {
      * @param eID the name of the table to find.
      * @return The table whose name is eID.
      */
-    public ResultTab getTableByName(String eID) {
+    public ResultTab getTabPaneByName(String eID) {
         for (ResultTab r : resultsPanels) {
             String thisEID = r.getEID();
             if (eID.compareTo(thisEID) == 0) {
@@ -123,8 +133,8 @@ public class ResultTabbedPane extends JTabbedPane {
      * @param eID the name of the table to find.
      * @return The table whose name is eID.
      */
-    public boolean removeTableByName(String eID) {
-        if (!hasTable(eID)) {
+    public boolean removeTabPaneByName(String eID) {
+        if (!hasTabPane(eID)) {
             return false;
         }
         ResultTab rFound = null;
@@ -139,12 +149,12 @@ public class ResultTabbedPane extends JTabbedPane {
     }
 
     /**
-     * Check if a table with a given eID is in the list.
+     * Check if a tab with a given eID is in the list.
      *
      * @param eID The name of the election ID to search for.
      * @return The table with the election ID as a name.
      */
-    public boolean hasTable(String eID) {
+    public boolean hasTabPane(String eID) {
         boolean found = false;
         if (resultsPanels.isEmpty()) {
             return found;

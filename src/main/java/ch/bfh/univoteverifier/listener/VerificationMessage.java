@@ -26,7 +26,8 @@ public enum VerificationMessage {
     ELECTION_SPECIFIC_ERROR(30),
     VRF_FINISHED(40),
     FILE_SELECTED(50),
-    SHOW_CONSOLE(60);
+    SHOW_CONSOLE(60),
+    ELECTION_RESULTS(70);
 //The code of the message
     private int code;
 

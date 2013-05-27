@@ -9,6 +9,7 @@
  */
 package ch.bfh.univoteverifier.common;
 
+import ch.bfh.univote.common.Choice;
 import ch.bfh.univoteverifier.listener.VerificationEvent;
 import ch.bfh.univoteverifier.listener.VerificationListener;
 import ch.bfh.univoteverifier.listener.VerificationMessage;
@@ -16,6 +17,7 @@ import ch.bfh.univoteverifier.listener.VerificationSubject;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -69,6 +71,15 @@ public class Messenger {
         String exName = ex.getClass().getName();
         String message = getMessageForKey(exName);
         VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_SPECIFIC_ERROR, message, eID);
+        ss.notifyListeners(ve);
+    }
+
+    /*
+     * send election results to the GUI
+     * @param Map<Choice,Integer> The election results.
+     */
+    public void sendSetupError(Map<Choice, Integer> m) {
+        VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_RESULTS, m);
         ss.notifyListeners(ve);
     }
 

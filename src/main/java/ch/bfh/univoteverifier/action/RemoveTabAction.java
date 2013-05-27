@@ -61,7 +61,7 @@ public class RemoveTabAction extends AbstractAction {
         String name = btn.getName();
         Logger.getLogger(RemoveTabAction.class.getName()).log(Level.INFO, "Name of table to remove{0}", name);
         if (name != null) {
-            ((ResultTabbedPane) jtp).removeTableByName(name);
+            ((ResultTabbedPane) jtp).removeTabPaneByName(name);
         }
         tm.killThread(name);
 

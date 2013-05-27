@@ -9,7 +9,9 @@
  */
 package ch.bfh.univoteverifier.listener;
 
+import ch.bfh.univote.common.Choice;
 import ch.bfh.univoteverifier.verification.VerificationResult;
+import java.util.Map;
 
 /**
  *
@@ -26,6 +28,7 @@ public class VerificationEvent {
     private String eID;
     private final VerificationResult vr;
     private Boolean consoleSelected;
+    private Map<Choice, Integer> electionResult;
 
     /**
      * Create an instance of this helper class to send a message that is
@@ -39,6 +42,19 @@ public class VerificationEvent {
         this.vm = vm;
         this.msg = msg;
         this.eID = eID;
+        this.vr = null;
+    }
+
+    /**
+     * Create an instance of this helper class to send a message that is
+     * specific to an given election ID.
+     *
+     * @param vm The type of message that this VerificationEvent contains
+     * @param Map<Choice, Integer> The election results for candidates.
+     */
+    public VerificationEvent(VerificationMessage vm, Map<Choice, Integer> electionResult) {
+        this.vm = vm;
+        this.electionResult = electionResult;
         this.vr = null;
     }
 
@@ -88,6 +104,17 @@ public class VerificationEvent {
      */
     public String getMsg() {
         return msg;
+    }
+
+    /**
+     * Get the election results. This is the amount of votes that the candidates
+     * have received.
+     *
+     * @return A map with choice and integer containing the names of the
+     * candidates and the number of votes they have received.
+     */
+    public Map<Choice, Integer> getElectionResults() {
+        return electionResult;
     }
 
     /**

@@ -170,6 +170,12 @@ public class ResultTableModel extends AbstractTableModel {
         }
     }
 
+    /**
+     * Get the verification type of the data in this row.
+     *
+     * @param row
+     * @return
+     */
     public int getRowVerificationTypID(int row) {
         ResultSet rs = data.get(row);
         int verificationTypeID = rs.getVerificationType().getID();

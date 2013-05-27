@@ -10,10 +10,14 @@
  */
 package ch.bfh.univoteverifier.table;
 
+import ch.bfh.univote.common.Candidate;
+import ch.bfh.univote.common.Choice;
+import ch.bfh.univote.common.PoliticalList;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Locale;
+import java.util.Map.Entry;
 import javax.swing.Icon;
 import javax.swing.table.AbstractTableModel;
 
@@ -25,8 +29,8 @@ import javax.swing.table.AbstractTableModel;
  */
 public class CandidateResultsTableModel extends AbstractTableModel {
 
-    private ArrayList<ResultSet> data;
-    private String[] columnNames = {"", ""};
+    private ArrayList<Entry> data;
+    private String[] columnNames;
 
     /**
      * Create an instance of this ResultTableModel.
@@ -36,10 +40,10 @@ public class CandidateResultsTableModel extends AbstractTableModel {
      * @param section The description of the section from which this
      * verification result was produced.
      */
-    public CandidateResultsTableModel() {
+    public CandidateResultsTableModel(Entry e) {
         data = new ArrayList<>();
-        columnNames[0] = "Candidate Name";
-        columnNames[1] = "Votes";
+        columnNames[0] = ((PoliticalList) e.getKey()).getTitle().toString();
+        columnNames[1] = ((PoliticalList) e.getKey()).getNumber();
 
     }
 
@@ -86,33 +90,20 @@ public class CandidateResultsTableModel extends AbstractTableModel {
     public Object getValueAt(int row, int col) {
         Object ret;
         if (col == 0) {
-            ResultSet rs = data.get(row);
-            String formattedText = formatText(rs);
-            ret = formattedText;
+            Entry<Choice, Integer> e = data.get(row);
+            Candidate can = (Candidate) e.getKey();
+            String cellText = can.getNumber() + " "
+                    + can.getFirstName() + " "
+                    + can.getLastName();
+            ret = cellText;
         } else if (col == 1) {
-            ret = data.get(row).getImage();
+            Entry<Choice, Integer> e = data.get(row);
+            Integer count = e.getValue();
+            ret = count.intValue();
         } else {
             ret = null;
         }
         return ret;
-    }
-
-    /**
-     * Format the text with an appropriate amount of dots. I.e.
-     * Text...............
-     *
-     * @return The formatted text.
-     */
-    public String formatText(ResultSet rs) {
-        String text = rs.getTxt();
-        if (!rs.getEntityName().equals("notSet")) {
-            StringBuilder sb = new StringBuilder();
-            Formatter formatter = new Formatter(sb, GUIconstants.getLocale());
-            String entityName = rs.getEntityName();
-            formatter.format(text, entityName);
-            text = formatter.toString();
-        }
-        return text;
     }
 
     /**
@@ -145,8 +136,8 @@ public class CandidateResultsTableModel extends AbstractTableModel {
      *
      * @param r The ResultPair object containing a name and image.
      */
-    public void addResultSet(ResultSet r) {
-        data.add(r);
+    public void addEntry(Entry e) {
+        data.add(e);
         int row = data.size();
         fireTableDataChanged();
     }
@@ -164,15 +155,9 @@ public class CandidateResultsTableModel extends AbstractTableModel {
             case 0:
                 return String.class;
             case 1:
-                return Icon.class;
+                return Integer.class;
             default:
                 return String.class;
         }
-    }
-
-    public int getRowVerificationTypID(int row) {
-        ResultSet rs = data.get(row);
-        int verificationTypeID = rs.getVerificationType().getID();
-        return verificationTypeID;
     }
 }

@@ -53,8 +53,6 @@ class CandidateResultCellRendererImage extends DefaultTableCellRenderer {
         JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         Component c = null;
         CandidateResultsTableModel rtm = (CandidateResultsTableModel) table.getModel();
-        String toolTipText = rd.getDescription(rtm.getRowVerificationTypID(row));
-        label.setToolTipText(toolTipText);
         if (column == 1) {
             label.setText("");
             Object o = table.getModel().getValueAt(row, column);
