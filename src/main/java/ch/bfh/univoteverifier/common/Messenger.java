@@ -88,8 +88,8 @@ public class Messenger {
      * Send election results to the GUI
      * @param Map<Choice,Integer> The election results.
      */
-    public void sendElectionResults(Map<Choice, Integer> m) {
-        VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_RESULTS, m);
+    public void sendElectionResults(String eID, Map<Choice, Integer> m) {
+        VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_RESULTS, eID, m);
         ss.notifyListeners(ve);
     }
 

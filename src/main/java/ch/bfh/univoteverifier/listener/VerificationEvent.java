@@ -52,8 +52,9 @@ public class VerificationEvent {
      * @param vm The type of message that this VerificationEvent contains
      * @param Map<Choice, Integer> The election results for candidates.
      */
-    public VerificationEvent(VerificationMessage vm, Map<Choice, Integer> electionResult) {
+    public VerificationEvent(VerificationMessage vm, String eID, Map<Choice, Integer> electionResult) {
         this.vm = vm;
+        this.eID = eID;
         this.electionResult = electionResult;
         this.vr = null;
     }

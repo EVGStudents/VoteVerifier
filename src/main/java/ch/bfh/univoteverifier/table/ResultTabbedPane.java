@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Level;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeListener;
@@ -74,17 +75,18 @@ public class ResultTabbedPane extends JTabbedPane {
                 tabComponent.setForeground(Color.red);
             }
         } else {
-            createNewTab(rs);
+            createNewTab(rs.getEID());
             addData(rs);
         }
     }
 
-    public void addElectionResults(ResultSet rs) {
-        if (hasTabPane(rs.getEID())) {
-            ResultTab rtp = getTabPaneByName(rs.getEID());
-            rtp.addElectionResults(rs.getElectionResult());
+    public void addElectionResults(CandidateResultSet crs) {
+        LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY TABBED PANE");
+        if (hasTabPane(crs.getEID())) {
+            ResultTab rtp = getTabPaneByName(crs.getEID());
+            rtp.addElectionResults(crs.getElectionResult());
         } else {
-            createNewTab(rs);
+            createNewTab(crs.getEID());
         }
     }
 
@@ -93,8 +95,8 @@ public class ResultTabbedPane extends JTabbedPane {
      *
      * @param rs ResultSet contains the data to add.
      */
-    public void createNewTab(ResultSet rs) {
-        String title = rs.getEID();
+    public void createNewTab(String eID) {
+        String title = eID;
         ResultTab newRTP = new ResultTab(title);
 
         this.resultsPanels.add(newRTP);

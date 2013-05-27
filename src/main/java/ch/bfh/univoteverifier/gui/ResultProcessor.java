@@ -6,6 +6,7 @@ package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.listener.VerificationEvent;
 import ch.bfh.univoteverifier.listener.VerificationMessage;
+import ch.bfh.univoteverifier.table.CandidateResultSet;
 import ch.bfh.univoteverifier.table.ResultSet;
 import ch.bfh.univoteverifier.table.ResultTabbedPane;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -50,20 +51,20 @@ public class ResultProcessor {
      * information.
      */
     public void showResultInGUI(VerificationEvent ve) {
-        VerificationResult vr = ve.getVr();
-        Boolean result = vr.getResult();
-        int code = vr.getVerificationType().getID();
-        String vrfType = GUIconstants.getTextFromVrfCode(code);
-        ImageIcon img = getImage(vr);
-        ResultSet rs = new ResultSet(vrfType, img, vr);
+
 
 
         if (ve.getVm() == VerificationMessage.ELECTION_RESULTS) {
-            rs.setElectionResult(ve.getElectionResults());
-
-            resultPanelManager.addElectionResults(rs);
+            CandidateResultSet crs = new CandidateResultSet(ve.getEID(), ve.getElectionResults());
+            LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY PROCESSOR");
+            resultPanelManager.addElectionResults(crs);
         } else {
-
+            VerificationResult vr = ve.getVr();
+            Boolean result = vr.getResult();
+            int code = vr.getVerificationType().getID();
+            String vrfType = GUIconstants.getTextFromVrfCode(code);
+            ImageIcon img = getImage(vr);
+            ResultSet rs = new ResultSet(vrfType, img, vr);
             resultPanelManager.addData(rs);
             String outputText = "\n" + vrfType + " ............. " + result;
             consolePanel.appendToStatusText(outputText, ve.getEID());
