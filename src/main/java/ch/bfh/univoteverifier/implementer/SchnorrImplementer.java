@@ -56,10 +56,10 @@ public class SchnorrImplementer extends Implementer {
 	 *
 	 * @param verificationKey the public key we must use to verify the
 	 * signature.
-	 * @param messagem the message to be verified.
+	 * @param message the message to be verified.
 	 * @param a the first value of a valid Schnorr signature.
 	 * @param b the second value of a valid Schnorr signature.
-	 * @paragm gen the chose generator.
+	 * @param gen the chose generator.
 	 * @return true if the verification succeed, false otherwise
 	 * @throws NoSuchAlgorithmException if the hash function used in this
 	 * method does not find the algorithm.
@@ -84,10 +84,10 @@ public class SchnorrImplementer extends Implementer {
 
 		System.out.println("VK: " + verificationKey);
 		System.out.println("Message: " + message);
-		System.out.println("a: " + a);
+		System.out.println("a:\t\t" + a);
 		System.out.println("Hashresult: " + hashResult);
 		System.out.println("bK: " + b);
-		System.out.println("gen: " + gen);
+//		System.out.println("gen: " + gen);
 
 		//return the result of hashResult == a
 		return hashResult.equals(a);
@@ -131,9 +131,11 @@ public class SchnorrImplementer extends Implementer {
 	 */
 	public VerificationResult vrfBallotSignature(Ballot b, ElectionReceipt er) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
 		BigInteger encFirstValue = null, encSecondValue = null, proofCommitment = null, proofResponse = null, schnorrFirstValue = null, schnorrSecondValue = null, verificationKey = null;
+		String eID = null;
 
 		//get the different values for the object that is not null.
 		if (b != null) {
+			eID = b.getElectionId();
 			encFirstValue = b.getEncryptedVote().getFirstValue();
 			encSecondValue = b.getEncryptedVote().getSecondValue();
 			proofCommitment = b.getProof().getCommitment().get(0);
@@ -142,6 +144,7 @@ public class SchnorrImplementer extends Implementer {
 			schnorrSecondValue = b.getSignature().getSecondValue();
 			verificationKey = b.getVerificationKey();
 		} else if (er != null) {
+			eID = er.getElectionID();
 			encFirstValue = new BigInteger(1, er.getEncValueA().toByteArray());
 			encSecondValue = new BigInteger(1, er.getEncValueB().toByteArray());
 			proofCommitment = new BigInteger(1, er.getProofCommitment().toByteArray());
@@ -154,7 +157,7 @@ public class SchnorrImplementer extends Implementer {
 		//concatenate to ( id | (firstValue|secondValue) | ((t)|(s)) )
 		sc.pushLeftDelim();
 		//election ID
-		sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
+		sc.pushObjectDelimiter(eID, StringConcatenator.INNER_DELIMITER);
 		//encrypted vote
 		sc.pushLeftDelim();
 		sc.pushObjectDelimiter(encFirstValue, StringConcatenator.INNER_DELIMITER);

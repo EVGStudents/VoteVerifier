@@ -41,7 +41,7 @@ public class IndividualVerification extends Verification {
 	}
 
 	@Override
-	public void createRunners() {
+	protected void createRunners() {
 		try {
 			IndividualRunner ir = new IndividualRunner(ebproxy, msgr, er);
 

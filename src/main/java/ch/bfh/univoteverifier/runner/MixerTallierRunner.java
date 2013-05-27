@@ -58,50 +58,50 @@ public class MixerTallierRunner extends Runner {
 				VerificationResult v1 = proofImpl.vrfEncryptedVotesByProof(mName);
 				msgr.sendVrfMsg(v1);
 				partialResults.add(v1);
-				Thread.sleep(1000);
+				Thread.sleep(SLEEP_TIME);
 
 				VerificationResult v2 = rsaImpl.vrfMixedEncryptedVotesBySign(mName);
 				msgr.sendVrfMsg(v2);
 				partialResults.add(v2);
-				Thread.sleep(1000);
+				Thread.sleep(SLEEP_TIME);
 			}
 
 			//shuffled mixed encrypted votes set
 			VerificationResult v3 = prmImpl.vrfMixedEncryptedVotes();
 			msgr.sendVrfMsg(v3);
 			partialResults.add(v3);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//signature of shuffled mixed encrypted votes set
 			VerificationResult v4 = rsaImpl.vrfMixedEncryptedVotesSign();
 			msgr.sendVrfMsg(v4);
 			partialResults.add(v4);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//NIZKP of decrypted votes and signature
 			for (String tName : ebp.getElectionDefinition().getTallierId()) {
 				VerificationResult v5 = proofImpl.vrfDecryptedVotesByProof(tName);
 				msgr.sendVrfMsg(v5);
 				partialResults.add(v5);
-				Thread.sleep(1000);
+				Thread.sleep(SLEEP_TIME);
 
 				VerificationResult v6 = rsaImpl.vrfDecryptedVotesBySign(tName);
 				msgr.sendVrfMsg(v6);
 				partialResults.add(v6);
-				Thread.sleep(1000);
+				Thread.sleep(SLEEP_TIME);
 			}
 
 			//plaintext votes set
 			VerificationResult v7 = prmImpl.vrfVotes();
 			msgr.sendVrfMsg(v7);
 			partialResults.add(v7);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//plaintext votes set signature
 			VerificationResult v8 = rsaImpl.vrfPlaintextVotesSign();
 			msgr.sendVrfMsg(v8);
 			partialResults.add(v8);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 		} catch (InterruptedException | NoSuchAlgorithmException | UnsupportedEncodingException | ElectionBoardServiceFault ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);

@@ -71,39 +71,39 @@ public class ElectionPeriodRunner extends Runner {
 			VerificationResult v1 = certImpl.vrfLatelyRegisteredVotersCertificate();
 			msgr.sendVrfMsg(v1);
 			partialResults.add(v1);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//RSA signature of lately registered voters certificate and id
 			VerificationResult v2 = rsaImpl.vrfLatelyRegisteredVotersCertificateSign();
 			msgr.sendVrfMsg(v2);
 			partialResults.add(v2);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//NIZKP of late registered verification key and signature - Proof Not yet available
 			for (String mName : ebp.getElectionDefinition().getMixerId()) {
 				VerificationResult v3 = proofImpl.vrfLatelyVerificationKeysByProof(mName);
 				msgr.sendVrfMsg(v3);
 				partialResults.add(v3);
-				Thread.sleep(1000);
+				Thread.sleep(SLEEP_TIME);
 
 				//signature
 				VerificationResult v4 = rsaImpl.vrfLatelyVerificationKeysBySign(mName);
 				msgr.sendVrfMsg(v4);
 				partialResults.add(v4);
-				Thread.sleep(1000);
+				Thread.sleep(SLEEP_TIME);
 			}
 
 			//check that the late mixed verification key set is equal to the set of last mixer
 			VerificationResult v5 = prmImpl.vrfLatelyVerificatonKeys();
 			msgr.sendVrfMsg(v5);
 			partialResults.add(v5);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//signature over late mixed verification key set
 			VerificationResult v6 = rsaImpl.vrfLatelyVerificationKeysSign();
 			msgr.sendVrfMsg(v6);
 			partialResults.add(v6);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//NIZKP of late  renewal of registration and signature - ToDO
 			//M7,M8,EM16,EM17
@@ -132,14 +132,14 @@ public class ElectionPeriodRunner extends Runner {
 			}
 			msgr.sendVrfMsg(v7);
 			partialResults.add(v7);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 
 			//signature over ballots set
 			VerificationResult v8 = rsaImpl.vrfBallotsSetSign();
 			msgr.sendVrfMsg(v8);
 			partialResults.add(v8);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 		} catch (InvalidAlgorithmParameterException | CertificateException | UnsupportedEncodingException | ElectionBoardServiceFault | NoSuchAlgorithmException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);

@@ -13,6 +13,7 @@ import ch.bfh.univoteverifier.listener.VerificationSubject;
 import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.runner.ResultsRunner;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,8 +83,8 @@ public abstract class Verification {
 	 */
 	public List<VerificationResult> runVerification() {
 
-		//crate the runners
 		try {
+			//crate the runners
 			createRunners();
 
 			if (runners.isEmpty()) {
@@ -92,14 +93,22 @@ public abstract class Verification {
 
 			//run the runners  and get the results
 			for (Runner r : runners) {
-				List<VerificationResult> l = r.run();
-
-				//check that a list isn't empty
-				if (l != null) {
-					res.addAll(l);
+				//the result runner doesn't support run() but runResult().
+				if (r instanceof ResultsRunner) {
+					ResultsRunner rr = (ResultsRunner) r;
+					rr.runResults();
 				} else {
-					LOGGER.log(Level.INFO, "The runner {0} does not contain any verification.", r.getRunnerName());
+					List<VerificationResult> l = r.run();
+
+					//check that a list isn't empty
+					if (l != null) {
+						res.addAll(l);
+					} else {
+						LOGGER.log(Level.INFO, "The runner {0} does not contain any verification.", r.getRunnerName());
+					}
 				}
+
+
 			}
 
 			msgr.sendVerificationFinished(eID);
@@ -115,5 +124,5 @@ public abstract class Verification {
 	/**
 	 * Create the necessaries runners.
 	 */
-	public abstract void createRunners();
+	protected abstract void createRunners();
 }

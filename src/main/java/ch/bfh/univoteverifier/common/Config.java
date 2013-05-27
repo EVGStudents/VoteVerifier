@@ -49,4 +49,8 @@ public class Config {
 	 * URL of the WSDL of UniVote.
 	 */
 	public static final String wsdlLocation = prop.getProperty("wsdl_url");
+	/**
+	 * The sleep time between each checks of a verification.
+	 */
+	public static final int sleepTime = Integer.valueOf(prop.getProperty("sleep_time"));
 }

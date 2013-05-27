@@ -62,31 +62,31 @@ public class ElectionPreparationRunner extends Runner {
 			VerificationResult v1 = rsaImpl.vrfElectionOptionsSign();
 			msgr.sendVrfMsg(v1);
 			partialResults.add(v1);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//RSA signature of election data
 			VerificationResult v2 = rsaImpl.vrfElectionDataSign();
 			msgr.sendVrfMsg(v2);
 			partialResults.add(v2);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//RSA signature of electoral roll
 			VerificationResult v3 = rsaImpl.vrfElectoralRollSign();
 			msgr.sendVrfMsg(v3);
 			partialResults.add(v3);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//Voters certificate
 			VerificationResult v4 = certImpl.vrfVotersCertificate();
 			msgr.sendVrfMsg(v4);
 			partialResults.add(v4);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//RSA signature of election ID and voters certificate
 			VerificationResult v5 = rsaImpl.vrfVotersCertIDSign();
 			msgr.sendVrfMsg(v5);
 			partialResults.add(v5);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 
 			//Plausibility check and signature of mixed verifiction keys by
@@ -94,25 +94,25 @@ public class ElectionPreparationRunner extends Runner {
 				VerificationResult v6 = proofImpl.vrfVerificationKeysMixedByProof(mName);
 				msgr.sendVrfMsg(v6);
 				partialResults.add(v6);
-				Thread.sleep(1000);
+				Thread.sleep(SLEEP_TIME);
 
 				VerificationResult v7 = rsaImpl.vrfMixedVerificationKeysBySign(mName);
 				msgr.sendVrfMsg(v7);
 				partialResults.add(v7);
-				Thread.sleep(1000);
+				Thread.sleep(SLEEP_TIME);
 			}
 
 			//mixed verification keys
 			VerificationResult v8 = prmImpl.vrfVerificationKeysMixed();
 			msgr.sendVrfMsg(v8);
 			partialResults.add(v8);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 			//mixed verification keys signature
 			VerificationResult v9 = rsaImpl.vrfMixedVerificationKeysSign();
 			msgr.sendVrfMsg(v9);
 			partialResults.add(v9);
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME);
 
 		} catch (InvalidAlgorithmParameterException | CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
