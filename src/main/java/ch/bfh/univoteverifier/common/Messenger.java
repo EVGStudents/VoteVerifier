@@ -18,6 +18,7 @@ import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 /**
@@ -88,8 +89,8 @@ public class Messenger {
      * Send election results to the GUI
      * @param Map<Choice,Integer> The election results.
      */
-    public void sendElectionResults(String eID, Map<Choice, Integer> m) {
-        VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_RESULTS, eID, m);
+    public void sendElectionResults(String eID, Map<Choice, Integer> electionResults) {
+        VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_RESULTS, eID, electionResults);
         ss.notifyListeners(ve);
     }
 

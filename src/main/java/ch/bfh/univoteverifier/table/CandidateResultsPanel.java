@@ -41,7 +41,6 @@ public class CandidateResultsPanel extends JPanel {
      * Create an instance of this class.
      */
     public CandidateResultsPanel() {
-        this.setBackground(Color.PINK);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         ArrayList<ResultSet> data = new ArrayList<>();
     }
@@ -53,29 +52,19 @@ public class CandidateResultsPanel extends JPanel {
      * @param r The data to add.
      */
     public void addData(Map<Choice, Integer> electionResult) {
-
         for (Entry<Choice, Integer> e : electionResult.entrySet()) {
             Choice c = e.getKey();
             Integer count = e.getValue();
-
             if (c instanceof PoliticalList) {
                 //create new table
                 createNewTable(e);
                 PoliticalList pl = (PoliticalList) c;
-                System.out.print(pl.getNumber() + " ");
-                System.out.print("Political list: " + pl.getPartyName().get(0).getText());
             } else if (c instanceof Candidate) {
                 //add to existing table
                 activeTable.getTableModel().addEntry(e);
                 activeTable.revalidate();
                 Candidate can = (Candidate) c;
-                System.out.print("\t");
-                System.out.print(can.getNumber() + " ");
-                System.out.print(can.getFirstName() + " ");
-                System.out.print(can.getLastName());
             }
-
-            System.out.println("...................." + count);
         }
         this.revalidate();
         this.repaint();
@@ -86,7 +75,6 @@ public class CandidateResultsPanel extends JPanel {
         activeTable = new CandidateResultsTable(crtm);
 
         JPanel tablePanel = new JPanel();
-        tablePanel.setBackground(Color.ORANGE);
         tablePanel.setLayout(new BorderLayout());
         tablePanel.add(activeTable, BorderLayout.CENTER);
         tablePanel.add(activeTable.getTableHeader(), BorderLayout.NORTH);

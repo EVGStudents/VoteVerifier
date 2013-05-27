@@ -14,10 +14,12 @@ import ch.bfh.univote.common.Candidate;
 import ch.bfh.univote.common.Choice;
 import ch.bfh.univote.common.PoliticalList;
 import ch.bfh.univoteverifier.gui.GUIconstants;
+import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import javax.swing.Icon;
 import javax.swing.table.AbstractTableModel;
 
@@ -30,7 +32,8 @@ import javax.swing.table.AbstractTableModel;
 public class CandidateResultsTableModel extends AbstractTableModel {
 
     private ArrayList<Entry> data;
-    private String[] columnNames;
+    private String[] columnNames = new String[2];
+    private static final Logger LOGGER = Logger.getLogger(CandidateResultsTableModel.class.toString());
 
     /**
      * Create an instance of this ResultTableModel.
@@ -40,10 +43,11 @@ public class CandidateResultsTableModel extends AbstractTableModel {
      * @param section The description of the section from which this
      * verification result was produced.
      */
-    public CandidateResultsTableModel(Entry e) {
+    public CandidateResultsTableModel(Entry<Choice, Integer> e) {
         data = new ArrayList<>();
-        columnNames[0] = ((PoliticalList) e.getKey()).getTitle().toString();
-        columnNames[1] = ((PoliticalList) e.getKey()).getNumber();
+        LOGGER.log(Level.OFF, "e.getKey().toString(): {0}", e.getKey().toString());
+        columnNames[0] = ((PoliticalList) e.getKey()).getTitle().get(0).getText();
+        columnNames[1] = e.getValue().toString();
 
     }
 

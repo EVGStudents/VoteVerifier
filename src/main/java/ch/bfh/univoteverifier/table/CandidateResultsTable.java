@@ -43,10 +43,10 @@ public class CandidateResultsTable extends JTable {
         tc.setPreferredWidth(30);
         tc.setMaxWidth(30);
 
-        CandidateResultCellRendererImage rcri = new CandidateResultCellRendererImage();
-        tc.setCellRenderer(rcri);
-        CandidateResultCellRendererText rcrt = new CandidateResultCellRendererText();
-        getColumnModel().getColumn(0).setCellRenderer(rcrt);
+//        CandidateResultCellRendererImage rcri = new CandidateResultCellRendererImage();
+//        tc.setCellRenderer(rcri);
+//        CandidateResultCellRendererText rcrt = new CandidateResultCellRendererText();
+//        getColumnModel().getColumn(0).setCellRenderer(rcrt);
     }
 
     /**

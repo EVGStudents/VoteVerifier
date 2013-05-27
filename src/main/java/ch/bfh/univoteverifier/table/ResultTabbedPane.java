@@ -64,7 +64,9 @@ public class ResultTabbedPane extends JTabbedPane {
      * @param rs ResultSet contains the data to add.
      */
     public void addData(ResultSet rs) {
-        //Find is pane with eID exists
+        //Find a pane with eID exists
+        LOGGER.log(Level.OFF, "RESULTS FOR EID: " + rs.getEID());
+        LOGGER.log(Level.OFF, "RESULTS FOR EID: " + rs.getEID());
         if (hasTabPane(rs.getEID())) {
             ResultTab rtp = getTabPaneByName(rs.getEID());
             rtp.addData(rs);
@@ -82,12 +84,13 @@ public class ResultTabbedPane extends JTabbedPane {
 
     public void addElectionResults(CandidateResultSet crs) {
         LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY TABBED PANE");
-        if (hasTabPane(crs.getEID())) {
-            ResultTab rtp = getTabPaneByName(crs.getEID());
-            rtp.addElectionResults(crs.getElectionResult());
-        } else {
+        if (!hasTabPane(crs.getEID())) {
             createNewTab(crs.getEID());
+
         }
+        ResultTab rtp = getTabPaneByName(crs.getEID());
+        rtp.addElectionResults(crs.getElectionResult());
+
     }
 
     /**

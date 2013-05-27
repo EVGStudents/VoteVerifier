@@ -39,7 +39,7 @@ public class CandidateResultSet {
      * @param result The result of the verification.
      */
     public CandidateResultSet(String eID, Map<Choice, Integer> electionResult) {
-        this.eID = generateFiller(eID);
+        this.eID = eID;
         this.electionResult = electionResult;
     }
 

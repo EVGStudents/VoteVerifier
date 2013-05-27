@@ -91,7 +91,6 @@ public class QRCode {
             BufferedImage image = ImageIO.read(fis);
             BufferedImageLuminanceSource bils = null;
             bils = new BufferedImageLuminanceSource(image);
-            msgr.sendSetupError(rb.getString("fileReadError"));
             HybridBinarizer hb = new HybridBinarizer(bils);
             BinaryBitmap binaryBitmap = new BinaryBitmap(hb);
             Result result = new MultiFormatReader().decode(binaryBitmap);

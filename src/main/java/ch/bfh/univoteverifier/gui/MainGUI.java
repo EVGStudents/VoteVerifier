@@ -10,6 +10,7 @@
  */
 package ch.bfh.univoteverifier.gui;
 
+import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.listener.VerificationMessage;
 import ch.bfh.univoteverifier.listener.VerificationListener;
 import ch.bfh.univoteverifier.listener.VerificationEvent;
@@ -18,11 +19,13 @@ import ch.bfh.univoteverifier.action.ActionManager;
 import ch.bfh.univoteverifier.action.FileChooserAction;
 import ch.bfh.univoteverifier.action.ShowConsoleAction;
 import ch.bfh.univoteverifier.action.StartAction;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.common.Messenger;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,8 +57,6 @@ public class MainGUI extends JFrame {
     private ConsolePanel consolePanel;
     private ResultTabbedPane resultTabbedPane;
     private VerificationListener sl;
-    private String[] eIDlist;
-    private String rawEIDlist;
     private Preferences prefs;
     private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
     private ResourceBundle rb;
@@ -106,6 +107,23 @@ public class MainGUI extends JFrame {
     }
 
     /**
+     * Get the list of possible election IDs.
+     */
+    public String[] getElectionIDList() {
+        String[] eidList = null;
+        try {
+            ElectionBoardProxy ebp = new ElectionBoardProxy("");
+            List<String> eids = ebp.getElectionsID().getElectionId();
+            eidList = new String[eids.size()];
+            eids.toArray(eidList);
+        } catch (ElectionBoardServiceFault ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return eidList;
+    }
+
+    /**
      * Create or recreate the main content panel for this Frame Class. This
      * method is called when the program starts as well as if a change of locale
      * is needed. The entire GUI will is recreated.
@@ -127,10 +145,6 @@ public class MainGUI extends JFrame {
     private void initResources() {
         tm = new ThreadManager();
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
-        prefs = Preferences.userNodeForPackage(MainGUI.class);
-        rawEIDlist = prefs.get("eIDList", "vsuzh-2013-1 vsbfh-2013");
-        Pattern pattern = Pattern.compile("\\s");
-        eIDlist = pattern.split(rawEIDlist);
         sl = new StatusUpdate();
     }
 
@@ -153,7 +167,9 @@ public class MainGUI extends JFrame {
 
         topPanel = new TopPanel();
 
-        middlePanel = new MiddlePanel(resultTabbedPane, eIDlist, msgr, tm);
+        String[] eidList = getElectionIDList();
+
+        middlePanel = new MiddlePanel(resultTabbedPane, eidList, msgr, tm);
         middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
         middlePanel.setBackground(GUIconstants.GREY);
 

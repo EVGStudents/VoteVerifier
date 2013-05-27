@@ -84,11 +84,12 @@ public class StartAction extends AbstractAction {
 
     public void startVerification() {
         String btnTxt = middlePanel.getSelectedVrfType();
-        LOGGER.log(Level.INFO, "BTN TEXT RETURNED:" + btnTxt);
         String msg = "";
         if (0 == btnTxt.compareTo("btnUni")) {
             String eID = comboBox.getSelectedItem().toString();
-            msg = rb.getString("beginningVrfFor") + " " + rb.getString("forElectionId") + " " + eID;
+            LOGGER.log(Level.OFF, "THE ELECTION ID FROM THE COMBOBOX:{0}", eID);
+//            msg = rb.getString("beginningVrfFor") + " " + rb.getString("forElectionId") + " " + eID;
+            msg = rb.getString("beginningVrfFor") + " " + eID;
             msgr.sendSetupError(msg);
 
             vt = new VerificationThread(msgr, eID);

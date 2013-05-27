@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.io.File;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -56,7 +57,6 @@ public class MiddlePanel extends JPanel {
     public MiddlePanel(ResultTabbedPane resultTabbedPane, String[] eIDlist, Messenger msgr, ThreadManager tm) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         buttonCreator = new ButtonCreator(this, msgr, tm, eIDlist);
-        buttonCreator.createComboBox(eIDlist);
 
         int index = resultTabbedPane.indexOfTab("Welcome");
         tabPanel = (JPanel) resultTabbedPane.getComponentAt(index);
@@ -179,6 +179,7 @@ public class MiddlePanel extends JPanel {
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 2;
+        c.insets = new Insets(20, 0, 0, 0);
         c.anchor = GridBagConstraints.CENTER;
         panel.add(fileSelectedLabel, c);
         return panel;
@@ -188,7 +189,7 @@ public class MiddlePanel extends JPanel {
      * Display the file that was selected in the GUI
      */
     public void showFileSelected(String filePath) {
-        fileSelectedLabel.setText(rb.getString("fileSelected") + " " + filePath);
+        fileSelectedLabel.setText(rb.getString("descIndFileSelected") + " " + filePath);
         fileSelectedLabel.setForeground(Color.BLACK);
     }
 
