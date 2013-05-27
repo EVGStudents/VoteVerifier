@@ -65,8 +65,6 @@ public class ResultTabbedPane extends JTabbedPane {
      */
     public void addData(ResultSet rs) {
         //Find a pane with eID exists
-        LOGGER.log(Level.OFF, "RESULTS FOR EID: " + rs.getEID());
-        LOGGER.log(Level.OFF, "RESULTS FOR EID: " + rs.getEID());
         if (hasTabPane(rs.getEID())) {
             ResultTab rtp = getTabPaneByName(rs.getEID());
             rtp.addData(rs);
@@ -111,6 +109,14 @@ public class ResultTabbedPane extends JTabbedPane {
         JPanel panel = ((JPanel) tabPanel);
         this.setTabComponentAt(index, panel);
         this.setSelectedIndex(index);
+    }
+
+    public void showElectionSpecError(String errorMsg, String eID) {
+        if (hasTabPane(eID)) {
+            ResultTab rtp = getTabPaneByName(eID);
+            rtp.showElectionSpecError(errorMsg);
+        }
+
     }
 
     /**

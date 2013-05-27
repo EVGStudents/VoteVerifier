@@ -11,6 +11,7 @@
 package ch.bfh.univoteverifier.table;
 
 import ch.bfh.univote.common.Choice;
+import ch.bfh.univoteverifier.common.Report;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -62,6 +63,10 @@ public class ResultSet {
      */
     public String getTxt() {
         return txt;
+    }
+
+    public Report getResultReport() {
+        return vr.getReport();
     }
 
     /**

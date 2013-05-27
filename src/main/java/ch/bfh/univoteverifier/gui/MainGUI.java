@@ -202,6 +202,7 @@ public class MainGUI extends JFrame {
         @Override
         public void updateStatus(VerificationEvent ve) {
             if (ve.getVm() == VerificationMessage.ELECTION_SPECIFIC_ERROR) {
+                resultTabbedPane.showElectionSpecError(ve.getMsg(), ve.getEID());
                 consolePanel.appendToStatusText("\n" + ve.getMsg(), ve.getEID());
             } else if (ve.getVm() == VerificationMessage.SETUP_ERROR) {
                 String text = "\n" + ve.getMsg();

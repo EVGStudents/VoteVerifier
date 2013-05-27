@@ -91,6 +91,8 @@ public class ResultTableModel extends AbstractTableModel {
             ret = formattedText;
         } else if (col == 1) {
             ret = data.get(row).getImage();
+        } else if (col == -1) {
+            ret = data.get(row);
         } else {
             ret = null;
         }

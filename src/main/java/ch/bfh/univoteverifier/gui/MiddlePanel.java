@@ -125,6 +125,12 @@ public class MiddlePanel extends JPanel {
         return panel;
     }
 
+    /**
+     * Create the panel that contains the input controls and information for
+     * universal verification.
+     *
+     * @return The panel with options for individual verification.
+     */
     public JPanel createInputUniPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
@@ -148,6 +154,13 @@ public class MiddlePanel extends JPanel {
         return panel;
     }
 
+    /**
+     *
+     * Create the panel that contains the input controls and information for
+     * universal verification.
+     *
+     * @return The panel with options for individual verification.
+     */
     public JPanel createInputIndPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
@@ -200,6 +213,11 @@ public class MiddlePanel extends JPanel {
         fileSelectedLabel.setText("");
     }
 
+    /**
+     * Set the error message in the error panel of the welcome screen.
+     *
+     * @param text The error message to display.
+     */
     public void setupErrorMsg(String text) {
         String html1 = "<html><body style='width: ";
         String html2 = "px'>";

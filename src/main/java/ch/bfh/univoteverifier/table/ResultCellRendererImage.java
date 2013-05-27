@@ -52,9 +52,18 @@ class ResultCellRendererImage extends DefaultTableCellRenderer {
 
         JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         Component c = null;
+
+
         ResultTableModel rtm = (ResultTableModel) table.getModel();
-        String toolTipText = rd.getDescription(rtm.getRowVerificationTypID(row));
-        label.setToolTipText(toolTipText);
+        ResultSet rs = (ResultSet) rtm.getValueAt(row, -1);
+
+        if (rs.getResultReport() != null) {
+            int fCode = rs.getResultReport().getFailureCode().getID();
+            String toolTipText = rd.getDescription(fCode);
+            label.setToolTipText(toolTipText);
+        }
+
+
         if (column == 1) {
             label.setText("");
             Object o = table.getModel().getValueAt(row, column);

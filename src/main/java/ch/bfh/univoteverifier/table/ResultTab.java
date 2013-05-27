@@ -45,8 +45,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 public class ResultTab extends JPanel {
 
     private JScrollPane scroll;
-    private JPanel tabHeader, returnPanel;
-    private JLabel resultsErrorLabel;
+    private JPanel tabHeader;
     private String eID;
     private static final Logger LOGGER = Logger.getLogger(ResultTab.class.getName());
     private ResultTablesContainer rpEntity, rpSpec, rpType;
@@ -54,6 +53,7 @@ public class ResultTab extends JPanel {
     private ResourceBundle rb;
     private ProgressBar progressBar;
     private JTextArea errorText;
+    private Boolean tabSpacer = true;
 
     /**
      * Create an instance of this panel.
@@ -77,7 +77,6 @@ public class ResultTab extends JPanel {
         rpEntity = new ResultTablesContainer();
         rpType = new ResultTablesContainer();
         candidateResultsPanel = new CandidateResultsPanel();
-        returnPanel = rpSpec;
         scroll = new JScrollPane();
         scroll.getViewport().add(rpSpec);
         scroll.getVerticalScrollBar().setUnitIncrement(16);
@@ -96,9 +95,6 @@ public class ResultTab extends JPanel {
      * @return
      */
     public JPanel createTabHeader() {
-        JPanel errorPanel = new JPanel();
-
-
         errorText = new JTextArea();
         errorText.setText("Errors and Exceptions");
         errorText.setWrapStyleWord(true);
@@ -214,8 +210,16 @@ public class ResultTab extends JPanel {
      *
      * @param str The message to add.
      */
-    public void addErrorText(String str) {
-        errorText.append(str);
+    public void showElectionSpecError(String str) {
+        String offset;
+        if (tabSpacer) {
+            offset = "\n";
+            tabSpacer = false;
+        } else {
+            offset = "\t\t\t";
+            tabSpacer = true;
+        }
+        errorText.append(offset + str);
     }
 
     /**
@@ -223,6 +227,10 @@ public class ResultTab extends JPanel {
      */
     public void addElectionResults(Map<Choice, Integer> electionResult) {
         candidateResultsPanel.addData(electionResult);
+        showElectionSpecError("TestHowErrorsAppear");
+        showElectionSpecError("SomeMoreErrors");
+        showElectionSpecError("ThisISNotABadTHing");
+        showElectionSpecError("EverythingWillBeOK");
     }
 
     /**
@@ -248,7 +256,6 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to entity.
      */
     public void showPanelEntity() {
-        returnPanel = rpEntity;
         showPanel(rpEntity);
     }
 
@@ -256,7 +263,6 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to specification.
      */
     public void showPanelSpec() {
-        returnPanel = rpSpec;
         showPanel(rpSpec);
     }
 
@@ -264,7 +270,6 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to type.
      */
     public void showPanelType() {
-        returnPanel = rpType;
         showPanel(rpType);
     }
 

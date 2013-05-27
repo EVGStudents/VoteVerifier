@@ -19,7 +19,11 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * GUIMessenger acts a the conduit for all information that is sent to the GUI
@@ -32,6 +36,7 @@ public class Messenger {
 
     private ResourceBundle rb;
     private VerificationSubject ss;
+    private static final Logger LOGGER = Logger.getLogger(Messenger.class.toString());
 
     /**
      * instantiate a GUIMessenger that is used to relay messages to the GUI
@@ -79,8 +84,20 @@ public class Messenger {
      * @param String the message to send
      */
     public void sendElectionSpecError(String eID, Exception ex) {
-        String exName = ex.getClass().getName();
-        String message = getMessageForKey(exName);
+        LOGGER.log(Level.OFF, "EXCEPTION NAME: {0}", ex.toString());
+        String exNameLong = ex.getClass().getName();
+        LOGGER.log(Level.OFF, "EXCEPTION NAME: {0}", exNameLong);
+
+        Pattern pattern = Pattern.compile("[^/.]+$");
+        Matcher match = pattern.matcher(exNameLong);
+        String exName = "";
+        String message = "An error has occured.";
+        if (match.find()) {
+            exName = match.group();
+            message = getMessageForKey(exName);
+        }
+
+
         VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_SPECIFIC_ERROR, message, eID);
         ss.notifyListeners(ve);
     }
