@@ -104,6 +104,7 @@ public class ResultsRunner extends Runner {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 
+		msgr.sendElectionResults(electionResult);
 		return electionResult;
 	}
 }
