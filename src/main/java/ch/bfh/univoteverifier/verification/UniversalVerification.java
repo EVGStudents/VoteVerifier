@@ -47,12 +47,13 @@ public class UniversalVerification extends Verification {
 			MixerTallierRunner mtr = new MixerTallierRunner(ebproxy, msgr);
 			ResultsRunner rr = new ResultsRunner(ebproxy, msgr);
 
+			runners.add(rr);
 			runners.add(ssr);
 			runners.add(esr);
 			runners.add(epr);
 			runners.add(eperiodr);
 			runners.add(mtr);
-			runners.add(rr);
+
 
 		} catch (InvalidNameException | CertificateException | ElectionBoardServiceFault ex) {
 			msgr.sendElectionSpecError(geteID(), ex);
