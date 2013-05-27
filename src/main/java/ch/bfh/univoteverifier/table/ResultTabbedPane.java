@@ -75,6 +75,7 @@ public class ResultTabbedPane extends JTabbedPane {
             }
         } else {
             createNewTab(rs);
+            addData(rs);
         }
     }
 
@@ -93,10 +94,8 @@ public class ResultTabbedPane extends JTabbedPane {
      * @param rs ResultSet contains the data to add.
      */
     public void createNewTab(ResultSet rs) {
-
         String title = rs.getEID();
         ResultTab newRTP = new ResultTab(title);
-        newRTP.addData(rs);
 
         this.resultsPanels.add(newRTP);
         this.addTab(title, newRTP);
@@ -107,8 +106,6 @@ public class ResultTabbedPane extends JTabbedPane {
         JPanel panel = ((JPanel) tabPanel);
         this.setTabComponentAt(index, panel);
         this.setSelectedIndex(index);
-
-
     }
 
     /**

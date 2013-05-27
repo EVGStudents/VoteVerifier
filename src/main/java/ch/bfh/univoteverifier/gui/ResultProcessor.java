@@ -59,6 +59,7 @@ public class ResultProcessor {
 
         if (ve.getVm() == VerificationMessage.ELECTION_RESULTS) {
             rs.setElectionResult(ve.getElectionResults());
+
             resultPanelManager.addElectionResults(rs);
         } else {
 
