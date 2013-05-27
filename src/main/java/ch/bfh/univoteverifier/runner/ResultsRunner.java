@@ -101,7 +101,7 @@ public class ResultsRunner extends Runner {
 			}
 
 		} catch (ElectionBoardServiceFault ex) {
-			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
+			msgr.sendElectionSpecError(ebp.getElectionID(), ebp.getElectionID(), ex);
 		}
 
 		msgr.sendElectionResults(electionResult);
