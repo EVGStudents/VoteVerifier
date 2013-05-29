@@ -211,6 +211,9 @@ public class MainGUI extends JFrame {
                 middlePanel.showFileSelected(ve.getMsg());
             } else if (ve.getVm() == VerificationMessage.SHOW_CONSOLE) {
                 showConsole(ve.getConsoleSelected());
+            } else if (ve.getVm() == VerificationMessage.VRF_FINISHED) {
+                String eID = ve.getEID();
+                tm.killThread(eID);
             } else {
                 resultProccessor.showResultInGUI(ve);
             }

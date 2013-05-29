@@ -96,7 +96,7 @@ public class ResultTab extends JPanel {
      */
     public JPanel createTabHeader() {
         errorText = new JTextArea();
-        errorText.setText("Errors and Exceptions");
+        errorText.setText("Errors and Exceptions: ");
         errorText.setWrapStyleWord(true);
         errorText.setLineWrap(true);
         errorText.setEditable(false);
@@ -227,10 +227,6 @@ public class ResultTab extends JPanel {
      */
     public void addElectionResults(Map<Choice, Integer> electionResult) {
         candidateResultsPanel.addData(electionResult);
-        showElectionSpecError("TestHowErrorsAppear");
-        showElectionSpecError("SomeMoreErrors");
-        showElectionSpecError("ThisISNotABadTHing");
-        showElectionSpecError("EverythingWillBeOK");
     }
 
     /**
