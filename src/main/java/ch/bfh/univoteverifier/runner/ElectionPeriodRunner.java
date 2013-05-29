@@ -105,35 +105,69 @@ public class ElectionPeriodRunner extends Runner {
 			partialResults.add(v6);
 			Thread.sleep(SLEEP_TIME);
 
-			//NIZKP of late  renewal of registration and signature - ToDO
-			//M7,M8,EM16,EM17
+			//NIZKP of late  renewal of registration and signature for each mixer
+			for (String mName : ebp.getElectionDefinition().getMixerId()) {
+				//proof
+				VerificationResult v10 = proofImpl.vrfLateRenewalOfRegistrationProofBy(mName);
+				msgr.sendVrfMsg(v10);
+				partialResults.add(v10);
+				Thread.sleep(SLEEP_TIME);
+
+				//rsa signature
+				VerificationResult v11 = rsaImpl.vrfLateRenewalOfRegistrationSignBy(mName);
+				msgr.sendVrfMsg(v11);
+				partialResults.add(v11);
+				Thread.sleep(SLEEP_TIME);
+			}
+
+			//check over last mixer late renewal verification key set
+			VerificationResult v12 = prmImpl.vrfLateRenewalOfRegistrationKeys();
+			msgr.sendVrfMsg(v12);
+			partialResults.add(v12);
+			Thread.sleep(SLEEP_TIME);
+
+			//signature of last late renewal verification key set
+			VerificationResult v13 = rsaImpl.vrfLateRenewalOfRegistrationSign();
+			msgr.sendVrfMsg(v13);
+			partialResults.add(v13);
+			Thread.sleep(SLEEP_TIME);
 
 			//Ballots verifications
 			boolean result = true;
+			Exception exc = null;
+			Report rep;
 
-			for (Ballot b : ebp.getBallots().getBallot()) {
-				boolean vkVerification = prmImpl.vrfBallotVerificationKey(b.getVerificationKey()).getResult();
+			try {
+				for (Ballot b : ebp.getBallots().getBallot()) {
+					boolean vkVerification = prmImpl.vrfBallotVerificationKey(b.getVerificationKey()).getResult();
 
-				//we want to verify the proof that come from a ballot and not from a QR-Code so ElectionReceipt is null.
-				boolean signatureVerification = schnImpl.vrfBallotSignature(b, null).getResult();
-				boolean proofVerification = proofImpl.vrfBallotProof(b, null).getResult();
+					//we want to verify the proof that come from a ballot and not from a QR-Code so ElectionReceipt is null.
+					boolean signatureVerification = schnImpl.vrfBallotSignature(b, null).getResult();
+					boolean proofVerification = proofImpl.vrfBallotProof(b, null).getResult();
 
-				//if one of these checks fail, break andcreate the verification result
-				if (!(vkVerification && signatureVerification && proofVerification)) {
-					result = false;
-					break;
+					//if one of these checks fail, break andcreate the verification result
+					if (!(vkVerification && signatureVerification && proofVerification)) {
+						result = false;
+						break;
+					}
 				}
+			} catch (NullPointerException ex) {
+				exc = ex;
 			}
+
 
 			VerificationResult v7 = new VerificationResult(VerificationType.EL_PERIOD_BALLOT, result, ebp.getElectionID(), runnerName, ImplementerType.PARAMETER, EntityType.VOTERS);
 
-			if (!result) {
-				v7.setReport(new Report(FailureCode.INVALID_BALLOT));
+			if (exc != null) {
+				rep = new Report(exc);
+				v7.setReport(rep);
+			} else if (!result) {
+				rep = new Report(FailureCode.INVALID_NIZKP);
+				v7.setReport(rep);
 			}
 			msgr.sendVrfMsg(v7);
 			partialResults.add(v7);
 			Thread.sleep(SLEEP_TIME);
-
 
 			//signature over ballots set
 			VerificationResult v8 = rsaImpl.vrfBallotsSetSign();
@@ -141,7 +175,7 @@ public class ElectionPeriodRunner extends Runner {
 			partialResults.add(v8);
 			Thread.sleep(SLEEP_TIME);
 
-		} catch (InvalidAlgorithmParameterException | CertificateException | UnsupportedEncodingException | ElectionBoardServiceFault | NoSuchAlgorithmException ex) {
+		} catch (ElectionBoardServiceFault ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 

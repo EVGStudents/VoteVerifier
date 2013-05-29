@@ -27,24 +27,18 @@ import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.Report;
 import ch.bfh.univoteverifier.common.RunnerName;
-import ch.bfh.univoteverifier.common.StringConcatenator;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.verification.VerificationResult;
-import com.thoughtworks.xstream.XStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.ws.soap.SOAPFaultException;
 
 /**
  * This class contains all the methods that need a NIZKP verification.
@@ -136,43 +130,53 @@ public class ProofImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfDistributedKeyByProof(String tallierName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public VerificationResult vrfDistributedKeyByProof(String tallierName) {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
-		EncryptionKeyShare eks = ebp.getEncryptionKeyShare(tallierName);
+		try {
+			EncryptionKeyShare eks = ebp.getEncryptionKeyShare(tallierName);
 
-		//get the part of the key for this tallier
-		BigInteger y_j = eks.getKey();
+			//get the part of the key for this tallier
+			BigInteger y_j = eks.getKey();
 
-		//get the proof and its paramters
-		Proof proof = eks.getProof();
-		BigInteger t = proof.getCommitment().get(0);
-		BigInteger s = proof.getResponse().get(0);
+			//get the proof and its paramters
+			Proof proof = eks.getProof();
+			BigInteger t = proof.getCommitment().get(0);
+			BigInteger s = proof.getResponse().get(0);
 
-		//concatenate to y_jttallierName
-		sc.pushObject(y_j);
-		sc.pushObject(t);
-		sc.pushObject(tallierName);
+			//concatenate to y_jttallierName
+			sc.pushObject(y_j);
+			sc.pushObject(t);
+			sc.pushObject(tallierName);
 
-		String res = sc.pullAll();
+			String res = sc.pullAll();
 
-		//get the  ElGamal parameters
-		BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
-		BigInteger elGamalG = ebp.getEncryptionParameters().getGenerator();
-		BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
+			//get the  ElGamal parameters
+			BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
+			BigInteger elGamalG = ebp.getEncryptionParameters().getGenerator();
+			BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
 
-		//c = H(y_j|t|tallierName) mod Q
-		BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
-
-		boolean result = knowledgeOfDiscreteLog(t, s, c, elGamalG, y_j, elGamalP, false);
-
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X, result, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
-		vr.setEntityName(tallierName);
-
-		if (!result) {
-			vr.setReport(new Report(FailureCode.INVALID_NIZKP));
+			//c = H(y_j|t|tallierName) mod Q
+			BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
+			r = knowledgeOfDiscreteLog(t, s, c, elGamalG, y_j, elGamalP, false);
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		v.setEntityName(tallierName);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_NIZKP);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -193,44 +197,57 @@ public class ProofImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfElectionGeneratorByProof(String mixerName, String previousMixerName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		BlindedGenerator bg = ebp.getBlindedGenerator(mixerName);
-		BigInteger g_k = bg.getGenerator();
+	public VerificationResult vrfElectionGeneratorByProof(String mixerName, String previousMixerName) {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
-		//get the proof and its paramters
-		Proof proof = bg.getProof();
-		BigInteger t = proof.getCommitment().get(0);
-		BigInteger s = proof.getResponse().get(0);
+		try {
+			BlindedGenerator bg = ebp.getBlindedGenerator(mixerName);
+			BigInteger g_k = bg.getGenerator();
 
-		//concatenate to g_ktmixerName
-		sc.pushObject(g_k);
-		sc.pushObject(t);
-		sc.pushObject(mixerName);
+			//get the proof and its paramters
+			Proof proof = bg.getProof();
+			BigInteger t = proof.getCommitment().get(0);
+			BigInteger s = proof.getResponse().get(0);
 
-		String res = sc.pullAll();
+			//concatenate to g_ktmixerName
+			sc.pushObject(g_k);
+			sc.pushObject(t);
+			sc.pushObject(mixerName);
 
-		//c = H(g_k|t|mixerName_k) mod q
-		BigInteger c = CryptoFunc.sha256(res).mod(Config.q);
+			String res = sc.pullAll();
 
-		//g_k-1
-		BigInteger previous_g_k;
+			//c = H(g_k|t|mixerName_k) mod q
+			BigInteger c = CryptoFunc.sha256(res).mod(Config.q);
 
-		if (previousMixerName.equals("schnorr_generator")) {
-			previous_g_k = Config.g;
-		} else {
-			previous_g_k = ebp.getBlindedGenerator(previousMixerName).getGenerator();
+			//g_k-1
+			BigInteger previous_g_k;
+
+			if (previousMixerName.equals("schnorr_generator")) {
+				previous_g_k = Config.g;
+			} else {
+				previous_g_k = ebp.getBlindedGenerator(previousMixerName).getGenerator();
+			}
+
+			r = knowledgeOfDiscreteLog(t, s, c, previous_g_k, g_k, Config.p, false);
+
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		boolean result = knowledgeOfDiscreteLog(t, s, c, previous_g_k, g_k, Config.p, false);
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		v.setEntityName(mixerName);
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA, result, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
-		vr.setEntityName(mixerName);
-
-		if (!result) {
-			vr.setReport(new Report(FailureCode.INVALID_NIZKP));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_NIZKP);
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 	}
 
 	/**
@@ -245,37 +262,47 @@ public class ProofImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfVerificationKeysMixedByProof(String mixerName) throws ElectionBoardServiceFault {
-		MixedVerificationKeys vk = ebp.getMixedVerificationKeysBy(mixerName);
+	public VerificationResult vrfVerificationKeysMixedByProof(String mixerName) {
+		Exception exc = null;
+		boolean r = false;
+		Report rep = null;
 
-		//plausibility check 1: size of the set against the number of voter certificates, because each certificate has a verification key
-		boolean size = vk.getKey().size() == ebp.getVoterCerts().getCertificate().size();
+		try {
+			MixedVerificationKeys vk = ebp.getMixedVerificationKeysBy(mixerName);
 
-		//plausibility check 2: values in G_q
-		boolean valuesInG = true;
-		for (BigInteger key : vk.getKey()) {
-			//key^q mod p = 1 if the value is in q.
-			if (!BigInteger.ONE.equals(key.modPow(Config.q, Config.p))) {
-				valuesInG = false;
-				break;
+			//plausibility check 1: size of the set against the number of voter certificates, because each certificate has a verification key
+			boolean size = vk.getKey().size() == ebp.getVoterCerts().getCertificate().size();
+
+			//plausibility check 2: values in G_q
+			boolean valuesInG = true;
+			for (BigInteger key : vk.getKey()) {
+				//key^q mod p = 1 if the value is in q.
+				if (!BigInteger.ONE.equals(key.modPow(Config.q, Config.p))) {
+					valuesInG = false;
+					break;
+				}
 			}
+
+			//plausibility check 3: different values
+			//remove the duplicates by creating a set
+			Set<BigInteger> uniqueVerificationKeys = new HashSet(vk.getKey());
+
+			//if the size of the unique set of verification key is the same as the original verification key we don't have any duplicates
+			boolean differentValues = vk.getKey().size() == uniqueVerificationKeys.size();
+
+			r = size && valuesInG && differentValues;
+		} catch (ElectionBoardServiceFault ex) {
+			exc = ex;
 		}
 
-		//plausibility check 3: different values
-		//remove the duplicates by creating a set
-		Set<BigInteger> uniqueVerificationKeys = new HashSet(vk.getKey());
+		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		v.setEntityName(mixerName);
+		v.setImplemented(false);
 
-		//if the size of the unique set of verification key is the same as the original verification key we don't have any duplicates
-		boolean differentValues = vk.getKey().size() == uniqueVerificationKeys.size();
-
-		boolean r = size && valuesInG && differentValues;
-
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
-		vr.setEntityName(mixerName);
-		vr.setImplemented(false);
-
-		if (vr.isImplemented()) {
-			Report rep = null;
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (v.isImplemented()) {
 
 			if (r) {
 				rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
@@ -284,11 +311,13 @@ public class ProofImplementer extends Implementer {
 			}
 
 			//remove this when the proof will be implemented
-			rep.setAdditionalInformation("The NIZKP is not implemented, so thw following plausibility checks are performed: size of verification key set, each verificaition key belongs to G_q, there aren't duplicate keys in the set.");
-			vr.setReport(rep);
+			rep.setAdditionalInformation("The NIZKP is not implemented, so the following plausibility checks are performed: size of verification key set, each verificaition key belongs to G_q, there aren't duplicate keys in the set.");
+
+			v.setReport(rep);
+
 		}
 
-		return vr;
+		return v;
 	}
 
 	/**
@@ -305,28 +334,69 @@ public class ProofImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfLatelyVerificationKeysByProof(String mixerName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		List<MixedVerificationKey> mvk = ebp.getLatelyMixedVerificationKeysBy(mixerName);
-		boolean result = false;
+	public VerificationResult vrfLatelyVerificationKeysByProof(String mixerName) {
+		Exception exc = null;
+		boolean r = false;
+		Report rep = null;
 
-		//this proof is not yet implemented - but the equalityOfDiscreteLog() method should do the  computation for this kind of proof
+		try {
+			List<MixedVerificationKey> mvk = ebp.getLatelyMixedVerificationKeysBy(mixerName);
 
-		//plausibility check instead - check that vk_i belongs to VK (lately mixed verification keys of late registration)
-		List<MixedVerificationKey> allMvk = ebp.getLateyMixedVerificationKeys();
 
-		if (mvk.size() == allMvk.size()) {
-			result = true;
+			//this proof is not yet implemented - but the equalityOfDiscreteLog() method should do the  computation for this kind of proof
+
+			//plausibility check instead - check that vk_i belongs to VK (lately mixed verification keys of late registration)
+			List<MixedVerificationKey> allMvk = ebp.getLateyMixedVerificationKeys();
+
+			r = mvk.size() == allMvk.size();
+
+		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault ex) {
+			exc = ex;
 		}
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF, result, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
-		vr.setEntityName(mixerName);
-		vr.setImplemented(false);
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		v.setEntityName(mixerName);
+		v.setImplemented(false);
 
-		if (!result) {
-			vr.setReport(new Report(FailureCode.INVALID_NIZKP));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(new Report(FailureCode.INVALID_NIZKP));
+		} else if (!v.isImplemented()) {
+
+			if (!r) {
+				rep = new Report(FailureCode.LATELY_KEY_PLAUSIBILITY_CHECK);
+			} else if (r) {
+				rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+			}
+
+			rep.setAdditionalInformation("The NIZKP is not implemented, so the following plausibility checks are performed: the size of the key for this mixer is the same as the list of key from the voters certificates.");
+
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
+	}
+
+	/**
+	 * Verify the NIZKP of the late renewal of registration.
+	 *
+	 * Specification: 1.3.6, b.
+	 *
+	 * @param mixerName the name of the mixer.
+	 * @return a VerificationResult.
+	 */
+	public VerificationResult vrfLateRenewalOfRegistrationProofBy(String mixerName) {
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_LATEREN, false, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+
+		v.setImplemented(false);
+		v.setEntityName(mixerName);
+
+		Report rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+		rep.setAdditionalInformation("This verification is not yet implemented due the lack of necessary data.");
+
+		v.setReport(rep);
+
+		return v;
 	}
 
 	/**
@@ -334,47 +404,60 @@ public class ProofImplementer extends Implementer {
 	 *
 	 * Specification 1.3.6, d.
 	 *
-	 * @param b the Ballot. otherwise.
+	 * @param b the Ballot.
+	 * @param er the ElectionReceipt if it comes from a QR-Code.
 	 * @return a VerificationResult.
 	 */
-	public VerificationResult vrfBallotProof(Ballot b, ElectionReceipt er) throws NoSuchAlgorithmException, UnsupportedEncodingException, ElectionBoardServiceFault {
-		BigInteger t = null, s = null, aValue = null, verificationKey = null;
-		BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
-		BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
-		BigInteger elGamalG = ebp.getEncryptionParameters().getGenerator();
+	public VerificationResult vrfBallotProof(Ballot b, ElectionReceipt er) {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
-		//if we have a Ballot or an ElectionReceipt initialize the variables
-		if (b != null) {
-			Proof proof = b.getProof();
-			t = proof.getCommitment().get(0);
-			s = proof.getResponse().get(0);
-			aValue = b.getEncryptedVote().getFirstValue();
-			verificationKey = b.getVerificationKey();
-		} else if (er != null) {
-			t = er.getProofCommitment();
-			s = er.getProofResponse();
-			aValue = er.getEncValueA();
-			verificationKey = er.getVerificationKey();
+		try {
+			BigInteger t = null, s = null, aValue = null, verificationKey = null;
+			BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
+			BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
+			BigInteger elGamalG = ebp.getEncryptionParameters().getGenerator();
+
+			//if we have a Ballot or an ElectionReceipt initialize the variables
+			if (b != null) {
+				Proof proof = b.getProof();
+				t = proof.getCommitment().get(0);
+				s = proof.getResponse().get(0);
+				aValue = b.getEncryptedVote().getFirstValue();
+				verificationKey = b.getVerificationKey();
+			} else if (er != null) {
+				t = er.getProofCommitment();
+				s = er.getProofResponse();
+				aValue = er.getEncValueA();
+				verificationKey = er.getVerificationKey();
+			}
+
+			//concatenate to atvk
+			sc.pushObject(aValue);
+			sc.pushObject(t);
+			sc.pushObject(verificationKey);
+
+			String res = sc.pullAll();
+
+			BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
+
+			r = knowledgeOfDiscreteLog(t, s, c, elGamalG, aValue, elGamalP, false);
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException | ElectionBoardServiceFault ex) {
+			exc = ex;
 		}
 
-		//concatenate to atvk
-		sc.pushObject(aValue);
-		sc.pushObject(t);
-		sc.pushObject(verificationKey);
+		VerificationResult v = new VerificationResult(VerificationType.SINGLE_BALLOT_PROOF, r, ebp.getElectionID(), rn, it, EntityType.VOTERS);
 
-		String res = sc.pullAll();
-
-		BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
-
-		boolean result = knowledgeOfDiscreteLog(t, s, c, elGamalG, aValue, elGamalP, false);
-
-		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_PROOF, result, ebp.getElectionID(), rn, it, EntityType.VOTERS);
-
-		if (!result) {
-			vr.setReport(new Report(FailureCode.INVALID_NIZKP));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_NIZKP);
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 	}
 
 	/**
@@ -393,46 +476,69 @@ public class ProofImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfEncryptedVotesByProof(String mixerName) throws ElectionBoardServiceFault {
-		MixedEncryptedVotes mev = ebp.getMixedEncryptedVotesBy(mixerName);
+	public VerificationResult vrfEncryptedVotesByProof(String mixerName) {
+		Exception exc = null;
+		boolean r = false;
+		Report rep = null;
 
-		//plausibility check 1: size of the set against the number of ballots, because each ballot has an encrypted vote.
-		boolean size = mev.getVote().size() == ebp.getBallots().getBallot().size();
+		try {
+			MixedEncryptedVotes mev = ebp.getMixedEncryptedVotesBy(mixerName);
 
-		//plausibility check 2: values in G_q
-		boolean valuesInG = true;
-		for (EncryptedVote ev : mev.getVote()) {
-			//value^q mod p = 1 if the value is in q.
-			//first value
-			if (!BigInteger.ONE.equals(ev.getFirstValue().modPow(Config.q, Config.p))) {
-				valuesInG = false;
-				break;
+			//plausibility check 1: size of the set against the number of ballots, because each ballot has an encrypted vote.
+			//ToDo decommetn when available
+//			boolean size = mev.getVote().size() == ebp.getBallots().getBallot().size();
+
+			//plausibility check 2: values in G_q
+			boolean valuesInG = true;
+			for (EncryptedVote ev : mev.getVote()) {
+				//value^q mod p = 1 if the value is in q.
+				//first value
+				if (!BigInteger.ONE.equals(ev.getFirstValue().modPow(Config.q, Config.p))) {
+					valuesInG = false;
+					break;
+				}
+
+				//second value
+				if (!BigInteger.ONE.equals(ev.getSecondValue().modPow(Config.q, Config.p))) {
+					valuesInG = false;
+					break;
+				}
 			}
 
-			//second value
-			if (!BigInteger.ONE.equals(ev.getSecondValue().modPow(Config.q, Config.p))) {
-				valuesInG = false;
-				break;
+			//plausibility check 3: different values
+			//remove the duplicates by creating a set
+			Set<BigInteger> uniqueVerificationKeys = new HashSet(mev.getVote());
+
+			//if the size of the unique set of verification key is the same as the original verification key we don't have any duplicates
+			boolean differentValues = mev.getVote().size() == uniqueVerificationKeys.size();
+
+			//r = size && valuesInG && differentValues; => decomment when getBallots will work
+			r = valuesInG && differentValues;
+		} catch (NullPointerException | ElectionBoardServiceFault ex) {
+			Logger.getLogger(ProofImplementer.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		VerificationResult v = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		v.setEntityName(mixerName);
+		v.setImplemented(false);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!v.isImplemented()) {
+
+			if (!r) {
+				rep = new Report(FailureCode.ENCRYPTED_VOTES_PLAUSIBILITY_CHECK_FAILED);
+			} else if (r) {
+				rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
 			}
+
+			rep.setAdditionalInformation("The NIZKP is not implemented, so the following plausibility checks are performed: the size of the key for this mixer is the same as the list of key from the voters certificates.");
+
+			v.setReport(rep);
 		}
 
-		//plausibility check 3: different values
-		//remove the duplicates by creating a set
-		Set<BigInteger> uniqueVerificationKeys = new HashSet(mev.getVote());
-
-		//if the size of the unique set of verification key is the same as the original verification key we don't have any duplicates
-		boolean differentValues = mev.getVote().size() == uniqueVerificationKeys.size();
-
-		boolean result = size && valuesInG && differentValues;
-
-		VerificationResult vr = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET, result, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
-		vr.setEntityName(mixerName);
-
-		if (!result) {
-			vr.setReport(new Report(FailureCode.ENCRYPTED_VOTES_PLAUSIBILITY_CHECK_FAILED));
-		}
-
-		return vr;
+		return v;
 	}
 
 	/**
@@ -449,63 +555,76 @@ public class ProofImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfDecryptedVotesByProof(String tallierName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tallierName);
-		//get the y_j value for this tallier
-		EncryptionKeyShare eks = ebp.getEncryptionKeyShare(tallierName);
+	public VerificationResult vrfDecryptedVotesByProof(String tallierName) {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
-		//take the set of encrypted vote in order to get the first value of an encryption pair a_i
-		MixedEncryptedVotes mev = ebp.getMixedEncryptedVotes();
+		try {
 
-		BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
-		BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
-		BigInteger elGamalG = ebp.getEncryptionParameters().getGenerator();
+			PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tallierName);
+			//get the y_j value for this tallier
+			EncryptionKeyShare eks = ebp.getEncryptionKeyShare(tallierName);
 
-		//concatenate to y_ja_jtT
-		sc.pushObject(eks.getKey());
+			//take the set of encrypted vote in order to get the first value of an encryption pair a_i
+			MixedEncryptedVotes mev = ebp.getMixedEncryptedVotes();
 
-		for (int i = 0; i < pdv.getVote().size(); i++) {
-			sc.pushObject(pdv.getVote().get(i));
-		}
+			BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
+			BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
+			BigInteger elGamalG = ebp.getEncryptionParameters().getGenerator();
 
-		for (int i = 0; i < pdv.getProof().getCommitment().size(); i++) {
-			sc.pushObject(pdv.getProof().getCommitment().get(i));
-		}
+			//concatenate to y_ja_jtT
+			sc.pushObject(eks.getKey());
 
-		sc.pushObject(tallierName);
-
-		String res = sc.pullAll();
-
-		//compute the c value
-		BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
-
-		//verify the first proof
-		boolean result = knowledgeOfDiscreteLog(pdv.getProof().getCommitment().get(0), pdv.getProof().getResponse().get(0), c, elGamalG, eks.getKey(), elGamalP, false);
-
-		//compute the knowledge of discrete log for each element in the list
-		for (int i = 1; i < pdv.getProof().getCommitment().size(); i++) {
-			BigInteger commitment = pdv.getProof().getCommitment().get(i);
-			BigInteger response = pdv.getProof().getResponse().get(0);
-			BigInteger a_tallier = pdv.getVote().get(i);
-			BigInteger a_firstEncValue = mev.getVote().get(i).getFirstValue();
-
-			//the computation of v and w for this proof, is a sequence of knowledge of discrete log
-			result = knowledgeOfDiscreteLog(commitment, response, c, a_firstEncValue, a_tallier, elGamalP, true);
-
-			//if the result is false, break
-			if (!result) {
-				Logger.getLogger(this.getClass().getName()).log(Level.INFO, "BREAK IN THE LOOP");
-				break;
+			for (int i = 0; i < pdv.getVote().size(); i++) {
+				sc.pushObject(pdv.getVote().get(i));
 			}
+
+			for (int i = 0; i < pdv.getProof().getCommitment().size(); i++) {
+				sc.pushObject(pdv.getProof().getCommitment().get(i));
+			}
+
+			sc.pushObject(tallierName);
+
+			String res = sc.pullAll();
+
+			//compute the c value
+			BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
+
+			//verify the first proof
+			r = knowledgeOfDiscreteLog(pdv.getProof().getCommitment().get(0), pdv.getProof().getResponse().get(0), c, elGamalG, eks.getKey(), elGamalP, false);
+
+			//compute the knowledge of discrete log for each element in the list
+			for (int i = 1; i < pdv.getProof().getCommitment().size(); i++) {
+				BigInteger commitment = pdv.getProof().getCommitment().get(i);
+				BigInteger response = pdv.getProof().getResponse().get(0);
+				BigInteger a_tallier = pdv.getVote().get(i);
+				BigInteger a_firstEncValue = mev.getVote().get(i).getFirstValue();
+
+				//the computation of v and w for this proof, is a sequence of knowledge of discrete log
+				r = knowledgeOfDiscreteLog(commitment, response, c, a_firstEncValue, a_tallier, elGamalP, true);
+
+				//if the result is false, break
+				if (!r) {
+					break;
+				}
+			}
+
+		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		VerificationResult vr = new VerificationResult(VerificationType.MT_T_NIZKP_OF_X, result, ebp.getElectionID(), rn, it, EntityType.TALLIER);
-		vr.setEntityName(tallierName);
+		VerificationResult v = new VerificationResult(VerificationType.MT_T_NIZKP_OF_X, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
+		v.setEntityName(tallierName);
 
-		if (!result) {
-			vr.setReport(new Report(FailureCode.INVALID_NIZKP));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_NIZKP);
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 	}
 }

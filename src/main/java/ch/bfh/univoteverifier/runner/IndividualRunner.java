@@ -70,40 +70,35 @@ public class IndividualRunner extends Runner {
 
 	@Override
 	public List<VerificationResult> run() throws InterruptedException {
-		try {
-			//Em certificate
-			VerificationResult v1 = certImpl.vrfEMCertificate();
-			msgr.sendVrfMsg(v1);
-			partialResults.add(v1);
-			Thread.sleep(SLEEP_TIME);
+		//Em certificate
+		VerificationResult v1 = certImpl.vrfEMCertificate();
+		msgr.sendVrfMsg(v1);
+		partialResults.add(v1);
+		Thread.sleep(SLEEP_TIME);
 
-			//RSA Signature
-			VerificationResult v2 = rsaImpl.vrfSingleBallotSign(er);
-			msgr.sendVrfMsg(v2);
-			partialResults.add(v2);
-			Thread.sleep(SLEEP_TIME);
+		//RSA Signature
+		VerificationResult v2 = rsaImpl.vrfSingleBallotSign(er);
+		msgr.sendVrfMsg(v2);
+		partialResults.add(v2);
+		Thread.sleep(SLEEP_TIME);
 
-			//B belongs to ballots
-			VerificationResult v3 = paramImpl.vrfBallotInSet(er.getVerificationKey());
-			msgr.sendVrfMsg(v3);
-			partialResults.add(v3);
-			Thread.sleep(SLEEP_TIME);
+		//B belongs to ballots
+		VerificationResult v3 = paramImpl.vrfBallotInSet(er.getVerificationKey());
+		msgr.sendVrfMsg(v3);
+		partialResults.add(v3);
+		Thread.sleep(SLEEP_TIME);
 
-			//Schnorr signature
-			VerificationResult v4 = schnorrImpl.vrfBallotSignature(null, er);
-			msgr.sendVrfMsg(v4);
-			partialResults.add(v4);
-			Thread.sleep(SLEEP_TIME);
+		//Schnorr signature
+		VerificationResult v4 = schnorrImpl.vrfBallotSignature(null, er);
+		msgr.sendVrfMsg(v4);
+		partialResults.add(v4);
+		Thread.sleep(SLEEP_TIME);
 
-			//proof
-			VerificationResult v5 = proofImpl.vrfBallotProof(null, er);
-			msgr.sendVrfMsg(v5);
-			partialResults.add(v5);
-			Thread.sleep(SLEEP_TIME);
-
-		} catch (UnsupportedEncodingException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
-			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
-		}
+		//proof
+		VerificationResult v5 = proofImpl.vrfBallotProof(null, er);
+		msgr.sendVrfMsg(v5);
+		partialResults.add(v5);
+		Thread.sleep(SLEEP_TIME);
 
 		return Collections.unmodifiableList(partialResults);
 	}

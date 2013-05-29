@@ -223,7 +223,7 @@ public class ElectionSetupRunner extends Runner {
 			Thread.sleep(SLEEP_TIME);
 
 
-		} catch (ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | InvalidNameException | UnsupportedEncodingException ex) {
+		} catch (ElectionBoardServiceFault ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 

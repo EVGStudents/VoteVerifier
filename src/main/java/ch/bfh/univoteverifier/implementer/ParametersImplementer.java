@@ -31,6 +31,9 @@ import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.ws.soap.SOAPFaultException;
 
 /**
  * This class is used to check the validity of the parameters, like ElGamal,
@@ -59,10 +62,8 @@ public class ParametersImplementer extends Implementer {
 	 * Specification: 1.3.1.
 	 *
 	 * @return a VerificationResult with the relative result.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfSchnorrParamLen(BigInteger p, BigInteger q, BigInteger g) throws ElectionBoardServiceFault {
+	public VerificationResult vrfSchnorrParamLen(BigInteger p, BigInteger q, BigInteger g) {
 		int lengthPG = 1024;
 		int lengthQ = 256;
 
@@ -104,7 +105,7 @@ public class ParametersImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfPrime(BigInteger p, VerificationType type) throws ElectionBoardServiceFault {
+	public VerificationResult vrfPrime(BigInteger p, VerificationType type) {
 		boolean r = p.isProbablePrime(PRIME_NUMBER_CERTAINITY);
 
 		VerificationResult ve = new VerificationResult(type, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
@@ -123,7 +124,7 @@ public class ParametersImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfSafePrime(BigInteger p, BigInteger q, VerificationType type) throws ElectionBoardServiceFault {
+	public VerificationResult vrfSafePrime(BigInteger p, BigInteger q, VerificationType type) {
 		//subtract one from p, now (p-1) must be divisible by q without rest
 		BigInteger rest = p.subtract(BigInteger.ONE).mod(q);
 
@@ -145,7 +146,7 @@ public class ParametersImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfGenerator(BigInteger p, BigInteger q, BigInteger g, VerificationType type) throws ElectionBoardServiceFault {
+	public VerificationResult vrfGenerator(BigInteger p, BigInteger q, BigInteger g, VerificationType type) {
 		BigInteger res = g.modPow(q, p);
 
 		boolean r = res.equals(BigInteger.ONE);
@@ -168,31 +169,43 @@ public class ParametersImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfDistributedKey() throws ElectionBoardServiceFault {
-		EncryptionKey encKey = ebp.getEncryptionKey();
-		BigInteger resultEncKey = null;
-		BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
+	public VerificationResult vrfDistributedKey() {
+		Exception exc = null;
+		Report rep;
+		boolean r = false;
 
-		//compute y_j1 * ... * y_jn mod P
-		for (String tName : ebp.getElectionDefinition().getTallierId()) {
-			EncryptionKeyShare encKeyShare = ebp.getEncryptionKeyShare(tName);
+		try {
+			EncryptionKey encKey = ebp.getEncryptionKey();
+			BigInteger resultEncKey = null;
+			BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
 
-			if (resultEncKey == null) {
-				resultEncKey = encKeyShare.getKey();
-			} else {
-				resultEncKey = resultEncKey.multiply(encKeyShare.getKey());
+			//compute y_j1 * ... * y_jn mod P
+			for (String tName : ebp.getElectionDefinition().getTallierId()) {
+				EncryptionKeyShare encKeyShare = ebp.getEncryptionKeyShare(tName);
+
+				if (resultEncKey == null) {
+					resultEncKey = encKeyShare.getKey();
+				} else {
+					resultEncKey = resultEncKey.multiply(encKeyShare.getKey());
+				}
 			}
+
+			r = encKey.getKey().equals(resultEncKey.mod(elGamalP));
+		} catch (ElectionBoardServiceFault ex) {
+			exc = ex;
 		}
 
-		boolean r = encKey.getKey().equals(resultEncKey.mod(elGamalP));
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.ENC_KEY_SHARE_NOT_EQUALS));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.ENC_KEY_SHARE_NOT_EQUALS);
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 	}
 
 	/**
@@ -205,25 +218,38 @@ public class ParametersImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfElectionGenerator() throws ElectionBoardServiceFault {
-		ElectionGenerator eg = ebp.getElectionGenerator();
-		BigInteger egValue = eg.getGenerator();
+	public VerificationResult vrfElectionGenerator() {
+		Exception exc = null;
+		Report rep;
+		boolean r = false;
 
-		List<String> mixersName = ebp.getElectionDefinition().getMixerId();
-		String lastMixer = mixersName.get(mixersName.size() - 1);
+		try {
+			ElectionGenerator eg = ebp.getElectionGenerator();
+			BigInteger egValue = eg.getGenerator();
 
-		BlindedGenerator bg = ebp.getBlindedGenerator(lastMixer);
-		BigInteger bgValue = bg.getGenerator();
+			List<String> mixersName = ebp.getElectionDefinition().getMixerId();
+			String lastMixer = mixersName.get(mixersName.size() - 1);
 
-		//check that g^ == g_m
-		boolean r = egValue.equals(bgValue);
+			BlindedGenerator bg = ebp.getBlindedGenerator(lastMixer);
+			BigInteger bgValue = bg.getGenerator();
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_ANON_GEN, r, ebp.getElectionID(), rn, it, EntityType.EM);
-		if (!r) {
-			vr.setReport(new Report(FailureCode.ELECTION_GEN_NOT_EQUALS));
+			//check that g^ == g_m
+			r = egValue.equals(bgValue);
+		} catch (ElectionBoardServiceFault ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_ANON_GEN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.ELECTION_GEN_NOT_EQUALS);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -236,24 +262,37 @@ public class ParametersImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfVerificationKeysMixed() throws ElectionBoardServiceFault {
-		MixedVerificationKeys vk = ebp.getMixedVerificationKeys();
+	public VerificationResult vrfVerificationKeysMixed() {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
-		//get the verification key of the last mixer
-		List<String> mixerID = ebp.getElectionDefinition().getMixerId();
-		String lastMixer = mixerID.get(mixerID.size() - 1);
-		MixedVerificationKeys lastMixerKeys = ebp.getMixedVerificationKeysBy(lastMixer);
+		try {
+			MixedVerificationKeys vk = ebp.getMixedVerificationKeys();
 
-		//check that vk' == vk_m
-		boolean r = vk.equals(lastMixerKeys);
+			//get the verification key of the last mixer
+			List<String> mixerID = ebp.getElectionDefinition().getMixerId();
+			String lastMixer = mixerID.get(mixerID.size() - 1);
+			MixedVerificationKeys lastMixerKeys = ebp.getMixedVerificationKeysBy(lastMixer);
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS, r, ebp.getElectionID(), rn, it, EntityType.EM);
+			//check that vk' == vk_m
+			r = vk.equals(lastMixerKeys);
 
-		if (!r) {
-			vr.setReport(new Report(FailureCode.SET_VERIFICATION_KEYS_NOT_EQUALS));
+		} catch (NullPointerException | ElectionBoardServiceFault ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.SET_VERIFICATION_KEYS_NOT_EQUALS);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -266,23 +305,55 @@ public class ParametersImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfLatelyVerificatonKeys() throws ElectionBoardServiceFault {
-		List<MixedVerificationKey> mk = ebp.getLateyMixedVerificationKeys();
+	public VerificationResult vrfLatelyVerificatonKeys() {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
-		//get the lately verifcation keys of the last mixer
-		List<String> mixerID = ebp.getElectionDefinition().getMixerId();
-		List<MixedVerificationKey> lastMixerKeys = ebp.getLatelyMixedVerificationKeysBy(mixerID.get(mixerID.size() - 1));
+		try {
+			List<MixedVerificationKey> mk = ebp.getLateyMixedVerificationKeys();
 
-		//check that vk'_i = vk_i,m => we compare the two list rather than every signle key
-		boolean r = mk.equals(lastMixerKeys);
+			//get the lately verifcation keys of the last mixer
+			List<String> mixerID = ebp.getElectionDefinition().getMixerId();
+			List<MixedVerificationKey> lastMixerKeys = ebp.getLatelyMixedVerificationKeysBy(mixerID.get(mixerID.size() - 1));
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY, r, ebp.getElectionID(), rn, it, EntityType.EM);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.NEW_SET_VERIFICATION_KEYS_NOT_EQUALS));
+			//check that vk'_i = vk_i,m => we compare the two list rather than every signle key
+			r = mk.equals(lastMixerKeys);
+		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.NEW_SET_VERIFICATION_KEYS_NOT_EQUALS);
+			v.setReport(rep);
+		}
+
+		return v;
+	}
+
+	/**
+	 * Check the set of late renewal of registration mixed verification keys
+	 * against the set of public late renewal verification keys of last
+	 * mixer.
+	 *
+	 * Specification: 1.3.6, b.
+	 *
+	 * @return a VerificationResult.
+	 */
+	public VerificationResult vrfLateRenewalOfRegistrationKeys() {
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_LATEREN, false, ebp.getElectionID(), rn, it, EntityType.EM);
+		v.setImplemented(false);
+
+		Report rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+		rep.setAdditionalInformation("This verification is not yet implemented due the lack of necessary data.");
+		v.setReport(rep);
+
+		return v;
 	}
 
 	/**
@@ -295,30 +366,40 @@ public class ParametersImplementer extends Implementer {
 	 * verified.
 	 * @return true if the checks have been successfully executed.
 	 */
-	public VerificationResult vrfBallotVerificationKey(BigInteger verificationKey) throws ElectionBoardServiceFault {
-		MixedVerificationKeys mvk = ebp.getMixedVerificationKeys();
-		boolean result = false;
+	public VerificationResult vrfBallotVerificationKey(BigInteger verificationKey) {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
-		//check that vk belongs to VK'
-		for (BigInteger key : mvk.getKey()) {
-			if (key.equals(verificationKey)) {
-				result = true;
-				break;
+		try {
+			MixedVerificationKeys mvk = ebp.getMixedVerificationKeys();
+
+			//check that vk belongs to VK'
+			for (BigInteger key : mvk.getKey()) {
+				if (key.equals(verificationKey)) {
+					r = true;
+					break;
+				}
 			}
-
+		} catch (ElectionBoardServiceFault ex) {
+			exc = ex;
 		}
 
 		//check that no other recent ballots contain this vk -  Not yet available
 
 		//if vk is in the late renewal key set, check that no other recent ballots contain this v in the late renewal key set -  Not yet availble
 
-		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_VERIFICATION_KEY, result, ebp.getElectionID(), rn, it, EntityType.VOTERS);
+		VerificationResult v = new VerificationResult(VerificationType.SINGLE_BALLOT_VERIFICATION_KEY, r, ebp.getElectionID(), rn, it, EntityType.VOTERS);
 
-		if (!result) {
-			vr.setReport(new Report(FailureCode.INVALID_BALLOT_VK));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_BALLOT_VK);
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 	}
 
 	/**
@@ -331,23 +412,36 @@ public class ParametersImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfMixedEncryptedVotes() throws ElectionBoardServiceFault {
-		MixedEncryptedVotes mev = ebp.getMixedEncryptedVotes();
+	public VerificationResult vrfMixedEncryptedVotes() {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
-		//get last mixer encrypted votes
-		List<String> mixersName = ebp.getElectionDefinition().getMixerId();
-		MixedEncryptedVotes lastMixerEncVotes = ebp.getMixedEncryptedVotesBy(mixersName.get(mixersName.size() - 1));
+		try {
+			MixedEncryptedVotes mev = ebp.getMixedEncryptedVotes();
 
-		//check if the two set correspond
-		boolean r = mev.equals(lastMixerEncVotes);
+			//get last mixer encrypted votes
+			List<String> mixersName = ebp.getElectionDefinition().getMixerId();
+			MixedEncryptedVotes lastMixerEncVotes = ebp.getMixedEncryptedVotesBy(mixersName.get(mixersName.size() - 1));
 
-		VerificationResult vr = new VerificationResult(VerificationType.MT_ENC_VOTES_SET, r, ebp.getElectionID(), rn, it, EntityType.EA);
+			//check if the two set correspond
+			r = mev.equals(lastMixerEncVotes);
 
-		if (!r) {
-			vr.setReport(new Report(FailureCode.ENCRYPTED_VOTES_NOT_EQUALS));
+		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.MT_ENC_VOTES_SET, r, ebp.getElectionID(), rn, it, EntityType.EA);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.ENCRYPTED_VOTES_NOT_EQUALS);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -359,37 +453,50 @@ public class ParametersImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfVotes() throws ElectionBoardServiceFault {
-		Ballots ballots = ebp.getBallots();
-		BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
+	public VerificationResult vrfVotes() {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
-		for (int i = 0; i < ballots.getBallot().size(); i++) {
-			Ballot b = ballots.getBallot().get(i);
-			BigInteger bValue = b.getEncryptedVote().getSecondValue();
+		try {
+			Ballots ballots = ebp.getBallots();
+			BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
 
-			BigInteger m = bValue.mod(elGamalP);
+			for (int i = 0; i < ballots.getBallot().size(); i++) {
+				Ballot b = ballots.getBallot().get(i);
+				BigInteger bValue = b.getEncryptedVote().getSecondValue();
 
-			//get the a value for each tallier
-			for (int j = 0; j < ebp.getElectionDefinition().getTallierId().size(); i++) {
-				String tName = ebp.getElectionDefinition().getTallierId().get(j);
-				PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tName);
+				BigInteger m = bValue.mod(elGamalP);
 
-				//get the a value
-				BigInteger aValue = pdv.getVote().get(i);
-				m = m.multiply(aValue).mod(elGamalP);
+				//get the a value for each tallier
+				for (int j = 0; j < ebp.getElectionDefinition().getTallierId().size(); i++) {
+					String tName = ebp.getElectionDefinition().getTallierId().get(j);
+					PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tName);
+
+					//get the a value
+					BigInteger aValue = pdv.getVote().get(i);
+					m = m.multiply(aValue).mod(elGamalP);
+				}
+
+				//ToDo - other validity checks
+
+
 			}
-
-			//ToDo
-			System.out.println(m);
-
-
+		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault ex) {
+			exc = ex;
 		}
 
-		VerificationResult vr = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES, false, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		VerificationResult v = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES, false, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
-		//set failure code
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_VOTES);
+			v.setReport(rep);
+		}
 
-		return vr;
+		return v;
 	}
 
 	/**
@@ -403,24 +510,35 @@ public class ParametersImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfBallotInSet(BigInteger verificationKey) throws ElectionBoardServiceFault {
-		Ballot qrCodeBallot = ebp.getBallot(verificationKey);
+	public VerificationResult vrfBallotInSet(BigInteger verificationKey) {
+		Exception exc = null;
 		boolean r = false;
+		Report rep;
 
-		//check if the ballot belongs to the set of all ballots
-		for (Ballot b : ebp.getBallots().getBallot()) {
-			if (qrCodeBallot.equals(b)) {
-				r = true;
-				break;
+		try {
+			Ballot qrCodeBallot = ebp.getBallot(verificationKey);
+
+			//check if the ballot belongs to the set of all ballots
+			for (Ballot b : ebp.getBallots().getBallot()) {
+				if (qrCodeBallot.equals(b)) {
+					r = true;
+					break;
+				}
 			}
+		} catch (ElectionBoardServiceFault ex) {
+			exc = ex;
 		}
 
-		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_IN_BALLOTS, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		VerificationResult v = new VerificationResult(VerificationType.SINGLE_BALLOT_IN_BALLOTS, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
 
-		if (!r) {
-			vr.setReport(new Report(FailureCode.BALLOT_NOT_IN_SET));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.BALLOT_NOT_IN_SET);
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 	}
 }

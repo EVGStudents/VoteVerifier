@@ -17,6 +17,7 @@ package ch.bfh.univoteverifier.common;
 public class Report {
 
 	private final FailureCode fc;
+	private final Exception ex;
 	private String url;
 	private String additionalInformation;
 
@@ -27,6 +28,17 @@ public class Report {
 	 */
 	public Report(FailureCode fc) {
 		this.fc = fc;
+		this.ex = null;
+	}
+
+	/**
+	 * Create a new Report with a given exception.
+	 *
+	 * @param ex the Exceptionfor this report.
+	 */
+	public Report(Exception ex) {
+		this.fc = null;
+		this.ex = ex;
 	}
 
 	/**
@@ -73,5 +85,14 @@ public class Report {
 	 */
 	public String getAdditionalInformation() {
 		return additionalInformation;
+	}
+
+	/**
+	 * Get the exception for this report.
+	 *
+	 * @return an Exception containing the message.
+	 */
+	public Exception getException() {
+		return ex;
 	}
 }

@@ -37,7 +37,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.InvalidNameException;
+import javax.xml.ws.soap.SOAPFaultException;
 
 /**
  * This class is used to check X509 certificates.
@@ -108,20 +108,38 @@ public class CertificatesImplementer extends Implementer {
 	 * @throws NoSuchAlgorithmException if the algorithm specified for the
 	 * certificate path validator doesn't exist.
 	 */
-	public VerificationResult vrfCACertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
-		X509Certificate caCert = ebp.getCACert();
-		boolean r;
+	public VerificationResult vrfCACertificate() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
 		try {
+			X509Certificate caCert = ebp.getCACert();
 			List<X509Certificate> c = new ArrayList<>();
 			c.add(caCert);
 			r = vrfCert(c);
 		} catch (CertPathValidatorException ex) {
 			//we now that the certificate path verification has failed so the result is false
 			r = false;
+			exc = ex;
+		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+			exc = ex;
 		}
 
-		return new VerificationResult(VerificationType.SETUP_CA_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
+		VerificationResult v = new VerificationResult(VerificationType.SETUP_CA_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
+
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_CERTIFICATE);
+			rep.setAdditionalInformation(exc.getMessage());
+			v.setReport(rep);
+		}
+
+		return v;
+
 	}
 
 	/**
@@ -139,20 +157,36 @@ public class CertificatesImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfEMCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
-		X509Certificate emCert = ebp.getEMCert();
-		boolean r;
+	public VerificationResult vrfEMCertificate() {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
 		try {
+			X509Certificate emCert = ebp.getEMCert();
 			List<X509Certificate> c = new ArrayList<>();
 			c.add(emCert);
 			r = vrfCert(c);
 		} catch (CertPathValidatorException ex) {
 			//we now that the certificate path verification has failed so the result is false
 			r = false;
+			exc = ex;
+		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+			exc = ex;
 		}
 
-		return new VerificationResult(VerificationType.SETUP_EM_CERT, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v = new VerificationResult(VerificationType.SETUP_EM_CERT, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_CERTIFICATE);
+			rep.setAdditionalInformation(exc.getMessage());
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -170,20 +204,36 @@ public class CertificatesImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfEACertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
-		X509Certificate eaCert = ebp.getEACert();
-		boolean r;
+	public VerificationResult vrfEACertificate() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
 		try {
+			X509Certificate eaCert = ebp.getEACert();
 			List<X509Certificate> c = new ArrayList<>();
 			c.add(eaCert);
 			r = vrfCert(c);
 		} catch (CertPathValidatorException ex) {
 			//we now that the certificate path verification has failed so the result is false
 			r = false;
+			exc = ex;
+		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+			exc = ex;
 		}
 
-		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT, r, ebp.getElectionID(), rn, it, EntityType.EA);
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_EA_CERT, r, ebp.getElectionID(), rn, it, EntityType.EA);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_CERTIFICATE);
+			rep.setAdditionalInformation(exc.getMessage());
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -202,8 +252,10 @@ public class CertificatesImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfTallierCertificate(String tallierName) throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, InvalidNameException {
-		boolean r;
+	public VerificationResult vrfTallierCertificate(String tallierName) {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
 		//check the certificate path
 		try {
@@ -213,18 +265,25 @@ public class CertificatesImplementer extends Implementer {
 		} catch (CertPathValidatorException ex) {
 			//we now that the certificate path verification has failed so the result is false
 			r = false;
+			exc = ex;
+		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+			exc = ex;
 		}
 
 		//create a VerificationResult and then set the entity name to the one we have
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_TALLIERS_CERT, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
-		vr.setEntityName(tallierName);
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_TALLIERS_CERT, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
+		v.setEntityName(tallierName);
 
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_CERTIFICATE));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_CERTIFICATE);
+			rep.setAdditionalInformation(exc.getMessage());
+			v.setReport(rep);
 		}
 
-
-		return vr;
+		return v;
 	}
 
 	/**
@@ -243,8 +302,10 @@ public class CertificatesImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfMixerCertificate(String mixerName) throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, InvalidNameException {
-		boolean r;
+	public VerificationResult vrfMixerCertificate(String mixerName) {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
 		//check the certificate path
 		try {
@@ -254,17 +315,25 @@ public class CertificatesImplementer extends Implementer {
 		} catch (CertPathValidatorException ex) {
 			//we now that the certificate path verification has failed so the result is false
 			r = false;
+			exc = ex;
+		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+			exc = ex;
 		}
 
 		//create a VerificationResult and then set the entity name to the one we have
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_MIXERS_CERT, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
-		vr.setEntityName(mixerName);
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_MIXERS_CERT, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		v.setEntityName(mixerName);
 
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_CERTIFICATE));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_CERTIFICATE);
+			rep.setAdditionalInformation(exc.getMessage());
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 	}
 
 	/**
@@ -282,35 +351,49 @@ public class CertificatesImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfVotersCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
-		VoterCertificates vc = ebp.getVoterCerts();
+	public VerificationResult vrfVotersCertificate() {
+		Exception exc = null;
 		boolean r = false;
+		Report rep;
 
-		for (Certificate c : vc.getCertificate()) {
-			X509Certificate xCert = CryptoFunc.getX509Certificate(c.getValue(), false);
+		try {
+			VoterCertificates vc = ebp.getVoterCerts();
 
-			//check the certificate path
-			try {
+			for (Certificate c : vc.getCertificate()) {
+				X509Certificate xCert = CryptoFunc.getX509Certificate(c.getValue(), false);
+
+				//check the certificate path
 				List<X509Certificate> certPath = new ArrayList<>();
 				certPath.add(xCert);
 				certPath.add(ebp.getCACert());
 				r = vrfCert(certPath);
-
-			} catch (CertPathValidatorException ex) {
-				//we now that the certificate path verification has failed so the result is false
-				r = false;
-				break;
 			}
+		} catch (CertPathValidatorException ex) {
+			//we now that the certificate path verification has failed so the result is false
+			r = false;
+			exc = ex;
+			Logger.getLogger(this.getClass().getName()).log(Level.INFO, ex.getMessage());
+		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+			exc = ex;
+			Logger.getLogger(this.getClass().getName()).log(Level.INFO, ex.getMessage());
+
 		}
 
 		//create a VerificationResult and then set the entity name to the one we have
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
+		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
 
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_CERTIFICATE));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_CERTIFICATE);
+			rep.setAdditionalInformation(exc.getMessage());
+			v.setReport(rep);
 		}
 
-		return vr;
+		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "BEFORE RETURN");
+
+		return v;
 	}
 
 	/**
@@ -328,32 +411,42 @@ public class CertificatesImplementer extends Implementer {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	public VerificationResult vrfLatelyRegisteredVotersCertificate() throws ElectionBoardServiceFault, CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
-		List<VoterCertificate> vc = ebp.getLatelyRegisteredVoterCerts();
+	public VerificationResult vrfLatelyRegisteredVotersCertificate() {
+		Exception exc = null;
 		boolean r = false;
+		Report rep;
 
-		for (VoterCertificate c : vc) {
-			X509Certificate xCert = CryptoFunc.getX509Certificate(c.getCertificate().getValue(), false);
-			//check the certificate path
-			try {
+		try {
+			List<VoterCertificate> vc = ebp.getLatelyRegisteredVoterCerts();
+			for (VoterCertificate c : vc) {
+				X509Certificate xCert = CryptoFunc.getX509Certificate(c.getCertificate().getValue(), false);
+				//check the certificate path
 				List<X509Certificate> certPath = new ArrayList<>();
 				certPath.add(xCert);
 				certPath.add(ebp.getCACert());
 				r = vrfCert(certPath);
-			} catch (CertPathValidatorException ex) {
-				//we now that the certificate path verification has failed so the result is false
-				r = false;
-				break;
 			}
+
+		} catch (CertPathValidatorException ex) {
+			//we now that the certificate path verification has failed so the result is false
+			r = false;
+			exc = ex;
+		} catch (NullPointerException | SOAPFaultException | NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+			exc = ex;
 		}
 
 		//create a VerificationResult and then set the entity name to the one we have
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
 
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_CERTIFICATE));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_CERTIFICATE);
+			rep.setAdditionalInformation(exc.getMessage());
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 	}
 }

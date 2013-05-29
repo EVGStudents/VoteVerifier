@@ -162,6 +162,8 @@ public class ParamImplTest {
 	 */
 	@Test
 	public void testBallotVerificationKey() throws ElectionBoardServiceFault {
+		BigInteger bb = new BigInteger(1, er.getVerificationKey().toByteArray());
+		System.out.println("VR KEY" + bb);
 		VerificationResult v = pi.vrfBallotVerificationKey(er.getVerificationKey());
 		assertTrue(v.getResult());
 	}

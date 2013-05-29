@@ -56,7 +56,10 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
+import javax.xml.ws.soap.SOAPFaultException;
 
 /**
  * This class contains all the methods that need a RSA Verification.
@@ -123,28 +126,46 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfEACertIDSign() throws ElectionBoardServiceFault, CertificateException, NoSuchAlgorithmException, UnsupportedEncodingException {
-		//get the certificte as a string
-		String eaCertStr = ebp.getCACert().toString();
+	public VerificationResult vrfEACertIDSign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//get the election id
-		String eID = ebp.getElectionDefinition().getElectionId();
+		try {
+			//get the certificte as a string
+			String eaCertStr = ebp.getCACert().toString();
 
-		//concatenate to (id|Z_ea|timestamp)
-		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(eID, StringConcatenator.INNER_DELIMITER);
-		//add the timestamp when we found where this signature is - ToDo
-		//sc.pushObjectDelimiter(timestamp,StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter("CertToString", StringConcatenator.RIGHT_DELIMITER);
+			//get the election id
+			String eID = ebp.getElectionDefinition().getElectionId();
 
-		String res = sc.pullAll();
+			//concatenate to (id|Z_ea|timestamp)
+			sc.pushLeftDelim();
+			sc.pushObjectDelimiter(eID, StringConcatenator.INNER_DELIMITER);
+			//add the timestamp when we found where this signature is - ToDo
+			//sc.pushObjectDelimiter(timestamp,StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter("CertToString", StringConcatenator.RIGHT_DELIMITER);
 
-		//find the signature of Page 13, Initialization, Step 3 - ToDO
-		BigInteger signature = new BigInteger("1");
+			String res = sc.pullAll();
 
-		boolean r = vrfRSASign(emPubKey, res, signature);
+			//find the signature of Page 13, Initialization, Step 3 - ToDO
+			BigInteger signature = new BigInteger("1");
 
-		return new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+			r = vrfRSASign(emPubKey, res, signature);
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
+		}
+
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -161,35 +182,47 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfBasicParamSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		ElectionDefinition ed = ebp.getElectionDefinition();
+	public VerificationResult vrfBasicParamSign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		Signature signature = ed.getSignature();
+		try {
+			ElectionDefinition ed = ebp.getElectionDefinition();
 
-		//concatenate to (id|descr|keyLength|(t_1|...|t_n)|(m_1|...|m_n))|timestamp
-		sc.pushLeftDelim();
+			Signature signature = ed.getSignature();
 
-		sc.pushObjectDelimiter(ed.getElectionId(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(ed.getTitle(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(ed.getKeyLength(), StringConcatenator.INNER_DELIMITER);
-		sc.pushList(ed.getTallierId(), true);
-		sc.pushInnerDelim();
-		sc.pushList(ed.getMixerId(), true);
+			//concatenate to (id|descr|keyLength|(t_1|...|t_n)|(m_1|...|m_n))|timestamp
+			sc.pushLeftDelim();
 
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+			sc.pushObjectDelimiter(ed.getElectionId(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(ed.getTitle(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(ed.getKeyLength(), StringConcatenator.INNER_DELIMITER);
+			sc.pushList(ed.getTallierId(), true);
+			sc.pushInnerDelim();
+			sc.pushList(ed.getMixerId(), true);
 
-		String res = sc.pullAll();
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		//verify the signature
-		boolean r = vrfRSASign(eaPubKey, res, signature.getValue());
+			String res = sc.pullAll();
+
+			//verify the signature
+			r = vrfRSASign(eaPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
+		}
 
 		//create the VerificationResult
 		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
-		if (!r) {
-			v.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
 		}
 
 		return v;
@@ -209,33 +242,45 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfTMCertsSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		//ToDo - change to the correct value when we find it.
-		Signature signature = null;
-
-		//concatenate to (id|(Z_t1|....|Z_tn)|(Z_m1|...|Z_mn))|timestamp
-		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(ebp.getElectionDefinition().getElectionId(), StringConcatenator.INNER_DELIMITER);
-		sc.pushList(ebp.getElectionSystemInfo().getTallier(), true);
-		sc.pushInnerDelim();
-		sc.pushList(ebp.getElectionSystemInfo().getMixer(), true);
-		sc.pushInnerDelim();
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		//get the timestamp when we will know where it is
-		//sc.pushObject(signature.getTimestamp());
-
-		String res = sc.pullAll();
-
-		//verify the signature
-		//boolean r = vrfRSASign(emPubKey, res, signature.getValue());
+	public VerificationResult vrfTMCertsSign() {
 		boolean r = false;
+		Exception exc = null;
+		Report rep;
+
+		try {
+			//ToDo - change to the correct value when we find it.
+			Signature signature = null;
+
+			//concatenate to (id|(Z_t1|....|Z_tn)|(Z_m1|...|Z_mn))|timestamp
+			sc.pushLeftDelim();
+			sc.pushObjectDelimiter(ebp.getElectionDefinition().getElectionId(), StringConcatenator.INNER_DELIMITER);
+			sc.pushList(ebp.getElectionSystemInfo().getTallier(), true);
+			sc.pushInnerDelim();
+			sc.pushList(ebp.getElectionSystemInfo().getMixer(), true);
+			sc.pushInnerDelim();
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			//get the timestamp when we will know where it is
+			//sc.pushObject(signature.getTimestamp());
+
+			String res = sc.pullAll();
+
+			//verify the signature
+			//boolean r = vrfRSASign(emPubKey, res, signature.getValue());
+			r = false;
+		} catch (ElectionBoardServiceFault ex) {
+			exc = ex;
+		}
 
 		//create the VerificationResult
 		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_CERT_M_CERT_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
-		if (!r) {
-			v.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
 		}
 
 		return v;
@@ -254,31 +299,43 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfElGamalParamSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		Signature signature = ebp.getEncryptionParameters().getSignature();
-		BigInteger P = ebp.getEncryptionParameters().getPrime();
-		BigInteger Q = ebp.getEncryptionParameters().getGroupOrder();
-		BigInteger G = ebp.getEncryptionParameters().getGenerator();
+	public VerificationResult vrfElGamalParamSign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|P|Q|G)|timestamp
-		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(P, StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(Q, StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(G, StringConcatenator.RIGHT_DELIMITER);
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+		try {
+			Signature signature = ebp.getEncryptionParameters().getSignature();
+			BigInteger P = ebp.getEncryptionParameters().getPrime();
+			BigInteger Q = ebp.getEncryptionParameters().getGroupOrder();
+			BigInteger G = ebp.getEncryptionParameters().getGenerator();
 
-		String res = sc.pullAll();
+			//concatenate to (id|P|Q|G)|timestamp
+			sc.pushLeftDelim();
+			sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(P, StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(Q, StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(G, StringConcatenator.RIGHT_DELIMITER);
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		//verify the signature
-		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
+			String res = sc.pullAll();
+
+			//verify the signature
+			r = vrfRSASign(emPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
+		}
 
 		//create the VerificationResult
 		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_ELGAMAL_PARAMS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
-		if (!r) {
-			v.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
 		}
 
 		return v;
@@ -299,41 +356,54 @@ public class RSAImplementer extends Implementer {
 	 * used in this verification cannot find the encoding.
 	 *
 	 */
-	public VerificationResult vrfDistributedKeyBySign(String tallierName) throws NoSuchAlgorithmException, UnsupportedEncodingException, ElectionBoardServiceFault {
-		EncryptionKeyShare eks = ebp.getEncryptionKeyShare(tallierName);
-		Signature signature = eks.getSignature();
+	public VerificationResult vrfDistributedKeyBySign(String tallierName) {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|y_j|t|s)|timestamp
-		sc.pushLeftDelim();
+		try {
+			EncryptionKeyShare eks = ebp.getEncryptionKeyShare(tallierName);
+			Signature signature = eks.getSignature();
 
-		sc.pushObjectDelimiter(eks.getElectionId(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(eks.getKey(), StringConcatenator.INNER_DELIMITER);
-		//proof ((t|...|tn)|(s|...|sn))
-		sc.pushLeftDelim();
-		sc.pushList(eks.getProof().getCommitment(), true);
-		sc.pushInnerDelim();
-		sc.pushList(eks.getProof().getResponse(), true);
-		sc.pushRightDelim();
-		//end proof
+			//concatenate to (id|y_j|t|s)|timestamp
+			sc.pushLeftDelim();
 
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+			sc.pushObjectDelimiter(eks.getElectionId(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(eks.getKey(), StringConcatenator.INNER_DELIMITER);
+			//proof ((t|...|tn)|(s|...|sn))
+			sc.pushLeftDelim();
+			sc.pushList(eks.getProof().getCommitment(), true);
+			sc.pushInnerDelim();
+			sc.pushList(eks.getProof().getResponse(), true);
+			sc.pushRightDelim();
+			//end proof
 
-		String res = sc.pullAll();
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		//verifiy the signature
-		RSAPublicKey tallierPubKey = (RSAPublicKey) talliersCerts.get(tallierName).getPublicKey();
-		boolean r = vrfRSASign(tallierPubKey, res, signature.getValue());
+			String res = sc.pullAll();
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X_SIGN, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
-		vr.setEntityName(tallierName);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+			//verifiy the signature
+			RSAPublicKey tallierPubKey = (RSAPublicKey) talliersCerts.get(tallierName).getPublicKey();
+			r = vrfRSASign(tallierPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X_SIGN, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
+		v.setEntityName(tallierName);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
+
 	}
 
 	/**
@@ -349,29 +419,41 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfDistributedKeySign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		EncryptionKey ek = ebp.getEncryptionKey();
-		Signature signature = ek.getSignature();
+	public VerificationResult vrfDistributedKeySign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|y)|timestamp
-		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(ek.getElectionId(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(ek.getKey(), StringConcatenator.RIGHT_DELIMITER);
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+		try {
+			EncryptionKey ek = ebp.getEncryptionKey();
+			Signature signature = ek.getSignature();
 
-		String res = sc.pullAll();
+			//concatenate to (id|y)|timestamp
+			sc.pushLeftDelim();
+			sc.pushObjectDelimiter(ek.getElectionId(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(ek.getKey(), StringConcatenator.RIGHT_DELIMITER);
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		//verify the signature
-		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
+			String res = sc.pullAll();
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+			//verify the signature
+			r = vrfRSASign(emPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -389,40 +471,52 @@ public class RSAImplementer extends Implementer {
 	 * used in this verification cannot find the encoding.
 	 *
 	 */
-	public VerificationResult vrfElectionGeneratorBySign(String mixerName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		BlindedGenerator bg = ebp.getBlindedGenerator(mixerName);
-		Signature signature = bg.getSignature();
+	public VerificationResult vrfElectionGeneratorBySign(String mixerName) {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|g_k|proof)|timestamp
-		sc.pushLeftDelim();
+		try {
+			BlindedGenerator bg = ebp.getBlindedGenerator(mixerName);
+			Signature signature = bg.getSignature();
 
-		sc.pushObjectDelimiter(bg.getElectionId(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(bg.getGenerator(), StringConcatenator.INNER_DELIMITER);
-		//proof ((t|...|tn)|(s|...|sn))
-		sc.pushLeftDelim();
-		sc.pushList(bg.getProof().getCommitment(), true);
-		sc.pushInnerDelim();
-		sc.pushList(bg.getProof().getResponse(), true);
-		sc.pushRightDelim();
-		//end proof
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+			//concatenate to (id|g_k|proof)|timestamp
+			sc.pushLeftDelim();
 
-		String res = sc.pullAll();
+			sc.pushObjectDelimiter(bg.getElectionId(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(bg.getGenerator(), StringConcatenator.INNER_DELIMITER);
+			//proof ((t|...|tn)|(s|...|sn))
+			sc.pushLeftDelim();
+			sc.pushList(bg.getProof().getCommitment(), true);
+			sc.pushInnerDelim();
+			sc.pushList(bg.getProof().getResponse(), true);
+			sc.pushRightDelim();
+			//end proof
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		//verify the signature
-		RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
-		boolean r = vrfRSASign(mixerPubKey, res, signature.getValue());
+			String res = sc.pullAll();
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
-		vr.setEntityName(mixerName);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+			//verify the signature
+			RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
+			r = vrfRSASign(mixerPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		v.setEntityName(mixerName);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -438,29 +532,42 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfElectionGeneratorSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		ElectionGenerator eg = ebp.getElectionGenerator();
-		Signature signature = eg.getSignature();
+	public VerificationResult vrfElectionGeneratorSign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|g^)|timestamp
-		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(eg.getElectionId(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(eg.getGenerator(), StringConcatenator.RIGHT_DELIMITER);
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+		try {
+			ElectionGenerator eg = ebp.getElectionGenerator();
+			Signature signature = eg.getSignature();
 
-		String res = sc.pullAll();
+			//concatenate to (id|g^)|timestamp
+			sc.pushLeftDelim();
+			sc.pushObjectDelimiter(eg.getElectionId(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(eg.getGenerator(), StringConcatenator.RIGHT_DELIMITER);
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		//verify the signature
-		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
+			String res = sc.pullAll();
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_SETUP_ANON_GEN_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+			//verify the signature
+			r = vrfRSASign(emPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_ANON_GEN_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -476,129 +583,141 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfElectionOptionsSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		ElectionOptions eo = ebp.getElectionOptions();
-		Signature signature = eo.getSignature();
+	public VerificationResult vrfElectionOptionsSign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|(c1|....|cn)|(r1|...|rn))|timestamp
-		sc.pushLeftDelim();
+		try {
+			ElectionOptions eo = ebp.getElectionOptions();
+			Signature signature = eo.getSignature();
 
-		sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
-
-		sc.pushLeftDelim();
-		//for each choice
-		for (int i = 0; i < eo.getChoice().size(); i++) {
-			Choice c = eo.getChoice().get(i);
-
-			if (i > 0) {
-				sc.pushInnerDelim();
-			}
-
-			sc.pushLeftDelim();
-			sc.pushObjectDelimiter(c.getChoiceId(), StringConcatenator.INNER_DELIMITER);
-
-			if (c instanceof PoliticalList) {
-				PoliticalList pl = (PoliticalList) c;
-
-				sc.pushObjectDelimiter(pl.getNumber(), StringConcatenator.INNER_DELIMITER);
-
-				sc.pushLocalizedText(pl.getTitle());
-
-				sc.pushInnerDelim();
-				sc.pushLocalizedText(pl.getPartyName());
-
-				sc.pushInnerDelim();
-
-				sc.pushLocalizedText(pl.getPartyShortName());
-
-			} else if (c instanceof Candidate) {
-				Candidate can = (Candidate) c;
-
-				sc.pushObjectDelimiter(can.getNumber(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObjectDelimiter(can.getLastName(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObjectDelimiter(can.getFirstName(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObjectDelimiter(can.getSex(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObjectDelimiter(can.getYearOfBirth(), StringConcatenator.INNER_DELIMITER);
-
-				//getStudyBranc ((lan|text)|...|(lan|text))
-				sc.pushLocalizedText(can.getStudyBranch());
-
-				sc.pushInnerDelim();
-
-				//getStudyDegree ((lan|text)|...|(lan|text))
-				sc.pushLocalizedText(can.getStudyDegree());
-
-				sc.pushInnerDelim();
-
-				sc.pushObjectDelimiter(can.getSemesterCount(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObjectDelimiter(can.getStatus(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObjectDelimiter(can.getListId(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObject(can.getCumulation());
-			}
-
-			sc.pushRightDelim();
-		}
-
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-
-		sc.pushLeftDelim();
-
-		//for each rule
-		for (int k = 0; k < eo.getRule().size(); k++) {
-			if (k > 0) {
-				sc.pushInnerDelim();
-			}
-
-			Rule r = eo.getRule().get(k);
-			int lowerBound = 0, upperBound = 0;
-
+			//concatenate to (id|(c1|....|cn)|(r1|...|rn))|timestamp
 			sc.pushLeftDelim();
 
-			if (r instanceof SummationRule) {
-				sc.pushObjectDelimiter("summationRule", StringConcatenator.INNER_DELIMITER);
-				lowerBound = ((SummationRule) r).getLowerBound();
-				upperBound = ((SummationRule) r).getUpperBound();
-			} else if (r instanceof ForallRule) {
-				sc.pushObjectDelimiter("forallRule", StringConcatenator.INNER_DELIMITER);
-				lowerBound = ((ForallRule) r).getLowerBound();
-				upperBound = ((ForallRule) r).getUpperBound();
-			}
+			sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
 
-			//array for the choices
 			sc.pushLeftDelim();
-			for (int f = 0; f < r.getChoiceId().size(); f++) {
-				if (f > 0) {
+			//for each choice
+			for (int i = 0; i < eo.getChoice().size(); i++) {
+				Choice c = eo.getChoice().get(i);
+
+				if (i > 0) {
 					sc.pushInnerDelim();
 				}
 
-				sc.pushObject(r.getChoiceId().get(f));
+				sc.pushLeftDelim();
+				sc.pushObjectDelimiter(c.getChoiceId(), StringConcatenator.INNER_DELIMITER);
+
+				if (c instanceof PoliticalList) {
+					PoliticalList pl = (PoliticalList) c;
+
+					sc.pushObjectDelimiter(pl.getNumber(), StringConcatenator.INNER_DELIMITER);
+
+					sc.pushLocalizedText(pl.getTitle());
+
+					sc.pushInnerDelim();
+					sc.pushLocalizedText(pl.getPartyName());
+
+					sc.pushInnerDelim();
+
+					sc.pushLocalizedText(pl.getPartyShortName());
+
+				} else if (c instanceof Candidate) {
+					Candidate can = (Candidate) c;
+
+					sc.pushObjectDelimiter(can.getNumber(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObjectDelimiter(can.getLastName(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObjectDelimiter(can.getFirstName(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObjectDelimiter(can.getSex(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObjectDelimiter(can.getYearOfBirth(), StringConcatenator.INNER_DELIMITER);
+
+					//getStudyBranc ((lan|text)|...|(lan|text))
+					sc.pushLocalizedText(can.getStudyBranch());
+
+					sc.pushInnerDelim();
+
+					//getStudyDegree ((lan|text)|...|(lan|text))
+					sc.pushLocalizedText(can.getStudyDegree());
+
+					sc.pushInnerDelim();
+
+					sc.pushObjectDelimiter(can.getSemesterCount(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObjectDelimiter(can.getStatus(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObjectDelimiter(can.getListId(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObject(can.getCumulation());
+				}
+
+				sc.pushRightDelim();
 			}
+
 			sc.pushRightDelim();
 			sc.pushInnerDelim();
-			sc.pushObjectDelimiter(lowerBound, StringConcatenator.INNER_DELIMITER);
-			sc.pushObject(upperBound);
+
+			sc.pushLeftDelim();
+
+			//for each rule
+			for (int k = 0; k < eo.getRule().size(); k++) {
+				if (k > 0) {
+					sc.pushInnerDelim();
+				}
+
+				Rule ru = eo.getRule().get(k);
+				int lowerBound = 0, upperBound = 0;
+
+				sc.pushLeftDelim();
+
+				if (ru instanceof SummationRule) {
+					sc.pushObjectDelimiter("summationRule", StringConcatenator.INNER_DELIMITER);
+					lowerBound = ((SummationRule) ru).getLowerBound();
+					upperBound = ((SummationRule) ru).getUpperBound();
+				} else if (ru instanceof ForallRule) {
+					sc.pushObjectDelimiter("forallRule", StringConcatenator.INNER_DELIMITER);
+					lowerBound = ((ForallRule) ru).getLowerBound();
+					upperBound = ((ForallRule) ru).getUpperBound();
+				}
+
+				//array for the choices
+				sc.pushLeftDelim();
+				for (int f = 0; f < ru.getChoiceId().size(); f++) {
+					if (f > 0) {
+						sc.pushInnerDelim();
+					}
+
+					sc.pushObject(ru.getChoiceId().get(f));
+				}
+				sc.pushRightDelim();
+				sc.pushInnerDelim();
+				sc.pushObjectDelimiter(lowerBound, StringConcatenator.INNER_DELIMITER);
+				sc.pushObject(upperBound);
+
+				sc.pushRightDelim();
+			}
 
 			sc.pushRightDelim();
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
+
+			String res = sc.pullAll();
+
+			//verify the signature
+			r = vrfRSASign(eaPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		sc.pushRightDelim();
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_C_AND_R_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
-		String res = sc.pullAll();
-
-		//verify the signature
-		boolean r = vrfRSASign(eaPubKey, res, signature.getValue());
-
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_C_AND_R_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 	}
 
 	/**
@@ -614,140 +733,152 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfElectionDataSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		ElectionData ed = ebp.getElectionData();
-		Signature signature = ed.getSignature();
+	public VerificationResult vrfElectionDataSign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//change this when it will be available
-		String eaIdentifier = ebp.getElectionOptions().getSignature().getSignerId();
+		try {
+			ElectionData ed = ebp.getElectionData();
+			Signature signature = ed.getSignature();
 
-		//concatenate to (id|EA|descr|P|Q|G|y|g^|(c1|...|cn)|(r1|...|rn))|timestamp
-		sc.pushLeftDelim();
+			//change this when it will be available
+			String eaIdentifier = ebp.getElectionOptions().getSignature().getSignerId();
 
-		sc.pushObjectDelimiter(ed.getElectionId(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(eaIdentifier, StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(ed.getTitle(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(ed.getPrime(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(ed.getGroupOrder(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(ed.getGenerator(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(ed.getEncryptionKey(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(ed.getElectionGenerator(), StringConcatenator.INNER_DELIMITER);
-
-		//choices and rules
-		sc.pushLeftDelim();
-		//for each choice
-		for (int i = 0; i < ed.getChoice().size(); i++) {
-			Choice c = ed.getChoice().get(i);
-
-			if (i > 0) {
-				sc.pushInnerDelim();
-			}
-
-			sc.pushLeftDelim();
-			sc.pushObjectDelimiter(c.getChoiceId(), StringConcatenator.INNER_DELIMITER);
-
-			if (c instanceof PoliticalList) {
-				PoliticalList pl = (PoliticalList) c;
-
-				sc.pushObjectDelimiter(pl.getNumber(), StringConcatenator.INNER_DELIMITER);
-
-				sc.pushLocalizedText(pl.getTitle());
-
-				sc.pushInnerDelim();
-				sc.pushLocalizedText(pl.getPartyName());
-
-				sc.pushInnerDelim();
-
-				sc.pushLocalizedText(pl.getPartyShortName());
-
-			} else if (c instanceof Candidate) {
-				Candidate can = (Candidate) c;
-
-				sc.pushObjectDelimiter(can.getNumber(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObjectDelimiter(can.getLastName(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObjectDelimiter(can.getFirstName(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObjectDelimiter(can.getSex(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObjectDelimiter(can.getYearOfBirth(), StringConcatenator.INNER_DELIMITER);
-
-				//getStudyBranc ((lan|text)|...|(lan|text))
-				sc.pushLocalizedText(can.getStudyBranch());
-
-				sc.pushInnerDelim();
-
-				//getStudyDegree ((lan|text)|...|(lan|text))
-				sc.pushLocalizedText(can.getStudyDegree());
-
-				sc.pushInnerDelim();
-
-				sc.pushObjectDelimiter(can.getSemesterCount(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObjectDelimiter(can.getStatus(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObjectDelimiter(can.getListId(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObject(can.getCumulation());
-			}
-
-			sc.pushRightDelim();
-		}
-
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-
-		sc.pushLeftDelim();
-
-		//for each rule
-		for (int k = 0; k < ed.getRule().size(); k++) {
-			if (k > 0) {
-				sc.pushInnerDelim();
-			}
-
-			Rule r = ed.getRule().get(k);
-			int lowerBound = 0, upperBound = 0;
-
+			//concatenate to (id|EA|descr|P|Q|G|y|g^|(c1|...|cn)|(r1|...|rn))|timestamp
 			sc.pushLeftDelim();
 
-			if (r instanceof SummationRule) {
-				sc.pushObjectDelimiter("summationRule", StringConcatenator.INNER_DELIMITER);
-				lowerBound = ((SummationRule) r).getLowerBound();
-				upperBound = ((SummationRule) r).getUpperBound();
-			} else if (r instanceof ForallRule) {
-				sc.pushObjectDelimiter("forallRule", StringConcatenator.INNER_DELIMITER);
-				lowerBound = ((ForallRule) r).getLowerBound();
-				upperBound = ((ForallRule) r).getUpperBound();
-			}
+			sc.pushObjectDelimiter(ed.getElectionId(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(eaIdentifier, StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(ed.getTitle(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(ed.getPrime(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(ed.getGroupOrder(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(ed.getGenerator(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(ed.getEncryptionKey(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(ed.getElectionGenerator(), StringConcatenator.INNER_DELIMITER);
 
-			//array for the choices
+			//choices and rules
 			sc.pushLeftDelim();
-			for (int f = 0; f < r.getChoiceId().size(); f++) {
-				if (f > 0) {
+			//for each choice
+			for (int i = 0; i < ed.getChoice().size(); i++) {
+				Choice c = ed.getChoice().get(i);
+
+				if (i > 0) {
 					sc.pushInnerDelim();
 				}
 
-				sc.pushObject(r.getChoiceId().get(f));
+				sc.pushLeftDelim();
+				sc.pushObjectDelimiter(c.getChoiceId(), StringConcatenator.INNER_DELIMITER);
+
+				if (c instanceof PoliticalList) {
+					PoliticalList pl = (PoliticalList) c;
+
+					sc.pushObjectDelimiter(pl.getNumber(), StringConcatenator.INNER_DELIMITER);
+
+					sc.pushLocalizedText(pl.getTitle());
+
+					sc.pushInnerDelim();
+					sc.pushLocalizedText(pl.getPartyName());
+
+					sc.pushInnerDelim();
+
+					sc.pushLocalizedText(pl.getPartyShortName());
+
+				} else if (c instanceof Candidate) {
+					Candidate can = (Candidate) c;
+
+					sc.pushObjectDelimiter(can.getNumber(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObjectDelimiter(can.getLastName(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObjectDelimiter(can.getFirstName(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObjectDelimiter(can.getSex(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObjectDelimiter(can.getYearOfBirth(), StringConcatenator.INNER_DELIMITER);
+
+					//getStudyBranc ((lan|text)|...|(lan|text))
+					sc.pushLocalizedText(can.getStudyBranch());
+
+					sc.pushInnerDelim();
+
+					//getStudyDegree ((lan|text)|...|(lan|text))
+					sc.pushLocalizedText(can.getStudyDegree());
+
+					sc.pushInnerDelim();
+
+					sc.pushObjectDelimiter(can.getSemesterCount(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObjectDelimiter(can.getStatus(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObjectDelimiter(can.getListId(), StringConcatenator.INNER_DELIMITER);
+					sc.pushObject(can.getCumulation());
+				}
+
+				sc.pushRightDelim();
 			}
+
 			sc.pushRightDelim();
 			sc.pushInnerDelim();
-			sc.pushObjectDelimiter(lowerBound, StringConcatenator.INNER_DELIMITER);
-			sc.pushObject(upperBound);
+
+			sc.pushLeftDelim();
+
+			//for each rule
+			for (int k = 0; k < ed.getRule().size(); k++) {
+				if (k > 0) {
+					sc.pushInnerDelim();
+				}
+
+				Rule ru = ed.getRule().get(k);
+				int lowerBound = 0, upperBound = 0;
+
+				sc.pushLeftDelim();
+
+				if (ru instanceof SummationRule) {
+					sc.pushObjectDelimiter("summationRule", StringConcatenator.INNER_DELIMITER);
+					lowerBound = ((SummationRule) ru).getLowerBound();
+					upperBound = ((SummationRule) ru).getUpperBound();
+				} else if (ru instanceof ForallRule) {
+					sc.pushObjectDelimiter("forallRule", StringConcatenator.INNER_DELIMITER);
+					lowerBound = ((ForallRule) ru).getLowerBound();
+					upperBound = ((ForallRule) ru).getUpperBound();
+				}
+
+				//array for the choices
+				sc.pushLeftDelim();
+				for (int f = 0; f < ru.getChoiceId().size(); f++) {
+					if (f > 0) {
+						sc.pushInnerDelim();
+					}
+
+					sc.pushObject(ru.getChoiceId().get(f));
+				}
+				sc.pushRightDelim();
+				sc.pushInnerDelim();
+				sc.pushObjectDelimiter(lowerBound, StringConcatenator.INNER_DELIMITER);
+				sc.pushObject(upperBound);
+
+				sc.pushRightDelim();
+			}
 
 			sc.pushRightDelim();
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
+
+			String res = sc.pullAll();
+
+			//verify the signature
+			r = vrfRSASign(emPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		sc.pushRightDelim();
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_EDATA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
-		String res = sc.pullAll();
-
-		//verify the signature
-		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
-
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_EDATA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 	}
 
 	/**
@@ -763,32 +894,45 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfElectoralRollSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		ElectoralRoll er = ebp.getElectoralRoll();
-		Signature signature = er.getSignature();
+	public VerificationResult vrfElectoralRollSign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|(h1|...|hn))|timestamp
-		sc.pushLeftDelim();
+		try {
+			ElectoralRoll er = ebp.getElectoralRoll();
+			Signature signature = er.getSignature();
 
-		sc.pushObjectDelimiter(er.getElectionId(), StringConcatenator.INNER_DELIMITER);
-		sc.pushList(er.getVoterHash(), true);
+			//concatenate to (id|(h1|...|hn))|timestamp
+			sc.pushLeftDelim();
 
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+			sc.pushObjectDelimiter(er.getElectionId(), StringConcatenator.INNER_DELIMITER);
+			sc.pushList(er.getVoterHash(), true);
 
-		String res = sc.pullAll();
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		//verify the signature
-		boolean r = vrfRSASign(eaPubKey, res, signature.getValue());
+			String res = sc.pullAll();
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_ELECTORAL_ROLL_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+			//verify the signature
+			r = vrfRSASign(eaPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_ELECTORAL_ROLL_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
+
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -805,13 +949,30 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfVotersCertIDSign() throws ElectionBoardServiceFault {
-		VoterCertificates vc = ebp.getVoterCerts();
-		Signature signature = vc.getSignature();
+	public VerificationResult vrfVotersCertIDSign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
+
+		try {
+			VoterCertificates vc = ebp.getVoterCerts();
+			Signature signature = vc.getSignature();
+		} catch (ElectionBoardServiceFault ex) {
+			exc = ex;
+		}
 
 		//ToDo - Find the signature
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT_SIGN, false, ebp.getElectionID(), rn, it, EntityType.CA);
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.CA);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -830,34 +991,46 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfMixedVerificationKeysBySign(String mixerName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		MixedVerificationKeys mk = ebp.getMixedVerificationKeysBy(mixerName);
-		Signature signature = mk.getSignature();
+	public VerificationResult vrfMixedVerificationKeysBySign(String mixerName) {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|(vk1|...|vkn))|timestamp
-		sc.pushLeftDelim();
+		try {
+			MixedVerificationKeys mk = ebp.getMixedVerificationKeysBy(mixerName);
+			Signature signature = mk.getSignature();
 
-		sc.pushObjectDelimiter(mk.getElectionId(), StringConcatenator.INNER_DELIMITER);
-		sc.pushList(mk.getKey(), true);
+			//concatenate to (id|(vk1|...|vkn))|timestamp
+			sc.pushLeftDelim();
 
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+			sc.pushObjectDelimiter(mk.getElectionId(), StringConcatenator.INNER_DELIMITER);
+			sc.pushList(mk.getKey(), true);
 
-		String res = sc.pullAll();
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		//verify the signature
-		RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
-		boolean r = vrfRSASign(mixerPubKey, res, signature.getValue());
+			String res = sc.pullAll();
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
-		vr.setEntityName(mixerName);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+			//verify the signature
+			RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
+			r = vrfRSASign(mixerPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		v.setEntityName(mixerName);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -873,32 +1046,44 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfMixedVerificationKeysSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		MixedVerificationKeys mk = ebp.getMixedVerificationKeys();
-		Signature signature = mk.getSignature();
+	public VerificationResult vrfMixedVerificationKeysSign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|(vk1|...|vkn))|timestamp
-		sc.pushLeftDelim();
+		try {
+			MixedVerificationKeys mk = ebp.getMixedVerificationKeys();
+			Signature signature = mk.getSignature();
 
-		sc.pushObjectDelimiter(mk.getElectionId(), StringConcatenator.INNER_DELIMITER);
-		sc.pushList(mk.getKey(), true);
+			//concatenate to (id|(vk1|...|vkn))|timestamp
+			sc.pushLeftDelim();
 
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+			sc.pushObjectDelimiter(mk.getElectionId(), StringConcatenator.INNER_DELIMITER);
+			sc.pushList(mk.getKey(), true);
 
-		String res = sc.pullAll();
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		//verify the signature
-		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
+			String res = sc.pullAll();
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+			//verify the signature
+			r = vrfRSASign(emPubKey, res, signature.getValue());
+		} catch (NullPointerException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -939,46 +1124,57 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfLatelyVerificationKeysBySign(String mixerName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		List<MixedVerificationKey> mvk = ebp.getLatelyMixedVerificationKeysBy(mixerName);
-		RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
+	public VerificationResult vrfLatelyVerificationKeysBySign(String mixerName) {
 		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//for each key of this mixer
-		for (MixedVerificationKey key : mvk) {
-			Signature signature = key.getSignature();
+		try {
+			List<MixedVerificationKey> mvk = ebp.getLatelyMixedVerificationKeysBy(mixerName);
+			RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
 
-			//concatenate to (id|vk)|timestamp - WARNING: The proof is not yet implemented, so we exclude it.
-			sc.pushLeftDelim();
+			//for each key of this mixer
+			for (MixedVerificationKey key : mvk) {
+				Signature signature = key.getSignature();
 
-			sc.pushObjectDelimiter(key.getElectionId(), StringConcatenator.INNER_DELIMITER);
-			sc.pushObject(key.getKey());
+				//concatenate to (id|vk)|timestamp - WARNING: The proof is not yet implemented, so we exclude it.
+				sc.pushLeftDelim();
 
-			sc.pushRightDelim();
-			sc.pushInnerDelim();
-			sc.pushObject(signature.getTimestamp());
+				sc.pushObjectDelimiter(key.getElectionId(), StringConcatenator.INNER_DELIMITER);
+				sc.pushObject(key.getKey());
 
-			String res = sc.pullAll();
+				sc.pushRightDelim();
+				sc.pushInnerDelim();
+				sc.pushObject(signature.getTimestamp());
 
-			System.out.println("Late verification key" + res);
+				String res = sc.pullAll();
 
-			//verify the signature
-			r = vrfRSASign(mixerPubKey, res, signature.getValue());
+				System.out.println("Late verification key" + res);
 
-			//if one signature fails, all is false so break.
-			if (!r) {
-				break;
+				//verify the signature
+				r = vrfRSASign(mixerPubKey, res, signature.getValue());
+
+				//if one signature fails, all is false so break.
+				if (!r) {
+					break;
+				}
 			}
+		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
-		vr.setEntityName(mixerName);
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		v.setEntityName(mixerName);
 
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 	}
 
 	/**
@@ -988,7 +1184,7 @@ public class RSAImplementer extends Implementer {
 	 *
 	 * Specification: 1.3.6, a.
 	 *
-	 * @param mixerName the name of the mixer
+	 * @param mixerName the name of the mixer.
 	 * @return a VerificationResult.
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
@@ -997,41 +1193,95 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfLatelyVerificationKeysSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		List<MixedVerificationKey> mk = ebp.getLateyMixedVerificationKeys();
+	public VerificationResult vrfLatelyVerificationKeysSign() {
 		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//check the signature for each key in the set
-		for (MixedVerificationKey key : mk) {
-			Signature signature = key.getSignature();
+		try {
+			List<MixedVerificationKey> mk = ebp.getLateyMixedVerificationKeys();
 
-			//concatenate to (id|key)|timestamp - ToDo look for the Voter identiy
-			sc.pushLeftDelim();
+			//check the signature for each key in the set
+			for (MixedVerificationKey key : mk) {
+				Signature signature = key.getSignature();
 
-			sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
-			sc.pushObject(key.getKey());
+				//concatenate to (id|key)|timestamp - ToDo look for the Voter identiy
+				sc.pushLeftDelim();
 
-			sc.pushRightDelim();
-			sc.pushInnerDelim();
-			sc.pushObject(signature.getTimestamp());
+				sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
+				sc.pushObject(key.getKey());
 
-			String res = sc.pullAll();
+				sc.pushRightDelim();
+				sc.pushInnerDelim();
+				sc.pushObject(signature.getTimestamp());
 
-			//verify the signature - EM has not signed the data!
-			r = vrfRSASign(emPubKey, res, signature.getValue());
+				String res = sc.pullAll();
 
-			if (!r) {
-				break;
+				//verify the signature - EM has not signed the data!
+				r = vrfRSASign(emPubKey, res, signature.getValue());
+
+				if (!r) {
+					break;
+				}
 			}
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
+	}
+
+	/**
+	 * Verify the signature of the late renewal of registration keys with
+	 * the proof. The proof is not included in the signature computation
+	 * because is not yet available.
+	 *
+	 * Specification: 1.3.6, b.
+	 *
+	 * @param mixerName the name of the mixer.
+	 *
+	 * @return a VerificationResult.
+	 */
+	public VerificationResult vrfLateRenewalOfRegistrationSignBy(String mixerName) {
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_LATEREN_SIGN, false, ebp.getElectionID(), rn, it, EntityType.MIXER);
+
+		v.setImplemented(false);
+		v.setEntityName(mixerName);
+
+		Report rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+		rep.setAdditionalInformation("This verification is not yet implemented due the lack of necessary data.");
+		v.setReport(rep);
+
+		return v;
+	}
+
+	/**
+	 * Verify the signature of the late renewal of registration keys.
+	 *
+	 * Specification: 1.3.6, b.
+	 *
+	 * @return a VerificationResult.
+	 */
+	public VerificationResult vrfLateRenewalOfRegistrationSign() {
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_LAST_M_LATEREN_KEY_SIGN, false, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		v.setImplemented(false);
+
+		Report rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+		rep.setAdditionalInformation("This verification is not yet implemented due the lack of necessary data.");
+		v.setReport(rep);
+
+		return v;
 	}
 
 	/**
@@ -1048,75 +1298,87 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfBallotsSetSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		Ballots b = ebp.getBallots();
-		Signature signature = b.getSignature();
+	public VerificationResult vrfBallotsSetSign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|ballots)|timestamp - ToDo change when we will have the getBallots method
-		sc.pushLeftDelim();
+		try {
+			Ballots b = ebp.getBallots();
+			Signature signature = b.getSignature();
 
-		sc.pushObjectDelimiter(b.getElectionId(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObjectDelimiter(b.getBallotsState(), StringConcatenator.INNER_DELIMITER);
+			//concatenate to (id|ballots)|timestamp - ToDo change when we will have the getBallots method
+			sc.pushLeftDelim();
 
-		//for each ballot
-		sc.pushLeftDelim();
-		for (int i = 0; i < b.getBallot().size(); i++) {
-			Ballot singleBallot = b.getBallot().get(i);
-			if (i > 0) {
+			sc.pushObjectDelimiter(b.getElectionId(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObjectDelimiter(b.getBallotsState(), StringConcatenator.INNER_DELIMITER);
+
+			//for each ballot
+			sc.pushLeftDelim();
+			for (int i = 0; i < b.getBallot().size(); i++) {
+				Ballot singleBallot = b.getBallot().get(i);
+				if (i > 0) {
+					sc.pushInnerDelim();
+				}
+
+				sc.pushLeftDelim();
+
+				//encrypted vote
+				sc.pushLeftDelim();
+				sc.pushObjectDelimiter(singleBallot.getEncryptedVote().getFirstValue(), StringConcatenator.INNER_DELIMITER);
+				sc.pushObject(singleBallot.getEncryptedVote().getSecondValue());
+				sc.pushRightDelim();
+
 				sc.pushInnerDelim();
+
+				//verification key
+				sc.pushObject(singleBallot.getVerificationKey());
+
+				sc.pushInnerDelim();
+
+				//voter signature
+				sc.pushLeftDelim();
+				sc.pushObjectDelimiter(singleBallot.getSignature().getFirstValue(), StringConcatenator.INNER_DELIMITER);
+				sc.pushObject(singleBallot.getSignature().getSecondValue());
+				sc.pushRightDelim();
+
+				sc.pushInnerDelim();
+
+				//proof
+				sc.pushLeftDelim();
+				sc.pushList(singleBallot.getProof().getCommitment(), true);
+				sc.pushInnerDelim();
+				sc.pushList(singleBallot.getProof().getResponse(), true);
+
+				sc.pushRightDelim();
+
+				sc.pushRightDelim();
 			}
-
-			sc.pushLeftDelim();
-
-			//encrypted vote
-			sc.pushLeftDelim();
-			sc.pushObjectDelimiter(singleBallot.getEncryptedVote().getFirstValue(), StringConcatenator.INNER_DELIMITER);
-			sc.pushObject(singleBallot.getEncryptedVote().getSecondValue());
-			sc.pushRightDelim();
-
-			sc.pushInnerDelim();
-
-			//verification key
-			sc.pushObject(singleBallot.getVerificationKey());
-
-			sc.pushInnerDelim();
-
-			//voter signature
-			sc.pushLeftDelim();
-			sc.pushObjectDelimiter(singleBallot.getSignature().getFirstValue(), StringConcatenator.INNER_DELIMITER);
-			sc.pushObject(singleBallot.getSignature().getSecondValue());
-			sc.pushRightDelim();
-
-			sc.pushInnerDelim();
-
-			//proof
-			sc.pushLeftDelim();
-			sc.pushList(singleBallot.getProof().getCommitment(), true);
-			sc.pushInnerDelim();
-			sc.pushList(singleBallot.getProof().getResponse(), true);
-
 			sc.pushRightDelim();
 
 			sc.pushRightDelim();
-		}
-		sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+			String res = sc.pullAll();
 
-		String res = sc.pullAll();
-
-		//verifiy the signature
-		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
-
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_BALLOT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+			//verifiy the signature
+			r = vrfRSASign(emPubKey, res, signature.getValue());
+		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_BALLOT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -1135,49 +1397,61 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfMixedEncryptedVotesBySign(String mixerName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		MixedEncryptedVotes mev = ebp.getMixedEncryptedVotesBy(mixerName);
-		Signature signature = mev.getSignature();
+	public VerificationResult vrfMixedEncryptedVotesBySign(String mixerName) {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|((firstValue|secondValue)|.......|(nfirstValue|nSecondValue)))|timestamp - WARNING :the proof is not implemented
-		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
+		try {
+			MixedEncryptedVotes mev = ebp.getMixedEncryptedVotesBy(mixerName);
+			Signature signature = mev.getSignature();
 
-		sc.pushLeftDelim();
-		//for each vote
-		for (int i = 0; i < mev.getVote().size(); i++) {
-			EncryptedVote e = mev.getVote().get(i);
-
-			if (i > 0) {
-				sc.pushInnerDelim();
-			}
+			//concatenate to (id|((firstValue|secondValue)|.......|(nfirstValue|nSecondValue)))|timestamp - WARNING :the proof is not implemented
+			sc.pushLeftDelim();
+			sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
 
 			sc.pushLeftDelim();
-			sc.pushObject(e.getFirstValue());
-			sc.pushInnerDelim();
-			sc.pushObject(e.getSecondValue());
+			//for each vote
+			for (int i = 0; i < mev.getVote().size(); i++) {
+				EncryptedVote e = mev.getVote().get(i);
+
+				if (i > 0) {
+					sc.pushInnerDelim();
+				}
+
+				sc.pushLeftDelim();
+				sc.pushObject(e.getFirstValue());
+				sc.pushInnerDelim();
+				sc.pushObject(e.getSecondValue());
+				sc.pushRightDelim();
+			}
 			sc.pushRightDelim();
-		}
-		sc.pushRightDelim();
 
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		String res = sc.pullAll();
+			String res = sc.pullAll();
 
-		//verifiy the signature
-		RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
-		boolean r = vrfRSASign(mixerPubKey, res, signature.getValue());
-
-		VerificationResult vr = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
-		vr.setEntityName(mixerName);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+			//verifiy the signature
+			RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
+			r = vrfRSASign(mixerPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		v.setEntityName(mixerName);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -1194,46 +1468,58 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfMixedEncryptedVotesSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		MixedEncryptedVotes mev = ebp.getMixedEncryptedVotes();
-		Signature signature = mev.getSignature();
+	public VerificationResult vrfMixedEncryptedVotesSign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|((firstValue|secondValue)|.......|(nfirstValue|nSecondValue)))|timestamp
-		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
-		sc.pushLeftDelim();
+		try {
+			MixedEncryptedVotes mev = ebp.getMixedEncryptedVotes();
+			Signature signature = mev.getSignature();
 
-		for (int i = 0; i < mev.getVote().size(); i++) {
-			EncryptedVote e = mev.getVote().get(i);
+			//concatenate to (id|((firstValue|secondValue)|.......|(nfirstValue|nSecondValue)))|timestamp
+			sc.pushLeftDelim();
+			sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
+			sc.pushLeftDelim();
 
-			if (i > 0) {
+			for (int i = 0; i < mev.getVote().size(); i++) {
+				EncryptedVote e = mev.getVote().get(i);
+
+				if (i > 0) {
+					sc.pushInnerDelim();
+				}
+
+				sc.pushLeftDelim();
+				sc.pushObject(e.getFirstValue());
 				sc.pushInnerDelim();
+				sc.pushObject(e.getSecondValue());
+				sc.pushRightDelim();
 			}
 
-			sc.pushLeftDelim();
-			sc.pushObject(e.getFirstValue());
-			sc.pushInnerDelim();
-			sc.pushObject(e.getSecondValue());
 			sc.pushRightDelim();
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
+
+			String res = sc.pullAll();
+
+			//verifiy the signature
+			r = vrfRSASign(eaPubKey, res, signature.getValue());
+		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		sc.pushRightDelim();
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+		VerificationResult v = new VerificationResult(VerificationType.MT_ENC_VOTES_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
 
-		String res = sc.pullAll();
-
-		//verifiy the signature
-		boolean r = vrfRSASign(eaPubKey, res, signature.getValue());
-
-		VerificationResult vr = new VerificationResult(VerificationType.MT_ENC_VOTES_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 	}
 
 	/**
@@ -1250,51 +1536,63 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfDecryptedVotesBySign(String tallierName) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tallierName);
-		Signature signature = pdv.getSignature();
+	public VerificationResult vrfDecryptedVotesBySign(String tallierName) {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|(a_1|a_2|....|a_n)|proof)|timestamp
-		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
+		try {
+			PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tallierName);
+			Signature signature = pdv.getSignature();
 
-		sc.pushLeftDelim();
-		//for each partial decrypted vote
-		for (int i = 0; i < pdv.getVote().size(); i++) {
-			if (i > 0) {
-				sc.pushInnerDelim();
+			//concatenate to (id|(a_1|a_2|....|a_n)|proof)|timestamp
+			sc.pushLeftDelim();
+			sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
+
+			sc.pushLeftDelim();
+			//for each partial decrypted vote
+			for (int i = 0; i < pdv.getVote().size(); i++) {
+				if (i > 0) {
+					sc.pushInnerDelim();
+				}
+
+				sc.pushObject(pdv.getVote().get(i));
 			}
+			sc.pushRightDelim();
 
-			sc.pushObject(pdv.getVote().get(i));
-		}
-		sc.pushRightDelim();
+			sc.pushInnerDelim();
 
-		sc.pushInnerDelim();
+			//push the proof
+			sc.pushLeftDelim();
+			sc.pushList(pdv.getProof().getCommitment(), true);
+			sc.pushInnerDelim();
+			sc.pushList(pdv.getProof().getResponse(), true);
+			sc.pushRightDelim();
 
-		//push the proof
-		sc.pushLeftDelim();
-		sc.pushList(pdv.getProof().getCommitment(), true);
-		sc.pushInnerDelim();
-		sc.pushList(pdv.getProof().getResponse(), true);
-		sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+			String res = sc.pullAll();
 
-		String res = sc.pullAll();
-
-		//verify the signature
-		RSAPublicKey tallierPubKey = (RSAPublicKey) talliersCerts.get(tallierName).getPublicKey();
-		boolean r = vrfRSASign(tallierPubKey, res, signature.getValue());
-
-		VerificationResult vr = new VerificationResult(VerificationType.MT_T_NIZKP_OF_X_SIGN, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
-		vr.setEntityName(tallierName);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+			//verify the signature
+			RSAPublicKey tallierPubKey = (RSAPublicKey) talliersCerts.get(tallierName).getPublicKey();
+			r = vrfRSASign(tallierPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.MT_T_NIZKP_OF_X_SIGN, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
+		v.setEntityName(tallierName);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -1310,56 +1608,68 @@ public class RSAImplementer extends Implementer {
 	 * @throws UnsupportedEncodingException if the hash algorithm function
 	 * used in this verification cannot find the encoding.
 	 */
-	public VerificationResult vrfPlaintextVotesSign() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		DecodedVotes dv = ebp.getDecodedVotes();
-		Signature signature = dv.getSignature();
+	public VerificationResult vrfPlaintextVotesSign() {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
 
-		//concatenate to (id|(v1|v2|....|vn))|timestamp
-		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
+		try {
+			DecodedVotes dv = ebp.getDecodedVotes();
+			Signature signature = dv.getSignature();
 
-		//( ((cID|count)|(cID|count))|...|((cID|count)|(cID|count)) )
-		sc.pushLeftDelim();
-		for (int i = 0; i < dv.getDecodedVote().size(); i++) {
-			if (i > 0) {
-				sc.pushInnerDelim();
-			}
-
+			//concatenate to (id|(v1|v2|....|vn))|timestamp
 			sc.pushLeftDelim();
-			//(cID|count)|(cID|count)|....|(cID|count)
-			for (int j = 0; j < dv.getDecodedVote().get(i).getEntry().size(); j++) {
-				DecodedVoteEntry dve = dv.getDecodedVote().get(i).getEntry().get(j);
+			sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
 
-				if (j > 0) {
+			//( ((cID|count)|(cID|count))|...|((cID|count)|(cID|count)) )
+			sc.pushLeftDelim();
+			for (int i = 0; i < dv.getDecodedVote().size(); i++) {
+				if (i > 0) {
 					sc.pushInnerDelim();
 				}
 
 				sc.pushLeftDelim();
-				sc.pushObject(dve.getCount());
-				sc.pushInnerDelim();
-				sc.pushObject(dve.getChoiceId());
+				//(cID|count)|(cID|count)|....|(cID|count)
+				for (int j = 0; j < dv.getDecodedVote().get(i).getEntry().size(); j++) {
+					DecodedVoteEntry dve = dv.getDecodedVote().get(i).getEntry().get(j);
+
+					if (j > 0) {
+						sc.pushInnerDelim();
+					}
+
+					sc.pushLeftDelim();
+					sc.pushObject(dve.getCount());
+					sc.pushInnerDelim();
+					sc.pushObject(dve.getChoiceId());
+					sc.pushRightDelim();
+				}
 				sc.pushRightDelim();
 			}
 			sc.pushRightDelim();
-		}
-		sc.pushRightDelim();
 
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(signature.getTimestamp());
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
 
-		String res = sc.pullAll();
+			String res = sc.pullAll();
 
-		//verify the signature
-		boolean r = vrfRSASign(emPubKey, res, signature.getValue());
-
-		VerificationResult vr = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+			//verify the signature
+			r = vrfRSASign(emPubKey, res, signature.getValue());
+		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -1375,51 +1685,62 @@ public class RSAImplementer extends Implementer {
 	 * used in this verification cannot find the encoding.
 	 *
 	 */
-	public VerificationResult vrfSingleBallotSign(ElectionReceipt er) throws
-		NoSuchAlgorithmException, UnsupportedEncodingException {
-		BigInteger signatureValue = er.getSignatureValue();
+	public VerificationResult vrfSingleBallotSign(ElectionReceipt er) {
+		boolean r = false;
+		Exception exc = null;
+		Report rep;
+
+		try {
+			BigInteger signatureValue = er.getSignatureValue();
 
 
-		//concatenate to - (id|(encValueA|encValueB)|((t)|(s)))|timestamp
-		sc.pushLeftDelim();
-		//election ID
-		sc.pushObjectDelimiter(er.getElectionID(), StringConcatenator.INNER_DELIMITER);
-		//(encValueA|encValueB)
-		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(er.getEncValueA(), StringConcatenator.INNER_DELIMITER);
-		sc.pushObject(er.getEncValueB());
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		//((t)|(s))
-		sc.pushLeftDelim();
+			//concatenate to - (id|(encValueA|encValueB)|((t)|(s)))|timestamp
+			sc.pushLeftDelim();
+			//election ID
+			sc.pushObjectDelimiter(er.getElectionID(), StringConcatenator.INNER_DELIMITER);
+			//(encValueA|encValueB)
+			sc.pushLeftDelim();
+			sc.pushObjectDelimiter(er.getEncValueA(), StringConcatenator.INNER_DELIMITER);
+			sc.pushObject(er.getEncValueB());
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			//((t)|(s))
+			sc.pushLeftDelim();
 
-		sc.pushLeftDelim();
-		sc.pushObject(er.getProofCommitment());
-		sc.pushRightDelim();
+			sc.pushLeftDelim();
+			sc.pushObject(er.getProofCommitment());
+			sc.pushRightDelim();
 
-		sc.pushInnerDelim();
+			sc.pushInnerDelim();
 
-		sc.pushLeftDelim();
-		sc.pushObject(er.getProofResponse());
-		sc.pushRightDelim();
+			sc.pushLeftDelim();
+			sc.pushObject(er.getProofResponse());
+			sc.pushRightDelim();
 
-		sc.pushRightDelim();
-		//right parenthesis
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushObject(er.getTimeStamp());
+			sc.pushRightDelim();
+			//right parenthesis
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(er.getTimeStamp());
 
-		String res = sc.pullAll();
+			String res = sc.pullAll();
 
-		boolean r = vrfRSASign(emPubKey, res, signatureValue);
-
-		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_RSA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
-
-
-		if (!r) {
-			vr.setReport(new Report(FailureCode.INVALID_RSA_SIGNATURE));
+			r = vrfRSASign(emPubKey, res, signatureValue);
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.SINGLE_BALLOT_RSA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 }

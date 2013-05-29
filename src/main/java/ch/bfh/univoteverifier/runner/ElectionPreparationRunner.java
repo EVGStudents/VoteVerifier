@@ -18,12 +18,11 @@ import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.implementer.ProofImplementer;
 import ch.bfh.univoteverifier.implementer.RSAImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
 
 /**
@@ -57,39 +56,38 @@ public class ElectionPreparationRunner extends Runner {
 
 	@Override
 	public List<VerificationResult> run() throws InterruptedException {
+		//RSA signature of election options
+		VerificationResult v1 = rsaImpl.vrfElectionOptionsSign();
+		msgr.sendVrfMsg(v1);
+		partialResults.add(v1);
+		Thread.sleep(SLEEP_TIME);
+
+		//RSA signature of election data
+		VerificationResult v2 = rsaImpl.vrfElectionDataSign();
+		msgr.sendVrfMsg(v2);
+		partialResults.add(v2);
+		Thread.sleep(SLEEP_TIME);
+
+		//RSA signature of electoral roll
+		VerificationResult v3 = rsaImpl.vrfElectoralRollSign();
+		msgr.sendVrfMsg(v3);
+		partialResults.add(v3);
+		Thread.sleep(SLEEP_TIME);
+
+		//Voters certificate
+		VerificationResult v4 = certImpl.vrfVotersCertificate();
+		msgr.sendVrfMsg(v4);
+		partialResults.add(v4);
+		Thread.sleep(SLEEP_TIME);
+
+		//RSA signature of election ID and voters certificate
+		VerificationResult v5 = rsaImpl.vrfVotersCertIDSign();
+		msgr.sendVrfMsg(v5);
+		partialResults.add(v5);
+		Thread.sleep(SLEEP_TIME);
+
+		//Plausibility check and signature of mixed verifiction keys by
 		try {
-			//RSA signature of election options
-			VerificationResult v1 = rsaImpl.vrfElectionOptionsSign();
-			msgr.sendVrfMsg(v1);
-			partialResults.add(v1);
-			Thread.sleep(SLEEP_TIME);
-
-			//RSA signature of election data
-			VerificationResult v2 = rsaImpl.vrfElectionDataSign();
-			msgr.sendVrfMsg(v2);
-			partialResults.add(v2);
-			Thread.sleep(SLEEP_TIME);
-
-			//RSA signature of electoral roll
-			VerificationResult v3 = rsaImpl.vrfElectoralRollSign();
-			msgr.sendVrfMsg(v3);
-			partialResults.add(v3);
-			Thread.sleep(SLEEP_TIME);
-
-			//Voters certificate
-			VerificationResult v4 = certImpl.vrfVotersCertificate();
-			msgr.sendVrfMsg(v4);
-			partialResults.add(v4);
-			Thread.sleep(SLEEP_TIME);
-
-			//RSA signature of election ID and voters certificate
-			VerificationResult v5 = rsaImpl.vrfVotersCertIDSign();
-			msgr.sendVrfMsg(v5);
-			partialResults.add(v5);
-			Thread.sleep(SLEEP_TIME);
-
-
-			//Plausibility check and signature of mixed verifiction keys by
 			for (String mName : ebp.getElectionDefinition().getMixerId()) {
 				VerificationResult v6 = proofImpl.vrfVerificationKeysMixedByProof(mName);
 				msgr.sendVrfMsg(v6);
@@ -101,22 +99,21 @@ public class ElectionPreparationRunner extends Runner {
 				partialResults.add(v7);
 				Thread.sleep(SLEEP_TIME);
 			}
-
-			//mixed verification keys
-			VerificationResult v8 = prmImpl.vrfVerificationKeysMixed();
-			msgr.sendVrfMsg(v8);
-			partialResults.add(v8);
-			Thread.sleep(SLEEP_TIME);
-
-			//mixed verification keys signature
-			VerificationResult v9 = rsaImpl.vrfMixedVerificationKeysSign();
-			msgr.sendVrfMsg(v9);
-			partialResults.add(v9);
-			Thread.sleep(SLEEP_TIME);
-
-		} catch (InvalidAlgorithmParameterException | CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (ElectionBoardServiceFault ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
+
+		//mixed verification keys
+		VerificationResult v8 = prmImpl.vrfVerificationKeysMixed();
+		msgr.sendVrfMsg(v8);
+		partialResults.add(v8);
+		Thread.sleep(SLEEP_TIME);
+
+		//mixed verification keys signature
+		VerificationResult v9 = rsaImpl.vrfMixedVerificationKeysSign();
+		msgr.sendVrfMsg(v9);
+		partialResults.add(v9);
+		Thread.sleep(SLEEP_TIME);
 
 		return Collections.unmodifiableList(partialResults);
 	}

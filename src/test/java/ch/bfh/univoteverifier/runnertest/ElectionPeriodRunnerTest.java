@@ -80,7 +80,21 @@ public class ElectionPeriodRunnerTest {
 
 		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM));
 
-		//ToDo - Check M7,M8, EM16, EM17
+		for (String mName : ebp.getElectionDefinition().getMixerId()) {
+			VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_LATEREN, false, ebp.getElectionID(), rn, ImplementerType.NIZKP, EntityType.PARAMETER);
+			v.setEntityName(mName);
+			v.setImplemented(false);
+
+			mockList.add(v);
+
+			VerificationResult vSign = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_LATEREN_SIGN, false, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.MIXER);
+			vSign.setEntityName(mName);
+			mockList.add(vSign);
+		}
+
+		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_LATEREN, false, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.EM));
+
+		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_M_LAST_M_LATEREN_KEY_SIGN, false, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.EM));
 
 		mockList.add(new VerificationResult(VerificationType.EL_PERIOD_BALLOT, true, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.VOTERS));
 

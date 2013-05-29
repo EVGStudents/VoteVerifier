@@ -27,6 +27,8 @@ import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class contains all the methods that need a Schnorr verification.
@@ -129,66 +131,79 @@ public class SchnorrImplementer extends Implementer {
 	 * generator instead of the normal generator g from the config file
 	 * @return a VerificationResult.
 	 */
-	public VerificationResult vrfBallotSignature(Ballot b, ElectionReceipt er) throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
-		BigInteger encFirstValue = null, encSecondValue = null, proofCommitment = null, proofResponse = null, schnorrFirstValue = null, schnorrSecondValue = null, verificationKey = null;
-		String eID = null;
+	public VerificationResult vrfBallotSignature(Ballot b, ElectionReceipt er) {
+		Exception exc = null;
+		boolean r = false;
+		Report rep;
 
-		//get the different values for the object that is not null.
-		if (b != null) {
-			eID = b.getElectionId();
-			encFirstValue = b.getEncryptedVote().getFirstValue();
-			encSecondValue = b.getEncryptedVote().getSecondValue();
-			proofCommitment = b.getProof().getCommitment().get(0);
-			proofResponse = b.getProof().getResponse().get(0);
-			schnorrFirstValue = b.getSignature().getFirstValue();
-			schnorrSecondValue = b.getSignature().getSecondValue();
-			verificationKey = b.getVerificationKey();
-		} else if (er != null) {
-			eID = er.getElectionID();
-			encFirstValue = new BigInteger(1, er.getEncValueA().toByteArray());
-			encSecondValue = new BigInteger(1, er.getEncValueB().toByteArray());
-			proofCommitment = new BigInteger(1, er.getProofCommitment().toByteArray());
-			proofResponse = new BigInteger(1, er.getProofResponse().toByteArray());
-			schnorrFirstValue = new BigInteger(1, er.getSchnorrValueA().toByteArray());
-			schnorrSecondValue = new BigInteger(1, er.getSchnorrValueB().toByteArray());
-			verificationKey = new BigInteger(1, er.getVerificationKey().toByteArray());
+		try {
+			BigInteger encFirstValue = null, encSecondValue = null, proofCommitment = null, proofResponse = null, schnorrFirstValue = null, schnorrSecondValue = null, verificationKey = null;
+			String eID = null;
+
+			//get the different values for the object that is not null.
+			if (b != null) {
+				eID = b.getElectionId();
+				encFirstValue = b.getEncryptedVote().getFirstValue();
+				encSecondValue = b.getEncryptedVote().getSecondValue();
+				proofCommitment = b.getProof().getCommitment().get(0);
+				proofResponse = b.getProof().getResponse().get(0);
+				schnorrFirstValue = b.getSignature().getFirstValue();
+				schnorrSecondValue = b.getSignature().getSecondValue();
+				verificationKey = b.getVerificationKey();
+			} else if (er != null) {
+				eID = er.getElectionID();
+				encFirstValue = new BigInteger(1, er.getEncValueA().toByteArray());
+				encSecondValue = new BigInteger(1, er.getEncValueB().toByteArray());
+				proofCommitment = new BigInteger(1, er.getProofCommitment().toByteArray());
+				proofResponse = new BigInteger(1, er.getProofResponse().toByteArray());
+				schnorrFirstValue = new BigInteger(1, er.getSchnorrValueA().toByteArray());
+				schnorrSecondValue = new BigInteger(1, er.getSchnorrValueB().toByteArray());
+				verificationKey = new BigInteger(1, er.getVerificationKey().toByteArray());
+			}
+
+			//concatenate to ( id | (firstValue|secondValue) | ((t)|(s)) )
+			sc.pushLeftDelim();
+			//election ID
+			sc.pushObjectDelimiter(eID, StringConcatenator.INNER_DELIMITER);
+			//encrypted vote
+			sc.pushLeftDelim();
+			sc.pushObjectDelimiter(encFirstValue, StringConcatenator.INNER_DELIMITER);
+			sc.pushObject(encSecondValue);
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			//proof
+			sc.pushLeftDelim();
+			sc.pushLeftDelim();
+			sc.pushObject(proofCommitment);
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushLeftDelim();
+			sc.pushObject(proofResponse);
+			sc.pushRightDelim();
+			sc.pushRightDelim();
+			//right parenthesis
+			sc.pushRightDelim();
+
+			String res = sc.pullAll();
+
+			//verify the signature - ToDo test with value from a real ballot and not from a QR-Code.
+			r = vrfSchnorrSign(verificationKey, res, schnorrFirstValue, schnorrSecondValue, ebp.getElectionData().getElectionGenerator());
+		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | UnsupportedEncodingException ex) {
+			exc = ex;
 		}
 
-		//concatenate to ( id | (firstValue|secondValue) | ((t)|(s)) )
-		sc.pushLeftDelim();
-		//election ID
-		sc.pushObjectDelimiter(eID, StringConcatenator.INNER_DELIMITER);
-		//encrypted vote
-		sc.pushLeftDelim();
-		sc.pushObjectDelimiter(encFirstValue, StringConcatenator.INNER_DELIMITER);
-		sc.pushObject(encSecondValue);
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		//proof
-		sc.pushLeftDelim();
-		sc.pushLeftDelim();
-		sc.pushObject(proofCommitment);
-		sc.pushRightDelim();
-		sc.pushInnerDelim();
-		sc.pushLeftDelim();
-		sc.pushObject(proofResponse);
-		sc.pushRightDelim();
-		sc.pushRightDelim();
-		//right parenthesis
-		sc.pushRightDelim();
+		VerificationResult v = new VerificationResult(VerificationType.SINGLE_BALLOT_SCHNORR_SIGN, r, ebp.getElectionID(), rn, it, EntityType.VOTERS);
 
-		String res = sc.pullAll();
-
-		//verify the signature - ToDo test with value from a real ballot and not from a QR-Code.
-		boolean result = vrfSchnorrSign(verificationKey, res, schnorrFirstValue, schnorrSecondValue, ebp.getElectionData().getElectionGenerator());
-
-		VerificationResult vr = new VerificationResult(VerificationType.SINGLE_BALLOT_SCHNORR_SIGN, result, ebp.getElectionID(), rn, it, EntityType.VOTERS);
-
-		if (!result) {
-			vr.setReport(new Report(FailureCode.INVALID_SCHNORR_SIGN));
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_CERTIFICATE);
+			rep.setAdditionalInformation(exc.getMessage());
+			v.setReport(rep);
 		}
 
-		return vr;
+		return v;
 
 	}
 }

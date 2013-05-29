@@ -103,7 +103,7 @@ public class MixerTallierRunner extends Runner {
 			partialResults.add(v8);
 			Thread.sleep(SLEEP_TIME);
 
-		} catch (InterruptedException | NoSuchAlgorithmException | UnsupportedEncodingException | ElectionBoardServiceFault ex) {
+		} catch (InterruptedException | ElectionBoardServiceFault ex) {
 			msgr.sendElectionSpecError(ebp.getElectionID(), ex);
 		}
 

@@ -19,6 +19,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
@@ -106,9 +107,5 @@ public class CryptoFunc {
 		X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(is);
 
 		return cert;
-	}
-
-	public List<Entry<Choice, Integer>> mergeSortElectionResult(List<Entry<Choice, Integer>> notSortedList) {
-		return null;
 	}
 }
