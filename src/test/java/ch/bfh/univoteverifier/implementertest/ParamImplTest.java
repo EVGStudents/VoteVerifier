@@ -38,15 +38,12 @@ public class ParamImplTest {
 	private final BigInteger p, q, g;
 	private final BigInteger elQ, elG, elP;
 	private final ElectionBoardProxy ebp;
-	private final ElectionReceipt er;
 
 	public ParamImplTest() throws FileNotFoundException, ElectionBoardServiceFault {
 		ebp = new ElectionBoardProxy();
 		pi = new ParametersImplementer(ebp, RunnerName.UNSET);
 
-		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
-		QRCode qrCode = new QRCode(new Messenger());
-		er = qrCode.decodeReceipt(qrCodeFile);
+
 
 		//change the value of p,q and g - all the test must fail
 		p = Config.p.multiply(new BigInteger("2"));
@@ -166,6 +163,9 @@ public class ParamImplTest {
 	 */
 	@Test
 	public void testBallotVerificationKey() throws ElectionBoardServiceFault {
+		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
+		QRCode qrCode = new QRCode(new Messenger());
+		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
 		VerificationResult v = pi.vrfBallotVerificationKey(er.getVerificationKey());
 		assertTrue(v.getResult());
 	}

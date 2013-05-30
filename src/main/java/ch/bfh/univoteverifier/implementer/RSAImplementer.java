@@ -1094,8 +1094,16 @@ public class RSAImplementer extends Implementer {
 	 */
 	public VerificationResult vrfLatelyRegisteredVotersCertificateSign() {
 		//ToDo - Find the signature
+		boolean r = false;
+		Report rep;
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT_SIGN, false, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
+		
+		if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			vr.setReport(rep);
+		}
 
 		return vr;
 	}
