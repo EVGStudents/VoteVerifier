@@ -14,6 +14,7 @@ import ch.bfh.univoteverifier.common.Config;
 import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -31,7 +32,7 @@ public class GUIconstants {
     public final static Color DARK_GREY = new Color(160, 160, 160);
     public final static Color BLUE = new Color(110, 110, 254);
     public static Locale loc = new Locale("EN");
-    public final static String ABOUT_TEXT = "   Project independent UniVoteVerifier."
+    public final static String ABOUT_TEXT = "UniVerifier\nProject independent verifier for UniVote."
             + "\nCopyright (c) 2013 Berner Fachhochschule, Switzerland."
             + "\nBern University of Applied Sciences, Engineering and Information Technology,"
             + " \nResearch Institute for Security in the Information Society, E-Voting Group,"
@@ -66,7 +67,7 @@ public class GUIconstants {
     public static Locale getLocale() {
         return loc;
     }
-    
+
      /**
      * Turns the vrfCode into a text string that is shown in the GUI.
      *
@@ -78,8 +79,9 @@ public class GUIconstants {
         try {
             Properties prop;
             prop = new Properties();
-            prop.load(new FileInputStream("src/main/java/ch/bfh/univoteverifier/resources/messages.properties"));
-            text = (String) prop.getProperty(String.valueOf(code));
+            InputStream is = GUIconstants.class.getClassLoader().getResourceAsStream("messages.properties");
+            prop.load(is);
+            text = prop.getProperty(String.valueOf(code));
         } catch (IOException ex) {
             Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
         }

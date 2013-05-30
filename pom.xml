@@ -2,8 +2,8 @@
 	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>ch.bfh.univoteverifier</groupId>
-	<artifactId>UniVoteVerifier</artifactId>
+	<groupId>ch.bfh.univote</groupId>
+	<artifactId>univerifier</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -12,22 +12,24 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+        <izpack.maven.plugin.version>1.0-alpha-5</izpack.maven.plugin.version>
+        <izpack.standalone.compiler.version>4.3.5</izpack.standalone.compiler.version>
+ 	</properties>
 
 	<description>The UniVoteVerifier is used to verify the results of a election in the UniVote system.</description>
 
 	<organization>
 		<name>BFH</name>
-		<url>http://bfh.ch</url>
+		<url>http://www.bfh.ch</url>
 	</organization>
 
-	<developers>
+    <developers>
 		<developer>
 			<id>scalg1</id>
 			<name>Giuseppe Scalzi</name>
 			<email>scalg1@bfh.ch</email>
 			<organization>BFH</organization>
-			<organizationUrl>http://bfh.ch</organizationUrl>
+			<organizationUrl>http://www.bfh.ch</organizationUrl>
 			<roles>
 				<role>developer</role>
 			</roles>
@@ -37,7 +39,7 @@
 			<name>Justin Springer</name>
 			<email>sprij1@bfh.ch</email>
 			<organization>BFH</organization>
-			<organizationUrl>http://bfh.ch</organizationUrl>
+			<organizationUrl>http://www.bfh.ch</organizationUrl>
 			<roles>
 				<role>developer</role>
 			</roles>
@@ -68,13 +70,19 @@
 			<version>1.7</version>
 		</dependency>
 		<dependency>
-			<groupId>xstream</groupId>
+			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
 			<version>1.2.2</version>
 		</dependency>
+        <dependency>
+            <groupId>org.codehaus.izpack</groupId>
+            <artifactId>izpack-standalone-compiler</artifactId>
+            <version>${izpack.standalone.compiler.version}</version>
+        </dependency>
 	</dependencies>
 
 	<build>
+        <finalName>UniVerifier-${version}</finalName>
 		<resources>
 			<resource>
 				<targetPath>META-INF</targetPath>
@@ -104,7 +112,6 @@
 						<argLine>-XX:-UseSplitVerifier</argLine>
 					</configuration>
 				</plugin>
-
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -117,6 +124,11 @@
 						<testTarget>1.7</testTarget>
 					</configuration>
 				</plugin>
+                <plugin>
+                    <groupId>org.codehaus.izpack</groupId>
+                    <artifactId>izpack-maven-plugin</artifactId>
+                    <version>${izpack.maven.plugin.version}</version>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -174,6 +186,81 @@
 					</execution>
 				</executions>
 			</plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>ch.bfh.univoteverifier.gui.UniVerifier</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase> <!-- bind to the packaging phase -->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Used to configure IzPack installer -->
+            <plugin>
+                <groupId>org.codehaus.izpack</groupId>
+                <artifactId>izpack-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>izpack</goal>
+                        </goals>
+                        <configuration>
+                            <installerFile>${project.build.directory}/${project.build.finalName}-installer.jar</installerFile>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.izpack</groupId>
+                        <artifactId>izpack-standalone-compiler</artifactId>
+                        <version>${izpack.standalone.compiler.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                            <outputDirectory>${project.build.directory}/izpack</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>.</directory>
+                                    <includes>
+                                        <include>README.txt</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>src/izpack</directory>
+                                    <includes>
+                                        <include>shortcutSpec.xml</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 	<reporting>

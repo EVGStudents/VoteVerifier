@@ -1,0 +1,19 @@
+<shortcuts>
+  <skipIfNotSupported/>
+  <programGroup defaultName="BFH" location="application"/>
+  <shortcut
+    name="Start UniVerifier"
+    target="$INSTALL_PATH\univerifier.bat"
+    commandLine=""
+    workingDirectory="$USER_HOME"
+    description="Starts the UniVerifier program"
+    iconFile="$INSTALL_PATH\univerifier.ico"
+    iconIndex="0"
+    initialState="normal"
+    programGroup="yes"
+    desktop="yes"
+    applications="yes"
+    startMenu="no"
+    startup="no">
+  </shortcut>
+</shortcuts>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<installation version="1.0">
+
+    <variables>
+        <variable name="VERSION" value="${version}" />
+    </variables>
+
+    <info>
+        <appname>UniVerifier</appname>
+        <appversion>${version}</appversion>
+        <appsubpath>UniVerifier</appsubpath>
+        <javaversion>1.7</javaversion>
+        <authors>
+            <author name= "Giuseppe Scalzi" email = "" />
+            <author name= "Justin Springer" email = "" />
+        </authors>
+        <run-privileged />
+        <uninstaller />
+    </info>
+
+    <locale>
+        <langpack iso3="eng"/>
+        <langpack iso3="deu"/>
+        <langpack iso3="fra"/>
+    </locale>
+
+    <guiprefs width="600" height="400" resizable="no">
+        <modifier key="useHeadingPanel" value="yes" />
+    </guiprefs>
+
+    <resources>
+        <res id="InfoPanel.info" src="README.txt" parse="yes" />
+        <res id="shortcutSpec.xml" src="shortcutSpec.xml" />
+    </resources>
+
+    <panels>
+        <panel classname="HelloPanel"/>
+        <panel classname="InfoPanel"/>
+        <panel classname="TargetPanel"/>
+        <panel classname="PacksPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="ShortcutPanel" />
+        <panel classname="FinishPanel"/>
+    </panels>
+
+    <packs>
+        <pack name="UniVerifier Core" required="yes">
+            <description>The core files needed for the application</description>
+            <file src="../@{project.build.finalName}-jar-with-dependencies.jar" targetdir="$INSTALL_PATH" unpack="false" />
+            <fileset dir="../../bin" targetdir="${INSTALL_PATH}" override="true"/>
+            <executable targetfile="${INSTALL_PATH}/univerifier.sh" stage="never">
+                <os family="unix"/>
+            </executable>
+            <executable targetfile="${INSTALL_PATH}/univerifier.command" stage="never">
+                <os family="unix"/>
+            </executable>
+            <parsable targetfile="${INSTALL_PATH}/univerifier.bat">
+                <os family="windows"/>
+            </parsable>
+            <parsable targetfile="${INSTALL_PATH}/univerifier.sh" type="shell">
+                <os family="unix"/>
+            </parsable>
+            <parsable targetfile="${INSTALL_PATH}/univerifier.command" type="shell">
+                <os family="unix"/>
+            </parsable>
+        </pack>
+    </packs>
+
+    <!-- The native library to add in order to create shortcut on Windows. -->
+    <native type="izpack" name="ShellLink.dll">
+        <os family="windows"/>
+    </native>
+</installation>
