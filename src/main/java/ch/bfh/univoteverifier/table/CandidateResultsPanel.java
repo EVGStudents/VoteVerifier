@@ -135,7 +135,7 @@ public class CandidateResultsPanel extends JPanel {
 
 
 
-        String processingResults = rb.getString("candidateResultsSoon");
+        String processingResults = rb.getString("processingResults");
         noResultsLabel = new JLabel(processingResults);
         c = new GridBagConstraints();
         c.insets = new Insets(40, 40, 40, 40);

@@ -48,7 +48,7 @@ public class ElectionSetupRunner extends Runner {
 	 * @param ebp the ElectionBoardProxy from where get the data.
 	 * @param msgr the Messenger used to send the results.
 	 */
-	public ElectionSetupRunner(ElectionBoardProxy ebp, Messenger msgr) throws CertificateException, ElectionBoardServiceFault, InvalidNameException {
+	public ElectionSetupRunner(ElectionBoardProxy ebp, Messenger msgr) {
 		super(RunnerName.ELECTION_SETUP, msgr);
 		this.ebp = ebp;
 		rsaImpl = new RSAImplementer(ebp, runnerName);

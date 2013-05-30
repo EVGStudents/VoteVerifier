@@ -35,7 +35,7 @@ public class ResultDescriber {
         try {
             Properties prop;
             prop = new Properties();
-            prop.load(new FileInputStream("src/main/java/ch/bfh/univoteverifier/resources/failurecodes.properties"));
+            prop.load(new FileInputStream("src/main/resources/failurecodes.properties"));
             text = (String) prop.getProperty(String.valueOf(code));
         } catch (IOException ex) {
             Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);

@@ -772,7 +772,7 @@ public class ElectionBoardProxy {
 
 			//add voter certs
 			for (Certificate c : getVoterCerts().getCertificate()) {
-				allCert.add(CryptoFunc.getX509Certificate(c.getValue(), false));
+				allCert.add(CryptoFunc.getX509Certificate(c.getValue(), true));
 			}
 
 			//add lately registered voters certs - ToDo decommetn when it will be available

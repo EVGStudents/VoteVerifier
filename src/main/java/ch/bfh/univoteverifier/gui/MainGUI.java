@@ -224,7 +224,7 @@ public class MainGUI extends JFrame {
      * Set the look and feel of the GUI to the default of the system the program
      * is running on.
      */
-    public void setLookAndFeel() {
+    private void setLookAndFeel() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {

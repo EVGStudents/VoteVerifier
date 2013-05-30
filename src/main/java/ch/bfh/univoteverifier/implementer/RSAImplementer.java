@@ -68,22 +68,13 @@ import javax.xml.ws.soap.SOAPFaultException;
  */
 public class RSAImplementer extends Implementer {
 
-	private final RSAPublicKey emPubKey;
-	private final RSAPublicKey eaPubKey;
-	private final Map<String, X509Certificate> talliersCerts;
-	private final Map<String, X509Certificate> mixersCerts;
-
 	/**
 	 * Create a new RSAImplementer.
 	 *
 	 * @param ebp the election board proxy from where get the data.
 	 */
-	public RSAImplementer(ElectionBoardProxy ebp, RunnerName rn) throws CertificateException, ElectionBoardServiceFault, InvalidNameException {
+	public RSAImplementer(ElectionBoardProxy ebp, RunnerName rn) {
 		super(ebp, rn, ImplementerType.RSA);
-		emPubKey = (RSAPublicKey) ebp.getEMCert().getPublicKey();
-		eaPubKey = (RSAPublicKey) ebp.getEACert().getPublicKey();
-		talliersCerts = ebp.getTalliersCerts();
-		mixersCerts = ebp.getMixersCerts();
 	}
 
 	/**
@@ -150,7 +141,7 @@ public class RSAImplementer extends Implementer {
 			//find the signature of Page 13, Initialization, Step 3 - ToDO
 			BigInteger signature = new BigInteger("1");
 
-			r = vrfRSASign(emPubKey, res, signature);
+			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature);
 		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
@@ -209,8 +200,8 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			r = vrfRSASign(eaPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			r = vrfRSASign((RSAPublicKey) ebp.getEACert().getPublicKey(), res, signature.getValue());
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -266,7 +257,7 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			//boolean r = vrfRSASign(emPubKey, res, signature.getValue());
+			//boolean r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
 			r = false;
 		} catch (ElectionBoardServiceFault ex) {
 			exc = ex;
@@ -322,8 +313,8 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			r = vrfRSASign(emPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -385,9 +376,9 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verifiy the signature
-			RSAPublicKey tallierPubKey = (RSAPublicKey) talliersCerts.get(tallierName).getPublicKey();
+			RSAPublicKey tallierPubKey = (RSAPublicKey) ebp.getTalliersCerts().get(tallierName).getPublicKey();
 			r = vrfRSASign(tallierPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -438,8 +429,8 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			r = vrfRSASign(emPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -499,9 +490,9 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
+			RSAPublicKey mixerPubKey = (RSAPublicKey) ebp.getMixersCerts().get(mixerName).getPublicKey();
 			r = vrfRSASign(mixerPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -551,8 +542,8 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			r = vrfRSASign(emPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -702,8 +693,8 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			r = vrfRSASign(eaPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			r = vrfRSASign((RSAPublicKey) ebp.getEACert().getPublicKey(), res, signature.getValue());
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -863,8 +854,8 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			r = vrfRSASign(emPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -916,8 +907,8 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			r = vrfRSASign(eaPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			r = vrfRSASign((RSAPublicKey) ebp.getEACert().getPublicKey(), res, signature.getValue());
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -1013,9 +1004,9 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
+			RSAPublicKey mixerPubKey = (RSAPublicKey) ebp.getMixersCerts().get(mixerName).getPublicKey();
 			r = vrfRSASign(mixerPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -1068,8 +1059,8 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			r = vrfRSASign(emPubKey, res, signature.getValue());
-		} catch (NullPointerException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
+		} catch (CertificateException | NullPointerException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -1131,7 +1122,7 @@ public class RSAImplementer extends Implementer {
 
 		try {
 			List<MixedVerificationKey> mvk = ebp.getLatelyMixedVerificationKeysBy(mixerName);
-			RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
+			RSAPublicKey mixerPubKey = (RSAPublicKey) ebp.getMixersCerts().get(mixerName).getPublicKey();
 
 			//for each key of this mixer
 			for (MixedVerificationKey key : mvk) {
@@ -1159,7 +1150,7 @@ public class RSAImplementer extends Implementer {
 					break;
 				}
 			}
-		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (CertificateException | NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -1218,13 +1209,13 @@ public class RSAImplementer extends Implementer {
 				String res = sc.pullAll();
 
 				//verify the signature - EM has not signed the data!
-				r = vrfRSASign(emPubKey, res, signature.getValue());
+				r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
 
 				if (!r) {
 					break;
 				}
 			}
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -1363,8 +1354,8 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verifiy the signature
-			r = vrfRSASign(emPubKey, res, signature.getValue());
-		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
+		} catch (CertificateException | NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -1434,9 +1425,9 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verifiy the signature
-			RSAPublicKey mixerPubKey = (RSAPublicKey) mixersCerts.get(mixerName).getPublicKey();
+			RSAPublicKey mixerPubKey = (RSAPublicKey) ebp.getMixersCerts().get(mixerName).getPublicKey();
 			r = vrfRSASign(mixerPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -1504,8 +1495,8 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verifiy the signature
-			r = vrfRSASign(eaPubKey, res, signature.getValue());
-		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			r = vrfRSASign((RSAPublicKey) ebp.getEACert().getPublicKey(), res, signature.getValue());
+		} catch (CertificateException | NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -1575,9 +1566,9 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			RSAPublicKey tallierPubKey = (RSAPublicKey) talliersCerts.get(tallierName).getPublicKey();
+			RSAPublicKey tallierPubKey = (RSAPublicKey) ebp.getTalliersCerts().get(tallierName).getPublicKey();
 			r = vrfRSASign(tallierPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -1654,8 +1645,8 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			//verify the signature
-			r = vrfRSASign(emPubKey, res, signature.getValue());
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
@@ -1725,8 +1716,8 @@ public class RSAImplementer extends Implementer {
 
 			String res = sc.pullAll();
 
-			r = vrfRSASign(emPubKey, res, signatureValue);
-		} catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signatureValue);
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 

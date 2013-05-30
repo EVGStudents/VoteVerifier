@@ -23,6 +23,8 @@ import java.io.FileNotFoundException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.InvalidNameException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -125,6 +127,7 @@ public class ElectionPeriodRunnerTest {
 		int i;
 
 		for (i = 0; i < mockList.size(); i++) {
+			Logger.getLogger(this.getClass().getName()).log(Level.INFO, realList.get(i).getVerificationType().toString());
 			assertEquals(realList.get(i).getVerificationType(), mockList.get(i).getVerificationType());
 			assertEquals(realList.get(i).getResult(), mockList.get(i).getResult());
 			assertTrue(realList.get(i).isImplemented());

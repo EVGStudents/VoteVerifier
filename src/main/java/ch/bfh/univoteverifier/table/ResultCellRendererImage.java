@@ -57,7 +57,7 @@ class ResultCellRendererImage extends DefaultTableCellRenderer {
         ResultTableModel rtm = (ResultTableModel) table.getModel();
         ResultSet rs = (ResultSet) rtm.getValueAt(row, -1);
 
-        if (rs.getResultReport() != null) {
+        if (rs.getResultReport() != null && rs.getResultReport().getFailureCode() != null) {
             int fCode = rs.getResultReport().getFailureCode().getID();
             String toolTipText = rd.getDescription(fCode);
             label.setToolTipText(toolTipText);

@@ -42,7 +42,7 @@ public class MixerTallierRunner extends Runner {
 	 * @param ebp the ElectionBoardProxy from where get the data.
 	 * @param msgr the Messenger used to send the results.
 	 */
-	public MixerTallierRunner(ElectionBoardProxy ebp, Messenger msgr) throws CertificateException, ElectionBoardServiceFault, InvalidNameException {
+	public MixerTallierRunner(ElectionBoardProxy ebp, Messenger msgr) {
 		super(RunnerName.MIXING_TALLING, msgr);
 		this.ebp = ebp;
 		rsaImpl = new RSAImplementer(ebp, runnerName);

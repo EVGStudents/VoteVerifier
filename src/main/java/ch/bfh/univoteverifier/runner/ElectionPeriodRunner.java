@@ -54,7 +54,7 @@ public class ElectionPeriodRunner extends Runner {
 	 * @param ebp the ElectionBoardProxy from where get the data.
 	 * @param msgr the Messenger used to send the results.
 	 */
-	public ElectionPeriodRunner(ElectionBoardProxy ebp, Messenger msgr) throws CertificateException, ElectionBoardServiceFault, InvalidNameException {
+	public ElectionPeriodRunner(ElectionBoardProxy ebp, Messenger msgr) {
 		super(RunnerName.ELECTION_PERIOD, msgr);
 		this.ebp = ebp;
 		certImpl = new CertificatesImplementer(ebp, runnerName);

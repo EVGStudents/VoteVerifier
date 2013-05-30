@@ -11,6 +11,7 @@ package ch.bfh.univoteverifier.common;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -26,12 +27,13 @@ public class Config {
 	/**
 	 * Configuration file path.
 	 */
-	public static final String CONFIG = "src/main/java/ch/bfh/univoteverifier/resources/config.properties";
+	public static final String CONFIG = "config.properties";
 	private static final Properties prop = new Properties();
 
 	static {
 		try {
-			prop.load(new FileInputStream(CONFIG));
+            InputStream is = Config.class.getClassLoader().getResourceAsStream(CONFIG);
+			prop.load(is);
 		} catch (IOException ex) {
 			Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
 		}
