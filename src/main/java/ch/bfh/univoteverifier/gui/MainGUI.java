@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -70,6 +71,10 @@ public class MainGUI extends JFrame {
     public MainGUI() {
         initResources();
         setLookAndFeel();
+
+        java.net.URL imgURL = VoteVerifier.class.getResource("/iconVoteVerifier.jpg");
+        ImageIcon img = new ImageIcon(imgURL);
+        this.setIconImage(img.getImage());
 
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -24,7 +24,7 @@ public class ResultProcessor {
 
     private ConsolePanel consolePanel;
     private ResultTabbedPane resultPanelManager;
-    private ImageIcon pass, fail, noImpl;
+    private ImageIcon pass, fail, noImpl, warn;
     private static final Logger LOGGER = Logger.getLogger(ResultProcessor.class.toString());
 
     /**
@@ -42,6 +42,7 @@ public class ResultProcessor {
         pass = new ImageIcon(VoteVerifier.class.getResource("/check.png"));
         fail = new ImageIcon(VoteVerifier.class.getResource("/fail.png"));
         noImpl = new ImageIcon(VoteVerifier.class.getResource("/noImpl.png"));
+        warn = new ImageIcon(VoteVerifier.class.getResource("/warning.png"));
     }
 
     /**
@@ -81,14 +82,16 @@ public class ResultProcessor {
     public ImageIcon getImage(VerificationResult vr) {
 
         ImageIcon img = null;
-        if (vr.isImplemented()) {
-            if (vr.getResult()) {
-                img = pass;
-            } else {
-                img = fail;
-            }
-        } else {
+        if (!vr.isImplemented()) {
             img = noImpl;
+        } else if (vr.getResult()) {
+            img = pass;
+        } else {
+            if (vr.getReport().getFailureCode() != null) {
+                img = fail;
+            } else if (vr.getReport().getException() != null) {
+                img = warn;
+            }
         }
         return img;
     }
