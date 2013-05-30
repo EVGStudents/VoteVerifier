@@ -51,7 +51,10 @@ public class RemoveTabAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        Component selected = jtp.getSelectedComponent();
+        String btnName = ((JButton) e.getSource()).getName();
+        int index = jtp.indexOfTab(btnName);
+
+        Component selected = jtp.getComponentAt(index);
 
         if (selected != null) {
             jtp.remove(selected);

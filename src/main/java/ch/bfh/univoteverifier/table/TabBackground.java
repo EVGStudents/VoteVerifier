@@ -27,13 +27,13 @@ import javax.swing.plaf.basic.BasicButtonUI;
  */
 public class TabBackground extends JPanel {
 
-    private JLabel lblTitle;
+    private JLabel titleLabel;
 
     public TabBackground(String title, RemoveTabAction removeTabAction) {
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
         this.setOpaque(false);
-        lblTitle = new JLabel(title);
-        lblTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+        titleLabel = new JLabel(title);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 
         JButton btnClose = new JButton("x");
         btnClose.setBorderPainted(true);
@@ -46,7 +46,7 @@ public class TabBackground extends JPanel {
         btnClose.setBorder(BorderFactory.createEtchedBorder());
         btnClose.setRolloverEnabled(true);
 
-        this.add(lblTitle);
+        this.add(titleLabel);
         this.add(btnClose);
 
         btnClose.addActionListener(removeTabAction);
@@ -59,6 +59,6 @@ public class TabBackground extends JPanel {
      * @param c
      */
     public void setFontColor(Color c) {
-        lblTitle.setForeground(c);
+        titleLabel.setForeground(c);
     }
 }

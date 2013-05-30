@@ -21,10 +21,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -45,7 +47,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 public class ResultTab extends JPanel {
 
     private JScrollPane scroll;
-    private JPanel tabHeader;
+    private JPanel vrfResultsPanel, tabHeader;
     private String eID;
     private static final Logger LOGGER = Logger.getLogger(ResultTab.class.getName());
     private ResultTablesContainer rpEntity, rpSpec, rpType;
@@ -54,11 +56,14 @@ public class ResultTab extends JPanel {
     private ProgressBar progressBar;
     private JTextArea errorText;
     private Boolean tabSpacer = true;
+    private Boolean candidateResultsShowing = false;
+    private ActionListener toggle;
 
     /**
      * Create an instance of this panel.
      */
     public ResultTab(String eID) {
+        toggle = new ToggleResultOrganizationAction(this);
         this.eID = eID;
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         createContentPanel();
@@ -70,19 +75,22 @@ public class ResultTab extends JPanel {
      * @return a JPanel
      */
     public void createContentPanel() {
-        this.setLayout(new BorderLayout());
+        this.setLayout(new GridLayout(1, 1));
         tabHeader = createTabHeader();
 
         rpSpec = new ResultTablesContainer();
         rpEntity = new ResultTablesContainer();
         rpType = new ResultTablesContainer();
-        candidateResultsPanel = new CandidateResultsPanel();
+        candidateResultsPanel = new CandidateResultsPanel(toggle);
         scroll = new JScrollPane();
         scroll.getViewport().add(rpSpec);
         scroll.getVerticalScrollBar().setUnitIncrement(16);
 
-        this.add(tabHeader, BorderLayout.NORTH);
-        this.add(scroll, BorderLayout.CENTER);
+        vrfResultsPanel = new JPanel();
+        vrfResultsPanel.setLayout(new BorderLayout());
+        vrfResultsPanel.add(tabHeader, BorderLayout.NORTH);
+        vrfResultsPanel.add(scroll, BorderLayout.CENTER);
+        this.add(vrfResultsPanel);
 
     }
 
@@ -104,10 +112,6 @@ public class ResultTab extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(errorText);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//        scrollPane.setPreferredSize(new Dimension(300, 150));
-
-//        errorPanel.add(scrollPane);
-//        errorPanel.setBackground(Color.white);
         scrollPane.setBorder(BorderFactory.createEtchedBorder());
 
         JPanel panel = new JPanel(new GridBagLayout());
@@ -162,7 +166,7 @@ public class ResultTab extends JPanel {
         btnViewResults.setBorder(BorderFactory.createEtchedBorder());
         btnViewResults.setRolloverEnabled(true);
 
-        ActionListener toggle = new ToggleResultOrganizationAction(this);
+
         btnSpec.addActionListener(toggle);
         btnEntity.addActionListener(toggle);
         btnType.addActionListener(toggle);
@@ -176,6 +180,9 @@ public class ResultTab extends JPanel {
         progressBar = new ProgressBar();
         panel.add(progressBar, c);
 
+        c = new GridBagConstraints();
+        c.weightx = .9;
+        c.fill = GridBagConstraints.LINE_END;
         c.insets = new Insets(0, 0, 0, 20);
         c.gridx = 4;
         c.gridy = 0;
@@ -226,6 +233,7 @@ public class ResultTab extends JPanel {
      * Add election results to the election result panel.
      */
     public void addElectionResults(Map<Choice, Integer> electionResult) {
+        LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY RESULT TAB");
         candidateResultsPanel.addData(electionResult);
     }
 
@@ -249,9 +257,32 @@ public class ResultTab extends JPanel {
     }
 
     /**
+     * Change visible pane between candidate results and verification results.
+     */
+    public void toggleMainPanel() {
+        JPanel panelToRemove, panelToAdd;
+        if (candidateResultsShowing) {
+            panelToRemove = candidateResultsPanel;
+            panelToAdd = vrfResultsPanel;
+        } else {
+            panelToRemove = vrfResultsPanel;
+            panelToAdd = candidateResultsPanel;
+        }
+        candidateResultsShowing = !candidateResultsShowing;
+        this.remove(panelToRemove);
+        this.add(panelToAdd);
+        this.revalidate();
+        this.repaint();
+    }
+
+    /**
      * Show the panel that is organized according to entity.
      */
     public void showPanelEntity() {
+        if (candidateResultsShowing) {
+            toggleMainPanel();
+        }
+
         showPanel(rpEntity);
     }
 
@@ -259,6 +290,10 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to specification.
      */
     public void showPanelSpec() {
+        if (candidateResultsShowing) {
+            toggleMainPanel();
+        }
+
         showPanel(rpSpec);
     }
 
@@ -266,6 +301,9 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to type.
      */
     public void showPanelType() {
+        if (candidateResultsShowing) {
+            toggleMainPanel();
+        }
         showPanel(rpType);
     }
 
@@ -273,7 +311,9 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to type.
      */
     public void showCandidateResults() {
-        showPanel(candidateResultsPanel);
+        if (!candidateResultsShowing) {
+            toggleMainPanel();
+        }
     }
 
     /**

@@ -32,15 +32,14 @@ public class ToggleResultOrganizationAction implements ActionListener {
         String name = ((JComponent) e.getSource()).getName();
         if (0 == name.compareTo("btnEntity")) {
             rtp.showPanelEntity();
-        }
-        if (0 == name.compareTo("btnSpec")) {
+        } else if (0 == name.compareTo("btnSpec")) {
             rtp.showPanelSpec();
-        }
-        if (0 == name.compareTo("btnType")) {
+        } else if (0 == name.compareTo("btnType")) {
             rtp.showPanelType();
-        }
-        if (0 == name.compareTo("btnViewResults")) {
+        } else if (0 == name.compareTo("btnViewResults")) {
             rtp.showCandidateResults();
+        } else if (0 == name.compareTo("btnBack")) {
+            rtp.toggleMainPanel();
         }
     }
 }

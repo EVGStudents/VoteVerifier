@@ -13,16 +13,33 @@ package ch.bfh.univoteverifier.table;
 import ch.bfh.univote.common.Candidate;
 import ch.bfh.univote.common.Choice;
 import ch.bfh.univote.common.PoliticalList;
+import ch.bfh.univoteverifier.action.ToggleResultOrganizationAction;
+import ch.bfh.univoteverifier.gui.GUIconstants;
+import ch.bfh.univoteverifier.gui.ProgressBar;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.border.EtchedBorder;
+import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
  * This panel contains the election results for the number of votes each
@@ -36,13 +53,101 @@ public class CandidateResultsPanel extends JPanel {
     private ArrayList<SectionResultsTable> tables;
     private static final Logger LOGGER = Logger.getLogger(ResultTablesContainer.class.getName());
     private CandidateResultsTable activeTable;
+    private ResourceBundle rb;
+    private JPanel resultsContent, headerPanel;
+    private JLabel noResultsLabel;
+    private boolean resultsArrived = false;
 
     /**
      * Create an instance of this class.
      */
-    public CandidateResultsPanel() {
+    public CandidateResultsPanel(ActionListener toggle) {
+        rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        headerPanel = createHeaderPanel(toggle);
+        JScrollPane scrollPanel = createScrollPanel();
+        this.add(headerPanel);
+        this.add(scrollPanel);
         ArrayList<ResultSet> data = new ArrayList<>();
+    }
+
+    public JScrollPane createScrollPanel() {
+        resultsContent = new JPanel();
+        resultsContent.setLayout(new BoxLayout(resultsContent, BoxLayout.Y_AXIS));
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.getViewport().add(resultsContent);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setBorder(BorderFactory.createEtchedBorder());
+        return scrollPane;
+    }
+
+    /**
+     * Create the header for the panel with in the tab. It contains a header
+     * above the verification results which allows the user to change the
+     * organization styles, see the progress of the verification and view the
+     * election results for votes.
+     *
+     * @return
+     */
+    public JPanel createHeaderPanel(ActionListener toggle) {
+
+        JPanel panel = new JPanel(new GridBagLayout());
+
+        panel.setBackground(GUIconstants.GREY);
+        panel.setBorder(new EtchedBorder());
+        String electionResultsTitle = rb.getString("electionResults");
+        JLabel eResultsLabel = new JLabel(electionResultsTitle);
+        eResultsLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(20, 20, 20, 20);
+        c.fill = GridBagConstraints.CENTER;
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 0;
+        panel.add(eResultsLabel, c);
+
+
+
+        JButton btnBack = new JButton(rb.getString("back"));
+        btnBack.setName("btnBack");
+        btnBack.addActionListener(toggle);
+        c = new GridBagConstraints();
+        c.insets = new Insets(0, 20, 20, 0);
+        c.fill = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 1;
+        panel.add(btnBack, c);
+
+        String backInstructionsText = rb.getString("clickBackToReturn");
+        JLabel backInstructionsLabel = new JLabel(backInstructionsText);
+        c = new GridBagConstraints();
+        c.insets = new Insets(0, 0, 20, 0);
+        c.fill = GridBagConstraints.LINE_START;
+        c.weightx = 0.9;
+        c.gridx = 1;
+        c.gridy = 1;
+        panel.add(backInstructionsLabel, c);
+
+
+
+        String processingResults = rb.getString("candidateResultsSoon");
+        noResultsLabel = new JLabel(processingResults);
+        c = new GridBagConstraints();
+        c.insets = new Insets(40, 40, 40, 40);
+        c.fill = GridBagConstraints.CENTER;
+        c.weightx = 0.9;
+        c.weighty = 0.9;
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 2;
+        panel.add(noResultsLabel, c);
+
+        return panel;
     }
 
     /**
@@ -52,6 +157,7 @@ public class CandidateResultsPanel extends JPanel {
      * @param r The data to add.
      */
     public void addData(Map<Choice, Integer> electionResult) {
+        LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY CANDIDATE RESULT PANEL");
         for (Entry<Choice, Integer> e : electionResult.entrySet()) {
             Choice c = e.getKey();
             Integer count = e.getValue();
@@ -71,6 +177,10 @@ public class CandidateResultsPanel extends JPanel {
     }
 
     public void createNewTable(Entry<Choice, Integer> e) {
+        if (!resultsArrived) {
+            headerPanel.remove(noResultsLabel);
+            resultsArrived = !resultsArrived;
+        }
         CandidateResultsTableModel crtm = new CandidateResultsTableModel(e);
         activeTable = new CandidateResultsTable(crtm);
 
@@ -79,7 +189,8 @@ public class CandidateResultsPanel extends JPanel {
         tablePanel.add(activeTable, BorderLayout.CENTER);
         tablePanel.add(activeTable.getTableHeader(), BorderLayout.NORTH);
         activeTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
-        this.add(tablePanel);
+        resultsContent.add(tablePanel);
+        resultsContent.revalidate();
     }
 
     /**
