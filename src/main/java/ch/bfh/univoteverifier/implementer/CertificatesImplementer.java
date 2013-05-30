@@ -420,9 +420,9 @@ public class CertificatesImplementer extends Implementer {
 		Report rep;
 
 		try {
-			List<VoterCertificate> vc = ebp.getLatelyRegisteredVoterCerts();
-			for (VoterCertificate c : vc) {
-				X509Certificate xCert = CryptoFunc.getX509Certificate(c.getCertificate().getValue(), true);
+			List<Certificate> vc = ebp.getLatelyRegisteredVoterCerts();
+			for (Certificate c : vc) {
+				X509Certificate xCert = CryptoFunc.getX509Certificate(c.getValue(), true);
 				//check the certificate path
 				List<X509Certificate> certPath = new ArrayList<>();
 				certPath.add(xCert);

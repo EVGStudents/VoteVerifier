@@ -12,6 +12,7 @@ package ch.bfh.univoteverifier.implementertest;
 
 import ch.bfh.univote.common.Ballot;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
+import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.QRCode;
@@ -22,6 +23,7 @@ import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import org.junit.Test;
 import static org.junit.Assert.*;

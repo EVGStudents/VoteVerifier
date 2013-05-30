@@ -14,6 +14,7 @@ import ch.bfh.univote.common.Ballots;
 import ch.bfh.univote.common.BlindedGenerator;
 import ch.bfh.univote.common.DecodedVotes;
 import ch.bfh.univote.common.ElectionGenerator;
+import ch.bfh.univote.common.EncryptedVotes;
 import ch.bfh.univote.common.EncryptionKey;
 import ch.bfh.univote.common.EncryptionKeyShare;
 import ch.bfh.univote.common.MixedEncryptedVotes;
@@ -21,6 +22,7 @@ import ch.bfh.univote.common.MixedVerificationKey;
 import ch.bfh.univote.common.MixedVerificationKeys;
 import ch.bfh.univote.common.PartiallyDecryptedVotes;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
+import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.FailureCode;
@@ -317,8 +319,16 @@ public class ParametersImplementer extends Implementer {
 			List<String> mixerID = ebp.getElectionDefinition().getMixerId();
 			List<MixedVerificationKey> lastMixerKeys = ebp.getLatelyMixedVerificationKeysBy(mixerID.get(mixerID.size() - 1));
 
-			//check that vk'_i = vk_i,m => we compare the two list rather than every signle key
-			r = mk.equals(lastMixerKeys);
+			//check that vk'_i = vk_i,m
+			for (int i = 0; i < mk.size(); i++) {
+				if (mk.get(i).getKey().equals(lastMixerKeys.get(i).getKey())) {
+					r = true;
+				} else {
+					r = false;
+					break;
+				}
+
+			}
 		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault ex) {
 			exc = ex;
 		}
@@ -418,7 +428,7 @@ public class ParametersImplementer extends Implementer {
 		Report rep;
 
 		try {
-			MixedEncryptedVotes mev = ebp.getMixedEncryptedVotes();
+			EncryptedVotes mev = ebp.getEncryptedVotes();
 
 			//get last mixer encrypted votes
 			List<String> mixersName = ebp.getElectionDefinition().getMixerId();
@@ -461,24 +471,35 @@ public class ParametersImplementer extends Implementer {
 		try {
 			Ballots ballots = ebp.getBallots();
 			BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
+			BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
 
 			for (int i = 0; i < ballots.getBallot().size(); i++) {
 				Ballot b = ballots.getBallot().get(i);
 				BigInteger bValue = b.getEncryptedVote().getSecondValue();
 
-				BigInteger m = bValue.mod(elGamalP);
+				BigInteger mulA = BigInteger.ONE;
 
 				//get the a value for each tallier
-				for (int j = 0; j < ebp.getElectionDefinition().getTallierId().size(); i++) {
+				for (int j = 0; j < ebp.getElectionDefinition().getTallierId().size(); j++) {
 					String tName = ebp.getElectionDefinition().getTallierId().get(j);
 					PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tName);
 
-					//get the a value
+					//get the a value for this tallier
 					BigInteger aValue = pdv.getVote().get(i);
-					m = m.multiply(aValue).mod(elGamalP);
+					mulA.multiply(aValue);
 				}
 
-				//ToDo - other validity checks
+				BigInteger m = bValue.multiply(mulA).mod(elGamalP);
+
+				//compute G^-1
+				BigInteger mInverse;
+				if (m.compareTo(elGamalQ) == -1 || m.compareTo(elGamalQ) == 0) {
+					mInverse = m.subtract(BigInteger.ONE);
+				} else {
+					mInverse = elGamalP.subtract(m).subtract(BigInteger.ONE);
+				}
+
+				//ToDo decode the vote
 
 
 			}

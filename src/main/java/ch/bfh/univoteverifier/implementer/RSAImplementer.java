@@ -22,6 +22,7 @@ import ch.bfh.univote.common.ElectionGenerator;
 import ch.bfh.univote.common.ElectionOptions;
 import ch.bfh.univote.common.ElectoralRoll;
 import ch.bfh.univote.common.EncryptedVote;
+import ch.bfh.univote.common.EncryptedVotes;
 import ch.bfh.univote.common.EncryptionKey;
 import ch.bfh.univote.common.EncryptionKeyShare;
 import ch.bfh.univote.common.ForallRule;
@@ -1140,8 +1141,6 @@ public class RSAImplementer extends Implementer {
 
 				String res = sc.pullAll();
 
-				System.out.println("Late verification key" + res);
-
 				//verify the signature
 				r = vrfRSASign(mixerPubKey, res, signature.getValue());
 
@@ -1465,7 +1464,7 @@ public class RSAImplementer extends Implementer {
 		Report rep;
 
 		try {
-			MixedEncryptedVotes mev = ebp.getMixedEncryptedVotes();
+			EncryptedVotes mev = ebp.getEncryptedVotes();
 			Signature signature = mev.getSignature();
 
 			//concatenate to (id|((firstValue|secondValue)|.......|(nfirstValue|nSecondValue)))|timestamp

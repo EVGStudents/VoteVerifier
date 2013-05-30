@@ -12,9 +12,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <izpack.maven.plugin.version>1.0-alpha-5</izpack.maven.plugin.version>
-        <izpack.standalone.compiler.version>4.3.5</izpack.standalone.compiler.version>
- 	</properties>
+		<izpack.maven.plugin.version>1.0-alpha-5</izpack.maven.plugin.version>
+		<izpack.standalone.compiler.version>4.3.5</izpack.standalone.compiler.version>
+	</properties>
 
 	<description>The UniVoteVerifier is used to verify the results of a election in the UniVote system.</description>
 
@@ -23,7 +23,7 @@
 		<url>http://www.bfh.ch</url>
 	</organization>
 
-    <developers>
+	<developers>
 		<developer>
 			<id>scalg1</id>
 			<name>Giuseppe Scalzi</name>
@@ -74,15 +74,15 @@
 			<artifactId>xstream</artifactId>
 			<version>1.2.2</version>
 		</dependency>
-        <dependency>
-            <groupId>org.codehaus.izpack</groupId>
-            <artifactId>izpack-standalone-compiler</artifactId>
-            <version>${izpack.standalone.compiler.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.codehaus.izpack</groupId>
+			<artifactId>izpack-standalone-compiler</artifactId>
+			<version>${izpack.standalone.compiler.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
-        <finalName>UniVerifier-${version}</finalName>
+		<finalName>UniVerifier-${version}</finalName>
 		<resources>
 			<resource>
 				<targetPath>META-INF</targetPath>
@@ -124,11 +124,11 @@
 						<testTarget>1.7</testTarget>
 					</configuration>
 				</plugin>
-                <plugin>
-                    <groupId>org.codehaus.izpack</groupId>
-                    <artifactId>izpack-maven-plugin</artifactId>
-                    <version>${izpack.maven.plugin.version}</version>
-                </plugin>
+				<plugin>
+					<groupId>org.codehaus.izpack</groupId>
+					<artifactId>izpack-maven-plugin</artifactId>
+					<version>${izpack.maven.plugin.version}</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -186,81 +186,81 @@
 					</execution>
 				</executions>
 			</plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>ch.bfh.univoteverifier.gui.UniVerifier</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase> <!-- bind to the packaging phase -->
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- Used to configure IzPack installer -->
-            <plugin>
-                <groupId>org.codehaus.izpack</groupId>
-                <artifactId>izpack-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>izpack</goal>
-                        </goals>
-                        <configuration>
-                            <installerFile>${project.build.directory}/${project.build.finalName}-installer.jar</installerFile>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.codehaus.izpack</groupId>
-                        <artifactId>izpack-standalone-compiler</artifactId>
-                        <version>${izpack.standalone.compiler.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.4.2</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <encoding>UTF-8</encoding>
-                            <outputDirectory>${project.build.directory}/izpack</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>.</directory>
-                                    <includes>
-                                        <include>README.txt</include>
-                                    </includes>
-                                </resource>
-                                <resource>
-                                    <directory>src/izpack</directory>
-                                    <includes>
-                                        <include>shortcutSpec.xml</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>ch.bfh.univoteverifier.gui.UniVerifier</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Used to configure IzPack installer -->
+			<plugin>
+				<groupId>org.codehaus.izpack</groupId>
+				<artifactId>izpack-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>izpack</goal>
+						</goals>
+						<configuration>
+							<installerFile>${project.build.directory}/${project.build.finalName}-installer.jar</installerFile>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.izpack</groupId>
+						<artifactId>izpack-standalone-compiler</artifactId>
+						<version>${izpack.standalone.compiler.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4.2</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${project.build.directory}/izpack</outputDirectory>
+							<resources>
+								<resource>
+									<directory>.</directory>
+									<includes>
+										<include>README.txt</include>
+									</includes>
+								</resource>
+								<resource>
+									<directory>src/izpack</directory>
+									<includes>
+										<include>shortcutSpec.xml</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<reporting>

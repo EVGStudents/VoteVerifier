@@ -104,10 +104,10 @@ public class ElectionPreparationRunner extends Runner {
 		}
 
 		//mixed verification keys
-//		VerificationResult v8 = prmImpl.vrfVerificationKeysMixed();
-//		msgr.sendVrfMsg(v8);
-//		partialResults.add(v8);
-//		Thread.sleep(SLEEP_TIME);
+		VerificationResult v8 = prmImpl.vrfVerificationKeysMixed();
+		msgr.sendVrfMsg(v8);
+		partialResults.add(v8);
+		Thread.sleep(SLEEP_TIME);
 
 		//mixed verification keys signature
 		VerificationResult v9 = rsaImpl.vrfMixedVerificationKeysSign();

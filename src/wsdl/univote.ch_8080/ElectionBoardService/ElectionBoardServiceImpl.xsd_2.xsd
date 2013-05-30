@@ -67,8 +67,8 @@
 	<!-- Mixing and Tallying -->
 	<xs:element name="getEncryptedVotesMixedBy" type="tns:getEncryptedVotesMixedBy"/>
 	<xs:element name="getEncryptedVotesMixedByResponse" type="tns:getEncryptedVotesMixedByResponse"/>
-	<xs:element name="getMixedEncryptedVotes" type="tns:getMixedEncryptedVotes"/>
-	<xs:element name="getMixedEncryptedVotesResponse" type="tns:getMixedEncryptedVotesResponse"/>
+	<xs:element name="getEncryptedVotes" type="tns:getEncryptedVotes"/>
+	<xs:element name="getEncryptedVotesResponse" type="tns:getEncryptedVotesResponse"/>
 	<xs:element name="getPartiallyDecryptedVotes" type="tns:getPartiallyDecryptedVotes"/>
 	<xs:element name="getPartiallyDecryptedVotesResponse" type="tns:getPartiallyDecryptedVotesResponse"/>
 	<xs:element name="getDecryptedVotes" type="tns:getDecryptedVotes"/>
@@ -251,7 +251,7 @@
 	</xs:complexType>
 	<xs:complexType name="getLatelyRegisteredVoterCertificatesResponse">
 		<xs:sequence>
-			<xs:element name="voterCertificate" type="ns1:voterCertificate" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="voterCertificate" type="ns1:certificate" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="getVerificationKeysLatelyMixedBy">
@@ -309,14 +309,14 @@
 			<xs:element name="mixedEncryptedVotes" type="ns1:mixedEncryptedVotes"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="getMixedEncryptedVotes">
+	<xs:complexType name="getEncryptedVotes">
 		<xs:sequence>
 			<xs:element name="electionId" type="xs:string"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="getMixedEncryptedVotesResponse">
+	<xs:complexType name="getEncryptedVotesResponse">
 		<xs:sequence>
-			<xs:element name="mixedEncryptedVotes" type="ns1:mixedEncryptedVotes"/>
+			<xs:element name="mixedEncryptedVotes" type="ns1:encryptedVotes"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="getPartiallyDecryptedVotes">

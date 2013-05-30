@@ -84,13 +84,6 @@ public class SchnorrImplementer extends Implementer {
 		//hashResult = sha-256(concat) mod q => this must be equal to a
 		BigInteger hashResult = CryptoFunc.sha256(concat).mod(q);
 
-		System.out.println("VK: " + verificationKey);
-		System.out.println("Message: " + message);
-		System.out.println("a:\t\t" + a);
-		System.out.println("Hashresult: " + hashResult);
-		System.out.println("bK: " + b);
-//		System.out.println("gen: " + gen);
-
 		//return the result of hashResult == a
 		return hashResult.equals(a);
 	}
@@ -152,6 +145,7 @@ public class SchnorrImplementer extends Implementer {
 				verificationKey = b.getVerificationKey();
 			} else if (er != null) {
 				eID = er.getElectionID();
+				//ToDo check if these value are equals from the one of the eb
 				encFirstValue = new BigInteger(1, er.getEncValueA().toByteArray());
 				encSecondValue = new BigInteger(1, er.getEncValueB().toByteArray());
 				proofCommitment = new BigInteger(1, er.getProofCommitment().toByteArray());
@@ -198,8 +192,7 @@ public class SchnorrImplementer extends Implementer {
 			rep = new Report(exc);
 			v.setReport(rep);
 		} else if (!r) {
-			rep = new Report(FailureCode.INVALID_CERTIFICATE);
-			rep.setAdditionalInformation(exc.getMessage());
+			rep = new Report(FailureCode.INVALID_SCHNORR_SIGN);
 			v.setReport(rep);
 		}
 

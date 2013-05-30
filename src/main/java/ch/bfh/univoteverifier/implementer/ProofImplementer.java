@@ -12,6 +12,7 @@ package ch.bfh.univoteverifier.implementer;
 import ch.bfh.univote.common.Ballot;
 import ch.bfh.univote.common.BlindedGenerator;
 import ch.bfh.univote.common.EncryptedVote;
+import ch.bfh.univote.common.EncryptedVotes;
 import ch.bfh.univote.common.EncryptionKeyShare;
 import ch.bfh.univote.common.MixedEncryptedVotes;
 import ch.bfh.univote.common.MixedVerificationKey;
@@ -485,13 +486,12 @@ public class ProofImplementer extends Implementer {
 			MixedEncryptedVotes mev = ebp.getMixedEncryptedVotesBy(mixerName);
 
 			//plausibility check 1: size of the set against the number of ballots, because each ballot has an encrypted vote.
-			//ToDo decommetn when available
-//			boolean size = mev.getVote().size() == ebp.getBallots().getBallot().size();
+			boolean size = mev.getVote().size() == ebp.getBallots().getBallot().size();
 
 			//plausibility check 2: values in G_q
 			boolean valuesInG = true;
 			for (EncryptedVote ev : mev.getVote()) {
-				//value^q mod p = 1 if the value is in q.
+				//value^q mod p = 1 if the value is in G_q.
 				//first value
 				if (!BigInteger.ONE.equals(ev.getFirstValue().modPow(Config.q, Config.p))) {
 					valuesInG = false;
@@ -512,10 +512,9 @@ public class ProofImplementer extends Implementer {
 			//if the size of the unique set of verification key is the same as the original verification key we don't have any duplicates
 			boolean differentValues = mev.getVote().size() == uniqueVerificationKeys.size();
 
-			//r = size && valuesInG && differentValues; => decomment when getBallots will work
-			r = valuesInG && differentValues;
+			r = size && valuesInG && differentValues;
 		} catch (NullPointerException | ElectionBoardServiceFault ex) {
-			Logger.getLogger(ProofImplementer.class.getName()).log(Level.SEVERE, null, ex);
+			exc = ex;
 		}
 
 		VerificationResult v = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
@@ -567,7 +566,7 @@ public class ProofImplementer extends Implementer {
 			EncryptionKeyShare eks = ebp.getEncryptionKeyShare(tallierName);
 
 			//take the set of encrypted vote in order to get the first value of an encryption pair a_i
-			MixedEncryptedVotes mev = ebp.getMixedEncryptedVotes();
+			EncryptedVotes mev = ebp.getEncryptedVotes(); //this method throw a null pointer because we don't have the data
 
 			BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
 			BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
@@ -597,7 +596,7 @@ public class ProofImplementer extends Implementer {
 			//compute the knowledge of discrete log for each element in the list
 			for (int i = 1; i < pdv.getProof().getCommitment().size(); i++) {
 				BigInteger commitment = pdv.getProof().getCommitment().get(i);
-				BigInteger response = pdv.getProof().getResponse().get(0);
+				BigInteger response = pdv.getProof().getResponse().get(i);
 				BigInteger a_tallier = pdv.getVote().get(i);
 				BigInteger a_firstEncValue = mev.getVote().get(i).getFirstValue();
 

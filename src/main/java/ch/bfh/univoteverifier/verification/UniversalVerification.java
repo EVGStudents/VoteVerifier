@@ -46,12 +46,11 @@ public class UniversalVerification extends Verification {
 		MixerTallierRunner mtr = new MixerTallierRunner(ebproxy, msgr);
 		ResultsRunner rr = new ResultsRunner(ebproxy, msgr);
 
-//		runners.add(ssr);
-//		runners.add(esr);
+		runners.add(ssr);
+		runners.add(esr);
 		runners.add(epr);
-//		runners.add(eperiodr);
-//		runners.add(mtr);
-//		runners.add(rr);
-
+		runners.add(eperiodr);
+		runners.add(mtr);
+		runners.add(rr);
 	}
 }

@@ -42,7 +42,7 @@ public class LocalBoardProxyDownloader {
 	private final XStream xstream;
 	private final ElectionBoardProxy ebp;
 	private final String DES_PATH = "src/test/java/ch/bfh/univoteverifier/testresources";
-	private final String ELECTION_ID = "sub-2013";
+	private final String ELECTION_ID = "vsbfh-2013";
 	private final List<String> mixerIdentifier;
 	private final List<String> tallierIdentifier;
 	private final String EXT = ".xml";
@@ -52,7 +52,7 @@ public class LocalBoardProxyDownloader {
 
 		//Write all the objects to files
 //		lbpd.writeBallot();
-//		lbpd.writeBallots();
+		lbpd.writeBallots();
 		lbpd.writeBlindedGenerator();
 		lbpd.writeDecodedVotes();
 		lbpd.writeDecryptedVotes();
@@ -66,15 +66,15 @@ public class LocalBoardProxyDownloader {
 		lbpd.writeEncryptionKeyShare();
 		lbpd.writeEncryptionParameters();
 		lbpd.writeLatelyMixedVerificationKeys();
-//		lbpd.writeLatelyMixedVerificationKeysBy();
-//		lbpd.writeLatelyRegisteredVoterCerts();
-//		lbpd.writeMixedEncryptedVotes();
+		lbpd.writeLatelyMixedVerificationKeysBy();
+		lbpd.writeLatelyRegisteredVoterCerts();
+		lbpd.writeEncryptedVotes();
 		lbpd.writeMixedEncryptedVotesBy();
 //		lbpd.writeMixedVerificationKeys();
 		lbpd.writeMixedVerificationKeysBy();
 		lbpd.writePartiallyDecrpytedVotes();
 //		lbpd.writeRootCertificate();
-//		lbpd.writeSignatureParameters();
+		lbpd.writeSignatureParameters();
 		lbpd.writeVoterCerts();
 	}
 
@@ -112,7 +112,6 @@ public class LocalBoardProxyDownloader {
 	public void writeBallot() throws ElectionBoardServiceFault {
 		QRCode qr = new QRCode(null);
 		File f = new File(this.getClass().getResource("/qrcodeGiu").getPath());
-		System.out.println(f);
 		ElectionReceipt er = qr.decodeReceipt(f);
 		BigInteger verificationKey = er.getVerificationKey();
 
@@ -322,8 +321,8 @@ public class LocalBoardProxyDownloader {
 	 * public board such as a network connection problem or a wrong
 	 * parameter.
 	 */
-	public void writeMixedEncryptedVotes() throws ElectionBoardServiceFault {
-		realWrite(ebp.getMixedEncryptedVotes(), "MixedEncryptedVotes");
+	public void writeEncryptedVotes() throws ElectionBoardServiceFault {
+		realWrite(ebp.getEncryptedVotes(), "EncryptedVotes");
 	}
 
 	/**

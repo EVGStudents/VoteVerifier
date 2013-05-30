@@ -21,6 +21,7 @@ import ch.bfh.univote.common.ElectionGenerator;
 import ch.bfh.univote.common.ElectionOptions;
 import ch.bfh.univote.common.ElectionSystemInfo;
 import ch.bfh.univote.common.ElectoralRoll;
+import ch.bfh.univote.common.EncryptedVotes;
 import ch.bfh.univote.common.EncryptionKey;
 import ch.bfh.univote.common.EncryptionKeyShare;
 import ch.bfh.univote.common.EncryptionParameters;
@@ -84,8 +85,8 @@ public class ElectionBoardProxy {
 	private EncryptionParameters encParam;
 	private List<MixedVerificationKey> latelyMixVerKey;
 	private Map<String, List<MixedVerificationKey>> latelyMixVerKeyBy;
-	private List<VoterCertificate> latelyRegVoteCerts;
-	private MixedEncryptedVotes mixEncVotes;
+	private List<Certificate> latelyRegVoteCerts;
+	private EncryptedVotes encVotes;
 	private Map<String, MixedEncryptedVotes> mixEncVotesBy;
 	private MixedVerificationKeys mixVerKey;
 	private Map<String, MixedVerificationKeys> mixVerKeyBy;
@@ -174,8 +175,8 @@ public class ElectionBoardProxy {
 		String eIDSeparator = "-" + eID;
 
 		//read the object from the XML file and store it in the relative object
-//		this.ballot = (Map<BigInteger, Ballot>) xstream.fromXML(new FileInputStream(dataPath + "SingleBallot" + eID + EXT));
-//		this.ballots = (Ballots) xstream.fromXML(new FileInputStream(dataPath + "Ballots" + eID + EXT));
+//		this.ballot = (Map<BigInteger, Ballot>) xstream.fromXML(new FileInputStream(dataPath + "SingleBallot" + eIDSeparator + EXT));
+		this.ballots = (Ballots) xstream.fromXML(new FileInputStream(dataPath + "Ballots" + eIDSeparator + EXT));
 		this.blindGen = (Map<String, BlindedGenerator>) xstream.fromXML(new FileInputStream(dataPath + "BlindedGenerator" + eIDSeparator + EXT));
 		this.decodedVotes = (DecodedVotes) xstream.fromXML(new FileInputStream(dataPath + "DecodedVotes" + eIDSeparator + EXT));
 		this.decryptedVotes = (DecryptedVotes) xstream.fromXML(new FileInputStream(dataPath + "DecryptedVotes" + eIDSeparator + EXT));
@@ -189,15 +190,15 @@ public class ElectionBoardProxy {
 		this.encKeyShare = (Map<String, EncryptionKeyShare>) xstream.fromXML(new FileInputStream(dataPath + "EncryptionKeyShare" + eIDSeparator + EXT));
 		this.encParam = (EncryptionParameters) xstream.fromXML(new FileInputStream(dataPath + "EncryptionParameters" + eIDSeparator + EXT));
 		this.latelyMixVerKey = (List<MixedVerificationKey>) xstream.fromXML(new FileInputStream(dataPath + "LatelyMixedVerificationKeys" + eIDSeparator + EXT));
-//		this.latelyMixVerKeyBy = (Map<String, List<MixedVerificationKey>>) xstream.fromXML(new FileInputStream(dataPath + "LatelyMixedVerificationKeysBy" + eIDSeparator + EXT));
-//		this.latelyRegVoteCerts = (List<VoterCertificate>) xstream.fromXML(new FileInputStream(dataPath + "LatelyRegisteredVoterCerts" + eIDSeparator + EXT));
-//		this.mixEncVotes = (MixedEncryptedVotes) xstream.fromXML(new FileInputStream(dataPath + "MixedEncryptedVotes" + eIDSeparator + EXT));
+		this.latelyMixVerKeyBy = (Map<String, List<MixedVerificationKey>>) xstream.fromXML(new FileInputStream(dataPath + "LatelyMixedVerificationKeysBy" + eIDSeparator + EXT));
+		this.latelyRegVoteCerts = (List<Certificate>) xstream.fromXML(new FileInputStream(dataPath + "LatelyRegisteredVoterCerts" + eIDSeparator + EXT));
+		this.encVotes = (EncryptedVotes) xstream.fromXML(new FileInputStream(dataPath + "EncryptedVotes" + eIDSeparator + EXT));
 		this.mixEncVotesBy = (Map<String, MixedEncryptedVotes>) xstream.fromXML(new FileInputStream(dataPath + "MixedEncryptedVotesBy" + eIDSeparator + EXT));
 //		this.mixVerKey = (MixedVerificationKeys) xstream.fromXML(new FileInputStream(dataPath + "MixedVerificationKeys" + eIDSeparator + EXT));
 		this.mixVerKeyBy = (Map<String, MixedVerificationKeys>) xstream.fromXML(new FileInputStream(dataPath + "MixedVerificationKeysBy" + eIDSeparator + EXT));
 		this.parDecVotes = (Map<String, PartiallyDecryptedVotes>) xstream.fromXML(new FileInputStream(dataPath + "PartiallyDecryptedVotes" + eIDSeparator + EXT));
 //		this.rootCert = (Certificate) xstream.fromXML(new FileInputStream(dataPath + "RootCertificate" + eIDSeparator + EXT));
-//		this.signParam = (SignatureParameters) xstream.fromXML(new FileInputStream(dataPath + "SignatureParameters" + eIDSeparator + EXT));
+		this.signParam = (SignatureParameters) xstream.fromXML(new FileInputStream(dataPath + "SignatureParameters" + eIDSeparator + EXT));
 		this.voterCerts = (VoterCertificates) xstream.fromXML(new FileInputStream(dataPath + "VoterCerts" + eIDSeparator + EXT));
 	}
 
@@ -485,7 +486,7 @@ public class ElectionBoardProxy {
 	 * public board such as a network connection problem or a wrong
 	 * parameter.
 	 */
-	public List<VoterCertificate> getLatelyRegisteredVoterCerts() throws ElectionBoardServiceFault {
+	public List<Certificate> getLatelyRegisteredVoterCerts() throws ElectionBoardServiceFault {
 		if (latelyRegVoteCerts == null) {
 			latelyRegVoteCerts = eb.getLatelyRegisteredVoterCertificates(eID);
 		}
@@ -501,12 +502,12 @@ public class ElectionBoardProxy {
 	 * public board such as a network connection problem or a wrong
 	 * parameter.
 	 */
-	public MixedEncryptedVotes getMixedEncryptedVotes() throws ElectionBoardServiceFault {
-		if (mixEncVotes == null) {
-			mixEncVotes = eb.getMixedEncryptedVotes(eID);
+	public EncryptedVotes getEncryptedVotes() throws ElectionBoardServiceFault {
+		if (encVotes == null) {
+			encVotes = eb.getEncryptedVotes(eID);
 		}
 
-		return mixEncVotes;
+		return encVotes;
 	}
 
 	/**

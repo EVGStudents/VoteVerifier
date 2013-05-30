@@ -157,11 +157,11 @@
 	<message name="getEncryptedVotesMixedByResponse">
 		<part name="parameters" element="tns:getEncryptedVotesMixedByResponse"/>
 	</message>
-	<message name="getMixedEncryptedVotes">
-		<part name="parameters" element="tns:getMixedEncryptedVotes"/>
+	<message name="getEncryptedVotes">
+		<part name="parameters" element="tns:getEncryptedVotes"/>
 	</message>
-	<message name="getMixedEncryptedVotesResponse">
-		<part name="parameters" element="tns:getMixedEncryptedVotesResponse"/>
+	<message name="getEncryptedVotesResponse">
+		<part name="parameters" element="tns:getEncryptedVotesResponse"/>
 	</message>
 
 	<!-- Mixing and Tallying -->
@@ -310,9 +310,9 @@
 			<output message="tns:getEncryptedVotesMixedByResponse"/>
 			<fault message="tns:ElectionBoardServiceFault" name="ElectionBoardServiceFault"/>
 		</operation>
-		<operation name="getMixedEncryptedVotes">
-			<input message="tns:getMixedEncryptedVotes"/>
-			<output message="tns:getMixedEncryptedVotesResponse"/>
+		<operation name="getEncryptedVotes">
+			<input message="tns:getEncryptedVotes"/>
+			<output message="tns:getEncryptedVotesResponse"/>
 			<fault message="tns:ElectionBoardServiceFault" name="ElectionBoardServiceFault"/>
 		</operation>
 		<operation name="getPartiallyDecryptedVotes">
@@ -608,7 +608,7 @@
 				<soap:fault name="ElectionBoardServiceFault" use="literal"/>
 			</fault>
 		</operation>
-		<operation name="getMixedEncryptedVotes">
+		<operation name="getEncryptedVotes">
 			<soap:operation soapAction=""/>
 			<input>
 				<soap:body use="literal"/>
