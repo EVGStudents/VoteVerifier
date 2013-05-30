@@ -10,6 +10,7 @@
  */
 package ch.bfh.univoteverifier.table;
 
+import ch.bfh.univoteverifier.common.Report;
 import java.awt.Component;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -55,9 +56,16 @@ class ResultCellRendererText extends DefaultTableCellRenderer {
         ResultTableModel rtm = (ResultTableModel) table.getModel();
         ResultSet rs = (ResultSet) rtm.getValueAt(row, -1);
 
-        if (rs.getResultReport() != null && rs.getResultReport().getFailureCode() != null) {
-            int fCode = rs.getResultReport().getFailureCode().getID();
-            String toolTipText = rd.getDescription(fCode);
+        if (!rs.getResult()) {
+            String toolTipText = "";
+            Report report = rs.getResultReport();
+            if (report.getFailureCode() != null) {
+                int fCode = report.getFailureCode().getID();
+                toolTipText = rd.getDescription(fCode);
+
+            } else if (report.getException() != null) {
+                toolTipText = report.getException().toString();
+            }
             label.setToolTipText(toolTipText);
         }
 

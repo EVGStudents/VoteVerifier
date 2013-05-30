@@ -119,6 +119,7 @@ public class CandidateResultsPanel extends JPanel {
         c = new GridBagConstraints();
         c.insets = new Insets(0, 20, 20, 0);
         c.fill = GridBagConstraints.CENTER;
+        c.weightx = .01;
         c.gridx = 0;
         c.gridy = 1;
         panel.add(btnBack, c);
@@ -128,7 +129,7 @@ public class CandidateResultsPanel extends JPanel {
         c = new GridBagConstraints();
         c.insets = new Insets(0, 0, 20, 0);
         c.fill = GridBagConstraints.LINE_START;
-        c.weightx = 0.9;
+        c.weightx = 0.95;
         c.gridx = 1;
         c.gridy = 1;
         panel.add(backInstructionsLabel, c);
