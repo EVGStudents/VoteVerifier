@@ -12,11 +12,13 @@ package ch.bfh.univoteverifier.table;
 
 import ch.bfh.univote.common.Choice;
 import ch.bfh.univoteverifier.action.RemoveTabAction;
+import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.ThreadManager;
 import java.util.logging.Logger;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -35,6 +37,7 @@ public class ResultTabbedPane extends JTabbedPane {
     private static final Logger LOGGER = Logger.getLogger(ResultTabbedPane.class.getName());
     private RemoveTabAction removeTabAction;
     private JPanel welcomePanel = new JPanel();
+    private ResourceBundle rb;
 
     /**
      * Create an instance of this class.
@@ -46,9 +49,13 @@ public class ResultTabbedPane extends JTabbedPane {
      * currently being viewed.
      */
     public ResultTabbedPane(ThreadManager tm, ChangeListener cl) {
+        rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
+
         welcomePanel = new JPanel();
         welcomePanel.setBackground(Color.WHITE);
-        this.addTab("Welcome", welcomePanel);
+
+        String welcomeTabText = rb.getString("welcome");
+        this.addTab(welcomeTabText, welcomePanel);
 
         this.addChangeListener(cl);
 

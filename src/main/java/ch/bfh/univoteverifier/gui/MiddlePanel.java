@@ -58,7 +58,8 @@ public class MiddlePanel extends JPanel {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         buttonCreator = new ButtonCreator(this, msgr, tm, eIDlist);
 
-        int index = resultTabbedPane.indexOfTab("Welcome");
+        String welcomeTabText = rb.getString("welcome");
+        int index = resultTabbedPane.indexOfTab(welcomeTabText);
         tabPanel = (JPanel) resultTabbedPane.getComponentAt(index);
         tabPanel.setBackground(Color.WHITE);
         tabPanel.setLayout(new GridLayout(1, 1));
