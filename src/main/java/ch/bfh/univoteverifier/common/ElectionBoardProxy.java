@@ -31,7 +31,6 @@ import ch.bfh.univote.common.MixedVerificationKey;
 import ch.bfh.univote.common.MixedVerificationKeys;
 import ch.bfh.univote.common.PartiallyDecryptedVotes;
 import ch.bfh.univote.common.SignatureParameters;
-import ch.bfh.univote.common.VoterCertificate;
 import ch.bfh.univote.common.VoterCertificates;
 import ch.bfh.univote.election.ElectionBoard;
 import ch.bfh.univote.election.ElectionBoardService;

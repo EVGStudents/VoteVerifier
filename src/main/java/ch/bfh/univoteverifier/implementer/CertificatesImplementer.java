@@ -10,7 +10,6 @@
 package ch.bfh.univoteverifier.implementer;
 
 import ch.bfh.univote.common.Certificate;
-import ch.bfh.univote.common.VoterCertificate;
 import ch.bfh.univote.common.VoterCertificates;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.CryptoFunc;
