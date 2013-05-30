@@ -65,6 +65,7 @@ public class MixerTallierRunnerTest {
 
 			VerificationResult v2 = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET_SIGN, true, ebp.getElectionID(), rn, ImplementerType.RSA, EntityType.MIXER);
 			v2.setEntityName(mName);
+			mockList.add(v2);
 		}
 
 		mockList.add(new VerificationResult(VerificationType.MT_ENC_VOTES_SET, true, ebp.getElectionID(), rn, ImplementerType.PARAMETER, EntityType.EA));
