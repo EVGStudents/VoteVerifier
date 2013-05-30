@@ -39,9 +39,9 @@ public class ResultProcessor {
         this.consolePanel = consolePanel;
         this.resultPanelManager = resultPanelManager;
 
-        pass = new ImageIcon(UniVoteVerifierRunner.class.getResource("/check.png"));
-        fail = new ImageIcon(UniVoteVerifierRunner.class.getResource("/fail.png"));
-        noImpl = new ImageIcon(UniVoteVerifierRunner.class.getResource("/noImpl.png"));
+        pass = new ImageIcon(VoteVerifier.class.getResource("/check.png"));
+        fail = new ImageIcon(VoteVerifier.class.getResource("/fail.png"));
+        noImpl = new ImageIcon(VoteVerifier.class.getResource("/noImpl.png"));
     }
 
     /**

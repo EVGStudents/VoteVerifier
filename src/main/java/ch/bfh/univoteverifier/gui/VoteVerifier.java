@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author prinstin
  */
-public class UniVoteVerifierRunner {
+public class VoteVerifier {
 
     private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
     LogFormatter logf = new LogFormatter();
@@ -39,7 +39,7 @@ public class UniVoteVerifierRunner {
      * \"election id\"\tVerify an an entire election.
      */
     public static void main(String[] args) {
-        UniVoteVerifierRunner runner = new UniVoteVerifierRunner(args);
+        VoteVerifier runner = new VoteVerifier(args);
     }
 
     /**
@@ -47,7 +47,7 @@ public class UniVoteVerifierRunner {
      *
      * @param args
      */
-    public UniVoteVerifierRunner(String[] args) {
+    public VoteVerifier(String[] args) {
         if (args.length > 0) {
             ConsoleRunner cr = new ConsoleRunner();
             cr.begin(args);

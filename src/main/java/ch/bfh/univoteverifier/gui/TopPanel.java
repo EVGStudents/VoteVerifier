@@ -77,7 +77,7 @@ public class TopPanel extends JPanel {
      */
     private JLabel getTitleImage() {
         JLabel imgLabel = new JLabel();
-        java.net.URL img = UniVoteVerifierRunner.class.getResource("/univoteTitle.jpeg");
+        java.net.URL img = VoteVerifier.class.getResource("/univoteTitle.jpeg");
         if (img != null) {
             ImageIcon logo = new ImageIcon(img);
             imgLabel = new JLabel(logo);
