@@ -36,10 +36,11 @@ public class ParamImplTest {
 
 	private final ParametersImplementer pi;
 	private final BigInteger p, q, g;
+	private final BigInteger elQ, elG, elP;
 	private final ElectionBoardProxy ebp;
 	private final ElectionReceipt er;
 
-	public ParamImplTest() throws FileNotFoundException {
+	public ParamImplTest() throws FileNotFoundException, ElectionBoardServiceFault {
 		ebp = new ElectionBoardProxy();
 		pi = new ParametersImplementer(ebp, RunnerName.UNSET);
 
@@ -51,6 +52,9 @@ public class ParamImplTest {
 		p = Config.p.multiply(new BigInteger("2"));
 		q = Config.q.multiply(new BigInteger("2"));
 		g = Config.g.multiply(new BigInteger("2"));
+		elQ = ebp.getEncryptionParameters().getGroupOrder();
+		elG = ebp.getEncryptionParameters().getGenerator();
+		elP = ebp.getEncryptionParameters().getPrime();
 	}
 
 	/**
@@ -162,8 +166,6 @@ public class ParamImplTest {
 	 */
 	@Test
 	public void testBallotVerificationKey() throws ElectionBoardServiceFault {
-		BigInteger bb = new BigInteger(1, er.getVerificationKey().toByteArray());
-		System.out.println("VR KEY" + bb);
 		VerificationResult v = pi.vrfBallotVerificationKey(er.getVerificationKey());
 		assertTrue(v.getResult());
 	}
@@ -177,6 +179,53 @@ public class ParamImplTest {
 	@Test
 	public void testVotes() throws ElectionBoardServiceFault {
 		VerificationResult v = pi.vrfVotes();
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test that the ElGamal P is prime.
+	 */
+	@Test
+	public void testElGamalP() {
+		VerificationResult v = pi.vrfPrime(elP, VerificationType.EL_SETUP_ELGAMAL_P);
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test that the ElGamal Q is prime.
+	 */
+	@Test
+	public void testElGamalQ() {
+		VerificationResult v = pi.vrfPrime(elQ, VerificationType.EL_SETUP_ELGAMAL_Q);
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test that the ElGamal G is a generator.
+	 */
+	@Test
+	public void testElGamalG() {
+		VerificationResult v = pi.vrfGenerator(elP, elQ, elG, VerificationType.EL_SETUP_ELGAMAL_G);
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test the length of ElGamal parameters length.
+	 *
+	 * @throws ElectionBoardServiceFault
+	 */
+	@Test
+	public void testElGamalParamLen() throws ElectionBoardServiceFault {
+		VerificationResult v = pi.vrfElGamalParamLen(elP, ebp.getElectionDefinition().getKeyLength());
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test that the ElGamal P is safe prime.
+	 */
+	@Test
+	public void testElGamalSafePrime() {
+		VerificationResult v = pi.vrfSafePrime(elP, elQ, VerificationType.EL_SETUP_ELGAMAL_SAFE_PRIME);
 		assertTrue(v.getResult());
 	}
 }

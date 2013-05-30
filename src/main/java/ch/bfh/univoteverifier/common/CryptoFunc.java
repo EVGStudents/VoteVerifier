@@ -103,6 +103,15 @@ public class CryptoFunc {
 			sb.insert(sb.length() - 25, '\n');
 			bStr = sb.toString();
 		}
+//		else if (!newLine) {
+//			//add -----BEGIN CERTIFICATE-----
+//			StringBuilder sb = new StringBuilder(bStr);
+//			sb.insert(0, "-----BEGIN CERTIFICATE-----\n");
+//			//add -----END CERTIFICATE-----
+//			sb.insert(sb.length() - 1, "\n-----END CERTIFICATE-----");
+//			bStr = sb.toString();
+//		}
+
 		InputStream is = new ByteArrayInputStream(bStr.getBytes());
 		X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(is);
 

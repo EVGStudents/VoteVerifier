@@ -39,24 +39,19 @@ public class UniversalVerification extends Verification {
 
 	@Override
 	protected void createRunners() {
-		try {
-			SystemSetupRunner ssr = new SystemSetupRunner(ebproxy, msgr);
-			ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy, msgr);
-			ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy, msgr);
-			ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy, msgr);
-			MixerTallierRunner mtr = new MixerTallierRunner(ebproxy, msgr);
-			ResultsRunner rr = new ResultsRunner(ebproxy, msgr);
+		SystemSetupRunner ssr = new SystemSetupRunner(ebproxy, msgr);
+		ElectionSetupRunner esr = new ElectionSetupRunner(ebproxy, msgr);
+		ElectionPreparationRunner epr = new ElectionPreparationRunner(ebproxy, msgr);
+		ElectionPeriodRunner eperiodr = new ElectionPeriodRunner(ebproxy, msgr);
+		MixerTallierRunner mtr = new MixerTallierRunner(ebproxy, msgr);
+		ResultsRunner rr = new ResultsRunner(ebproxy, msgr);
 
+//		runners.add(ssr);
+//		runners.add(esr);
+		runners.add(epr);
+//		runners.add(eperiodr);
+//		runners.add(mtr);
+//		runners.add(rr);
 
-			runners.add(ssr);
-			runners.add(esr);
-			runners.add(epr);
-			runners.add(eperiodr);
-			runners.add(mtr);
-			runners.add(rr);
-
-		} catch (InvalidNameException | CertificateException | ElectionBoardServiceFault ex) {
-			msgr.sendElectionSpecError(geteID(), ex);
-		}
 	}
 }

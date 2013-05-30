@@ -45,7 +45,7 @@ public class ElectionPreparationRunner extends Runner {
 	 * @param ebp the ElectionBoardProxy from where get the data.
 	 * @param msgr the Messenger used to send the results.
 	 */
-	public ElectionPreparationRunner(ElectionBoardProxy ebp, Messenger gm) throws CertificateException, ElectionBoardServiceFault, InvalidNameException {
+	public ElectionPreparationRunner(ElectionBoardProxy ebp, Messenger gm) {
 		super(RunnerName.ELECTION_PREPARATION, gm);
 		this.ebp = ebp;
 		rsaImpl = new RSAImplementer(ebp, runnerName);
@@ -104,10 +104,10 @@ public class ElectionPreparationRunner extends Runner {
 		}
 
 		//mixed verification keys
-		VerificationResult v8 = prmImpl.vrfVerificationKeysMixed();
-		msgr.sendVrfMsg(v8);
-		partialResults.add(v8);
-		Thread.sleep(SLEEP_TIME);
+//		VerificationResult v8 = prmImpl.vrfVerificationKeysMixed();
+//		msgr.sendVrfMsg(v8);
+//		partialResults.add(v8);
+//		Thread.sleep(SLEEP_TIME);
 
 		//mixed verification keys signature
 		VerificationResult v9 = rsaImpl.vrfMixedVerificationKeysSign();
