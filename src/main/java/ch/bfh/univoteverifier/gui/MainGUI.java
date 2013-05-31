@@ -15,32 +15,19 @@ import ch.bfh.univoteverifier.listener.VerificationMessage;
 import ch.bfh.univoteverifier.listener.VerificationListener;
 import ch.bfh.univoteverifier.listener.VerificationEvent;
 import ch.bfh.univoteverifier.table.ResultTabbedPane;
-import ch.bfh.univoteverifier.action.ActionManager;
-import ch.bfh.univoteverifier.action.FileChooserAction;
-import ch.bfh.univoteverifier.action.ShowConsoleAction;
-import ch.bfh.univoteverifier.action.StartAction;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import ch.bfh.univoteverifier.common.MainController;
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.MessengerManager;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.io.File;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
-import java.util.regex.Pattern;
-import javax.swing.Action;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -63,6 +50,7 @@ public class MainGUI extends JFrame {
     private ResourceBundle rb;
     private ResultProcessor resultProccessor;
     private ThreadManager tm;
+    private MessengerManager mm;
 
     /**
      * Construct the window and frame of this GUI and initialize certain base
@@ -149,9 +137,9 @@ public class MainGUI extends JFrame {
      * Instantiates some basic resources needed in this class.
      */
     private void initResources() {
-
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         sl = new StatusUpdate();
+        mm = new MessengerManager(sl);
     }
 
     /**
@@ -166,7 +154,6 @@ public class MainGUI extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         consolePanel = new ConsolePanel();
-        Messenger msgr = createMessengerAddListener();
 
         resultTabbedPane = new ResultTabbedPane(tm, consolePanel);
         resultProccessor = new ResultProcessor(consolePanel, resultTabbedPane);
@@ -175,7 +162,7 @@ public class MainGUI extends JFrame {
 
         String[] eidList = getElectionIDList();
 
-        middlePanel = new MiddlePanel(resultTabbedPane, eidList, msgr, tm);
+        middlePanel = new MiddlePanel(resultTabbedPane, eidList, mm, tm);
         middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
         middlePanel.setBackground(GUIconstants.GREY);
 
@@ -183,17 +170,6 @@ public class MainGUI extends JFrame {
         panel.add(middlePanel);
 
         return panel;
-    }
-
-    /**
-     * Create a Messenger instance and register the listener in this class.
-     *
-     * @return Messenger
-     */
-    public Messenger createMessengerAddListener() {
-        Messenger msgr = new Messenger();
-        msgr.getStatusSubject().addListener(sl);
-        return msgr;
     }
 
     /**
@@ -218,8 +194,8 @@ public class MainGUI extends JFrame {
             } else if (ve.getVm() == VerificationMessage.SHOW_CONSOLE) {
                 showConsole(ve.getConsoleSelected());
             } else if (ve.getVm() == VerificationMessage.VRF_FINISHED) {
-                String eID = ve.getEID();
-                tm.killThread(eID);
+                String processID = ve.getProcessID();
+                tm.killThread(processID);
             } else {
                 resultProccessor.showResultInGUI(ve);
             }

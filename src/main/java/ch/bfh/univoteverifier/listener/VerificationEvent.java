@@ -24,7 +24,7 @@ import java.util.Map;
 public class VerificationEvent {
 
     private VerificationMessage vm;
-    private String msg;
+    private String msg, processID;
     private String eID;
     private final VerificationResult vr;
     private Boolean consoleSelected;
@@ -38,10 +38,11 @@ public class VerificationEvent {
      * @param msg The message to be shown in the GUI or console
      * @param eID the election ID for which this message pertains.
      */
-    public VerificationEvent(VerificationMessage vm, String msg, String eID) {
+    public VerificationEvent(VerificationMessage vm, String msg, String eID, String processID) {
         this.vm = vm;
         this.msg = msg;
         this.eID = eID;
+        this.processID = processID;
         this.vr = null;
     }
 
@@ -52,10 +53,24 @@ public class VerificationEvent {
      * @param vm The type of message that this VerificationEvent contains
      * @param Map<Choice, Integer> The election results for candidates.
      */
-    public VerificationEvent(VerificationMessage vm, String eID, Map<Choice, Integer> electionResult) {
+    public VerificationEvent(VerificationMessage vm, String eID, Map<Choice, Integer> electionResult, String processID) {
         this.vm = vm;
         this.eID = eID;
         this.electionResult = electionResult;
+        this.vr = null;
+        this.processID = processID;
+    }
+
+    /**
+     * Create an instance of this helper class to send a message that is
+     * specific to an given election ID.
+     *
+     * @param vm The type of message that this VerificationEvent contains
+     */
+    public VerificationEvent(VerificationMessage vm, String eID, String processID) {
+        this.eID = eID;
+        this.processID = processID;
+        this.vm = vm;
         this.vr = null;
     }
 
@@ -65,10 +80,9 @@ public class VerificationEvent {
      *
      * @param vm The type of message that this VerificationEvent contains
      */
-    public VerificationEvent(VerificationMessage vm, String eID) {
-        this.eID = eID;
-        this.msg = eID;
+    public VerificationEvent(VerificationMessage vm, String msg) {
         this.vm = vm;
+        this.msg = msg;
         this.vr = null;
     }
 
@@ -92,8 +106,9 @@ public class VerificationEvent {
      * @param vr The helper class which contains the verification results.
      * @param vm The type of message that this VerificationEvent contains
      */
-    public VerificationEvent(VerificationResult vr) {
+    public VerificationEvent(VerificationResult vr, String processID) {
         this.vr = vr;
+        this.processID = processID;
         this.vm = VerificationMessage.RESULT;
         this.eID = vr.getElectionID();
     }
@@ -105,6 +120,15 @@ public class VerificationEvent {
      */
     public String getMsg() {
         return msg;
+    }
+
+    /**
+     * Get the ID of the tab to which this Event pertains.
+     *
+     * @return String the message.
+     */
+    public String getProcessID() {
+        return processID;
     }
 
     /**

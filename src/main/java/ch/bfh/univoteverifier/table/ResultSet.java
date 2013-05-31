@@ -29,13 +29,11 @@ import javax.swing.JLabel;
  */
 public class ResultSet {
 
-    private String txt;
+    private String txt, eID, sectionName, processID;
     private Boolean result;
     private ImageIcon img;
     private JLabel label;
     private RunnerName rn;
-    private String eID;
-    private String sectionName;
     private VerificationResult vr;
     private static final Logger LOGGER = Logger.getLogger(ResultSet.class.getName());
     Map<Choice, Integer> electionResult;
@@ -46,13 +44,18 @@ public class ResultSet {
      * @param txt The description of the verification performed.
      * @param result The result of the verification.
      */
-    public ResultSet(String txt, ImageIcon img, VerificationResult vr) {
+    public ResultSet(String txt, ImageIcon img, VerificationResult vr, String processID) {
         this.txt = txt + "  " + generateFiller(txt);
-        this.result = vr.getResult();
-        this.rn = vr.getRunnerName();
-        this.eID = vr.getElectionID();
         this.img = img;
         this.vr = vr;
+        this.rn = vr.getRunnerName();
+        this.eID = vr.getElectionID();
+        if (processID.equals("default")) {
+            this.processID = this.eID;
+        } else {
+            this.processID = processID;
+        }
+        this.result = vr.getResult();
         label = new JLabel(img);
     }
 
@@ -63,6 +66,15 @@ public class ResultSet {
      */
     public String getTxt() {
         return txt;
+    }
+
+    /**
+     * Get the ID for the tab for which this data pertains.
+     *
+     * @return String the ID of a tab.
+     */
+    public String getProcessID() {
+        return processID;
     }
 
     public Report getResultReport() {

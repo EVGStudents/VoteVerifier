@@ -42,7 +42,7 @@ public class ConsoleRunner {
      */
     public ConsoleRunner() {
         VerificationListener vl = new StatusUpdate();
-        msgr = new Messenger();
+        msgr = new Messenger("default");
         msgr.getStatusSubject().addListener(vl);
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
     }

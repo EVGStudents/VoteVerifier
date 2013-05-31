@@ -20,32 +20,46 @@ import ch.bfh.univoteverifier.gui.ElectionReceipt;
  */
 public class VerificationThread extends Thread {
 
-	private final Verification v;
+    private final Verification v;
+    private final String processID;
 
-	/**
-	 * Construct a verification thread with a given Messenger and election
-	 * ID
-	 *
-	 * @param msgr the Messenger to where send the output
-	 * @param eID the election ID
-	 */
-	public VerificationThread(Messenger msgr, String eID) {
-		this.v = new UniversalVerification(msgr, eID);
-	}
+    /**
+     * Construct a verification thread with a given Messenger and election ID
+     *
+     * @param msgr the Messenger to where send the output
+     * @param eID the election ID
+     */
+    public VerificationThread(Messenger msgr, String eID) {
+        this.v = new UniversalVerification(msgr, eID);
+        this.processID = msgr.getProcessID();
+    }
 
-	/**
-	 * Construct a verification thread with a given Messenger and QRCode
-	 * File
-	 *
-	 * @param msgr the Messenger to where send the output
-	 * @param qrCodeFile the file with the path to the QRCode
-	 */
-	public VerificationThread(Messenger msgr, ElectionReceipt er) {
-		this.v = new IndividualVerification(msgr, er.getElectionID(), er);
-	}
+    /**
+     * Construct a verification thread with a given Messenger and QRCode File
+     *
+     * @param msgr the Messenger to where send the output
+     * @param qrCodeFile the file with the path to the QRCode
+     */
+    public VerificationThread(Messenger msgr, ElectionReceipt er) {
+        this.v = new IndividualVerification(msgr, er.getElectionID(), er);
+        this.processID = msgr.getProcessID();
+    }
 
-	@Override
-	public void run() {
-		v.runVerification();
-	}
+    /**
+     * Begin the verification process.
+     */
+    @Override
+    public void run() {
+        v.runVerification();
+    }
+
+    /**
+     * Get the ID for the tab associated with this process. The tab ID
+     * identifies that thread and the display tab.
+     *
+     * @return The ID of the tab or thread: same thing.
+     */
+    public String getProcessID() {
+        return processID;
+    }
 }

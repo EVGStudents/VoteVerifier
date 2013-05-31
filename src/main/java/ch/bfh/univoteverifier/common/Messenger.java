@@ -18,7 +18,6 @@ import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -37,11 +36,17 @@ public class Messenger {
     private ResourceBundle rb;
     private VerificationSubject ss;
     private static final Logger LOGGER = Logger.getLogger(Messenger.class.toString());
+    private String processID;
+
+    public Messenger() {
+        this("default");
+    }
 
     /**
      * instantiate a GUIMessenger that is used to relay messages to the GUI
      */
-    public Messenger() {
+    public Messenger(String processID) {
+        this.processID = processID;
         ss = new ConcreteSubject();
         instantiateRB("en");
     }
@@ -90,15 +95,14 @@ public class Messenger {
 
         Pattern pattern = Pattern.compile("[^/.]+$");
         Matcher match = pattern.matcher(exNameLong);
-        String exName = "";
+        String exName;
         String message = "An error has occured.";
         if (match.find()) {
             exName = match.group();
             message = getMessageForKey(exName);
         }
 
-
-        VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_SPECIFIC_ERROR, message, eID);
+        VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_SPECIFIC_ERROR, message, eID, processID);
         ss.notifyListeners(ve);
     }
 
@@ -107,7 +111,7 @@ public class Messenger {
      * @param Map<Choice,Integer> The election results.
      */
     public void sendElectionResults(String eID, Map<Choice, Integer> electionResults) {
-        VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_RESULTS, eID, electionResults);
+        VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_RESULTS, eID, electionResults, processID);
         ss.notifyListeners(ve);
     }
 
@@ -119,7 +123,8 @@ public class Messenger {
      *
      */
     public void sendVrfMsg(VerificationResult vr) {
-        VerificationEvent ve = new VerificationEvent(vr);
+        LOGGER.log(Level.OFF, "SendVrfMessage, send with Messenger ID is : " + processID);
+        VerificationEvent ve = new VerificationEvent(vr, processID);
         ss.notifyListeners(ve);
     }
 
@@ -169,8 +174,18 @@ public class Messenger {
      * Send a message that the verificaiton process has finished for a given election.
      */
     public void sendVerificationFinished(String eID) {
-        VerificationEvent ve = new VerificationEvent(VerificationMessage.VRF_FINISHED, eID);
+        VerificationEvent ve = new VerificationEvent(VerificationMessage.VRF_FINISHED, processID);
         ss.notifyListeners(ve);
+    }
+
+    /**
+     * Get the ID for this messenger. This is needed to distinguish an
+     * individual verification from other verification tabs.
+     *
+     * @return the ID for this messenger.
+     */
+    public String getProcessID() {
+        return processID;
     }
 
     /**

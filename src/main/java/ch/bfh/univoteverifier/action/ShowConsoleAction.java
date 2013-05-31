@@ -10,6 +10,7 @@
 package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.MessengerManager;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.MainGUI;
 import java.awt.event.ActionEvent;
@@ -26,7 +27,7 @@ import javax.swing.JCheckBoxMenuItem;
  */
 public class ShowConsoleAction extends AbstractAction {
 
-    private Messenger msgr;
+    private MessengerManager mm;
 
     /**
      * Create an instance of this Action class.
@@ -34,10 +35,10 @@ public class ShowConsoleAction extends AbstractAction {
      * @param MainGUI Send as reference to be able to use the 'callback' type
      * method to toggle the visibility of the console.
      */
-    public ShowConsoleAction(Messenger msgr) {
+    public ShowConsoleAction(MessengerManager mm) {
         ResourceBundle rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         this.putValue(NAME, rb.getString("showConsole"));
-        this.msgr = msgr;
+        this.mm = mm;
     }
 
     /**
@@ -51,6 +52,6 @@ public class ShowConsoleAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         JCheckBoxMenuItem mItem = (JCheckBoxMenuItem) e.getSource();
         boolean selected = mItem.getState();
-        msgr.sendShowConsole(selected);
+        mm.getDefaultMessenger().sendShowConsole(selected);
     }
 }

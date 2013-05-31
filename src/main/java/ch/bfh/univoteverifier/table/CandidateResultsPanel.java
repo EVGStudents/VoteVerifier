@@ -49,12 +49,13 @@ public class CandidateResultsPanel extends JPanel {
     private ResourceBundle rb;
     private JPanel resultsContent;
     private JLabel noResultsLabel;
-    private boolean resultsArrived = false;
+    private boolean resultsArrived = false, individualVrf;
 
     /**
      * Create an instance of this class.
      */
-    public CandidateResultsPanel(ActionListener toggle) {
+    public CandidateResultsPanel(ActionListener toggle, boolean individualVrf) {
+        this.individualVrf = individualVrf;
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -62,9 +63,17 @@ public class CandidateResultsPanel extends JPanel {
 //        JScrollPane scrollPanel = createScrollPanel();
         resultsContent = new JPanel();
         resultsContent.setLayout(new BoxLayout(resultsContent, BoxLayout.Y_AXIS));
-        String processingResults = rb.getString("processingResults");
+        String processingResults;
+        if (individualVrf) {
+            processingResults = rb.getString("notShownForIndVrf");
+        } else {
+            processingResults = rb.getString("processingResults");
+        }
+
         noResultsLabel = new JLabel(processingResults);
+
         resultsContent.add(noResultsLabel);
+
         this.add(resultsContent);
         ArrayList<ResultSet> data = new ArrayList<>();
     }
