@@ -212,4 +212,13 @@ public class ParamImplTest {
 		VerificationResult v = pi.vrfSafePrime(elP, elQ, VerificationType.EL_SETUP_ELGAMAL_SAFE_PRIME);
 		assertTrue(v.getResult());
 	}
+
+	/**
+	 * Test the result of vrfMixedEncryptedVotes().
+	 */
+	@Test
+	public void testMixedExncryptedVotes() {
+		VerificationResult v = pi.vrfMixedEncryptedVotes();
+		assertTrue(v.getResult());
+	}
 }

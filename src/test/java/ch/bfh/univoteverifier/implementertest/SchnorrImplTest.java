@@ -23,7 +23,6 @@ import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -60,7 +59,8 @@ public class SchnorrImplTest {
 	 */
 	@Test
 	public void testSignatureVerification() throws NoSuchAlgorithmException, UnsupportedEncodingException, ElectionBoardServiceFault {
-		VerificationResult vr = si.vrfBallotSignature(null, er);
+		Ballot b = ebp.getBallots().getBallot().get(0);
+		VerificationResult vr = si.vrfBallotSignature(b, null);
 		assertTrue(vr.getResult());
 	}
 }

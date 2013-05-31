@@ -100,12 +100,6 @@ public class CertificatesImplementer extends Implementer {
 	 * Specification: 1.3.2, a.
 	 *
 	 * @return a VerificationResult with the relative results.
-	 * @throws CertificateException if the specified instance for the
-	 * certificate factory cannot be found.
-	 * @throws InvalidAlgorithmParameterException if the parameters for the
-	 * PKIX algorithm are not correct.
-	 * @throws NoSuchAlgorithmException if the algorithm specified for the
-	 * certificate path validator doesn't exist.
 	 */
 	public VerificationResult vrfCACertificate() {
 		boolean r = false;
@@ -148,14 +142,6 @@ public class CertificatesImplementer extends Implementer {
 	 * Specification: 1.3.2, b.
 	 *
 	 * @return a VerificationResult with the relative results.
-	 * @throws CertificateException if the specified instance for the
-	 * certificate factory cannot be found.
-	 * @throws InvalidAlgorithmParameterException if the parameters for the
-	 * PKIX algorithm are not correct.
-	 * @throws NoSuchAlgorithmException if the algorithm specified for the
-	 * certificate path validator doesn't exist.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfEMCertificate() {
 		Exception exc = null;
@@ -196,14 +182,6 @@ public class CertificatesImplementer extends Implementer {
 	 * Specification: 1.3.4, a.
 	 *
 	 * @return a VerificationResult with the relative results.
-	 * @throws CertificateException if the specified instance for the
-	 * certificate factory cannot be found.
-	 * @throws InvalidAlgorithmParameterException if the parameters for the
-	 * PKIX algorithm are not correct.
-	 * @throws NoSuchAlgorithmException if the algorithm specified for the
-	 * certificate path validator doesn't exist.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfEACertificate() {
 		boolean r = false;
@@ -245,14 +223,6 @@ public class CertificatesImplementer extends Implementer {
 	 *
 	 * @param tallierName The name of tallier.
 	 * @return a VerificationResult.
-	 * @throws CertificateException if the specified instance for the
-	 * certificate factory cannot be found.
-	 * @throws InvalidAlgorithmParameterException if the parameters for the
-	 * PKIX algorithm are not correct.
-	 * @throws NoSuchAlgorithmException if the algorithm specified for the
-	 * certificate path validator doesn't exist.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfTallierCertificate(String tallierName) {
 		Exception exc = null;
@@ -296,14 +266,6 @@ public class CertificatesImplementer extends Implementer {
 	 *
 	 * @param mixerName The name of the mixer.
 	 * @return a VerificationResult.
-	 * @throws CertificateException if the specified instance for the
-	 * certificate factory cannot be found.
-	 * @throws InvalidAlgorithmParameterException if the parameters for the
-	 * PKIX algorithm are not correct.
-	 * @throws NoSuchAlgorithmException if the algorithm specified for the
-	 * certificate path validator doesn't exist.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfMixerCertificate(String mixerName) {
 		Exception exc = null;
@@ -346,14 +308,6 @@ public class CertificatesImplementer extends Implementer {
 	 * Specification: 1.3.5, c.
 	 *
 	 * @return a VerificationResult.
-	 * @throws CertificateException if the specified instance for the
-	 * certificate factory cannot be found.
-	 * @throws InvalidAlgorithmParameterException if the parameters for the
-	 * PKIX algorithm are not correct.
-	 * @throws NoSuchAlgorithmException if the algorithm specified for the
-	 * certificate path validator doesn't exist.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfVotersCertificate() {
 		Exception exc = null;
@@ -403,14 +357,6 @@ public class CertificatesImplementer extends Implementer {
 	 * Specification: 1.3.6, a.
 	 *
 	 * @return a VerificationResult.
-	 * @throws CertificateException if the specified instance for the
-	 * certificate factory cannot be found.
-	 * @throws InvalidAlgorithmParameterException if the parameters for the
-	 * PKIX algorithm are not correct.
-	 * @throws NoSuchAlgorithmException if the algorithm specified for the
-	 * certificate path validator doesn't exist.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfLatelyRegisteredVotersCertificate() {
 		Exception exc = null;
@@ -421,7 +367,7 @@ public class CertificatesImplementer extends Implementer {
 		try {
 			List<Certificate> vc = ebp.getLatelyRegisteredVoterCerts();
 			for (Certificate c : vc) {
-				X509Certificate xCert = CryptoFunc.getX509Certificate(c.getValue(), true);
+				X509Certificate xCert = CryptoFunc.getX509Certificate(c.getValue(), false);
 				//check the certificate path
 				List<X509Certificate> certPath = new ArrayList<>();
 				certPath.add(xCert);

@@ -124,12 +124,6 @@ public class ProofImplementer extends Implementer {
 	 *
 	 * @param tallierName the name of the tallier.
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfDistributedKeyByProof(String tallierName) {
 		Exception exc = null;
@@ -191,12 +185,6 @@ public class ProofImplementer extends Implementer {
 	 * the Schnorr public generator.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfElectionGeneratorByProof(String mixerName, String previousMixerName) {
 		Exception exc = null;
@@ -260,8 +248,6 @@ public class ProofImplementer extends Implementer {
 	 *
 	 * @param mixerName the name of the mixer.
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfVerificationKeysMixedByProof(String mixerName) {
 		Exception exc = null;
@@ -328,12 +314,6 @@ public class ProofImplementer extends Implementer {
 	 *
 	 * @param mixerName the name of the mixer.
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfLatelyVerificationKeysByProof(String mixerName) {
 		Exception exc = null;
@@ -471,12 +451,6 @@ public class ProofImplementer extends Implementer {
 	 *
 	 * @param mixerName the name of the mixer.
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfEncryptedVotesByProof(String mixerName) {
 		Exception exc = null;
@@ -549,12 +523,6 @@ public class ProofImplementer extends Implementer {
 	 *
 	 * @param tallierName the name of the tallier.
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfDecryptedVotesByProof(String tallierName) {
 		Exception exc = null;

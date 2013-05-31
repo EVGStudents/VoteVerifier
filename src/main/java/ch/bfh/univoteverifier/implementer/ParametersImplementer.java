@@ -14,6 +14,7 @@ import ch.bfh.univote.common.Ballots;
 import ch.bfh.univote.common.BlindedGenerator;
 import ch.bfh.univote.common.DecodedVotes;
 import ch.bfh.univote.common.ElectionGenerator;
+import ch.bfh.univote.common.EncryptedVote;
 import ch.bfh.univote.common.EncryptedVotes;
 import ch.bfh.univote.common.EncryptionKey;
 import ch.bfh.univote.common.EncryptionKeyShare;
@@ -104,8 +105,6 @@ public class ParametersImplementer extends Implementer {
 	 * Check if a number is a prime number.
 	 *
 	 * @return a VerificationResult with the relative result.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfPrime(BigInteger p, VerificationType type) {
 		boolean r = p.isProbablePrime(PRIME_NUMBER_CERTAINITY);
@@ -123,8 +122,6 @@ public class ParametersImplementer extends Implementer {
 	 * Check if p is a safe prime (p = k*q + 1).
 	 *
 	 * @return a VerificationResult with the relative result.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfSafePrime(BigInteger p, BigInteger q, VerificationType type) {
 		//subtract one from p, now (p-1) must be divisible by q without rest
@@ -145,8 +142,6 @@ public class ParametersImplementer extends Implementer {
 	 * Check if g is a generator of a subgroup H_q of G_q.
 	 *
 	 * @return a VerificationResult with the relative result.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfGenerator(BigInteger p, BigInteger q, BigInteger g, VerificationType type) {
 		BigInteger res = g.modPow(q, p);
@@ -168,8 +163,6 @@ public class ParametersImplementer extends Implementer {
 	 * Specification: 1.3.4, d.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfDistributedKey() {
 		Exception exc = null;
@@ -217,8 +210,6 @@ public class ParametersImplementer extends Implementer {
 	 * Specification: 1.3.4, e.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfElectionGenerator() {
 		Exception exc = null;
@@ -261,8 +252,6 @@ public class ParametersImplementer extends Implementer {
 	 * Specification: 1.3.5, d.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfVerificationKeysMixed() {
 		Exception exc = null;
@@ -304,8 +293,6 @@ public class ParametersImplementer extends Implementer {
 	 * Specification: 1.3.6, a.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfLatelyVerificatonKeys() {
 		Exception exc = null;
@@ -419,8 +406,6 @@ public class ParametersImplementer extends Implementer {
 	 * Specification: 1.3.7, a.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	public VerificationResult vrfMixedEncryptedVotes() {
 		Exception exc = null;
@@ -435,7 +420,7 @@ public class ParametersImplementer extends Implementer {
 			MixedEncryptedVotes lastMixerEncVotes = ebp.getMixedEncryptedVotesBy(mixersName.get(mixersName.size() - 1));
 
 			//check if the two set correspond
-			r = mev.equals(lastMixerEncVotes);
+			r = mev.getVote().equals(lastMixerEncVotes.getVote());
 
 		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault ex) {
 			exc = ex;
@@ -477,21 +462,23 @@ public class ParametersImplementer extends Implementer {
 				Ballot b = ballots.getBallot().get(i);
 				BigInteger bValue = b.getEncryptedVote().getSecondValue();
 
-				BigInteger mulA = BigInteger.ONE;
+				System.out.println("BAllots size" + ballots.getBallot().size());
+				BigInteger aProducts = BigInteger.ONE;
 
 				//get the a value for each tallier
 				for (int j = 0; j < ebp.getElectionDefinition().getTallierId().size(); j++) {
 					String tName = ebp.getElectionDefinition().getTallierId().get(j);
 					PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tName);
+					System.out.println("PDV size" + pdv.getVote().size());
 
 					//get the a value for this tallier
 					BigInteger aValue = pdv.getVote().get(i);
 
 					//multiply with other tallier a value
-					mulA = mulA.multiply(aValue);
+					aProducts = aProducts.multiply(aValue);
 				}
 
-				BigInteger m = bValue.multiply(mulA).mod(elGamalP);
+				BigInteger m = bValue.mod(elGamalP);
 
 				//compute G^-1
 				BigInteger mInverse;
@@ -501,7 +488,7 @@ public class ParametersImplementer extends Implementer {
 					mInverse = elGamalP.subtract(m).subtract(BigInteger.ONE);
 				}
 
-				System.out.println(mInverse);
+//				System.out.println(mInverse);
 
 
 				//ToDo decode the vote

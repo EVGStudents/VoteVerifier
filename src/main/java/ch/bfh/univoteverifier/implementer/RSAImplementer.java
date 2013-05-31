@@ -86,10 +86,6 @@ public class RSAImplementer extends Implementer {
 	 * decrypted signature.
 	 * @param signature the pre-computed signature from the board.
 	 * @return true if the signature is verified correctly otherwise not.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public boolean vrfRSASign(RSAPublicKey pubKey, String clearText, BigInteger signature) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		BigInteger hash = CryptoFunc.sha256(clearText);
@@ -111,12 +107,6 @@ public class RSAImplementer extends Implementer {
 	 * @return a VerificationResult.
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws CertificateException if the specified instance for the
-	 * certificate factory used in this verification cannot be found.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfEACertIDSign() {
 		boolean r = false;
@@ -167,12 +157,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.4, b.
 	 *
 	 * @returna a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfBasicParamSign() {
 		boolean r = false;
@@ -201,7 +185,6 @@ public class RSAImplementer extends Implementer {
 
 			String res = sc.pullAll();
 
-			System.out.println(res);
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEACert().getPublicKey(), res, signature.getValue());
 		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
@@ -229,12 +212,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.4, b.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfTMCertsSign() {
 		boolean r = false;
@@ -286,12 +263,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.4, c.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfElGamalParamSign() {
 		boolean r = false;
@@ -342,13 +313,6 @@ public class RSAImplementer extends Implementer {
 	 *
 	 * @param tallierName The name of the tallier.
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
-	 *
 	 */
 	public VerificationResult vrfDistributedKeyBySign(String tallierName) {
 		boolean r = false;
@@ -378,9 +342,6 @@ public class RSAImplementer extends Implementer {
 
 			String res = sc.pullAll();
 
-			System.out.println(res);
-
-
 			//verifiy the signature
 			RSAPublicKey tallierPubKey = (RSAPublicKey) ebp.getTalliersCerts().get(tallierName).getPublicKey();
 			r = vrfRSASign(tallierPubKey, res, signature.getValue());
@@ -409,12 +370,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.4, d.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfDistributedKeySign() {
 		boolean r = false;
@@ -460,13 +415,6 @@ public class RSAImplementer extends Implementer {
 	 *
 	 * @param mixerName The name of the mixer.
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
-	 *
 	 */
 	public VerificationResult vrfElectionGeneratorBySign(String mixerName) {
 		boolean r = false;
@@ -522,12 +470,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.4, e.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfElectionGeneratorSign() {
 		boolean r = false;
@@ -573,12 +515,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.5, a.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfElectionOptionsSign() {
 		boolean r = false;
@@ -723,12 +659,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.5, b.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfElectionDataSign() {
 		boolean r = false;
@@ -884,12 +814,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.5, c.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfElectoralRollSign() {
 		boolean r = false;
@@ -939,12 +863,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.5, c.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfVotersCertIDSign() {
 		boolean r = false;
@@ -981,12 +899,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.5, d.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfMixedVerificationKeysBySign(String mixerName) {
 		boolean r = false;
@@ -1036,12 +948,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.5, d.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfMixedVerificationKeysSign() {
 		boolean r = false;
@@ -1090,12 +996,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.6, a.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfLatelyRegisteredVotersCertificateSign() {
 		//ToDo - Find the signature
@@ -1122,12 +1022,6 @@ public class RSAImplementer extends Implementer {
 	 *
 	 * @param mixerName the name of the mixer
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfLatelyVerificationKeysBySign(String mixerName) {
 		boolean r = false;
@@ -1189,12 +1083,6 @@ public class RSAImplementer extends Implementer {
 	 *
 	 * @param mixerName the name of the mixer.
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfLatelyVerificationKeysSign() {
 		boolean r = false;
@@ -1294,12 +1182,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.6, d.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfBallotsSetSign() {
 		boolean r = false;
@@ -1393,12 +1275,6 @@ public class RSAImplementer extends Implementer {
 	 *
 	 * @param mixerName the name of the mixer
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfMixedEncryptedVotesBySign(String mixerName) {
 		boolean r = false;
@@ -1464,12 +1340,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.7, a.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfMixedEncryptedVotesSign() {
 		boolean r = false;
@@ -1532,12 +1402,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.7, b.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfDecryptedVotesBySign(String tallierName) {
 		boolean r = false;
@@ -1604,12 +1468,6 @@ public class RSAImplementer extends Implementer {
 	 * Specification: 1.3.7, b.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	public VerificationResult vrfPlaintextVotesSign() {
 		boolean r = false;
@@ -1682,11 +1540,6 @@ public class RSAImplementer extends Implementer {
 	 *
 	 * @param er the ElectionReceipt containing the necessary information.
 	 * @return a VerificationResult.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
-	 *
 	 */
 	public VerificationResult vrfSingleBallotSign(ElectionReceipt er) {
 		boolean r = false;
