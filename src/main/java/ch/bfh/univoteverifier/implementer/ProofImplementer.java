@@ -596,9 +596,9 @@ public class ProofImplementer extends Implementer {
 			r = knowledgeOfDiscreteLog(pdv.getProof().getCommitment().get(0), pdv.getProof().getResponse().get(0), c, elGamalG, eks.getKey(), elGamalP, false);
 
 			//compute the knowledge of discrete log for each element in the list
-			for (int i = 1; i < pdv.getProof().getCommitment().size(); i++) {
-				BigInteger commitment = pdv.getProof().getCommitment().get(i);
-				BigInteger response = pdv.getProof().getResponse().get(0);
+			for (int i = 0; i < pdv.getVote().size(); i++) {
+				BigInteger commitment = pdv.getProof().getCommitment().get(i + 1);
+				BigInteger response = pdv.getProof().getResponse().get(i + 1);
 				BigInteger a_tallier = pdv.getVote().get(i);
 				BigInteger a_firstEncValue = mev.getVote().get(i).getFirstValue();
 
