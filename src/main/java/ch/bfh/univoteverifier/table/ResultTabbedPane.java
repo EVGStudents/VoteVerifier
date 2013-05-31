@@ -71,30 +71,34 @@ public class ResultTabbedPane extends JTabbedPane {
      * @param rs ResultSet contains the data to add.
      */
     public void addData(ResultSet rs) {
-        //Find a pane with eID exists
-        if (hasTabPane(rs.getEID())) {
-            ResultTab rtp = getTabPaneByName(rs.getEID());
+        if (hasTabPane(rs.getProcessID())) {
+            LOGGER.log(Level.OFF, "TABBED PANE EXISTS, so GET INDEX OF IT: " + rs.getProcessID());
+            ResultTab rtp = getTabPaneByName(rs.getProcessID());
             rtp.addData(rs);
             if (rs.getResult() == false) {
                 //if a there was a problem in the verification, change tab text to red.
-                int index = this.indexOfTab(rs.getEID());
+                LOGGER.log(Level.OFF, "NAME OF TAB TO GET: " + rs.getProcessID());
+                int index = this.indexOfComponent(rtp);
+                LOGGER.log(Level.OFF, "INDEX OF TAB TO GET: " + index);
                 JPanel tabComponent = (JPanel) this.getTabComponentAt(index);
                 tabComponent.setForeground(Color.red);
             }
         } else {
-            createNewTab(rs.getEID());
+            createNewTab(rs.getProcessID(), rs.getEID());
             addData(rs);
         }
     }
 
     public void addElectionResults(CandidateResultSet crs) {
+
         LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY TABBED PANE");
-        if (!hasTabPane(crs.getEID())) {
-            createNewTab(crs.getEID());
+        if (!hasTabPane(crs.getProcessID())) {
+            createNewTab(crs.getProcessID(), crs.getEID());
 
         }
-        ResultTab rtp = getTabPaneByName(crs.getEID());
-        rtp.addElectionResults(crs.getElectionResult());
+        ResultTab rtp = getTabPaneByName(crs.getProcessID());
+        Map<Choice, Integer> electionResults = crs.getElectionResult();
+        rtp.addElectionResults(electionResults);
 
     }
 
@@ -103,15 +107,24 @@ public class ResultTabbedPane extends JTabbedPane {
      *
      * @param rs ResultSet contains the data to add.
      */
-    public void createNewTab(String eID) {
-        String title = eID;
-        ResultTab newRTP = new ResultTab(title);
+    public void createNewTab(String processID, String eID) {
+        boolean individualVrf = false;
+        String vrfTypeString = processID.substring(0, 3);
+        String append = "";
+        if (vrfTypeString.equals("IND")) {
+            append = "Ind: ";
+            individualVrf = true;
+        }
 
-        this.resultsPanels.add(newRTP);
-        this.addTab(title, newRTP);
+        String thisProcessID = processID;
+        String tabTitle = append + eID;
+        ResultTab rt = new ResultTab(thisProcessID, individualVrf);
 
-        int index = this.indexOfTab(title);
-        TabBackground tabPanel = new TabBackground(title, removeTabAction);
+        this.resultsPanels.add(rt);
+        this.addTab(tabTitle, rt);
+
+        int index = this.indexOfComponent(rt);
+        TabBackground tabPanel = new TabBackground(tabTitle, removeTabAction);
 
         JPanel panel = ((JPanel) tabPanel);
         this.setTabComponentAt(index, panel);
@@ -132,10 +145,10 @@ public class ResultTabbedPane extends JTabbedPane {
      * @param eID the name of the table to find.
      * @return The table whose name is eID.
      */
-    public ResultTab getTabPaneByName(String eID) {
+    public ResultTab getTabPaneByName(String processID) {
         for (ResultTab r : resultsPanels) {
-            String thisEID = r.getEID();
-            if (eID.compareTo(thisEID) == 0) {
+            String processIDFound = r.getProcessID();
+            if (processID.compareTo(processIDFound) == 0) {
                 return r;
             }
         }
@@ -154,8 +167,8 @@ public class ResultTabbedPane extends JTabbedPane {
         }
         ResultTab rFound = null;
         for (ResultTab r : resultsPanels) {
-            String thisEID = r.getEID();
-            if (eID.compareTo(thisEID) == 0) {
+            String iTabID = r.getProcessID();
+            if (eID.compareTo(iTabID) == 0) {
                 rFound = r;
             }
         }
@@ -169,14 +182,17 @@ public class ResultTabbedPane extends JTabbedPane {
      * @param eID The name of the election ID to search for.
      * @return The table with the election ID as a name.
      */
-    public boolean hasTabPane(String eID) {
+    public boolean hasTabPane(String tabID) {
         boolean found = false;
         if (resultsPanels.isEmpty()) {
             return found;
         }
         for (ResultTab r : resultsPanels) {
-            String thisEID = r.getEID();
-            if (eID.compareTo(thisEID) == 0) {
+
+            String thisTabID = r.getProcessID();
+            LOGGER.log(Level.OFF, "HAS TAB PANE, ResultPanel Tab ID:" + thisTabID);
+            LOGGER.log(Level.OFF, "HAS TAB PANE, Tab ID to FIND" + tabID);
+            if (tabID.compareTo(thisTabID) == 0) {
                 found = true;
             }
         }

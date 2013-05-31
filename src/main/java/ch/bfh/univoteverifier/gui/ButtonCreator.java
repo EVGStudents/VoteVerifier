@@ -18,6 +18,7 @@ import ch.bfh.univoteverifier.action.ShowConsoleAction;
 import ch.bfh.univoteverifier.action.StartAction;
 import ch.bfh.univoteverifier.common.IFileManager;
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.MessengerManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -47,11 +48,11 @@ public class ButtonCreator {
     private JButton btnStart, btnFileSelector;
     private JRadioButton btnUni, btnInd;
 
-    public ButtonCreator(MiddlePanel middlePanel, Messenger msgr, ThreadManager tm, String[] eIDlist) {
+    public ButtonCreator(MiddlePanel middlePanel, MessengerManager mm, ThreadManager tm, String[] eIDlist) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
 
         createComboBox(eIDlist);
-        createActions(msgr, tm, middlePanel);
+        createActions(mm, tm, middlePanel);
         createButtons();
         this.buttonPanel = createButtonPanel(middlePanel);
     }
@@ -61,12 +62,12 @@ public class ButtonCreator {
      *
      * @param msgr
      */
-    private void createActions(Messenger msgr, ThreadManager tm, MiddlePanel middlePanel) {
+    private void createActions(MessengerManager mm, ThreadManager tm, MiddlePanel middlePanel) {
         ActionManager am = ActionManager.getInstance();
         IFileManager fm = new FileManager();
-        Action fileChooserAction = new FileChooserAction(middlePanel, msgr, fm);
-        Action startAction = new StartAction(msgr, middlePanel, comboBox, fm, tm);
-        Action showConsoleAction = new ShowConsoleAction(msgr);
+        Action fileChooserAction = new FileChooserAction(middlePanel, mm, fm);
+        Action startAction = new StartAction(mm, middlePanel, comboBox, fm, tm);
+        Action showConsoleAction = new ShowConsoleAction(mm);
 
         am.addActions("fileChooser", fileChooserAction);
         am.addActions("start", startAction);

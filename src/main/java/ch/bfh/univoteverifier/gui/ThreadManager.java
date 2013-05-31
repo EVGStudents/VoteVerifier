@@ -37,19 +37,19 @@ public class ThreadManager {
      *
      * @param eID The election ID for which to end a thread.
      */
-    public void killThread(String eID) {
+    public void killThread(String processID) {
         VerificationThread vtFound = null;
-        LOGGER.log(Level.OFF, "Looking for thread with name {0}", eID);
+        LOGGER.log(Level.OFF, "Looking for thread with process ID {0}", processID);
         for (VerificationThread vtI : threads) {
-            LOGGER.log(Level.OFF, "Iterated name {0}", vtI.getName());
-            if (0 == vtI.getName().compareTo(eID)) {
+            LOGGER.log(Level.OFF, "Iterated process ID {0}", vtI.getProcessID());
+            if (vtI.getProcessID().equals(processID)) {
                 vtFound = vtI;
             }
         }
         if (vtFound != null) {
             threads.remove(vtFound);
             vtFound.interrupt();
-            LOGGER.log(Level.OFF, "INTERRUPTED THREAD {0}", vtFound.getName());
+            LOGGER.log(Level.OFF, "INTERRUPTED THREAD {0}", vtFound.getProcessID());
         }
     }
 
@@ -60,7 +60,7 @@ public class ThreadManager {
      * @param vt VerificationThread to register.
      */
     public void addThread(VerificationThread vt) {
-        LOGGER.log(Level.OFF, "THREAD REGISTERED!  Name: " + vt.getName());
+        LOGGER.log(Level.OFF, "THREAD REGISTERED!  Process ID: " + vt.getProcessID());
         threads.add(vt);
     }
 
@@ -70,11 +70,9 @@ public class ThreadManager {
     public void killAllThreads() {
         if (threads.isEmpty()) {
             LOGGER.log(Level.OFF, "NO THREADS FOUND");
-            LOGGER.log(Level.OFF, "NO THREADS FOUND");
-
         }
         for (VerificationThread vtI : threads) {
-            LOGGER.log(Level.OFF, "INTERRUPTED THREAD {0}", vtI.getName());
+            LOGGER.log(Level.OFF, "INTERRUPTED THREAD {0}", vtI.getProcessID());
             vtI.interrupt();
         }
         threads = new ArrayList<>();

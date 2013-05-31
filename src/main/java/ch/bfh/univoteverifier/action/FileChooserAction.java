@@ -12,6 +12,7 @@ package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.common.IFileManager;
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.MessengerManager;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.MiddlePanel;
 import java.awt.event.ActionEvent;
@@ -33,7 +34,7 @@ public class FileChooserAction extends AbstractAction {
     private ResourceBundle rb;
     private MiddlePanel middlePanel;
     private IFileManager fm;
-    private Messenger msgr;
+    private MessengerManager mm;
     private static final Logger LOGGER = Logger.getLogger(FileChooserAction.class.getName());
 
     /**
@@ -43,9 +44,9 @@ public class FileChooserAction extends AbstractAction {
      * @param qrCodeFile The reference to the File object where the fileChooser
      * stores the path to the QRCode
      */
-    public FileChooserAction(MiddlePanel middlePanel, Messenger msgr, IFileManager fm) {
+    public FileChooserAction(MiddlePanel middlePanel, MessengerManager mm, IFileManager fm) {
         this.middlePanel = middlePanel;
-        this.msgr = msgr;
+        this.mm = mm;
         this.fm = fm;
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         this.putValue(NAME, rb.getString("selectFile"));
@@ -66,11 +67,11 @@ public class FileChooserAction extends AbstractAction {
             File file = fc.getSelectedFile();
             if (file == null) {
                 String invalidFileMsg = rb.getString("invalidFile");
-                msgr.sendSetupError(invalidFileMsg);
+                mm.getDefaultMessenger().sendSetupError(invalidFileMsg);
             } else {
                 String path = "\n" + file.getPath();
                 LOGGER.log(Level.OFF, "PATH OF FILE RECEIVED: " + path);
-                msgr.sendFileSelected(file.getName());
+                mm.getDefaultMessenger().sendFileSelected(file.getName());
                 fm.setFile(file);
             }
 

@@ -28,7 +28,7 @@ import javax.swing.JLabel;
  */
 public class CandidateResultSet {
 
-    private String eID;
+    private String eID, processID;
     private static final Logger LOGGER = Logger.getLogger(CandidateResultSet.class.getName());
     Map<Choice, Integer> electionResult;
 
@@ -38,8 +38,9 @@ public class CandidateResultSet {
      * @param txt The description of the verification performed.
      * @param result The result of the verification.
      */
-    public CandidateResultSet(String eID, Map<Choice, Integer> electionResult) {
+    public CandidateResultSet(String eID, Map<Choice, Integer> electionResult, String processID) {
         this.eID = eID;
+        this.processID = processID;
         this.electionResult = electionResult;
     }
 
@@ -59,6 +60,15 @@ public class CandidateResultSet {
      */
     public String getEID() {
         return eID;
+    }
+
+    /**
+     * Get the tab ID to which this data pertains.
+     *
+     * @return the tab ID.
+     */
+    public String getProcessID() {
+        return processID;
     }
 
     /**

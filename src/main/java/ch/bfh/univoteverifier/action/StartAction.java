@@ -12,28 +12,20 @@ package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.common.IFileManager;
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.MessengerManager;
 import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.MiddlePanel;
 import ch.bfh.univoteverifier.gui.ThreadManager;
-import ch.bfh.univoteverifier.verification.IndividualVerification;
-import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.verification.VerificationThread;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
-import java.util.Enumeration;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
 import static javax.swing.Action.NAME;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
-import javax.swing.JPanel;
 
 /**
  * An Action Class that manages the action of clicking on the start button.
@@ -42,7 +34,7 @@ import javax.swing.JPanel;
  */
 public class StartAction extends AbstractAction {
 
-    private Messenger msgr;
+    private MessengerManager mm;
     private MiddlePanel middlePanel;
     private ResourceBundle rb;
     private JComboBox comboBox;
@@ -50,6 +42,7 @@ public class StartAction extends AbstractAction {
     private ElectionReceipt er;
     private VerificationThread vt;
     private ThreadManager tm;
+    private int counter = 0;
     private static final Logger LOGGER = Logger.getLogger(StartAction.class.getName());
 
     /**
@@ -60,10 +53,10 @@ public class StartAction extends AbstractAction {
      * @param comboBox
      * @param qrCodeFile
      */
-    public StartAction(Messenger msgr, MiddlePanel middlePanel, JComboBox comboBox, IFileManager fm, ThreadManager tm) {
+    public StartAction(MessengerManager mm, MiddlePanel middlePanel, JComboBox comboBox, IFileManager fm, ThreadManager tm) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         this.middlePanel = middlePanel;
-        this.msgr = msgr;
+        this.mm = mm;
         this.comboBox = comboBox;
         this.fm = fm;
         putValue(NAME, rb.getString("start"));
@@ -85,12 +78,14 @@ public class StartAction extends AbstractAction {
     public void startVerification() {
         String btnTxt = middlePanel.getSelectedVrfType();
         String msg = "";
+        int uniqueness = (int) (System.currentTimeMillis() / 1000L);
         if (0 == btnTxt.compareTo("btnUni")) {
             String eID = comboBox.getSelectedItem().toString();
-            LOGGER.log(Level.OFF, "THE ELECTION ID FROM THE COMBOBOX:{0}", eID);
-//            msg = rb.getString("beginningVrfFor") + " " + rb.getString("forElectionId") + " " + eID;
             msg = rb.getString("beginningVrfFor") + " " + eID;
-            msgr.sendSetupError(msg);
+            mm.getDefaultMessenger().sendSetupError(msg);
+
+            String processID = eID + uniqueness;
+            Messenger msgr = mm.getNewMessenger(processID);
 
             vt = new VerificationThread(msgr, eID);
             vt.setName(eID);
@@ -102,14 +97,17 @@ public class StartAction extends AbstractAction {
 
                 if (fileProvidedIsValid()) {
                     msg += rb.getString("ballotProvided");
-
+                    String eID = er.getElectionID();
+                    String timestamp = er.getTimeStamp();
+                    String processID = "IND" + eID + uniqueness;
+                    Messenger msgr = mm.getNewMessenger(processID);
                     vt = new VerificationThread(msgr, er);
                     vt.setName(er.getElectionID());
                     vt.start();
                     tm.addThread(vt);
                 }
             } else {
-                msgr.sendSetupError(rb.getString("pleaseSelectFile"));
+                mm.getDefaultMessenger().sendSetupError(rb.getString("pleaseSelectFile"));
 
             }
             middlePanel.resetFileText();
@@ -124,7 +122,7 @@ public class StartAction extends AbstractAction {
      * @return True if a QR Code has been detected.
      */
     public boolean fileProvidedIsValid() {
-        er = getElectionReceipt(fm.getFile(), msgr);
+        er = getElectionReceipt(fm.getFile(), mm.getDefaultMessenger());
         return (er != null);
     }
 

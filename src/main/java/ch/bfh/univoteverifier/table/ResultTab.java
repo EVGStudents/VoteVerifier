@@ -44,7 +44,7 @@ public class ResultTab extends JPanel {
 
     private JScrollPane scroll;
     private JPanel vrfResultsPanel, tabHeader;
-    private String eID;
+    private String processID;
     private static final Logger LOGGER = Logger.getLogger(ResultTab.class.getName());
     private ResultTablesContainer rpEntity, rpSpec, rpType;
     private CandidateResultsPanel candidateResultsPanel;
@@ -58,11 +58,11 @@ public class ResultTab extends JPanel {
     /**
      * Create an instance of this panel.
      */
-    public ResultTab(String eID) {
+    public ResultTab(String procesID, boolean individualVrf) {
         toggle = new ToggleResultOrganizationAction(this);
-        this.eID = eID;
+        this.processID = procesID;
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
-        createContentPanel();
+        createContentPanel(individualVrf);
     }
 
     /**
@@ -70,14 +70,14 @@ public class ResultTab extends JPanel {
      *
      * @return a JPanel
      */
-    public void createContentPanel() {
+    public void createContentPanel(boolean individualVrf) {
         this.setLayout(new GridLayout(1, 1));
         tabHeader = createTabHeader();
 
         rpSpec = new ResultTablesContainer();
         rpEntity = new ResultTablesContainer();
         rpType = new ResultTablesContainer();
-        candidateResultsPanel = new CandidateResultsPanel(toggle);
+        candidateResultsPanel = new CandidateResultsPanel(toggle, individualVrf);
         scroll = new JScrollPane();
         scroll.getViewport().add(rpSpec);
         scroll.getVerticalScrollBar().setUnitIncrement(16);
@@ -310,12 +310,12 @@ public class ResultTab extends JPanel {
     }
 
     /**
-     * Get the eID of this table, which corresponds to the election ID for which
-     * this table holds results.
+     * Get the ID of this tab, which corresponds to the election ID for which
+     * this tab holds results.
      *
-     * @return The name of the election ID.
+     * @return The tab ID.
      */
-    public String getEID() {
-        return eID;
+    public String getProcessID() {
+        return processID;
     }
 }

@@ -11,6 +11,7 @@
 package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.MessengerManager;
 import ch.bfh.univoteverifier.table.ResultTabbedPane;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -54,9 +55,9 @@ public class MiddlePanel extends JPanel {
      * @param resultTabbedPane the content panel for verification results is
      * added into a scroll pane.
      */
-    public MiddlePanel(ResultTabbedPane resultTabbedPane, String[] eIDlist, Messenger msgr, ThreadManager tm) {
+    public MiddlePanel(ResultTabbedPane resultTabbedPane, String[] eIDlist, MessengerManager mm, ThreadManager tm) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
-        buttonCreator = new ButtonCreator(this, msgr, tm, eIDlist);
+        buttonCreator = new ButtonCreator(this, mm, tm, eIDlist);
 
         String welcomeTabText = rb.getString("welcome");
         int index = resultTabbedPane.indexOfTab(welcomeTabText);
