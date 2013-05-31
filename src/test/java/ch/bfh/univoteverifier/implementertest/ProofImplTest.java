@@ -40,13 +40,9 @@ public class ProofImplTest {
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	@Test
-	public void testDistributedKeyGenBy() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void testDistributedKeyGenBy() throws ElectionBoardServiceFault {
 		for (String tName : ebp.getElectionDefinition().getTallierId()) {
 			VerificationResult vr = pi.vrfDistributedKeyByProof(tName);
 			assertTrue(vr.getResult());
@@ -58,13 +54,9 @@ public class ProofImplTest {
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	@Test
-	public void testBlindedGenerator() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void testBlindedGenerator() throws ElectionBoardServiceFault {
 		String previousName = "schnorr_generator";
 
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
@@ -80,13 +72,9 @@ public class ProofImplTest {
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	@Test
-	public void testLatelyRegistrationKeys() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void testLatelyRegistrationKeys() throws ElectionBoardServiceFault {
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
 			VerificationResult vr = pi.vrfLatelyVerificationKeysByProof(mName);
 			assertFalse(vr.getResult());
@@ -96,16 +84,9 @@ public class ProofImplTest {
 
 	/**
 	 * Test the result of vrfBallotProof().
-	 *
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	@Test
-	public void testBallotProof() throws NoSuchAlgorithmException, UnsupportedEncodingException, ElectionBoardServiceFault {
+	public void testBallotProof() {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
@@ -120,13 +101,9 @@ public class ProofImplTest {
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
 	 */
 	@Test
-	public void testDecryptedVotes() throws ElectionBoardServiceFault, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void testDecryptedVotes() throws ElectionBoardServiceFault {
 		for (String tName : ebp.getElectionDefinition().getTallierId()) {
 			VerificationResult vr = pi.vrfDecryptedVotesByProof(tName);
 			assertTrue(vr.getResult());

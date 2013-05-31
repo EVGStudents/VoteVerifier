@@ -198,8 +198,10 @@ public class RSAImplementer extends Implementer {
 			sc.pushInnerDelim();
 			sc.pushObject(signature.getTimestamp());
 
+
 			String res = sc.pullAll();
 
+			System.out.println(res);
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEACert().getPublicKey(), res, signature.getValue());
 		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
@@ -375,6 +377,9 @@ public class RSAImplementer extends Implementer {
 			sc.pushObject(signature.getTimestamp());
 
 			String res = sc.pullAll();
+
+			System.out.println(res);
+
 
 			//verifiy the signature
 			RSAPublicKey tallierPubKey = (RSAPublicKey) ebp.getTalliersCerts().get(tallierName).getPublicKey();
@@ -1099,7 +1104,7 @@ public class RSAImplementer extends Implementer {
 
 		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
-		
+
 		if (!r) {
 			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
 			vr.setReport(rep);

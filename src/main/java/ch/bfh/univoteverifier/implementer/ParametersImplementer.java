@@ -197,7 +197,7 @@ public class ParametersImplementer extends Implementer {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -486,7 +486,9 @@ public class ParametersImplementer extends Implementer {
 
 					//get the a value for this tallier
 					BigInteger aValue = pdv.getVote().get(i);
-					mulA.multiply(aValue);
+
+					//multiply with other tallier a value
+					mulA = mulA.multiply(aValue);
 				}
 
 				BigInteger m = bValue.multiply(mulA).mod(elGamalP);
@@ -499,6 +501,9 @@ public class ParametersImplementer extends Implementer {
 					mInverse = elGamalP.subtract(m).subtract(BigInteger.ONE);
 				}
 
+				System.out.println(mInverse);
+
+
 				//ToDo decode the vote
 
 
@@ -507,7 +512,7 @@ public class ParametersImplementer extends Implementer {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES, false, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		VerificationResult v = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES, false, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (exc != null) {
 			rep = new Report(exc);

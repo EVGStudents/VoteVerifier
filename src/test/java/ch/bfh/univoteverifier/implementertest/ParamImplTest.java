@@ -42,13 +42,11 @@ public class ParamImplTest {
 	public ParamImplTest() throws FileNotFoundException, ElectionBoardServiceFault {
 		ebp = new ElectionBoardProxy();
 		pi = new ParametersImplementer(ebp, RunnerName.UNSET);
-
-
-
 		//change the value of p,q and g - all the test must fail
 		p = Config.p.multiply(new BigInteger("2"));
 		q = Config.q.multiply(new BigInteger("2"));
 		g = Config.g.multiply(new BigInteger("2"));
+
 		elQ = ebp.getEncryptionParameters().getGroupOrder();
 		elG = ebp.getEncryptionParameters().getGenerator();
 		elP = ebp.getEncryptionParameters().getPrime();
@@ -58,7 +56,7 @@ public class ParamImplTest {
 	 * Test that the parameters are not long as expected.
 	 */
 	@Test
-	public void testParamNotLen() throws ElectionBoardServiceFault {
+	public void testParamNotLen() {
 		VerificationResult v = pi.vrfSchnorrParamLen(p, q, g);
 		assertFalse(v.getResult());
 		assertEquals(v.getReport().getFailureCode(), FailureCode.FALSE_PARAMETERS_LENGTH);
@@ -68,7 +66,7 @@ public class ParamImplTest {
 	 * Test that P is not a safe prime.
 	 */
 	@Test
-	public void testPisNotSafePrime() throws ElectionBoardServiceFault {
+	public void testPisNotSafePrime() {
 		VerificationResult v = pi.vrfSafePrime(p, q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
 		assertFalse(v.getResult());
 		assertEquals(v.getReport().getFailureCode(), FailureCode.NOT_SAFE_PRIME);
@@ -79,7 +77,7 @@ public class ParamImplTest {
 	 * Test that P is not prime.
 	 */
 	@Test
-	public void testPisNotPrime() throws ElectionBoardServiceFault {
+	public void testPisNotPrime() {
 		VerificationResult v = pi.vrfPrime(p, VerificationType.SETUP_SCHNORR_P);
 		assertFalse(v.getResult());
 		assertEquals(v.getReport().getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
@@ -89,7 +87,7 @@ public class ParamImplTest {
 	 * Test that Q is not prime.
 	 */
 	@Test
-	public void testQisNotPrime() throws ElectionBoardServiceFault {
+	public void testQisNotPrime() {
 		VerificationResult v = pi.vrfPrime(q, VerificationType.SETUP_SCHNORR_Q);
 		assertFalse(v.getResult());
 		assertEquals(v.getReport().getFailureCode(), FailureCode.COMPOSITE_PRIME_NUMBER);
@@ -99,7 +97,7 @@ public class ParamImplTest {
 	 * Test that G is not a generator.
 	 */
 	@Test
-	public void testGisNotGenerator() throws ElectionBoardServiceFault {
+	public void testGisNotGenerator() {
 		VerificationResult v = pi.vrfGenerator(p, q, g, VerificationType.SETUP_SCHNORR_G);
 		assertFalse(v.getResult());
 		assertEquals(v.getReport().getFailureCode(), FailureCode.NOT_A_GENERATOR);
@@ -113,7 +111,7 @@ public class ParamImplTest {
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	@Test
-	public void testDistributedKey() throws ElectionBoardServiceFault {
+	public void testDistributedKey() {
 		VerificationResult v = pi.vrfDistributedKey();
 		assertTrue(v.getResult());
 	}
@@ -121,48 +119,36 @@ public class ParamImplTest {
 	/**
 	 * Test that the election generator g^ is equal to the blinded generator
 	 * of the last mixer.
-	 *
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	@Test
-	public void testElectionGenerator() throws ElectionBoardServiceFault {
+	public void testElectionGenerator() {
 		VerificationResult v = pi.vrfElectionGenerator();
 		assertTrue(v.getResult());
 	}
 
 	/**
 	 * Test the mixed verification keys.
-	 *
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	@Test
-	public void testMixedVerificationKeys() throws ElectionBoardServiceFault {
+	public void testMixedVerificationKeys() {
 		VerificationResult v = pi.vrfVerificationKeysMixed();
 		assertTrue(v.getResult());
 	}
 
 	/**
 	 * Test the lately mixed verification keys.
-	 *
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	@Test
-	public void testLatelyMixerVerificationKeys() throws ElectionBoardServiceFault {
+	public void testLatelyMixerVerificationKeys() {
 		VerificationResult v = pi.vrfLatelyVerificatonKeys();
 		assertTrue(v.getResult());
 	}
 
 	/**
 	 * Test the verification key of a ballot.
-	 *
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	@Test
-	public void testBallotVerificationKey() throws ElectionBoardServiceFault {
+	public void testBallotVerificationKey() {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
@@ -172,12 +158,9 @@ public class ParamImplTest {
 
 	/**
 	 * Test the votes.
-	 *
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	@Test
-	public void testVotes() throws ElectionBoardServiceFault {
+	public void testVotes() {
 		VerificationResult v = pi.vrfVotes();
 		assertTrue(v.getResult());
 	}
@@ -212,7 +195,8 @@ public class ParamImplTest {
 	/**
 	 * Test the length of ElGamal parameters length.
 	 *
-	 * @throws ElectionBoardServiceFault
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	@Test
 	public void testElGamalParamLen() throws ElectionBoardServiceFault {

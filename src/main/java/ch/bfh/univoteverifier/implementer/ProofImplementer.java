@@ -166,7 +166,7 @@ public class ProofImplementer extends Implementer {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
 		v.setEntityName(tallierName);
 
 		if (exc != null) {
@@ -237,7 +237,7 @@ public class ProofImplementer extends Implementer {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
 		v.setEntityName(mixerName);
 
 		if (exc != null) {
@@ -296,7 +296,7 @@ public class ProofImplementer extends Implementer {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
 		v.setEntityName(mixerName);
 		v.setImplemented(false);
 
@@ -355,7 +355,7 @@ public class ProofImplementer extends Implementer {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
 		v.setEntityName(mixerName);
 		v.setImplemented(false);
 
@@ -387,7 +387,7 @@ public class ProofImplementer extends Implementer {
 	 * @return a VerificationResult.
 	 */
 	public VerificationResult vrfLateRenewalOfRegistrationProofBy(String mixerName) {
-		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_LATEREN, false, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_LATEREN, false, ebp.getElectionID(), rn, it, EntityType.MIXER);
 
 		v.setImplemented(false);
 		v.setEntityName(mixerName);
@@ -428,10 +428,11 @@ public class ProofImplementer extends Implementer {
 				aValue = b.getEncryptedVote().getFirstValue();
 				verificationKey = b.getVerificationKey();
 			} else if (er != null) {
-				t = er.getProofCommitment();
-				s = er.getProofResponse();
-				aValue = er.getEncValueA();
-				verificationKey = er.getVerificationKey();
+				//ToDo check if these values are ok
+				t = new BigInteger(1, er.getProofCommitment().toByteArray());
+				s = new BigInteger(1, er.getProofResponse().toByteArray());
+				aValue = new BigInteger(1, er.getEncValueA().toByteArray());
+				verificationKey = new BigInteger(1, er.getVerificationKey().toByteArray());
 			}
 
 			//concatenate to atvk
@@ -518,7 +519,7 @@ public class ProofImplementer extends Implementer {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET, r, ebp.getElectionID(), rn, it, EntityType.PARAMETER);
+		VerificationResult v = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
 		v.setEntityName(mixerName);
 		v.setImplemented(false);
 
@@ -567,7 +568,7 @@ public class ProofImplementer extends Implementer {
 			EncryptionKeyShare eks = ebp.getEncryptionKeyShare(tallierName);
 
 			//take the set of encrypted vote in order to get the first value of an encryption pair a_i
-			EncryptedVotes mev = ebp.getEncryptedVotes(); //this method throw a null pointer because we don't have the data
+			EncryptedVotes mev = ebp.getEncryptedVotes();
 
 			BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
 			BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
@@ -597,7 +598,7 @@ public class ProofImplementer extends Implementer {
 			//compute the knowledge of discrete log for each element in the list
 			for (int i = 1; i < pdv.getProof().getCommitment().size(); i++) {
 				BigInteger commitment = pdv.getProof().getCommitment().get(i);
-				BigInteger response = pdv.getProof().getResponse().get(i);
+				BigInteger response = pdv.getProof().getResponse().get(0);
 				BigInteger a_tallier = pdv.getVote().get(i);
 				BigInteger a_firstEncValue = mev.getVote().get(i).getFirstValue();
 
