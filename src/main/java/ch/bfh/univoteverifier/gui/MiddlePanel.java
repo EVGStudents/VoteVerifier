@@ -63,7 +63,8 @@ public class MiddlePanel extends JPanel {
         tabPanel = (JPanel) resultTabbedPane.getComponentAt(index);
         tabPanel.setBackground(Color.WHITE);
         tabPanel.setLayout(new GridLayout(1, 1));
-        tabPanel.setBorder(new EmptyBorder(70, 70, 70, 70)); //top left bottom right
+        int border = 45;
+        tabPanel.setBorder(new EmptyBorder(border, border, border, border)); //top left bottom right
 
         welcomePanel = new JPanel();
         welcomePanel.setBackground(Color.LIGHT_GRAY);

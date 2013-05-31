@@ -69,6 +69,7 @@ public class MainGUI extends JFrame {
      * variables.
      */
     public MainGUI() {
+        tm = new ThreadManager();
         initResources();
         setLookAndFeel();
 
@@ -148,7 +149,7 @@ public class MainGUI extends JFrame {
      * Instantiates some basic resources needed in this class.
      */
     private void initResources() {
-        tm = new ThreadManager();
+
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         sl = new StatusUpdate();
     }

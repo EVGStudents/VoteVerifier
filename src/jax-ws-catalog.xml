@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-	<system systemId="file:/home/snake/Download/ElectionBoardService.wsdl" uri="wsdl/ElectionBoardService.wsdl"/>
-	<system systemId="http://www.univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=2" uri="wsdl/www.univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.xsd_2.xsd"/>
-	<system systemId="http://www.univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=1" uri="wsdl/www.univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.xsd_1.xsd"/>
-	<system systemId="http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?wsdl" uri="wsdl/univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.wsdl"/>
-	<system systemId="http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=2" uri="wsdl/univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.xsd_2.xsd"/>
-	<system systemId="http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=1" uri="wsdl/univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.xsd_1.xsd"/>
+    <system systemId="file:/home/snake/Download/ElectionBoardService.wsdl" uri="wsdl/ElectionBoardService.wsdl"/>
+    <system systemId="http://www.univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=2" uri="wsdl/www.univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.xsd_2.xsd"/>
+    <system systemId="http://www.univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=1" uri="wsdl/www.univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.xsd_1.xsd"/>
+    <system systemId="http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?wsdl" uri="wsdl/univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.wsdl"/>
+    <system systemId="http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=2" uri="wsdl/univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.xsd_2.xsd"/>
+    <system systemId="http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=1" uri="wsdl/univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.xsd_1.xsd"/>
 </catalog>

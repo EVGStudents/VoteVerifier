@@ -16,8 +16,6 @@ import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.ProgressBar;
 import java.util.logging.Logger;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -29,13 +27,11 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTextArea;
-import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
  * This class is a panel which contains all the results from the verifications.
@@ -85,6 +81,7 @@ public class ResultTab extends JPanel {
         scroll = new JScrollPane();
         scroll.getViewport().add(rpSpec);
         scroll.getVerticalScrollBar().setUnitIncrement(16);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         vrfResultsPanel = new JPanel();
         vrfResultsPanel.setLayout(new BorderLayout());
@@ -115,83 +112,92 @@ public class ResultTab extends JPanel {
         scrollPane.setBorder(BorderFactory.createEtchedBorder());
 
         JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        GridBagConstraints c;
         panel.setBackground(GUIconstants.GREY);
 
 
-        JRadioButton btnSpec, btnEntity, btnType;
+        JRadioButton btnSpec, btnEntity, btnType, btnViewResults;
         ButtonGroup btnGrp = new ButtonGroup();
 
         btnSpec = new JRadioButton(rb.getString("orgSpec"));
         btnSpec.setBackground(GUIconstants.GREY);
         btnSpec.setName("btnSpec");
         btnSpec.setSelected(true);
-        c.insets = new Insets(0, 20, 0, 0);
+        c = new GridBagConstraints();
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
-        panel.add(btnSpec);
+        panel.add(btnSpec, c);
 
 
         btnEntity = new JRadioButton(rb.getString("orgEntity"));
         btnEntity.setBackground(GUIconstants.GREY);
         btnEntity.setName("btnEntity");
+        c = new GridBagConstraints();
+        c.insets = new Insets(0, 2, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;
         c.gridy = 0;
-        panel.add(btnEntity);
+        panel.add(btnEntity, c);
 
 
         btnType = new JRadioButton(rb.getString("orgType"));
         btnType.setBackground(GUIconstants.GREY);
         btnType.setName("btnType");
+        c = new GridBagConstraints();
+        c.insets = new Insets(0, 2, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 2;
         c.gridy = 0;
-        panel.add(btnType);
+        panel.add(btnType, c);
+
+        c = new GridBagConstraints();
+        c.insets = new Insets(0, 4, 0, 0);
+        c.fill = GridBagConstraints.VERTICAL;
+        c.gridx = 3;
+        c.gridy = 0;
+        c.ipadx = 2;
+        panel.add(new JSeparator(JSeparator.VERTICAL), c);
+
+
+
+
+        btnViewResults = new JRadioButton(rb.getString("viewCandidateResults"));
+        btnViewResults.setBackground(GUIconstants.GREY);
+        btnViewResults.setName("btnViewResults");
+        c = new GridBagConstraints();
+        c.insets = new Insets(0, 5, 0, 0);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 4;
+        c.gridy = 0;
+        panel.add(btnViewResults, c);
+
 
         btnGrp.add(btnSpec);
         btnGrp.add(btnEntity);
         btnGrp.add(btnType);
-
-
-        JButton btnViewResults = new JButton(rb.getString("viewCandidateResults"));
-        btnViewResults.setName("btnViewResults");
-        btnViewResults.setBorderPainted(true);
-        btnViewResults.setBackground(GUIconstants.DARK_GREY);
-        btnViewResults.setToolTipText("close this tab");
-        btnViewResults.setUI(new BasicButtonUI());
-        btnViewResults.setContentAreaFilled(false);
-        btnViewResults.setFocusable(false);
-        btnViewResults.setBorder(BorderFactory.createEtchedBorder());
-        btnViewResults.setRolloverEnabled(true);
-
+        btnGrp.add(btnViewResults);
 
         btnSpec.addActionListener(toggle);
         btnEntity.addActionListener(toggle);
         btnType.addActionListener(toggle);
         btnViewResults.addActionListener(toggle);
 
+        c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 3;
+        c.gridx = 5;
         c.gridy = 0;
         c.weightx = .9;
         c.insets = new Insets(4, 20, 4, 20);
         progressBar = new ProgressBar();
         panel.add(progressBar, c);
 
-        c = new GridBagConstraints();
-        c.weightx = .9;
-        c.fill = GridBagConstraints.LINE_END;
-        c.insets = new Insets(0, 0, 0, 20);
-        c.gridx = 4;
-        c.gridy = 0;
-        panel.add(btnViewResults, c);
 
         c.insets = new Insets(0, 0, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.0;
-        c.gridwidth = 5;
+        c.gridwidth = 6;
         c.ipady = 30;
         c.gridx = 0;
         c.gridy = 1;
@@ -279,10 +285,6 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to entity.
      */
     public void showPanelEntity() {
-        if (candidateResultsShowing) {
-            toggleMainPanel();
-        }
-
         showPanel(rpEntity);
     }
 
@@ -290,10 +292,6 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to specification.
      */
     public void showPanelSpec() {
-        if (candidateResultsShowing) {
-            toggleMainPanel();
-        }
-
         showPanel(rpSpec);
     }
 
@@ -301,9 +299,6 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to type.
      */
     public void showPanelType() {
-        if (candidateResultsShowing) {
-            toggleMainPanel();
-        }
         showPanel(rpType);
     }
 
@@ -311,9 +306,7 @@ public class ResultTab extends JPanel {
      * Show the panel that is organized according to type.
      */
     public void showCandidateResults() {
-        if (!candidateResultsShowing) {
-            toggleMainPanel();
-        }
+        showPanel(candidateResultsPanel);
     }
 
     /**

@@ -13,11 +13,8 @@ package ch.bfh.univoteverifier.table;
 import ch.bfh.univote.common.Candidate;
 import ch.bfh.univote.common.Choice;
 import ch.bfh.univote.common.PoliticalList;
-import ch.bfh.univoteverifier.action.ToggleResultOrganizationAction;
 import ch.bfh.univoteverifier.gui.GUIconstants;
-import ch.bfh.univoteverifier.gui.ProgressBar;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -31,15 +28,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
-import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
  * This panel contains the election results for the number of votes each
@@ -54,7 +47,7 @@ public class CandidateResultsPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(ResultTablesContainer.class.getName());
     private CandidateResultsTable activeTable;
     private ResourceBundle rb;
-    private JPanel resultsContent, headerPanel;
+    private JPanel resultsContent;
     private JLabel noResultsLabel;
     private boolean resultsArrived = false;
 
@@ -66,10 +59,13 @@ public class CandidateResultsPanel extends JPanel {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        headerPanel = createHeaderPanel(toggle);
-        JScrollPane scrollPanel = createScrollPanel();
-        this.add(headerPanel);
-        this.add(scrollPanel);
+//        JScrollPane scrollPanel = createScrollPanel();
+        resultsContent = new JPanel();
+        resultsContent.setLayout(new BoxLayout(resultsContent, BoxLayout.Y_AXIS));
+        String processingResults = rb.getString("processingResults");
+        noResultsLabel = new JLabel(processingResults);
+        resultsContent.add(noResultsLabel);
+        this.add(resultsContent);
         ArrayList<ResultSet> data = new ArrayList<>();
     }
 
@@ -179,7 +175,7 @@ public class CandidateResultsPanel extends JPanel {
 
     public void createNewTable(Entry<Choice, Integer> e) {
         if (!resultsArrived) {
-            headerPanel.remove(noResultsLabel);
+            resultsContent.remove(noResultsLabel);
             resultsArrived = !resultsArrived;
         }
         CandidateResultsTableModel crtm = new CandidateResultsTableModel(e);

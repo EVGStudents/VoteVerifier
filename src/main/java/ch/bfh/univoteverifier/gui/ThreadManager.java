@@ -50,7 +50,6 @@ public class ThreadManager {
             threads.remove(vtFound);
             vtFound.interrupt();
             LOGGER.log(Level.OFF, "INTERRUPTED THREAD {0}", vtFound.getName());
-            LOGGER.log(Level.OFF, "INTERRUPTED THREAD {0}", vtFound.getName());
         }
     }
 
@@ -61,6 +60,7 @@ public class ThreadManager {
      * @param vt VerificationThread to register.
      */
     public void addThread(VerificationThread vt) {
+        LOGGER.log(Level.OFF, "THREAD REGISTERED!  Name: " + vt.getName());
         threads.add(vt);
     }
 
@@ -68,8 +68,15 @@ public class ThreadManager {
      * Kill all the threads running. Used when the language is changed.
      */
     public void killAllThreads() {
+        if (threads.isEmpty()) {
+            LOGGER.log(Level.OFF, "NO THREADS FOUND");
+            LOGGER.log(Level.OFF, "NO THREADS FOUND");
+
+        }
         for (VerificationThread vtI : threads) {
+            LOGGER.log(Level.OFF, "INTERRUPTED THREAD {0}", vtI.getName());
             vtI.interrupt();
         }
+        threads = new ArrayList<>();
     }
 }
