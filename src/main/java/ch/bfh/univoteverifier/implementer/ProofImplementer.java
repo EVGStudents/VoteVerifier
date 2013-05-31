@@ -484,7 +484,8 @@ public class ProofImplementer extends Implementer {
 
 		try {
 			MixedEncryptedVotes mev = ebp.getMixedEncryptedVotesBy(mixerName);
-
+			BigInteger elGamalP = ebp.getEncryptionParameters().getPrime();
+			BigInteger elGamalQ = ebp.getEncryptionParameters().getGroupOrder();
 			//plausibility check 1: size of the set against the number of ballots, because each ballot has an encrypted vote.
 			boolean size = mev.getVote().size() == ebp.getBallots().getBallot().size();
 
@@ -493,13 +494,13 @@ public class ProofImplementer extends Implementer {
 			for (EncryptedVote ev : mev.getVote()) {
 				//value^q mod p = 1 if the value is in G_q.
 				//first value
-				if (!BigInteger.ONE.equals(ev.getFirstValue().modPow(Config.q, Config.p))) {
+				if (!BigInteger.ONE.equals(ev.getFirstValue().modPow(elGamalQ, elGamalP))) {
 					valuesInG = false;
 					break;
 				}
 
 				//second value
-				if (!BigInteger.ONE.equals(ev.getSecondValue().modPow(Config.q, Config.p))) {
+				if (!BigInteger.ONE.equals(ev.getSecondValue().modPow(elGamalQ, elGamalP))) {
 					valuesInG = false;
 					break;
 				}
