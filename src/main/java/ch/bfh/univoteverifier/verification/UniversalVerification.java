@@ -9,7 +9,6 @@
  */
 package ch.bfh.univoteverifier.verification;
 
-import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.runner.ElectionPeriodRunner;
 import ch.bfh.univoteverifier.runner.ElectionPreparationRunner;
@@ -17,8 +16,6 @@ import ch.bfh.univoteverifier.runner.ElectionSetupRunner;
 import ch.bfh.univoteverifier.runner.MixerTallierRunner;
 import ch.bfh.univoteverifier.runner.ResultsRunner;
 import ch.bfh.univoteverifier.runner.SystemSetupRunner;
-import java.security.cert.CertificateException;
-import javax.naming.InvalidNameException;
 
 /**
  * This class is used to perform an universal verification.
@@ -46,11 +43,12 @@ public class UniversalVerification extends Verification {
 		MixerTallierRunner mtr = new MixerTallierRunner(ebproxy, msgr);
 		ResultsRunner rr = new ResultsRunner(ebproxy, msgr);
 
+		runners.add(rr);
 		runners.add(ssr);
 		runners.add(esr);
 		runners.add(epr);
 		runners.add(eperiodr);
 		runners.add(mtr);
-		runners.add(rr);
+
 	}
 }
