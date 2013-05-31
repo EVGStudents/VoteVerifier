@@ -13,6 +13,7 @@ import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.runner.IndividualRunner;
+import ch.bfh.univoteverifier.runner.ResultsRunner;
 import java.security.cert.CertificateException;
 import javax.naming.InvalidNameException;
 
@@ -42,12 +43,10 @@ public class IndividualVerification extends Verification {
 
 	@Override
 	protected void createRunners() {
-		try {
-			IndividualRunner ir = new IndividualRunner(ebproxy, msgr, er);
+		IndividualRunner ir = new IndividualRunner(ebproxy, msgr, er);
+		ResultsRunner rr = new ResultsRunner(ebproxy, msgr);
 
-			runners.add(ir);
-		} catch (CertificateException | ElectionBoardServiceFault | InvalidNameException ex) {
-			msgr.sendElectionSpecError(geteID(), ex);
-		}
+		runners.add(ir);
+		runners.add(rr);
 	}
 }

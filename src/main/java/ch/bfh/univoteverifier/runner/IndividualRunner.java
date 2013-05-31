@@ -56,7 +56,7 @@ public class IndividualRunner extends Runner {
 	 * @param ebp the ElectionBoardProxy from where get the data.
 	 * @param msgr the Messenger used to send the results.
 	 */
-	public IndividualRunner(ElectionBoardProxy ebp, Messenger msgr, ElectionReceipt er) throws CertificateException, ElectionBoardServiceFault, InvalidNameException {
+	public IndividualRunner(ElectionBoardProxy ebp, Messenger msgr, ElectionReceipt er) {
 		super(RunnerName.INDIVIDUAL, msgr);
 		this.er = er;
 		this.ebp = ebp;
