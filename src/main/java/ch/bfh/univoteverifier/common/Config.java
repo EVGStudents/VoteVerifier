@@ -32,7 +32,7 @@ public class Config {
 
 	static {
 		try {
-            InputStream is = Config.class.getClassLoader().getResourceAsStream(CONFIG);
+			InputStream is = Config.class.getClassLoader().getResourceAsStream(CONFIG);
 			prop.load(is);
 		} catch (IOException ex) {
 			Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
@@ -55,4 +55,9 @@ public class Config {
 	 * The sleep time between each checks of a verification.
 	 */
 	public static final int sleepTime = Integer.valueOf(prop.getProperty("sleep_time"));
+	/**
+	 * Number of verifications, used for the progress bar
+	 */
+	public static final int UNIVERSAL_VERIFICATION_COUNT = 60;
+	public static final int INDIVIDUAL_VERIFICATION_COUNT = 5;
 }
