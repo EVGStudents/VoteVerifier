@@ -343,7 +343,7 @@ public class ParametersImplementer extends Implementer {
 	 * @return a VerificationResult.
 	 */
 	public VerificationResult vrfLateRenewalOfRegistrationKeys() {
-		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_LATEREN, false, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_LAST_M_LATEREN_KEY, false, ebp.getElectionID(), rn, it, EntityType.EM);
 		v.setImplemented(false);
 
 		Report rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);

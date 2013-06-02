@@ -25,13 +25,8 @@ import ch.bfh.univoteverifier.implementer.ProofImplementer;
 import ch.bfh.univoteverifier.implementer.RSAImplementer;
 import ch.bfh.univoteverifier.implementer.SchnorrImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.List;
-import javax.naming.InvalidNameException;
 
 /**
  * This class represent an ElectionPeriodRunner.

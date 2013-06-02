@@ -13,6 +13,7 @@ import ch.bfh.univote.common.Ballot;
 import ch.bfh.univote.common.Ballots;
 import ch.bfh.univote.common.BlindedGenerator;
 import ch.bfh.univote.common.Candidate;
+import ch.bfh.univote.common.Certificate;
 import ch.bfh.univote.common.Choice;
 import ch.bfh.univote.common.DecodedVoteEntry;
 import ch.bfh.univote.common.DecodedVotes;
@@ -138,6 +139,7 @@ public class RSAImplementer extends Implementer {
 		}
 
 		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		v.setImplemented(false);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -245,6 +247,7 @@ public class RSAImplementer extends Implementer {
 
 		//create the VerificationResult
 		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_CERT_M_CERT_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		v.setImplemented(false);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -669,7 +672,7 @@ public class RSAImplementer extends Implementer {
 			ElectionData ed = ebp.getElectionData();
 			Signature signature = ed.getSignature();
 
-			//change this when it will be available
+			//change this when it will be available - ToDo
 			String eaIdentifier = ebp.getElectionOptions().getSignature().getSignerId();
 
 			//concatenate to (id|EA|descr|P|Q|G|y|g^|(c1|...|cn)|(r1|...|rn))|timestamp
@@ -872,12 +875,13 @@ public class RSAImplementer extends Implementer {
 		try {
 			VoterCertificates vc = ebp.getVoterCerts();
 			Signature signature = vc.getSignature();
+			//ToDo - concatenation of certificate?
 		} catch (ElectionBoardServiceFault ex) {
 			exc = ex;
 		}
 
-		//ToDo - Find the signature
 		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.CA);
+		v.setImplemented(false);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -998,19 +1002,30 @@ public class RSAImplementer extends Implementer {
 	 * @return a VerificationResult.
 	 */
 	public VerificationResult vrfLatelyRegisteredVotersCertificateSign() {
-		//ToDo - Find the signature
 		boolean r = false;
 		Report rep;
+		Exception exc = null;
 
-		VerificationResult vr = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
-
-
-		if (!r) {
-			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
-			vr.setReport(rep);
+		try {
+			List<Certificate> vc = ebp.getLatelyRegisteredVoterCerts();
+			//ToDo - Find the signature
+		} catch (ElectionBoardServiceFault ex) {
+			exc = ex;
 		}
 
-		return vr;
+		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		v.setImplemented(false);
+
+
+		if (exc != null) {
+			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
+			v.setReport(rep);
+		}
+
+		return v;
 	}
 
 	/**
@@ -1548,7 +1563,6 @@ public class RSAImplementer extends Implementer {
 
 		try {
 			BigInteger signatureValue = er.getSignatureValue();
-
 
 			//concatenate to - (id|(encValueA|encValueB)|((t)|(s)))|timestamp
 			sc.pushLeftDelim();
