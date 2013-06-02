@@ -36,31 +36,39 @@ public class SchnorrImplTest {
 
 	private final ElectionBoardProxy ebp;
 	private final SchnorrImplementer si;
-	private final ElectionReceipt er;
 
 	public SchnorrImplTest() throws FileNotFoundException {
 		ebp = new ElectionBoardProxy();
 		si = new SchnorrImplementer(ebp, RunnerName.UNSET);
-
-		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
-		QRCode qrCode = new QRCode(new Messenger());
-		er = qrCode.decodeReceipt(qrCodeFile);
 	}
 
 	/**
-	 * Test the result of vrfBallotSignature().
+	 * Test the result of vrfBallotSignature() using a ballot.
 	 *
-	 * @throws NoSuchAlgorithmException if the hash algorithm function used
-	 * in this verification cannot find the hash algorithm.
-	 * @throws UnsupportedEncodingException if the hash algorithm function
-	 * used in this verification cannot find the encoding.
+	 * in this verification cannot find the hash algorithm. used in this
+	 * verification cannot find the encoding.
+	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	@Test
-	public void testSignatureVerification() throws NoSuchAlgorithmException, UnsupportedEncodingException, ElectionBoardServiceFault {
+	public void testSignatureVerificationFromBallot() throws ElectionBoardServiceFault {
 		Ballot b = ebp.getBallots().getBallot().get(0);
 		VerificationResult vr = si.vrfBallotSignature(b, null);
+		assertTrue(vr.getResult());
+	}
+
+	/**
+	 * Test the result of vrfBallotSignature() using a data from a QR-Code.
+	 */
+	@Test
+	public void testSignatureVerificationFromQRCode() {
+		ElectionReceipt er;
+
+		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
+		QRCode qrCode = new QRCode(new Messenger());
+		er = qrCode.decodeReceipt(qrCodeFile);
+		VerificationResult vr = si.vrfBallotSignature(null, er);
 		assertTrue(vr.getResult());
 	}
 }

@@ -664,7 +664,6 @@ public class ElectionBoardProxy {
 	 * parameter.
 	 */
 	public X509Certificate getEMCert() throws CertificateException, ElectionBoardServiceFault {
-
 		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getElectionManager().getValue(), false);
 
 		return c;

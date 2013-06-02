@@ -4,266 +4,19 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>558</x>
-      <y>432</y>
-      <w>636</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-VerificationResult</panel_attributes>
-    <additional_attributes>624;30;18;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>546</x>
-      <y>786</y>
-      <w>30</w>
+      <x>372</x>
+      <y>780</y>
+      <w>24</w>
       <h>48</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;36;18;18</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1350</x>
-      <y>276</y>
-      <w>30</w>
-      <h>150</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;18;18;138</additional_attributes>
+    <additional_attributes>18;42;18;18</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.custom.SeqObjectActive</type>
     <coordinates>
-      <x>558</x>
-      <y>822</y>
-      <w>12</w>
-      <h>114</h>
-    </coordinates>
-    <panel_attributes>bg=blue</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.custom.SeqObjectActive</type>
-    <coordinates>
-      <x>1182</x>
-      <y>408</y>
-      <w>12</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>bg=cyan</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1170</x>
-      <y>354</y>
-      <w>30</w>
-      <h>66</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;18;18;54</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>1134</x>
-      <y>642</y>
-      <w>126</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>bg=cyan
-_:ProofImplementer_</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>558</x>
-      <y>234</y>
-      <w>636</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
-vrfPrimeNumber(p)
-</panel_attributes>
-    <additional_attributes>624;30;18;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>1128</x>
-      <y>348</y>
-      <w>126</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>bg=cyan
-_:RSAImplementer_</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>408</x>
-      <y>600</y>
-      <w>168</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-List&lt;VerificationResult&gt;</panel_attributes>
-    <additional_attributes>18;30;156;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>510</x>
-      <y>786</y>
-      <w>114</w>
-      <h>18</h>
-    </coordinates>
-    <panel_attributes>bg=blue
-_:MixerTallierRunner_</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1176</x>
-      <y>774</y>
-      <w>30</w>
-      <h>66</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;18;18;54</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1350</x>
-      <y>726</y>
-      <w>30</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;18;18;108</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>564</x>
-      <y>666</y>
-      <w>636</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
-vrfVerificationKeysMixedProof()
-</panel_attributes>
-    <additional_attributes>624;30;18;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>558</x>
-      <y>588</y>
-      <w>636</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-VerificationResult</panel_attributes>
-    <additional_attributes>624;30;18;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>402</x>
-      <y>42</y>
-      <w>30</w>
-      <h>36</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;24;18;18</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>408</x>
-      <y>228</y>
-      <w>168</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
-run()
-</panel_attributes>
-    <additional_attributes>18;30;156;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>408</x>
-      <y>510</y>
-      <w>168</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
-run()
-</panel_attributes>
-    <additional_attributes>18;30;156;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.custom.SeqObjectActive</type>
-    <coordinates>
-      <x>564</x>
-      <y>390</y>
-      <w>12</w>
-      <h>84</h>
-    </coordinates>
-    <panel_attributes>bg=orange</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.custom.SeqObjectActive</type>
-    <coordinates>
-      <x>570</x>
-      <y>690</y>
-      <w>12</w>
-      <h>78</h>
-    </coordinates>
-    <panel_attributes>bg=gray</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>222</x>
-      <y>0</y>
-      <w>30</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;18;18;48</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>228</x>
-      <y>24</y>
-      <w>162</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
-new(eID)
-</panel_attributes>
-    <additional_attributes>18;30;150;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.custom.SeqObjectActive</type>
-    <coordinates>
-      <x>1362</x>
-      <y>708</y>
+      <x>930</x>
+      <y>396</y>
       <w>12</w>
       <h>36</h>
     </coordinates>
@@ -273,44 +26,56 @@ new(eID)
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>558</x>
-      <y>534</y>
-      <w>636</w>
+      <x>384</x>
+      <y>234</y>
+      <w>384</w>
       <h>42</h>
     </coordinates>
     <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
-vrfCACert()
+vrfPrimeNumber(p)
 </panel_attributes>
-    <additional_attributes>624;30;18;30</additional_attributes>
+    <additional_attributes>372;30;18;30</additional_attributes>
   </element>
   <element>
-    <type>com.umlet.element.Relation</type>
+    <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>558</x>
-      <y>648</y>
-      <w>30</w>
-      <h>54</h>
+      <x>702</x>
+      <y>198</y>
+      <w>126</w>
+      <h>24</h>
     </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;42;18;18</additional_attributes>
+    <panel_attributes>bg=cyan
+_:ParametersImplementer_</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1176</x>
-      <y>420</y>
-      <w>198</w>
+      <x>240</x>
+      <y>726</y>
+      <w>150</w>
       <h>42</h>
     </coordinates>
-    <panel_attributes>lt=.&gt;
-ElectionDefinition</panel_attributes>
-    <additional_attributes>186;30;18;30</additional_attributes>
+    <panel_attributes>lt=&lt;.
+List&lt;VerificationResult&gt;</panel_attributes>
+    <additional_attributes>18;30;144;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>228</x>
-      <y>222</y>
+      <x>918</x>
+      <y>414</y>
+      <w>30</w>
+      <h>138</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>18;18;18;126</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>54</x>
+      <y>156</y>
       <w>198</w>
       <h>42</h>
     </coordinates>
@@ -320,33 +85,44 @@ runVerification()
     <additional_attributes>18;30;186;30</additional_attributes>
   </element>
   <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>738</x>
+      <y>336</y>
+      <w>30</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>18;18;18;54</additional_attributes>
+  </element>
+  <element>
     <type>com.umlet.element.custom.SeqObjectActive</type>
     <coordinates>
-      <x>564</x>
-      <y>258</y>
+      <x>384</x>
+      <y>384</y>
       <w>12</w>
-      <h>60</h>
+      <h>84</h>
     </coordinates>
-    <panel_attributes>bg=yellow</panel_attributes>
+    <panel_attributes>bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <type>com.umlet.element.Relation</type>
+    <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>408</x>
-      <y>288</y>
-      <w>168</w>
-      <h>42</h>
+      <x>324</x>
+      <y>486</y>
+      <w>132</w>
+      <h>18</h>
     </coordinates>
-    <panel_attributes>lt=&lt;.
-List&lt;VerificationResult&gt;</panel_attributes>
-    <additional_attributes>18;30;156;30</additional_attributes>
+    <panel_attributes>bg=green
+_:ElectionPreparationRunner_</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.custom.SeqObjectActive</type>
     <coordinates>
-      <x>1182</x>
-      <y>564</y>
+      <x>750</x>
+      <y>534</y>
       <w>12</w>
       <h>54</h>
     </coordinates>
@@ -354,57 +130,92 @@ List&lt;VerificationResult&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <type>com.umlet.element.custom.SeqObjectActive</type>
-    <coordinates>
-      <x>1182</x>
-      <y>264</y>
-      <w>12</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>bg=cyan</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>228</x>
-      <y>918</y>
-      <w>198</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-List&lt;VerificationResult&gt;</panel_attributes>
-    <additional_attributes>18;30;186;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1182</x>
-      <y>678</y>
-      <w>192</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
-getVerificationKeysMixed()
-</panel_attributes>
-    <additional_attributes>180;30;18;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1176</x>
+      <x>240</x>
       <y>648</y>
+      <w>156</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+run()</panel_attributes>
+    <additional_attributes>18;30;144;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>372</x>
+      <y>336</y>
       <w>30</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;18;18;48</additional_attributes>
+    <additional_attributes>18;48;18;18</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1176</x>
-      <y>384</y>
+      <x>918</x>
+      <y>558</y>
+      <w>30</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>18;18;18;138</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>378</x>
+      <y>708</y>
+      <w>378</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+VerificationResult</panel_attributes>
+    <additional_attributes>372;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>378</x>
+      <y>798</y>
+      <w>378</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
+vrfPlaintextVotesSign()
+</panel_attributes>
+    <additional_attributes>372;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>378</x>
+      <y>558</y>
+      <w>384</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+VerificationResult</panel_attributes>
+    <additional_attributes>372;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>378</x>
+      <y>198</y>
+      <w>30</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>18;54;18;18</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>744</x>
+      <y>366</y>
       <w>198</w>
       <h>42</h>
     </coordinates>
@@ -416,151 +227,42 @@ getElectionDefinition()
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>420</x>
-      <y>156</y>
-      <w>312</w>
-      <h>114</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-</panel_attributes>
-    <additional_attributes>18;102;90;36;300;18</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1182</x>
-      <y>804</y>
-      <w>192</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
-getDecodedVotes()
-</panel_attributes>
-    <additional_attributes>180;30;18;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>408</x>
-      <y>444</y>
-      <w>168</w>
+      <x>240</x>
+      <y>870</y>
+      <w>150</w>
       <h>42</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 List&lt;VerificationResult&gt;</panel_attributes>
-    <additional_attributes>18;30;156;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>1128</x>
-      <y>492</y>
-      <w>126</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>bg=cyan
-_:CertificatesImplementer_</panel_attributes>
-    <additional_attributes/>
+    <additional_attributes>18;30;144;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>564</x>
-      <y>720</y>
-      <w>636</w>
-      <h>42</h>
+      <x>918</x>
+      <y>714</y>
+      <w>24</w>
+      <h>126</h>
     </coordinates>
-    <panel_attributes>lt=.&gt;
-VerificationResult</panel_attributes>
-    <additional_attributes>624;30;18;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>378</x>
-      <y>42</y>
-      <w>102</w>
-      <h>18</h>
-    </coordinates>
-    <panel_attributes>bg=green
-_:UniversalVerification_</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.custom.SeqObjectActive</type>
-    <coordinates>
-      <x>1188</x>
-      <y>828</y>
-      <w>12</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>bg=cyan</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>1308</x>
-      <y>90</y>
-      <w>126</w>
-      <h>18</h>
-    </coordinates>
-    <panel_attributes>bg=black
-_:ElectionBoardProxy_</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>18;18;18;120</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>408</x>
-      <y>738</y>
-      <w>174</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-List&lt;VerificationResult&gt;</panel_attributes>
-    <additional_attributes>18;30;162;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>1128</x>
-      <y>156</y>
-      <w>126</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>bg=cyan
-_:ParametersImplementer_</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>552</x>
-      <y>210</y>
+      <x>738</x>
+      <y>636</y>
       <w>30</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;48;18;18</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>516</x>
-      <y>210</y>
-      <w>108</w>
-      <h>18</h>
-    </coordinates>
-    <panel_attributes>bg=yellow
-_:SystemSetupRunner_</panel_attributes>
-    <additional_attributes/>
+    <additional_attributes>18;18;18;48</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1176</x>
-      <y>570</y>
+      <x>744</x>
+      <y>540</y>
       <w>198</w>
       <h>42</h>
     </coordinates>
@@ -571,20 +273,45 @@ X509Certificate</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1182</x>
-      <y>834</y>
-      <w>192</w>
+      <x>240</x>
+      <y>588</y>
+      <w>156</w>
       <h>42</h>
     </coordinates>
-    <panel_attributes>lt=.&gt;
-DecodedVotes</panel_attributes>
-    <additional_attributes>180;30;18;30</additional_attributes>
+    <panel_attributes>lt=&lt;.
+List&lt;VerificationResult&gt;</panel_attributes>
+    <additional_attributes>18;30;144;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>60</x>
+      <y>84</y>
+      <w>162</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+new(eID)
+</panel_attributes>
+    <additional_attributes>18;30;150;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>240</x>
+      <y>354</y>
+      <w>156</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+run()</panel_attributes>
+    <additional_attributes>18;30;144;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.custom.SeqObjectActive</type>
     <coordinates>
-      <x>1362</x>
-      <y>414</y>
+      <x>930</x>
+      <y>540</y>
       <w>12</w>
       <h>36</h>
     </coordinates>
@@ -594,21 +321,82 @@ DecodedVotes</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1176</x>
-      <y>540</y>
+      <x>744</x>
+      <y>696</y>
+      <w>192</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+VerificationKeys</panel_attributes>
+    <additional_attributes>186;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>240</x>
+      <y>498</y>
+      <w>156</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+run()
+</panel_attributes>
+    <additional_attributes>18;30;144;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>384</x>
+      <y>264</y>
+      <w>384</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+VerificationResult</panel_attributes>
+    <additional_attributes>372;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>744</x>
+      <y>666</y>
       <w>198</w>
       <h>42</h>
     </coordinates>
     <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
-getCACert()
+getVerificationKeysMixed()
 </panel_attributes>
     <additional_attributes>186;30;18;30</additional_attributes>
   </element>
   <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>330</x>
+      <y>636</y>
+      <w>120</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>bg=gray
+_:ElectionPeriodRunner_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>240</x>
+      <y>792</y>
+      <w>150</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+run()</panel_attributes>
+    <additional_attributes>18;30;144;30</additional_attributes>
+  </element>
+  <element>
     <type>com.umlet.element.custom.SeqObjectActive</type>
     <coordinates>
-      <x>1188</x>
-      <y>696</y>
+      <x>750</x>
+      <y>828</y>
       <w>12</w>
       <h>54</h>
     </coordinates>
@@ -618,48 +406,21 @@ getCACert()
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>552</x>
-      <y>852</y>
-      <w>648</w>
+      <x>378</x>
+      <y>504</y>
+      <w>384</w>
       <h>42</h>
     </coordinates>
-    <panel_attributes>lt=.&gt;
-VerificationResult</panel_attributes>
-    <additional_attributes>636;30;18;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Note</type>
-    <coordinates>
-      <x>720</x>
-      <y>138</y>
-      <w>144</w>
-      <h>84</h>
-    </coordinates>
-    <panel_attributes>For each "Runner" there 
-are more than one method
-to be called.
-For the simplicity of the
-diagram, the Verification
-class calls only on of these
-method for each Runner.</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.custom.SeqObjectActive</type>
-    <coordinates>
-      <x>234</x>
-      <y>48</y>
-      <w>12</w>
-      <h>924</h>
-    </coordinates>
-    <panel_attributes>bg=red</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
+vrfCACert()
+</panel_attributes>
+    <additional_attributes>372;30;18;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>552</x>
-      <y>498</y>
+      <x>372</x>
+      <y>486</y>
       <w>30</w>
       <h>54</h>
     </coordinates>
@@ -669,161 +430,93 @@ method for each Runner.</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>408</x>
-      <y>660</y>
-      <w>174</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
-run()</panel_attributes>
-    <additional_attributes>18;30;162;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.custom.SeqObjectActive</type>
-    <coordinates>
-      <x>1362</x>
-      <y>834</y>
-      <w>12</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>bg=black</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>408</x>
-      <y>66</y>
-      <w>912</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
-new(eID)
-</panel_attributes>
-    <additional_attributes>900;30;18;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.custom.SeqObjectActive</type>
-    <coordinates>
-      <x>564</x>
-      <y>540</y>
-      <w>12</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>bg=green</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1182</x>
-      <y>708</y>
-      <w>192</w>
+      <x>744</x>
+      <y>402</y>
+      <w>198</w>
       <h>42</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
-VerificationKeys</panel_attributes>
-    <additional_attributes>180;30;18;30</additional_attributes>
+ElectionDefinition</panel_attributes>
+    <additional_attributes>186;30;18;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>552</x>
-      <y>798</y>
-      <w>648</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
-vrfPlaintextVotesSign()
-</panel_attributes>
-    <additional_attributes>636;30;18;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>408</x>
-      <y>906</y>
-      <w>162</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-List&lt;VerificationResult&gt;</panel_attributes>
-    <additional_attributes>18;30;150;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.custom.SeqObjectActive</type>
-    <coordinates>
-      <x>1362</x>
-      <y>570</y>
-      <w>12</w>
-      <h>36</h>
-    </coordinates>
-    <panel_attributes>bg=black</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>408</x>
-      <y>792</y>
+      <x>240</x>
+      <y>222</y>
       <w>162</w>
       <h>42</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
-run()</panel_attributes>
-    <additional_attributes>18;30;150;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>558</x>
-      <y>378</y>
-      <w>636</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
-vrfElectionDefinitionSign()
+run()
 </panel_attributes>
-    <additional_attributes>624;30;18;30</additional_attributes>
+    <additional_attributes>18;30;150;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>198</x>
-      <y>0</y>
-      <w>84</w>
-      <h>18</h>
+      <x>696</x>
+      <y>630</y>
+      <w>126</w>
+      <h>24</h>
     </coordinates>
-    <panel_attributes>bg=red
-_:GUI_</panel_attributes>
+    <panel_attributes>bg=cyan
+_:ProofImplementer_</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1350</x>
-      <y>588</y>
-      <w>30</w>
-      <h>132</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;18;18;120</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.custom.SeqObjectActive</type>
     <coordinates>
-      <x>414</x>
-      <y>66</y>
+      <x>750</x>
+      <y>684</y>
       <w>12</w>
-      <h>882</h>
+      <h>54</h>
     </coordinates>
-    <panel_attributes>bg=green</panel_attributes>
+    <panel_attributes>bg=cyan</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>744</x>
+      <y>510</y>
+      <w>198</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
+getCACert()
+</panel_attributes>
+    <additional_attributes>186;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>744</x>
+      <y>804</y>
+      <w>192</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
+getDecodedVotes()
+</panel_attributes>
+    <additional_attributes>186;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>696</x>
+      <y>480</y>
+      <w>126</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>bg=cyan
+_:CertificatesImplementer_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1134</x>
+      <x>696</x>
       <y>768</y>
       <w>126</w>
       <h>24</h>
@@ -835,32 +528,135 @@ _:RSAImplementer_</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>504</x>
-      <y>498</y>
-      <w>132</w>
+      <x>30</x>
+      <y>60</y>
+      <w>84</w>
       <h>18</h>
     </coordinates>
-    <panel_attributes>bg=green
-_:ElectionPreparationRunner_</panel_attributes>
+    <panel_attributes>bg=red
+_:GUI_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>558</x>
-      <y>264</y>
-      <w>636</w>
+      <x>378</x>
+      <y>360</y>
+      <w>384</w>
       <h>42</h>
     </coordinates>
-    <panel_attributes>lt=.&gt;
-VerificationResult</panel_attributes>
-    <additional_attributes>624;30;18;30</additional_attributes>
+    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
+vrfElectionDefinitionSign()
+</panel_attributes>
+    <additional_attributes>372;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>918</x>
+      <y>150</y>
+      <w>30</w>
+      <h>258</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>18;18;18;246</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>738</x>
+      <y>774</y>
+      <w>24</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>18;18;18;54</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.SeqObjectActive</type>
+    <coordinates>
+      <x>66</x>
+      <y>108</y>
+      <w>12</w>
+      <h>840</h>
+    </coordinates>
+    <panel_attributes>bg=red</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>516</x>
-      <y>342</y>
+      <x>210</x>
+      <y>102</y>
+      <w>102</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>bg=green
+_:UniversalVerification_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>342</x>
+      <y>198</y>
+      <w>108</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+_:SystemSetupRunner_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>738</x>
+      <y>486</y>
+      <w>30</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>18;18;18;48</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.SeqObjectActive</type>
+    <coordinates>
+      <x>390</x>
+      <y>252</y>
+      <w>12</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>240</x>
+      <y>282</y>
+      <w>162</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+List&lt;VerificationResult&gt;</panel_attributes>
+    <additional_attributes>18;30;150;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>234</x>
+      <y>102</y>
+      <w>30</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>18;24;18;18</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>336</x>
+      <y>336</y>
       <w>114</w>
       <h>18</h>
     </coordinates>
@@ -869,82 +665,246 @@ _:ElectionSetupRunner_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>408</x>
-      <y>360</y>
-      <w>168</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
-run()</panel_attributes>
-    <additional_attributes>18;30;156;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1170</x>
-      <y>162</y>
-      <w>30</w>
-      <h>114</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;18;18;102</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>552</x>
-      <y>342</y>
-      <w>30</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;48;18;18</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1350</x>
-      <y>432</y>
-      <w>30</w>
-      <h>150</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;18;18;138</additional_attributes>
-  </element>
-  <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>516</x>
-      <y>648</y>
-      <w>120</w>
+      <x>876</x>
+      <y>150</y>
+      <w>126</w>
       <h>18</h>
     </coordinates>
-    <panel_attributes>bg=gray
-_:ElectionPeriodRunner_</panel_attributes>
+    <panel_attributes>bg=black
+_:ElectionBoardProxy_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1350</x>
-      <y>90</y>
-      <w>30</w>
-      <h>216</h>
+      <x>378</x>
+      <y>852</y>
+      <w>378</w>
+      <h>42</h>
     </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;18;18;204</additional_attributes>
+    <panel_attributes>lt=.&gt;
+VerificationResult</panel_attributes>
+    <additional_attributes>372;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>696</x>
+      <y>330</y>
+      <w>126</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>bg=cyan
+_:RSAImplementer_</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1170</x>
-      <y>498</y>
+      <x>240</x>
+      <y>438</y>
+      <w>156</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+List&lt;VerificationResult&gt;</panel_attributes>
+    <additional_attributes>18;30;144;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.SeqObjectActive</type>
+    <coordinates>
+      <x>246</x>
+      <y>126</y>
+      <w>12</w>
+      <h>786</h>
+    </coordinates>
+    <panel_attributes>bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.SeqObjectActive</type>
+    <coordinates>
+      <x>930</x>
+      <y>696</y>
+      <w>12</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>bg=black</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>372</x>
+      <y>636</y>
       <w>30</w>
-      <h>78</h>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>18;18;18;66</additional_attributes>
+    <additional_attributes>18;42;18;18</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>378</x>
+      <y>414</y>
+      <w>384</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+VerificationResult</panel_attributes>
+    <additional_attributes>372;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>336</x>
+      <y>780</y>
+      <w>114</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>bg=blue
+_:MixerTallierRunner_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>54</x>
+      <y>60</y>
+      <w>30</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>18;18;18;48</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>378</x>
+      <y>654</y>
+      <w>384</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
+vrfVerificationKeysMixedProof()
+</panel_attributes>
+    <additional_attributes>372;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.SeqObjectActive</type>
+    <coordinates>
+      <x>756</x>
+      <y>264</y>
+      <w>12</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>bg=cyan</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.SeqObjectActive</type>
+    <coordinates>
+      <x>384</x>
+      <y>528</y>
+      <w>12</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>744</x>
+      <y>204</y>
+      <w>30</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>18;18;18;60</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.SeqObjectActive</type>
+    <coordinates>
+      <x>384</x>
+      <y>678</y>
+      <w>12</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>744</x>
+      <y>834</y>
+      <w>192</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+DecodedVotes</panel_attributes>
+    <additional_attributes>186;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.SeqObjectActive</type>
+    <coordinates>
+      <x>384</x>
+      <y>822</y>
+      <w>12</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.SeqObjectActive</type>
+    <coordinates>
+      <x>930</x>
+      <y>834</y>
+      <w>12</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>bg=black</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>240</x>
+      <y>126</y>
+      <w>648</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-&lt;&lt;&lt;&lt;&lt;
+new(eID)
+</panel_attributes>
+    <additional_attributes>636;30;18;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.SeqObjectActive</type>
+    <coordinates>
+      <x>750</x>
+      <y>390</y>
+      <w>12</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>bg=cyan</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>60</x>
+      <y>882</y>
+      <w>192</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+List&lt;VerificationResult&gt;</panel_attributes>
+    <additional_attributes>18;30;186;30</additional_attributes>
   </element>
 </diagram>

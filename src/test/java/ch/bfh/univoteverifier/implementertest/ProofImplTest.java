@@ -4,6 +4,7 @@
  */
 package ch.bfh.univoteverifier.implementertest;
 
+import ch.bfh.univote.common.Ballot;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
@@ -77,16 +78,29 @@ public class ProofImplTest {
 	public void testLatelyRegistrationKeys() throws ElectionBoardServiceFault {
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
 			VerificationResult vr = pi.vrfLatelyVerificationKeysByProof(mName);
-			assertFalse(vr.getResult());
-			assertFalse(vr.isImplemented());
+			assertTrue(vr.getResult());
 		}
 	}
 
 	/**
-	 * Test the result of vrfBallotProof().
+	 * Test the result of vrfBallotProof() by using values from a ballot.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	@Test
-	public void testBallotProof() {
+	public void testBallotProofFromBallot() throws ElectionBoardServiceFault {
+		Ballot b = ebp.getBallots().getBallot().get(0);
+		VerificationResult v = pi.vrfBallotProof(b, null);
+
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test the result of vrfBallotProof() by using values from the QR-Code.
+	 */
+	@Test
+	public void testBallotProofFromQRcode() {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);

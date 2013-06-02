@@ -27,8 +27,6 @@ import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class contains all the methods that need a Schnorr verification.
@@ -180,7 +178,6 @@ public class SchnorrImplementer extends Implementer {
 
 			String res = sc.pullAll();
 
-			//verify the signature - ToDo test with value from a real ballot and not from a QR-Code.
 			r = vrfSchnorrSign(verificationKey, res, schnorrFirstValue, schnorrSecondValue, ebp.getElectionData().getElectionGenerator());
 		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | UnsupportedEncodingException ex) {
 			exc = ex;

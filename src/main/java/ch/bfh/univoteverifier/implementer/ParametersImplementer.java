@@ -462,14 +462,12 @@ public class ParametersImplementer extends Implementer {
 				Ballot b = ballots.getBallot().get(i);
 				BigInteger bValue = b.getEncryptedVote().getSecondValue();
 
-				System.out.println("BAllots size" + ballots.getBallot().size());
 				BigInteger aProducts = BigInteger.ONE;
 
 				//get the a value for each tallier
 				for (int j = 0; j < ebp.getElectionDefinition().getTallierId().size(); j++) {
 					String tName = ebp.getElectionDefinition().getTallierId().get(j);
 					PartiallyDecryptedVotes pdv = ebp.getPartiallyDecryptedVotes(tName);
-					System.out.println("PDV size" + pdv.getVote().size());
 
 					//get the a value for this tallier
 					BigInteger aValue = pdv.getVote().get(i);
@@ -478,7 +476,8 @@ public class ParametersImplementer extends Implementer {
 					aProducts = aProducts.multiply(aValue);
 				}
 
-				BigInteger m = bValue.mod(elGamalP);
+				BigInteger m = bValue.multiply(aProducts).mod(elGamalP);
+
 
 				//compute G^-1
 				BigInteger mInverse;
@@ -488,7 +487,6 @@ public class ParametersImplementer extends Implementer {
 					mInverse = elGamalP.subtract(m).subtract(BigInteger.ONE);
 				}
 
-//				System.out.println(mInverse);
 
 
 				//ToDo decode the vote

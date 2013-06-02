@@ -10,6 +10,7 @@
  */
 package ch.bfh.univoteverifier.implementertest;
 
+import ch.bfh.univote.common.Ballot;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
@@ -219,6 +220,35 @@ public class ParamImplTest {
 	@Test
 	public void testMixedExncryptedVotes() {
 		VerificationResult v = pi.vrfMixedEncryptedVotes();
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test the result of vrfBallotInSet() by using a vk from a ballot.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testBallotInSetFromBallot() throws ElectionBoardServiceFault {
+		Ballot b = ebp.getBallots().getBallot().get(0);
+		VerificationResult v = pi.vrfBallotInSet(b.getVerificationKey());
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test the result of vrfBallotInSet() by using a vk from a QR-Code.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testBallotInSetFromQRCode() throws ElectionBoardServiceFault {
+		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
+		QRCode qrCode = new QRCode(new Messenger());
+		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
+
+		VerificationResult v = pi.vrfBallotInSet(er.getVerificationKey());
 		assertTrue(v.getResult());
 	}
 }
