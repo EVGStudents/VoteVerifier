@@ -462,6 +462,8 @@ public class ParametersImplementer extends Implementer {
 				Ballot b = ballots.getBallot().get(i);
 				BigInteger bValue = b.getEncryptedVote().getSecondValue();
 
+				System.out.println("b value for " + i + " : " + bValue);
+
 				BigInteger aProducts = BigInteger.ONE;
 
 				//get the a value for each tallier
@@ -476,8 +478,8 @@ public class ParametersImplementer extends Implementer {
 					aProducts = aProducts.multiply(aValue);
 				}
 
+				//decrypt
 				BigInteger m = bValue.multiply(aProducts).mod(elGamalP);
-
 
 				//compute G^-1
 				BigInteger mInverse;
@@ -487,6 +489,7 @@ public class ParametersImplementer extends Implementer {
 					mInverse = elGamalP.subtract(m).subtract(BigInteger.ONE);
 				}
 
+				System.out.println(mInverse);
 
 
 				//ToDo decode the vote
