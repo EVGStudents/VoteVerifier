@@ -85,15 +85,17 @@ public class ResultProcessor {
     public ImageIcon getImage(VerificationResult vr) {
 
         ImageIcon img = null;
-        if (!vr.isImplemented()) {
-            img = noImpl;
-        } else if (vr.getResult()) {
-            img = pass;
+        if (!vr.getResult()) {
+            img = fail;
         } else {
-            if (vr.getReport().getFailureCode() != null) {
-                img = fail;
-            } else if (vr.getReport().getException() != null) {
-                img = warn;
+            if (!vr.isImplemented()) {
+                img = noImpl;
+            } else if (vr.getReport() != null) {
+                if (vr.getReport().getException() != null) {
+                    img = warn;
+                }
+            } else {
+                img = pass;
             }
         }
         return img;

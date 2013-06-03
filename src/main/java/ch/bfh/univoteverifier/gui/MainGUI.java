@@ -184,8 +184,8 @@ public class MainGUI extends JFrame {
         @Override
         public void updateStatus(VerificationEvent ve) {
             if (ve.getVm() == VerificationMessage.ELECTION_SPECIFIC_ERROR) {
-                resultTabbedPane.showElectionSpecError(ve.getMsg(), ve.getEID());
-                consolePanel.appendToStatusText("\n" + ve.getMsg(), ve.getEID());
+                resultTabbedPane.showElectionSpecError(ve.getMsg(), ve.getProcessID());
+                consolePanel.appendToStatusText("\n" + ve.getMsg(), ve.getProcessID());
             } else if (ve.getVm() == VerificationMessage.SETUP_ERROR) {
                 String text = "\n" + ve.getMsg();
                 middlePanel.setupErrorMsg(text);

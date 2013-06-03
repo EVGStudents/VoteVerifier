@@ -11,6 +11,7 @@
 package ch.bfh.univoteverifier.table;
 
 import javax.swing.JTable;
+import javax.swing.ToolTipManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
@@ -41,12 +42,15 @@ public class SectionResultsTable extends JTable {
         tc.setPreferredWidth(340);
         tc = getColumnModel().getColumn(1);
         tc.setPreferredWidth(30);
-        tc.setMaxWidth(80);
+        tc.setMaxWidth(50);
 
         ResultCellRendererImage rcri = new ResultCellRendererImage();
         tc.setCellRenderer(rcri);
         ResultCellRendererText rcrt = new ResultCellRendererText();
         getColumnModel().getColumn(0).setCellRenderer(rcrt);
+
+        ToolTipManager.sharedInstance().setDismissDelay(30000);
+        ToolTipManager.sharedInstance().registerComponent(this);
     }
 
     /**

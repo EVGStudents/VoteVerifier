@@ -213,23 +213,20 @@ public class ResultSet {
 
     public String getToolTipText() {
         ResultDescriber rd = new ResultDescriber();
+        Report report = getResultReport();
         String toolTipText = "";
-        if (!result) {
-            toolTipText += "<html>";
-            Report report = getResultReport();
-            if (report.getFailureCode() != null) {
-
+        if (report != null) {
+            toolTipText = "<html>";
+            if (report.getException() != null) {
+                toolTipText += report.getException().toString();
+            } else if (!(result && vr.isImplemented())) {
                 int fCode = report.getFailureCode().getID();
                 toolTipText += rd.getTextFromFailureCode(fCode);
-
-            } else if (report.getException() != null) {
-                toolTipText += report.getException().toString();
             }
             if (report.getAdditionalInformation() != null) {
                 toolTipText += "<br>" + report.getAdditionalInformation();
             }
             toolTipText += "</html>";
-
         }
         return toolTipText;
     }

@@ -87,17 +87,20 @@ public class ConsolePanel extends JPanel implements ChangeListener {
      *
      * @param str The String to append in the console-like text area
      */
-    public void appendToStatusText(String str, String eID) {
-        if (!textAreaText.containsKey(eID)) {
-            textAreaText.put(eID, str);
+    public void appendToStatusText(String str, String processID) {
+        if (!textAreaText.containsKey(processID)) {
+            textAreaText.put(processID, str);
         } else {
-            String currentText = (String) textAreaText.get(eID);
-            textAreaText.put(eID, currentText + str);
+            String currentText = (String) textAreaText.get(processID);
+            String newText = currentText + "\n" + str;
+            textAreaText.put(processID, newText);
             //If text must be displayed immediately
-            if (0 == eID.compareTo(currentTextKey)) {
-                textArea.append(str);
+            if (0 == processID.compareTo(currentTextKey)) {
+                textArea.setText(newText);
             }
         }
+        scrollPane.revalidate();
+        textArea.revalidate();
     }
 
     /**

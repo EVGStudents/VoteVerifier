@@ -29,16 +29,16 @@ public class ElectionReceipt {
     private void populateVariables(String[][] values) {
         eID = values[0][1];
 
-        encVa = new BigInteger(CryptoFunc.decodeBase64(values[1][1]));
-        encVb = new BigInteger(CryptoFunc.decodeBase64(values[2][1]));
-        vk = new BigInteger(CryptoFunc.decodeBase64(values[3][1]));
-        pC = new BigInteger(CryptoFunc.decodeBase64(values[4][1]));
-        pR = new BigInteger(CryptoFunc.decodeBase64(values[5][1]));
-        vSA = new BigInteger(CryptoFunc.decodeBase64(values[6][1]));
-        vSB = new BigInteger(CryptoFunc.decodeBase64(values[7][1]));
+        encVa = new BigInteger(1, CryptoFunc.decodeBase64(values[1][1]));
+        encVb = new BigInteger(1, CryptoFunc.decodeBase64(values[2][1]));
+        vk = new BigInteger(1, CryptoFunc.decodeBase64(values[3][1]));
+        pC = new BigInteger(1, CryptoFunc.decodeBase64(values[4][1]));
+        pR = new BigInteger(1, CryptoFunc.decodeBase64(values[5][1]));
+        vSA = new BigInteger(1, CryptoFunc.decodeBase64(values[6][1]));
+        vSB = new BigInteger(1, CryptoFunc.decodeBase64(values[7][1]));
         sSId = values[8][1];
         sT = values[9][1];
-        sV = new BigInteger(CryptoFunc.decodeBase64(values[10][1]));
+        sV = new BigInteger(1, CryptoFunc.decodeBase64(values[10][1]));
     }
 
     @Override

@@ -58,7 +58,10 @@ class ResultCellRendererImage extends DefaultTableCellRenderer {
         ResultTableModel rtm = (ResultTableModel) table.getModel();
         ResultSet rs = (ResultSet) rtm.getValueAt(row, -1);
 
-        label.setToolTipText(rs.getToolTipText());
+        String ttt = rs.getToolTipText();
+        if (ttt.length() > 0) {
+            label.setToolTipText(ttt);
+        }
 
 
         if (column == 1) {
