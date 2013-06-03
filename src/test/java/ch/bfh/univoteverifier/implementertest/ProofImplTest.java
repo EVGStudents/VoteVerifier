@@ -151,4 +151,18 @@ public class ProofImplTest {
 			assertTrue(v.getResult());
 		}
 	}
+
+	/**
+	 * Test the result of vrfLateRenewalOfRegistrationProofBy().
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testLateRenewalOfRegistrationProofBy() throws ElectionBoardServiceFault {
+		for (String mName : ebp.getElectionDefinition().getMixerId()) {
+			VerificationResult v = pi.vrfLateRenewalOfRegistrationProofBy(mName);
+			assertTrue(v.getResult());
+		}
+	}
 }
