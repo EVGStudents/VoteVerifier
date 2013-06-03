@@ -261,4 +261,27 @@ public class RSAImplTest {
 		VerificationResult vr = ri.vrfSingleBallotSign(er);
 		assertTrue(vr.getResult());
 	}
+
+	/**
+	 * Test the result of vrfLateRenewalOfRegistrationSignBy().
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testLateRenewalOfRegSignBy() throws ElectionBoardServiceFault {
+		for (String mName : ebp.getElectionDefinition().getMixerId()) {
+			VerificationResult vr = ri.vrfLateRenewalOfRegistrationSignBy(mName);
+			assertTrue(vr.getResult());
+		}
+	}
+
+	/**
+	 * Test the result of vrfLateRenewalOfRegistrationSign().
+	 */
+	@Test
+	public void testLateRenewalOfRegSign() {
+		VerificationResult vr = ri.vrfLateRenewalOfRegistrationSign();
+		assertTrue(vr.getResult());
+	}
 }

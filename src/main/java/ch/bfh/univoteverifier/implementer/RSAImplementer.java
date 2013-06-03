@@ -144,10 +144,14 @@ public class RSAImplementer extends Implementer {
 		if (exc != null) {
 			rep = new Report(exc);
 			v.setReport(rep);
+		} else if (!v.isImplemented()) {
+			rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+			v.setReport(rep);
 		} else if (!r) {
 			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
 			v.setReport(rep);
 		}
+
 
 		return v;
 	}
