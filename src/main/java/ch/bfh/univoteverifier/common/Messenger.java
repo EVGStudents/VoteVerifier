@@ -51,11 +51,13 @@ public class Messenger {
         instantiateRB("en");
     }
 
-    /*
-     * send an error message to the GUI
-     * to be used in the case of an exception encountered by the program which
-     * the GUI will most likely diplay in the "console" or as a pop-up message
-     * @param str the message to send to the GUI to be displayed as an error in the console
+    /**
+     * send an error message to the GUI to be used in the case of an exception
+     * encountered by the program which the GUI will most likely diplay in the
+     * "console" or as a pop-up message
+     *
+     * @param str the message to send to the GUI to be displayed as an error in
+     * the console
      */
     public void sendSetupError(String str) {
         VerificationEvent ve = new VerificationEvent(VerificationMessage.SETUP_ERROR, str);
@@ -82,13 +84,15 @@ public class Messenger {
         ss.notifyListeners(ve);
     }
 
-    /*
-     * Send a fatal error message to the GUI
-     * to be used in the case of an exception which prevents the program from continuing the desired course of action.
-     * Text will be dislpayed in a pop-up window.
+    /**
+     * Send a fatal error message to the GUI to be used in the case of an
+     * exception which prevents the program from continuing the desired course
+     * of action. Text will be displayed the Errors and Exceptions text area in
+     * a results panel.
+     *
      * @param String the message to send
      */
-    public void sendElectionSpecError(String eID, Exception ex) {
+    public void sendElectionSpecError(Exception ex) {
         LOGGER.log(Level.OFF, "EXCEPTION NAME: {0}", ex.toString());
         String exNameLong = ex.getClass().getName();
         LOGGER.log(Level.OFF, "EXCEPTION NAME: {0}", exNameLong);
@@ -102,12 +106,13 @@ public class Messenger {
             message = getMessageForKey(exName);
         }
 
-        VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_SPECIFIC_ERROR, message, eID, processID);
+        VerificationEvent ve = new VerificationEvent(VerificationMessage.ELECTION_SPECIFIC_ERROR, message, processID);
         ss.notifyListeners(ve);
     }
 
-    /*
+    /**
      * Send election results to the GUI
+     *
      * @param Map<Choice,Integer> The election results.
      */
     public void sendElectionResults(String eID, Map<Choice, Integer> electionResults) {
@@ -170,8 +175,9 @@ public class Messenger {
         return this.ss;
     }
 
-    /*
-     * Send a message that the verificaiton process has finished for a given election.
+    /**
+     * Send a message that the verificaiton process has finished for a given
+     * election.
      */
     public void sendVerificationFinished(String eID) {
         VerificationEvent ve = new VerificationEvent(VerificationMessage.VRF_FINISHED, processID);

@@ -10,6 +10,9 @@
  */
 package ch.bfh.univoteverifier.action;
 
+import ch.bfh.univote.election.ElectionBoardServiceFault;
+import ch.bfh.univoteverifier.common.Config;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.IFileManager;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.MessengerManager;
@@ -22,6 +25,7 @@ import ch.bfh.univoteverifier.verification.VerificationThread;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
@@ -75,18 +79,25 @@ public class StartAction extends AbstractAction {
         startVerification();
     }
 
+    /**
+     * Start an individual or universal verification.
+     */
     public void startVerification() {
         String btnTxt = middlePanel.getSelectedVrfType();
         String msg = "";
         int uniqueness = (int) (System.currentTimeMillis() / 1000L);
+
+
+
         if (0 == btnTxt.compareTo("btnUni")) {
+
             String eID = comboBox.getSelectedItem().toString();
             msg = rb.getString("beginningVrfFor") + " " + eID;
             mm.getDefaultMessenger().sendSetupError(msg);
 
             String processID = eID + uniqueness;
             Messenger msgr = mm.getNewMessenger(processID);
-
+            int numberOfVrfs = getNumberOfVerifications(msgr);
             vt = new VerificationThread(msgr, eID);
             vt.setName(eID);
             tm.addThread(vt);
@@ -101,6 +112,7 @@ public class StartAction extends AbstractAction {
                     String timestamp = er.getTimeStamp();
                     String processID = "IND" + eID + uniqueness;
                     Messenger msgr = mm.getNewMessenger(processID);
+                    int numberOfVrfs = getNumberOfVerifications(msgr);
                     vt = new VerificationThread(msgr, er);
                     vt.setName(er.getElectionID());
                     vt.start();
@@ -137,5 +149,23 @@ public class StartAction extends AbstractAction {
     public ElectionReceipt getElectionReceipt(File qrCodeFile, Messenger msgr) {
         QRCode qr = new QRCode(msgr);
         return qr.decodeReceipt(qrCodeFile);
+    }
+
+    public int getNumberOfVerifications(Messenger msgr) {
+        ElectionBoardProxy ebp = new ElectionBoardProxy("");
+        int vrfs = 0;
+        int tCount = 0;
+        int mCount = 0;
+
+        try {
+            tCount = ebp.getElectionDefinition().getMixerId().size();
+            mCount = ebp.getElectionDefinition().getTallierId().size();
+        } catch (ElectionBoardServiceFault ex) {
+            msgr.sendElectionSpecError(ex);
+        }
+        Config.
+
+        return vrfs;
+
     }
 }

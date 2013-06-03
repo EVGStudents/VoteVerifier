@@ -37,7 +37,7 @@ public class GUIconstants {
             + "\nBern University of Applied Sciences, Engineering and Information Technology,"
             + " \nResearch Institute for Security in the Information Society, E-Voting Group,"
             + " \nBiel, Switzerland.";
- public final static String USAGE = ABOUT_TEXT
+    public final static String USAGE = ABOUT_TEXT
             + "\n\nUsage: uvv [OPTION] [FILE]\n"
             + "uvv verifies the results from an election held with the UniVote Wahlsystem.\n"
             + "\n"
@@ -49,6 +49,7 @@ public class GUIconstants {
             + "\n"
             + "  -i, --individual [file]   \tVerify an election receipt.\n"
             + "  -u, --universal \"election id\"\tVerify an an entire election.\n";
+
     /**
      * Set the locale being used for the program to a new value.
      *
@@ -68,14 +69,14 @@ public class GUIconstants {
         return loc;
     }
 
-     /**
+    /**
      * Turns the vrfCode into a text string that is shown in the GUI.
      *
      * @param code The int value which corresponds to a verification type.
      * @return The user-friendly text that describes a verification step.
      */
     public static String getTextFromVrfCode(int code) {
-        String text="";
+        String text = "";
         try {
             Properties prop;
             prop = new Properties();

@@ -35,22 +35,6 @@ public class VerificationEvent {
      * specific to an given election ID.
      *
      * @param vm The type of message that this VerificationEvent contains
-     * @param msg The message to be shown in the GUI or console
-     * @param eID the election ID for which this message pertains.
-     */
-    public VerificationEvent(VerificationMessage vm, String msg, String eID, String processID) {
-        this.vm = vm;
-        this.msg = msg;
-        this.eID = eID;
-        this.processID = processID;
-        this.vr = null;
-    }
-
-    /**
-     * Create an instance of this helper class to send a message that is
-     * specific to an given election ID.
-     *
-     * @param vm The type of message that this VerificationEvent contains
      * @param Map<Choice, Integer> The election results for candidates.
      */
     public VerificationEvent(VerificationMessage vm, String eID, Map<Choice, Integer> electionResult, String processID) {
@@ -67,10 +51,10 @@ public class VerificationEvent {
      *
      * @param vm The type of message that this VerificationEvent contains
      */
-    public VerificationEvent(VerificationMessage vm, String eID, String processID) {
-        this.eID = eID;
-        this.processID = processID;
+    public VerificationEvent(VerificationMessage vm, String msg, String processID) {
         this.vm = vm;
+        this.msg = msg;
+        this.processID = processID;
         this.vr = null;
     }
 
