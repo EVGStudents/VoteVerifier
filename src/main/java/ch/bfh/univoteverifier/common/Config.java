@@ -9,7 +9,6 @@
  */
 package ch.bfh.univoteverifier.common;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -56,8 +55,16 @@ public class Config {
 	 */
 	public static final int sleepTime = Integer.valueOf(prop.getProperty("sleep_time"));
 	/**
-	 * Number of verifications, used for the progress bar
+	 * Number of verifications for the universal. Multiply the
+	 * VERIFICATIONS_FOR_TALLIER and VERIFICATIONS_FOR_MIXER for the number
+	 * of talliers and mixers. Then sum UNIVERSAL_VERIFICATION_COUNT to get
+	 * the total.
 	 */
-	public static final int UNIVERSAL_VERIFICATION_COUNT = 60;
+	public static final int UNIVERSAL_VERIFICATION_COUNT = 46;
+	public static final int VERIFICATIONS_FOR_TALLIER = 4;
+	public static final int VERIFICATIONS_FOR_MIXER = 10;
+	/**
+	 * Number of verifications for the individual
+	 */
 	public static final int INDIVIDUAL_VERIFICATION_COUNT = 5;
 }
