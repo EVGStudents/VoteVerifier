@@ -4,6 +4,7 @@
  */
 package ch.bfh.univoteverifier.gui;
 
+import ch.bfh.univoteverifier.common.Report;
 import ch.bfh.univoteverifier.listener.VerificationEvent;
 import ch.bfh.univoteverifier.listener.VerificationMessage;
 import ch.bfh.univoteverifier.table.CandidateResultSet;
@@ -27,6 +28,16 @@ public class ResultProcessor {
     private ResultTabbedPane resultPanelManager;
     private ImageIcon pass, fail, noImpl, warn;
     private static final Logger LOGGER = Logger.getLogger(ResultProcessor.class.toString());
+
+    /**
+     * Create a partial object for tests
+     */
+    public ResultProcessor(String dummyVariable) {
+        pass = new ImageIcon(VoteVerifier.class.getResource("/check.png"));
+        fail = new ImageIcon(VoteVerifier.class.getResource("/fail.png"));
+        noImpl = new ImageIcon(VoteVerifier.class.getResource("/noImpl.png"));
+        warn = new ImageIcon(VoteVerifier.class.getResource("/warning.png"));
+    }
 
     /**
      * Create a new instance of this class.
@@ -85,19 +96,54 @@ public class ResultProcessor {
     public ImageIcon getImage(VerificationResult vr) {
 
         ImageIcon img = null;
-        if (!vr.getResult()) {
+
+        if (vr.getResult() && vr.isImplemented()) {
+            img = pass;
+        } else if (vr.getResult() && !vr.isImplemented()) {
+            img = noImpl;
+        } else if (!vr.getResult() && vr.isImplemented()) {
             img = fail;
+        } else if (!vr.getResult() && !vr.isImplemented()) {
+            img = noImpl;
         } else {
-            if (!vr.isImplemented()) {
-                img = noImpl;
-            } else if (vr.getReport() != null) {
-                if (vr.getReport().getException() != null) {
-                    img = warn;
-                }
-            } else {
-                img = pass;
-            }
+            img = warn;
         }
         return img;
+    }
+
+    /**
+     * Get the image to test the method getImage.
+     *
+     * @return warn image.
+     */
+    public ImageIcon getWarnImage() {
+        return warn;
+    }
+
+    /**
+     * Get the image to test the method getImage.
+     *
+     * @return fail image.
+     */
+    public ImageIcon getFailImage() {
+        return fail;
+    }
+
+    /**
+     * Get the image to test the method getImage.
+     *
+     * @return pass image.
+     */
+    public ImageIcon getPassImage() {
+        return pass;
+    }
+
+    /**
+     * Get the image to test the method getImage.
+     *
+     * @return noImpl image.
+     */
+    public ImageIcon getImplImage() {
+        return noImpl;
     }
 }
