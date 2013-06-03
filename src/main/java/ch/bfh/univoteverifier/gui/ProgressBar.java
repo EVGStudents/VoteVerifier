@@ -28,11 +28,11 @@ public class ProgressBar extends JPanel {
     /**
      * Create an instance of this class.
      */
-    public ProgressBar() {
+    public ProgressBar(int numberOfVrfs) {
         this.setLayout(new BorderLayout());
-        progressBar = new JProgressBar(0, 100);
+        progressBar = new JProgressBar(0, numberOfVrfs);
         progressBar.setValue(0);
-        progressBar.setStringPainted(true);
+        //progressBar.setStringPainted(true);
         this.add(progressBar, BorderLayout.CENTER);
     }
 
@@ -41,8 +41,8 @@ public class ProgressBar extends JPanel {
      *
      * @param chunkProgressed
      */
-    public void increaseProgress(int chunkProgressed) {
-        progress += chunkProgressed;
+    public void increaseProgress() {
+        progress += 1;
         progressBar.setValue(progress);
     }
 }

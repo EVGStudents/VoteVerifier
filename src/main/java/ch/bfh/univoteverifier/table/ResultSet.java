@@ -210,4 +210,27 @@ public class ResultSet {
         }
         return filler;
     }
+
+    public String getToolTipText() {
+        ResultDescriber rd = new ResultDescriber();
+        String toolTipText = "";
+        if (!result) {
+            toolTipText += "<html>";
+            Report report = getResultReport();
+            if (report.getFailureCode() != null) {
+
+                int fCode = report.getFailureCode().getID();
+                toolTipText += rd.getTextFromFailureCode(fCode);
+
+            } else if (report.getException() != null) {
+                toolTipText += report.getException().toString();
+            }
+            if (report.getAdditionalInformation() != null) {
+                toolTipText += "<br>" + report.getAdditionalInformation();
+            }
+            toolTipText += "</html>";
+
+        }
+        return toolTipText;
+    }
 }

@@ -33,7 +33,7 @@ public class SectionResultsTable extends JTable {
     public SectionResultsTable(ResultTableModel rtm, String sectionName) {
         super(rtm);
         setShowGrid(false);
-        setDragEnabled(false);
+        setDragEnabled(true);
         this.rtm = rtm;
         this.sectionName = sectionName;
         setRowHeight(30);
@@ -41,7 +41,7 @@ public class SectionResultsTable extends JTable {
         tc.setPreferredWidth(340);
         tc = getColumnModel().getColumn(1);
         tc.setPreferredWidth(30);
-        tc.setMaxWidth(30);
+        tc.setMaxWidth(80);
 
         ResultCellRendererImage rcri = new ResultCellRendererImage();
         tc.setCellRenderer(rcri);

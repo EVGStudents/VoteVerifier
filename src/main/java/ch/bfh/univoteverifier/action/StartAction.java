@@ -97,7 +97,6 @@ public class StartAction extends AbstractAction {
 
             String processID = eID + uniqueness;
             Messenger msgr = mm.getNewMessenger(processID);
-            int numberOfVrfs = getNumberOfVerifications(msgr);
             vt = new VerificationThread(msgr, eID);
             vt.setName(eID);
             tm.addThread(vt);
@@ -109,10 +108,8 @@ public class StartAction extends AbstractAction {
                 if (fileProvidedIsValid()) {
                     msg += rb.getString("ballotProvided");
                     String eID = er.getElectionID();
-                    String timestamp = er.getTimeStamp();
                     String processID = "IND" + eID + uniqueness;
                     Messenger msgr = mm.getNewMessenger(processID);
-                    int numberOfVrfs = getNumberOfVerifications(msgr);
                     vt = new VerificationThread(msgr, er);
                     vt.setName(er.getElectionID());
                     vt.start();
@@ -149,23 +146,5 @@ public class StartAction extends AbstractAction {
     public ElectionReceipt getElectionReceipt(File qrCodeFile, Messenger msgr) {
         QRCode qr = new QRCode(msgr);
         return qr.decodeReceipt(qrCodeFile);
-    }
-
-    public int getNumberOfVerifications(Messenger msgr) {
-        ElectionBoardProxy ebp = new ElectionBoardProxy("");
-        int vrfs = 0;
-        int tCount = 0;
-        int mCount = 0;
-
-        try {
-            tCount = ebp.getElectionDefinition().getMixerId().size();
-            mCount = ebp.getElectionDefinition().getTallierId().size();
-        } catch (ElectionBoardServiceFault ex) {
-            msgr.sendElectionSpecError(ex);
-        }
-        Config.
-
-        return vrfs;
-
     }
 }

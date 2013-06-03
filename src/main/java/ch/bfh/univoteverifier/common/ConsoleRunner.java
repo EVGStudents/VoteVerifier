@@ -14,6 +14,7 @@ import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.listener.VerificationEvent;
 import ch.bfh.univoteverifier.listener.VerificationListener;
 import ch.bfh.univoteverifier.listener.VerificationMessage;
+import ch.bfh.univoteverifier.table.ResultDescriber;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import ch.bfh.univoteverifier.verification.VerificationThread;
 import java.io.File;
@@ -73,7 +74,8 @@ public class ConsoleRunner {
     public void showResultInTerminal(VerificationEvent ve) {
         VerificationResult vr = ve.getVr();
         int code = vr.getVerificationType().getID();
-        String vrfType = GUIconstants.getTextFromVrfCode(code);
+        ResultDescriber rd = new ResultDescriber();
+        String vrfType = rd.getTextFromVrfCode(code);
         String result = getResultName(vr);
         String eID = vr.getElectionID();
         String outputText = "\n" + eID + " : " + vrfType + " ............. " + result;

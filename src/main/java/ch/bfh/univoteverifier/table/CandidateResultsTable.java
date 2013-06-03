@@ -33,15 +33,15 @@ public class CandidateResultsTable extends JTable {
     public CandidateResultsTable(CandidateResultsTableModel crtm) {
         super(crtm);
         setShowGrid(false);
-        setDragEnabled(false);
+        setDragEnabled(true);
         this.crtm = crtm;
         this.sectionName = "Results";
         setRowHeight(30);
         TableColumn tc = getColumnModel().getColumn(0);
         tc.setPreferredWidth(340);
         tc = getColumnModel().getColumn(1);
-        tc.setPreferredWidth(30);
-        tc.setMaxWidth(30);
+        tc.setPreferredWidth(40);
+        tc.setMaxWidth(50);
 
 //        CandidateResultCellRendererImage rcri = new CandidateResultCellRendererImage();
 //        tc.setCellRenderer(rcri);

@@ -7,6 +7,7 @@ package ch.bfh.univoteverifier.gui;
 import ch.bfh.univoteverifier.listener.VerificationEvent;
 import ch.bfh.univoteverifier.listener.VerificationMessage;
 import ch.bfh.univoteverifier.table.CandidateResultSet;
+import ch.bfh.univoteverifier.table.ResultDescriber;
 import ch.bfh.univoteverifier.table.ResultSet;
 import ch.bfh.univoteverifier.table.ResultTabbedPane;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -63,7 +64,8 @@ public class ResultProcessor {
             VerificationResult vr = ve.getVr();
             Boolean result = vr.getResult();
             int code = vr.getVerificationType().getID();
-            String vrfType = GUIconstants.getTextFromVrfCode(code);
+            ResultDescriber rd = new ResultDescriber();
+            String vrfType = rd.getTextFromVrfCode(code);
             ImageIcon img = getImage(vr);
             LOGGER.log(Level.OFF, "ShowResultsINGui: VerificationEVent contains TabID: " + ve.getProcessID());
             ResultSet rs = new ResultSet(vrfType, img, vr, ve.getProcessID());

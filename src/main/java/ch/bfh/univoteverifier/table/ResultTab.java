@@ -58,11 +58,11 @@ public class ResultTab extends JPanel {
     /**
      * Create an instance of this panel.
      */
-    public ResultTab(String procesID, boolean individualVrf) {
+    public ResultTab(String procesID, boolean individualVrf, int numberOfVrfs) {
         toggle = new ToggleResultOrganizationAction(this);
         this.processID = procesID;
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
-        createContentPanel(individualVrf);
+        createContentPanel(individualVrf, numberOfVrfs);
     }
 
     /**
@@ -70,9 +70,9 @@ public class ResultTab extends JPanel {
      *
      * @return a JPanel
      */
-    public void createContentPanel(boolean individualVrf) {
+    public void createContentPanel(boolean individualVrf, int numberOfVrfs) {
         this.setLayout(new GridLayout(1, 1));
-        tabHeader = createTabHeader();
+        tabHeader = createTabHeader(numberOfVrfs);
 
         rpSpec = new ResultTablesContainer();
         rpEntity = new ResultTablesContainer();
@@ -99,7 +99,7 @@ public class ResultTab extends JPanel {
      *
      * @return
      */
-    public JPanel createTabHeader() {
+    public JPanel createTabHeader(int numberOfVrfs) {
         errorText = new JTextArea();
         errorText.setText("Errors and Exceptions: ");
         errorText.setWrapStyleWord(true);
@@ -190,7 +190,7 @@ public class ResultTab extends JPanel {
         c.gridy = 0;
         c.weightx = .9;
         c.insets = new Insets(4, 20, 4, 20);
-        progressBar = new ProgressBar();
+        progressBar = new ProgressBar(numberOfVrfs);
         panel.add(progressBar, c);
 
 
@@ -249,7 +249,7 @@ public class ResultTab extends JPanel {
      * @param rs Data to add.
      */
     public void addData(ResultSet rs) {
-        progressBar.increaseProgress(2);
+        progressBar.increaseProgress();
 
         rs.setSectionName(rs.getRunnerName().toString());
         rpSpec.addData(rs);

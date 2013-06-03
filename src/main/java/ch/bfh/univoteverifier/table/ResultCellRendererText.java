@@ -56,19 +56,7 @@ class ResultCellRendererText extends DefaultTableCellRenderer {
         ResultTableModel rtm = (ResultTableModel) table.getModel();
         ResultSet rs = (ResultSet) rtm.getValueAt(row, -1);
 
-        if (!rs.getResult()) {
-            String toolTipText = "";
-            Report report = rs.getResultReport();
-            if (report.getFailureCode() != null) {
-                int fCode = report.getFailureCode().getID();
-                toolTipText = rd.getDescription(fCode);
-
-            } else if (report.getException() != null) {
-                toolTipText = report.getException().toString();
-            }
-            label.setToolTipText(toolTipText);
-        }
-
+        label.setToolTipText(rs.getToolTipText());
         c = label;
         return c;
     }

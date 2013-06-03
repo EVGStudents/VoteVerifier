@@ -11,7 +11,11 @@
 package ch.bfh.univoteverifier.table;
 
 import ch.bfh.univote.common.Choice;
+import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.action.RemoveTabAction;
+import ch.bfh.univoteverifier.common.Config;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
+import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.ThreadManager;
 import java.util.logging.Logger;
@@ -89,6 +93,11 @@ public class ResultTabbedPane extends JTabbedPane {
         }
     }
 
+    /**
+     * Add the election results of the candidate results panel.
+     *
+     * @param crs The helper class which contains the results.
+     */
     public void addElectionResults(CandidateResultSet crs) {
 
         LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY TABBED PANE");
@@ -108,17 +117,23 @@ public class ResultTabbedPane extends JTabbedPane {
      * @param rs ResultSet contains the data to add.
      */
     public void createNewTab(String processID, String eID) {
+        int numberOfVrfs = 0;
         boolean individualVrf = false;
         String vrfTypeString = processID.substring(0, 3);
         String append = "";
         if (vrfTypeString.equals("IND")) {
             append = "Ind: ";
             individualVrf = true;
+            numberOfVrfs = getIndVrfCount();
+        } else {
+            numberOfVrfs = getUniVrfCount(processID, eID);
         }
+
+
 
         String thisProcessID = processID;
         String tabTitle = append + eID;
-        ResultTab rt = new ResultTab(thisProcessID, individualVrf);
+        ResultTab rt = new ResultTab(thisProcessID, individualVrf, numberOfVrfs);
 
         this.resultsPanels.add(rt);
         this.addTab(tabTitle, rt);
@@ -131,12 +146,17 @@ public class ResultTabbedPane extends JTabbedPane {
         this.setSelectedIndex(index);
     }
 
+    /**
+     * Display and error that is specific to this election ID.
+     *
+     * @param errorMsg The error message to display.
+     * @param eID The election ID for which to display this message.
+     */
     public void showElectionSpecError(String errorMsg, String eID) {
         if (hasTabPane(eID)) {
             ResultTab rtp = getTabPaneByName(eID);
             rtp.showElectionSpecError(errorMsg);
         }
-
     }
 
     /**
@@ -197,5 +217,29 @@ public class ResultTabbedPane extends JTabbedPane {
             }
         }
         return found;
+    }
+
+    public int getUniVrfCount(String processID, String eID) {
+        ElectionBoardProxy ebp = new ElectionBoardProxy(eID);
+        int vrfs = 0;
+        int tCount = 0;
+        int mCount = 0;
+
+        try {
+            tCount = ebp.getElectionDefinition().getMixerId().size();
+            mCount = ebp.getElectionDefinition().getTallierId().size();
+        } catch (ElectionBoardServiceFault ex) {
+            showElectionSpecError("ElectionBoardServiceFault", processID);
+        }
+        int mixerVrfs = Config.VERIFICATIONS_FOR_MIXER * mCount;
+        int tallierVrfs = Config.VERIFICATIONS_FOR_TALLIER * tCount;
+        vrfs = Config.UNIVERSAL_VERIFICATION_COUNT + mixerVrfs + tallierVrfs;
+
+        return vrfs;
+
+    }
+
+    public int getIndVrfCount() {
+        return Config.INDIVIDUAL_VERIFICATION_COUNT;
     }
 }

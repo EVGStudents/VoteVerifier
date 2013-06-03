@@ -106,14 +106,14 @@ public class QRCode {
     }
 
     /**
-     * decode the QRCode from an election receipt and pack the info in to a
-     * helper class
+     * Decode the QRCode from an election receipt and pack the info in to a
+     * helper class.
      *
      * @param filename the File object containing the path to the QRcode image
      * @return the ElectionReceipt helper class with the information packed into
      * it
      */
-    public ElectionReceipt decodeReceipt(File filename) {
+    public ElectionReceipt decodeReceipt(File filename) throws RuntimeException {
         String decoded = decode(filename);
         if (decoded.length() > 0) {
             String[] groupedCleaned = groupAndCleanDecode(decoded);
