@@ -596,5 +596,4 @@ public class ProofImplementer extends Implementer {
 
 		return v;
 	}
-	>>>>>>> 778992d6166901e7e71b25ad3fd6b7ea949d0c09
 }
