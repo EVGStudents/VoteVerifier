@@ -54,9 +54,9 @@ public class ConsoleRunner {
      * @param args The parameters passed to the program from the terminal.
      */
     public void begin(String[] args) {
-        if (0 == args[0].compareTo("-u")) {
+        if (args[0].equals("-u")) {
             runUniVrfConsole(msgr, args[1]);
-        } else if (0 == args[0].compareTo("-i")) {
+        } else if (args[0].equals("-i")) {
             runIndVrfConsole(msgr, args[1]);
         } else {
             LOGGER.log(Level.SEVERE, GUIconstants.USAGE);

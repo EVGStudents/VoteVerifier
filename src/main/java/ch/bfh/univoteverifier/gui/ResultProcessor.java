@@ -4,6 +4,7 @@
  */
 package ch.bfh.univoteverifier.gui;
 
+import ch.bfh.univoteverifier.common.Report;
 import ch.bfh.univoteverifier.listener.VerificationEvent;
 import ch.bfh.univoteverifier.listener.VerificationMessage;
 import ch.bfh.univoteverifier.table.CandidateResultSet;
@@ -29,6 +30,16 @@ public class ResultProcessor {
     private static final Logger LOGGER = Logger.getLogger(ResultProcessor.class.toString());
 
     /**
+     * Create a partial object for tests
+     */
+    public ResultProcessor(String dummyVariable) {
+        pass = new ImageIcon(VoteVerifier.class.getResource("/check.png"));
+        fail = new ImageIcon(VoteVerifier.class.getResource("/fail.png"));
+        noImpl = new ImageIcon(VoteVerifier.class.getResource("/noImpl.png"));
+        warn = new ImageIcon(VoteVerifier.class.getResource("/warning.png"));
+    }
+
+    /**
      * Create a new instance of this class.
      *
      * @param consolePanel Necessary to be able to print the output text in the
@@ -41,9 +52,13 @@ public class ResultProcessor {
         this.resultPanelManager = resultPanelManager;
 
         pass = new ImageIcon(VoteVerifier.class.getResource("/check.png"));
+        pass.setDescription("Pass Image");
         fail = new ImageIcon(VoteVerifier.class.getResource("/fail.png"));
+        fail.setDescription("Fail Image");
         noImpl = new ImageIcon(VoteVerifier.class.getResource("/noImpl.png"));
+        noImpl.setDescription("No Implementation Image");
         warn = new ImageIcon(VoteVerifier.class.getResource("/warning.png"));
+        warn.setDescription("Warn Image");
     }
 
     /**
@@ -60,7 +75,7 @@ public class ResultProcessor {
             CandidateResultSet crs = new CandidateResultSet(ve.getEID(), ve.getElectionResults(), ve.getProcessID());
             LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY PROCESSOR: ProcessID: " + ve.getProcessID());
             resultPanelManager.addElectionResults(crs);
-        } else {
+        } else if (ve.getVm() == VerificationMessage.RESULT) {
             VerificationResult vr = ve.getVr();
             Boolean result = vr.getResult();
             int code = vr.getVerificationType().getID();
@@ -73,6 +88,7 @@ public class ResultProcessor {
             String outputText = "\n" + vrfType + " ............. " + result;
             consolePanel.appendToStatusText(outputText, ve.getEID());
         }
+
     }
 
     /**
@@ -85,19 +101,56 @@ public class ResultProcessor {
     public ImageIcon getImage(VerificationResult vr) {
 
         ImageIcon img = null;
-        if (!vr.getResult()) {
+
+        if (vr.getReport() != null && vr.getReport().getException() != null) {
+            //If there is an exception
+            img = warn;
+        } else if (!vr.isImplemented() && vr.getReport() != null && vr.getReport().getFailureCode() != null) {
+            //if not implemented and there is a failure code
+            img = noImpl;
+        } else if (vr.getResult() && vr.isImplemented()) {
+            //if result true and it is implemented
+            img = pass;
+        } else if (!vr.getResult() && vr.isImplemented()) {
+            //if result false and it is implemented
             img = fail;
-        } else {
-            if (!vr.isImplemented()) {
-                img = noImpl;
-            } else if (vr.getReport() != null) {
-                if (vr.getReport().getException() != null) {
-                    img = warn;
-                }
-            } else {
-                img = pass;
-            }
         }
         return img;
+    }
+
+    /**
+     * Get the image to test the method getImage.
+     *
+     * @return warn image.
+     */
+    public ImageIcon getWarnImage() {
+        return warn;
+    }
+
+    /**
+     * Get the image to test the method getImage.
+     *
+     * @return fail image.
+     */
+    public ImageIcon getFailImage() {
+        return fail;
+    }
+
+    /**
+     * Get the image to test the method getImage.
+     *
+     * @return pass image.
+     */
+    public ImageIcon getPassImage() {
+        return pass;
+    }
+
+    /**
+     * Get the image to test the method getImage.
+     *
+     * @return noImpl image.
+     */
+    public ImageIcon getImplImage() {
+        return noImpl;
     }
 }

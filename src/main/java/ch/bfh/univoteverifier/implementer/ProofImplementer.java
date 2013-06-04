@@ -289,7 +289,7 @@ public class ProofImplementer extends Implementer {
 		if (exc != null) {
 			rep = new Report(exc);
 			v.setReport(rep);
-		} else if (v.isImplemented()) {
+		} else if (!v.isImplemented()) {
 
 			if (r) {
 				rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
@@ -504,13 +504,11 @@ public class ProofImplementer extends Implementer {
 
 			if (!r) {
 				rep = new Report(FailureCode.ENCRYPTED_VOTES_PLAUSIBILITY_CHECK_FAILED);
-				rep.setAdditionalInformation("The NIZKP is not implemented. The following plausibility checks are succesful: the size of the key for this mixer is the same as the list of key from the voters certificates.");
 			} else if (r) {
 				rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
-				rep.setAdditionalInformation("The NIZKP is not implemented. The following plausibility checks are succesful: the size of the key for this mixer is the same as the list of key from the voters certificates.");
 			}
 
-
+			rep.setAdditionalInformation("The NIZKP is not implemented, so the following plausibility checks are performed: the size of the key for this mixer is the same as the list of key from the voters certificates.");
 
 			v.setReport(rep);
 		}
@@ -598,4 +596,5 @@ public class ProofImplementer extends Implementer {
 
 		return v;
 	}
+	>>>>>>> 778992d6166901e7e71b25ad3fd6b7ea949d0c09
 }

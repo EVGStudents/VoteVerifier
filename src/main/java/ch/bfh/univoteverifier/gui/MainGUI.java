@@ -196,6 +196,7 @@ public class MainGUI extends JFrame {
             } else if (ve.getVm() == VerificationMessage.VRF_FINISHED) {
                 String processID = ve.getProcessID();
                 tm.killThread(processID);
+                resultTabbedPane.completeVerification(processID);
             } else {
                 resultProccessor.showResultInGUI(ve);
             }
@@ -209,6 +210,8 @@ public class MainGUI extends JFrame {
     private void setLookAndFeel() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainGUI.class
                     .getName()).log(Level.SEVERE, ex.getMessage());

@@ -89,7 +89,7 @@ public class StartAction extends AbstractAction {
 
 
 
-        if (0 == btnTxt.compareTo("btnUni")) {
+        if (btnTxt.equals("btnUni")) {
 
             String eID = comboBox.getSelectedItem().toString();
             msg = rb.getString("beginningVrfFor") + " " + eID;

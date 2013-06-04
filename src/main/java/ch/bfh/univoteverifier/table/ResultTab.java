@@ -27,6 +27,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -44,6 +45,7 @@ public class ResultTab extends JPanel {
 
     private JScrollPane scroll;
     private JPanel vrfResultsPanel, tabHeader;
+    private JLabel processCompleted;
     private String processID;
     private static final Logger LOGGER = Logger.getLogger(ResultTab.class.getName());
     private ResultTablesContainer rpEntity, rpSpec, rpType;
@@ -63,6 +65,28 @@ public class ResultTab extends JPanel {
         this.processID = procesID;
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         createContentPanel(individualVrf, numberOfVrfs);
+
+        processCompleted = new JLabel(rb.getString("processComplete"));
+
+    }
+
+    /**
+     * Removes the Progress Bar and displays the text that the verification
+     * process has finished.
+     */
+    public void completeVerification() {
+        tabHeader.remove(progressBar);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 5;
+        c.gridy = 0;
+        c.weightx = .9;
+        c.insets = new Insets(4, 20, 4, 20);
+
+        tabHeader.add(processCompleted, c);
+
+        tabHeader.revalidate();
     }
 
     /**

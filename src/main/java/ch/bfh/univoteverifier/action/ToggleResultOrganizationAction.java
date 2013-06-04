@@ -30,15 +30,15 @@ public class ToggleResultOrganizationAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String name = ((JComponent) e.getSource()).getName();
-        if (0 == name.compareTo("btnEntity")) {
+        if (name.equals("btnEntity")) {
             rtp.showPanelEntity();
-        } else if (0 == name.compareTo("btnSpec")) {
+        } else if (name.equals("btnSpec")) {
             rtp.showPanelSpec();
-        } else if (0 == name.compareTo("btnType")) {
+        } else if (name.equals("btnType")) {
             rtp.showPanelType();
-        } else if (0 == name.compareTo("btnViewResults")) {
+        } else if (name.equals("btnViewResults")) {
             rtp.showCandidateResults();
-        } else if (0 == name.compareTo("btnBack")) {
+        } else if (name.equals("btnBack")) {
             rtp.toggleMainPanel();
         }
     }
