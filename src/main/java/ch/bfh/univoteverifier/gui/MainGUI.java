@@ -18,6 +18,8 @@ import ch.bfh.univoteverifier.table.ResultTabbedPane;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.MessengerManager;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.List;
@@ -73,11 +75,13 @@ public class MainGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(696, 400));
         JPanel splashPanel = new JPanel();
+        splashPanel.setLayout(new BorderLayout());
         splash = getSplashImage();
-        splashPanel.add(splash);
+        splashPanel.add(splash, BorderLayout.CENTER);
+        splashPanel.setBackground(Color.WHITE);
         JProgressBar jpb = new JProgressBar();
         jpb.setIndeterminate(true);
-        splashPanel.add(jpb);
+        splashPanel.add(jpb, BorderLayout.SOUTH);
         this.setContentPane(splashPanel);
         createContentPanel();
 
@@ -152,7 +156,7 @@ public class MainGUI extends JFrame {
      */
     private JLabel getSplashImage() {
         JLabel imgLabel = new JLabel();
-        java.net.URL img = VoteVerifier.class.getResource("/univoteTitle.jpeg");
+        java.net.URL img = VoteVerifier.class.getResource("/splash.jpeg");
         if (img != null) {
             ImageIcon logo = new ImageIcon(img);
             imgLabel = new JLabel(logo);
