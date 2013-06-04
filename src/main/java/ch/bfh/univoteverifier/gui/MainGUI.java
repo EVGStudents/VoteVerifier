@@ -18,6 +18,7 @@ import ch.bfh.univoteverifier.table.ResultTabbedPane;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.MessengerManager;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -27,7 +28,9 @@ import java.util.prefs.Preferences;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -51,6 +54,7 @@ public class MainGUI extends JFrame {
     private ResultProcessor resultProccessor;
     private ThreadManager tm;
     private MessengerManager mm;
+    private JLabel splash;
 
     /**
      * Construct the window and frame of this GUI and initialize certain base
@@ -68,7 +72,13 @@ public class MainGUI extends JFrame {
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(696, 400));
-
+        JPanel splashPanel = new JPanel();
+        splash = getSplashImage();
+        splashPanel.add(splash);
+        JProgressBar jpb = new JProgressBar();
+        jpb.setIndeterminate(true);
+        splashPanel.add(jpb);
+        this.setContentPane(splashPanel);
         createContentPanel();
 
         this.setJMenuBar(new VerificationMenuBar(this));
@@ -124,13 +134,34 @@ public class MainGUI extends JFrame {
      */
     public void resetContentPanel() {
         tm.killAllThreads();
+
         masterPanel = createUI();
         masterPanel.setOpaque(true); //content panes must be opaque
-        this.setContentPane(masterPanel);
         initResources();
+
+        this.setContentPane(masterPanel);
         this.setJMenuBar(new VerificationMenuBar(this));
         this.validate();
         this.repaint();
+    }
+
+    /**
+     * Create the panel, which contains the title image.
+     *
+     * @return a JPanel title image
+     */
+    private JLabel getSplashImage() {
+        JLabel imgLabel = new JLabel();
+        java.net.URL img = VoteVerifier.class.getResource("/univoteTitle.jpeg");
+        if (img != null) {
+            ImageIcon logo = new ImageIcon(img);
+            imgLabel = new JLabel(logo);
+//            imgLabel.setMaximumSize(new Dimension(300, 114));
+            imgLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        } else {
+            LOGGER.log(Level.INFO, "IMAGE NOT FOUND");
+        }
+        return imgLabel;
     }
 
     /**

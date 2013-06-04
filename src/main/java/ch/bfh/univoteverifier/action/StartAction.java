@@ -92,16 +92,20 @@ public class StartAction extends AbstractAction {
         if (btnTxt.equals("btnUni")) {
 
             String eID = comboBox.getSelectedItem().toString();
-            msg = rb.getString("beginningVrfFor") + " " + eID;
-            mm.getDefaultMessenger().sendSetupError(msg);
 
-            String processID = eID + uniqueness;
-            Messenger msgr = mm.getNewMessenger(processID);
-            vt = new VerificationThread(msgr, eID);
-            vt.setName(eID);
-            tm.addThread(vt);
-            vt.start();
+            if (!checkIfValidEID(eID)) {
+                mm.getDefaultMessenger().sendSetupError(rb.getString("invalidEIDorNetworkProb"));
+            } else {
+                msg = rb.getString("beginningVrfFor") + " " + eID;
+                mm.getDefaultMessenger().sendSetupError(msg);
 
+                String processID = eID + uniqueness;
+                Messenger msgr = mm.getNewMessenger(processID);
+                vt = new VerificationThread(msgr, eID);
+                vt.setName(eID);
+                tm.addThread(vt);
+                vt.start();
+            }
         } else {
             if (fm.getFile() != null) {
 
@@ -122,6 +126,20 @@ public class StartAction extends AbstractAction {
             middlePanel.resetFileText();
         }
 
+    }
+
+    /**
+     * Check if the eID provided is valid
+     */
+    public boolean checkIfValidEID(String eID) {
+        ElectionBoardProxy ebp = new ElectionBoardProxy(eID);
+        boolean isValid = false;
+        try {
+            isValid = ebp.getElectionsID().getElectionId().contains(eID);
+        } catch (ElectionBoardServiceFault ex) {
+            Logger.getLogger(StartAction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return isValid;
     }
 
     /**
