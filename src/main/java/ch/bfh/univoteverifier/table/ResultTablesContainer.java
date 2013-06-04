@@ -76,7 +76,7 @@ public class ResultTablesContainer extends JPanel {
     public SectionResultsTable getTableByName(String tableSectionName) {
         for (SectionResultsTable tbl : tables) {
             String tableSectionNameFound = tbl.getSectionName();
-            if (0 == tableSectionNameFound.compareTo(tableSectionName)) {
+            if (tableSectionNameFound.equals(tableSectionName)) {
                 return tbl;
             }
         }
@@ -122,7 +122,7 @@ public class ResultTablesContainer extends JPanel {
         }
         for (SectionResultsTable tbl : tables) {
             String tableSectionNameFound = tbl.getSectionName();
-            if (0 == tableSectionNameFound.compareTo(tableSectionName)) {
+            if (tableSectionNameFound.equals(tableSectionName)) {
                 found = true;
             }
         }

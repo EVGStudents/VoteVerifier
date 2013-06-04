@@ -52,9 +52,13 @@ public class ResultProcessor {
         this.resultPanelManager = resultPanelManager;
 
         pass = new ImageIcon(VoteVerifier.class.getResource("/check.png"));
+        pass.setDescription("Pass Image");
         fail = new ImageIcon(VoteVerifier.class.getResource("/fail.png"));
+        fail.setDescription("Fail Image");
         noImpl = new ImageIcon(VoteVerifier.class.getResource("/noImpl.png"));
+        noImpl.setDescription("No Implementation Image");
         warn = new ImageIcon(VoteVerifier.class.getResource("/warning.png"));
+        warn.setDescription("Warn Image");
     }
 
     /**
@@ -71,7 +75,7 @@ public class ResultProcessor {
             CandidateResultSet crs = new CandidateResultSet(ve.getEID(), ve.getElectionResults(), ve.getProcessID());
             LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY PROCESSOR: ProcessID: " + ve.getProcessID());
             resultPanelManager.addElectionResults(crs);
-        } else {
+        } else if (ve.getVm() == VerificationMessage.RESULT) {
             VerificationResult vr = ve.getVr();
             Boolean result = vr.getResult();
             int code = vr.getVerificationType().getID();
@@ -84,6 +88,7 @@ public class ResultProcessor {
             String outputText = "\n" + vrfType + " ............. " + result;
             consolePanel.appendToStatusText(outputText, ve.getEID());
         }
+
     }
 
     /**
@@ -97,16 +102,18 @@ public class ResultProcessor {
 
         ImageIcon img = null;
 
-        if (vr.getResult() && vr.isImplemented()) {
-            img = pass;
-        } else if (vr.getResult() && !vr.isImplemented()) {
-            img = noImpl;
-        } else if (!vr.getResult() && vr.isImplemented()) {
-            img = fail;
-        } else if (!vr.getResult() && !vr.isImplemented()) {
-            img = noImpl;
-        } else {
+        if (vr.getReport() != null && vr.getReport().getException() != null) {
+            //If there is an exception
             img = warn;
+        } else if (!vr.isImplemented() && vr.getReport() != null && vr.getReport().getFailureCode() != null) {
+            //if not implemented and there is a failure code
+            img = noImpl;
+        } else if (vr.getResult() && vr.isImplemented()) {
+            //if result true and it is implemented
+            img = pass;
+        } else if (!vr.getResult() && vr.isImplemented()) {
+            //if result false and it is implemented
+            img = fail;
         }
         return img;
     }

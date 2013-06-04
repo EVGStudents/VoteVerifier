@@ -66,6 +66,7 @@ public class VerificationEvent {
      */
     public VerificationEvent(VerificationMessage vm, String msg) {
         this.vm = vm;
+        this.processID = msg;
         this.msg = msg;
         this.vr = null;
     }

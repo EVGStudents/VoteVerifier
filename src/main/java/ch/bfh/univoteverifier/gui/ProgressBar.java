@@ -32,7 +32,7 @@ public class ProgressBar extends JPanel {
         this.setLayout(new BorderLayout());
         progressBar = new JProgressBar(0, numberOfVrfs);
         progressBar.setValue(0);
-        //progressBar.setStringPainted(true);
+        progressBar.setStringPainted(true);
         this.add(progressBar, BorderLayout.CENTER);
     }
 

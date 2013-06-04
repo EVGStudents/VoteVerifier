@@ -11,11 +11,16 @@
 package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.action.ActionManager;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ResourceBundle;
 import javax.swing.Action;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -108,15 +113,37 @@ public class VerificationMenuBar extends JMenuBar {
      * Create the help menu.
      */
     public void createHelpMenu() {
-        JMenu menu = new JMenu(rb.getString("help"));
+        final String ABOUT_I18N = rb.getString("help");
+        JMenu menu = new JMenu(ABOUT_I18N);
         JMenuItem exitItem = new JMenuItem(rb.getString("about"));
         exitItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(mainGUI, GUIconstants.ABOUT_TEXT);
+                File myFile = new File("src/main/resources/iconVoteVerifier.jpg");
+                final ImageIcon icon = new ImageIcon(myFile.getPath());
+                JOptionPane.showMessageDialog(mainGUI, GUIconstants.ABOUT_TEXT, ABOUT_I18N, JOptionPane.INFORMATION_MESSAGE, icon);
             }
         });
         menu.add(exitItem);
+
+
+        JMenuItem manualItem = new JMenuItem(rb.getString("manual"));
+        manualItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        File file = new File("src/main/resources/UserManual.pdf");
+                        Desktop.getDesktop().open(file);
+                    } catch (IOException ex) {
+                        // no application registered for PDFs
+                    }
+                }
+            }
+        });
+        menu.add(manualItem);
+
         this.add(menu);
     }
 }

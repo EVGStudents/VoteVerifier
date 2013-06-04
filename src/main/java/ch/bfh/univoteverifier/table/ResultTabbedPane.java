@@ -69,6 +69,17 @@ public class ResultTabbedPane extends JTabbedPane {
     }
 
     /**
+     * Removes the Progress Bar and displays the text that the verification
+     * process has finished.
+     */
+    public void completeVerification(String processID) {
+        if (hasTabPane(processID)) {
+            ResultTab rt = getTabPaneByName(processID);
+            rt.completeVerification();
+        }
+    }
+
+    /**
      * Add data to an appropriate TablePanel. Searches for a TablePanel with the
      * corresponding election ID.
      *
@@ -168,7 +179,7 @@ public class ResultTabbedPane extends JTabbedPane {
     public ResultTab getTabPaneByName(String processID) {
         for (ResultTab r : resultsPanels) {
             String processIDFound = r.getProcessID();
-            if (processID.compareTo(processIDFound) == 0) {
+            if (processID.equals(processIDFound)) {
                 return r;
             }
         }
@@ -178,21 +189,21 @@ public class ResultTabbedPane extends JTabbedPane {
     /**
      * Remove the table with a given name.
      *
-     * @param eID the name of the table to find.
+     * @param processID the name of the table to find.
      * @return The table whose name is eID.
      */
-    public boolean removeTabPaneByName(String eID) {
-        if (!hasTabPane(eID)) {
+    public boolean removeTabPaneByName(String processID) {
+        if (!hasTabPane(processID)) {
             return false;
         }
-        ResultTab rFound = null;
-        for (ResultTab r : resultsPanels) {
-            String iTabID = r.getProcessID();
-            if (eID.compareTo(iTabID) == 0) {
-                rFound = r;
+        ResultTab rtByID = null;
+        for (ResultTab rt : resultsPanels) {
+            String tabProcessID = rt.getProcessID();
+            if (processID.equals(tabProcessID)) {
+                rtByID = rt;
             }
         }
-        resultsPanels.remove(rFound);
+        resultsPanels.remove(rtByID);
         return true;
     }
 
@@ -202,7 +213,7 @@ public class ResultTabbedPane extends JTabbedPane {
      * @param eID The name of the election ID to search for.
      * @return The table with the election ID as a name.
      */
-    public boolean hasTabPane(String tabID) {
+    public boolean hasTabPane(String tabProcessID) {
         boolean found = false;
         if (resultsPanels.isEmpty()) {
             return found;
@@ -211,8 +222,8 @@ public class ResultTabbedPane extends JTabbedPane {
 
             String thisTabID = r.getProcessID();
             LOGGER.log(Level.OFF, "HAS TAB PANE, ResultPanel Tab ID:" + thisTabID);
-            LOGGER.log(Level.OFF, "HAS TAB PANE, Tab ID to FIND" + tabID);
-            if (tabID.compareTo(thisTabID) == 0) {
+            LOGGER.log(Level.OFF, "HAS TAB PANE, Tab ID to FIND" + tabProcessID);
+            if (tabProcessID.equals(thisTabID)) {
                 found = true;
             }
         }

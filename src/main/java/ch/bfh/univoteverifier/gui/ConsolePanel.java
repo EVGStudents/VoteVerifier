@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -92,15 +93,25 @@ public class ConsolePanel extends JPanel implements ChangeListener {
             textAreaText.put(processID, str);
         } else {
             String currentText = (String) textAreaText.get(processID);
-            String newText = currentText + "\n" + str;
+            final String newText = currentText + "\n" + str;
             textAreaText.put(processID, newText);
             //If text must be displayed immediately
-            if (0 == processID.compareTo(currentTextKey)) {
-                textArea.setText(newText);
+            if (processID.equals(currentTextKey)) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        textArea.setText(newText);
+                        scrollPane.revalidate();
+                        textArea.revalidate();
+                    }
+                });
+
             }
+//            scrollPane.revalidate();
+//            textArea.revalidate();
+//            this.revalidate();
+//            this.repaint();
         }
-        scrollPane.revalidate();
-        textArea.revalidate();
+
     }
 
     /**
@@ -124,8 +135,8 @@ public class ConsolePanel extends JPanel implements ChangeListener {
     public void stateChanged(ChangeEvent e) {
         JTabbedPane sourceTabbedPane = (JTabbedPane) e.getSource();
         int index = sourceTabbedPane.getSelectedIndex();
-        String eID = sourceTabbedPane.getTitleAt(index);
-        LOGGER.log(Level.INFO, "The component name is :" + eID);
-        toggleVisibleTextArea(eID);
+        String processID = sourceTabbedPane.getTitleAt(index);
+        LOGGER.log(Level.INFO, "The component name is :" + processID);
+        toggleVisibleTextArea(processID);
     }
 }
