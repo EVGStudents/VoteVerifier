@@ -284,4 +284,13 @@ public class RSAImplTest {
 		VerificationResult vr = ri.vrfLateRenewalOfRegistrationSign();
 		assertTrue(vr.getResult());
 	}
+
+	/**
+	 * Test the result of vrfLateRenewalOfRegistrationSign().
+	 */
+	@Test
+	public void testMixedVerificationKeys() {
+		VerificationResult vr = ri.vrfMixedVerificationKeysSign();
+		assertTrue(vr.getResult());
+	}
 }

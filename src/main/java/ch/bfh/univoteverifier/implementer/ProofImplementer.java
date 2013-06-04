@@ -298,7 +298,7 @@ public class ProofImplementer extends Implementer {
 			}
 
 			//remove this when the proof will be implemented
-			rep.setAdditionalInformation("The NIZKP is not implemented, so the following plausibility checks are performed: size of verification key set, each verificaition key belongs to G_q, there aren't duplicate keys in the set.");
+			rep.setAdditionalInformation("The NIZKP is not implemented, so the following plausibility checks are performed: <br /> - size of verification key set<br /> - each verificaition key belongs to G_q<br /> - there aren't duplicate keys in the set.");
 
 			v.setReport(rep);
 
@@ -350,7 +350,7 @@ public class ProofImplementer extends Implementer {
 				rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
 			}
 
-			rep.setAdditionalInformation("The NIZKP is not implemented, so the following plausibility checks are performed: the size of the key for this mixer is the same as the list of key from the voters certificates.");
+			rep.setAdditionalInformation("The following plausibility checks are performed:<br /> - the size of the key set for this mixer is the same as the list of keys from the voters certificates.");
 
 			v.setReport(rep);
 		}

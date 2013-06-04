@@ -70,7 +70,7 @@ public class LocalBoardProxyDownloader {
 		lbpd.writeLatelyRegisteredVoterCerts();
 		lbpd.writeEncryptedVotes();
 		lbpd.writeMixedEncryptedVotesBy();
-//		lbpd.writeMixedVerificationKeys();
+		lbpd.writeMixedVerificationKeys();
 		lbpd.writeMixedVerificationKeysBy();
 		lbpd.writePartiallyDecrpytedVotes();
 //		lbpd.writeRootCertificate();

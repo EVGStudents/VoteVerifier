@@ -24,6 +24,7 @@ import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -146,14 +147,47 @@ public class ParamImplTest {
 	}
 
 	/**
-	 * Test the verification key of a ballot.
+	 * Test the verification key of a ballot from a QR-Code.
 	 */
 	@Test
-	public void testBallotVerificationKey() {
+	public void testBallotVerificationKeyFromQR() throws UnsupportedEncodingException {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
-		VerificationResult v = pi.vrfBallotVerificationKey(er.getVerificationKey());
+		String mah = "4lfTbadkitS1NOXSiDhLKrTUh1J=gdOupOzFHgexC4LdYRuV9PIzblQgHfLYNtlEW8i6Tjr1FVv6HJZ902PHeyG8vrkTCJJEODOdZJ7TFzo8WCIywtyqXcFF52n_sg70FNRSLZcEBY6lCcRWWzBJxdGnbBLpl11QGcJ25cG6RKP";
+		StringBuilder binary = new StringBuilder();
+		int bytec = 0;
+		for (byte b : mah.getBytes("UTF-8")) {
+			int val = b;
+			for (int i = 0; i < 8; i++) {
+				binary.append((val & 128) == 0 ? 0 : 1);
+				val <<= 1;
+			}
+			binary.append(' ');
+			bytec++;
+		}
+
+		System.out.println("TEST: " + Integer.toBinaryString((int) '4'));
+
+		System.out.println(bytec + "   ");
+		System.out.println(binary);
+
+		BigInteger vk = new BigInteger(1, mah.getBytes("UTF-8"));
+		System.out.println("VER KEY: " + vk);
+		VerificationResult v = pi.vrfBallotVerificationKey(vk);
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test the verification key of a ballot from a ballot.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testBallotVerificationKeyFromBallot() throws ElectionBoardServiceFault {
+		Ballot b = ebp.getBallots().getBallot().get(0);
+		VerificationResult v = pi.vrfBallotVerificationKey(b.getVerificationKey());
 		assertTrue(v.getResult());
 	}
 
