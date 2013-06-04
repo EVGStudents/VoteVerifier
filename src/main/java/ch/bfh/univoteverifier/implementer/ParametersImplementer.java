@@ -462,8 +462,6 @@ public class ParametersImplementer extends Implementer {
 				Ballot b = ballots.getBallot().get(i);
 				BigInteger bValue = b.getEncryptedVote().getSecondValue();
 
-				System.out.println("b value for " + i + " : " + bValue);
-
 				BigInteger aProducts = BigInteger.ONE;
 
 				//get the a value for each tallier

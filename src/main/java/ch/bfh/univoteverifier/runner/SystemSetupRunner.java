@@ -18,6 +18,7 @@ import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
+import com.sun.xml.rpc.client.ClientTransportException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -52,46 +53,50 @@ public class SystemSetupRunner extends Runner {
 
 	@Override
 	public List<VerificationResult> run() throws InterruptedException {
-		//is Schnorr p prime
-		VerificationResult v1 = paramImpl.vrfPrime(Config.p, VerificationType.SETUP_SCHNORR_P);
-		msgr.sendVrfMsg(v1);
-		partialResults.add(v1);
-		Thread.sleep(SLEEP_TIME);
+		try {
+			//is Schnorr p prime
+			VerificationResult v1 = paramImpl.vrfPrime(Config.p, VerificationType.SETUP_SCHNORR_P);
+			msgr.sendVrfMsg(v1);
+			partialResults.add(v1);
+			Thread.sleep(SLEEP_TIME);
 
-		//is Schnorr q prime
-		VerificationResult v2 = paramImpl.vrfPrime(Config.q, VerificationType.SETUP_SCHNORR_Q);
-		msgr.sendVrfMsg(v2);
-		partialResults.add(v2);
-		Thread.sleep(SLEEP_TIME);
+			//is Schnorr q prime
+			VerificationResult v2 = paramImpl.vrfPrime(Config.q, VerificationType.SETUP_SCHNORR_Q);
+			msgr.sendVrfMsg(v2);
+			partialResults.add(v2);
+			Thread.sleep(SLEEP_TIME);
 
-		//is Schnorr g a generator
-		VerificationResult v3 = paramImpl.vrfGenerator(Config.p, Config.q, Config.g, VerificationType.SETUP_SCHNORR_G);
-		msgr.sendVrfMsg(v3);
-		partialResults.add(v3);
-		Thread.sleep(SLEEP_TIME);
+			//is Schnorr g a generator
+			VerificationResult v3 = paramImpl.vrfGenerator(Config.p, Config.q, Config.g, VerificationType.SETUP_SCHNORR_G);
+			msgr.sendVrfMsg(v3);
+			partialResults.add(v3);
+			Thread.sleep(SLEEP_TIME);
 
-		//is Schnorr p a safe prime
-		VerificationResult v4 = paramImpl.vrfSafePrime(Config.p, Config.q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
-		msgr.sendVrfMsg(v4);
-		partialResults.add(v4);
-		Thread.sleep(SLEEP_TIME);
+			//is Schnorr p a safe prime
+			VerificationResult v4 = paramImpl.vrfSafePrime(Config.p, Config.q, VerificationType.SETUP_SCHNORR_P_SAFE_PRIME);
+			msgr.sendVrfMsg(v4);
+			partialResults.add(v4);
+			Thread.sleep(SLEEP_TIME);
 
-		//are the Schnorr paramters long enough
-		VerificationResult v5 = paramImpl.vrfSchnorrParamLen(Config.p, Config.q, Config.g);
-		msgr.sendVrfMsg(v5);
-		partialResults.add(v5);
-		Thread.sleep(SLEEP_TIME);
+			//are the Schnorr paramters long enough
+			VerificationResult v5 = paramImpl.vrfSchnorrParamLen(Config.p, Config.q, Config.g);
+			msgr.sendVrfMsg(v5);
+			partialResults.add(v5);
+			Thread.sleep(SLEEP_TIME);
 
-		//verifiy CA certificate
-		VerificationResult v6 = certImpl.vrfCACertificate();
-		msgr.sendVrfMsg(v6);
-		partialResults.add(v6);
-		Thread.sleep(SLEEP_TIME);
+			//verifiy CA certificate
+			VerificationResult v6 = certImpl.vrfCACertificate();
+			msgr.sendVrfMsg(v6);
+			partialResults.add(v6);
+			Thread.sleep(SLEEP_TIME);
 
-		//verifiy EM certificate
-		VerificationResult v7 = certImpl.vrfEMCertificate();
-		msgr.sendVrfMsg(v7);
-		partialResults.add(v7);
+			//verifiy EM certificate
+			VerificationResult v7 = certImpl.vrfEMCertificate();
+			msgr.sendVrfMsg(v7);
+			partialResults.add(v7);
+		} catch (com.sun.xml.ws.client.ClientTransportException ex) {
+			msgr.sendElectionSpecError(ex);
+		}
 
 		return Collections.unmodifiableList(partialResults);
 	}

@@ -504,11 +504,13 @@ public class ProofImplementer extends Implementer {
 
 			if (!r) {
 				rep = new Report(FailureCode.ENCRYPTED_VOTES_PLAUSIBILITY_CHECK_FAILED);
+				rep.setAdditionalInformation("The NIZKP is not implemented. The following plausibility checks are succesful: the size of the key for this mixer is the same as the list of key from the voters certificates.");
 			} else if (r) {
 				rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+				rep.setAdditionalInformation("The NIZKP is not implemented. The following plausibility checks are succesful: the size of the key for this mixer is the same as the list of key from the voters certificates.");
 			}
 
-			rep.setAdditionalInformation("The NIZKP is not implemented, so the following plausibility checks are performed: the size of the key for this mixer is the same as the list of key from the voters certificates.");
+
 
 			v.setReport(rep);
 		}
