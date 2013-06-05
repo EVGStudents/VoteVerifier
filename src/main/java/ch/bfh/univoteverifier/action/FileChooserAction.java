@@ -70,7 +70,7 @@ public class FileChooserAction extends AbstractAction {
                 mm.getDefaultMessenger().sendSetupError(invalidFileMsg);
             } else {
                 String path = "\n" + file.getPath();
-                LOGGER.log(Level.OFF, "PATH OF FILE RECEIVED: " + path);
+                LOGGER.log(Level.INFO, "PATH OF FILE RECEIVED: " + path);
                 mm.getDefaultMessenger().sendFileSelected(file.getName());
                 fm.setFile(file);
             }

@@ -45,7 +45,7 @@ public class CandidateResultsTableModel extends AbstractTableModel {
      */
     public CandidateResultsTableModel(Entry<Choice, Integer> e) {
         data = new ArrayList<>();
-        LOGGER.log(Level.OFF, "e.getKey().toString(): {0}", e.getKey().toString());
+        LOGGER.log(Level.INFO, "e.getKey().toString(): {0}", e.getKey().toString());
         columnNames[0] = ((PoliticalList) e.getKey()).getTitle().get(0).getText();
         columnNames[1] = e.getValue().toString();
 

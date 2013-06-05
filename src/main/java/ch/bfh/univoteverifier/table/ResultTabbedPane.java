@@ -87,14 +87,14 @@ public class ResultTabbedPane extends JTabbedPane {
      */
     public void addData(ResultSet rs) {
         if (hasTabPane(rs.getProcessID())) {
-            LOGGER.log(Level.OFF, "TABBED PANE EXISTS, so GET INDEX OF IT: " + rs.getProcessID());
+            LOGGER.log(Level.INFO, "TABBED PANE EXISTS, so GET INDEX OF IT: " + rs.getProcessID());
             ResultTab rtp = getTabPaneByName(rs.getProcessID());
             rtp.addData(rs);
             if (rs.getResult() == false) {
                 //if a there was a problem in the verification, change tab text to red.
-                LOGGER.log(Level.OFF, "NAME OF TAB TO GET: " + rs.getProcessID());
+                LOGGER.log(Level.INFO, "NAME OF TAB TO GET: " + rs.getProcessID());
                 int index = this.indexOfComponent(rtp);
-                LOGGER.log(Level.OFF, "INDEX OF TAB TO GET: " + index);
+                LOGGER.log(Level.INFO, "INDEX OF TAB TO GET: " + index);
                 JPanel tabComponent = (JPanel) this.getTabComponentAt(index);
                 tabComponent.setForeground(Color.red);
             }
@@ -111,7 +111,7 @@ public class ResultTabbedPane extends JTabbedPane {
      */
     public void addElectionResults(CandidateResultSet crs) {
 
-        LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY TABBED PANE");
+        LOGGER.log(Level.INFO, "ELECTION RESULTS RECEIVED BY TABBED PANE");
         if (!hasTabPane(crs.getProcessID())) {
             createNewTab(crs.getProcessID(), crs.getEID());
 
@@ -221,8 +221,8 @@ public class ResultTabbedPane extends JTabbedPane {
         for (ResultTab r : resultsPanels) {
 
             String thisTabID = r.getProcessID();
-            LOGGER.log(Level.OFF, "HAS TAB PANE, ResultPanel Tab ID:" + thisTabID);
-            LOGGER.log(Level.OFF, "HAS TAB PANE, Tab ID to FIND" + tabProcessID);
+            LOGGER.log(Level.INFO, "HAS TAB PANE, ResultPanel Tab ID:" + thisTabID);
+            LOGGER.log(Level.INFO, "HAS TAB PANE, Tab ID to FIND" + tabProcessID);
             if (tabProcessID.equals(thisTabID)) {
                 found = true;
             }

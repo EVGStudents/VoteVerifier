@@ -68,12 +68,9 @@ public class ResultProcessor {
      * information.
      */
     public void showResultInGUI(VerificationEvent ve) {
-
-
-
         if (ve.getVm() == VerificationMessage.ELECTION_RESULTS) {
             CandidateResultSet crs = new CandidateResultSet(ve.getEID(), ve.getElectionResults(), ve.getProcessID());
-            LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY PROCESSOR: ProcessID: " + ve.getProcessID());
+            LOGGER.log(Level.INFO, "ELECTION RESULTS RECEIVED BY PROCESSOR: ProcessID: " + ve.getProcessID());
             resultPanelManager.addElectionResults(crs);
         } else if (ve.getVm() == VerificationMessage.RESULT) {
             VerificationResult vr = ve.getVr();
@@ -82,13 +79,12 @@ public class ResultProcessor {
             ResultDescriber rd = new ResultDescriber();
             String vrfType = rd.getTextFromVrfCode(code);
             ImageIcon img = getImage(vr);
-            LOGGER.log(Level.OFF, "ShowResultsINGui: VerificationEVent contains TabID: " + ve.getProcessID());
+            LOGGER.log(Level.INFO, "ShowResultsINGui: VerificationEVent contains TabID: " + ve.getProcessID());
             ResultSet rs = new ResultSet(vrfType, img, vr, ve.getProcessID());
             resultPanelManager.addData(rs);
             String outputText = "\n" + vrfType + " ............. " + result;
             consolePanel.appendToStatusText(outputText, ve.getEID());
         }
-
     }
 
     /**
