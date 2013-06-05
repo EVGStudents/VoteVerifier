@@ -103,4 +103,32 @@ public class CryptoFunc {
 
 		return cert;
 	}
+
+	/**
+	 * Decode a special string encoded with the variant of base64 used for
+	 * UniVote.
+	 *
+	 * @param str the encoded string
+	 * @return a BigInteger representing the decoded string.
+	 */
+	public static BigInteger decodeSpecialBase64(String str) {
+		String base64code = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_=";
+		BigInteger total = BigInteger.ZERO;
+
+		//for each char in the string
+		for (int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+
+			//check if it exists in the base64 alphabet
+			for (int j = 0; j < base64code.length(); j++) {
+				if (base64code.charAt(j) == c) {
+					BigInteger val = BigInteger.valueOf(j);
+					BigInteger base64mul = BigInteger.valueOf(64);
+					total = total.add(val.multiply(base64mul.pow(str.length() - i - 1)));
+				}
+			}
+		}
+
+		return total;
+	}
 }

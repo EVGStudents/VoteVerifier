@@ -143,14 +143,13 @@ public class SchnorrImplementer extends Implementer {
 				verificationKey = b.getVerificationKey();
 			} else if (er != null) {
 				eID = er.getElectionID();
-				//ToDo check if these value are equals from the one of the eb
-				encFirstValue = new BigInteger(1, er.getEncValueA().toByteArray());
-				encSecondValue = new BigInteger(1, er.getEncValueB().toByteArray());
-				proofCommitment = new BigInteger(1, er.getProofCommitment().toByteArray());
-				proofResponse = new BigInteger(1, er.getProofResponse().toByteArray());
-				schnorrFirstValue = new BigInteger(1, er.getSchnorrValueA().toByteArray());
-				schnorrSecondValue = new BigInteger(1, er.getSchnorrValueB().toByteArray());
-				verificationKey = new BigInteger(1, er.getVerificationKey().toByteArray());
+				encFirstValue = er.getEncValueA();
+				encSecondValue = er.getEncValueB();
+				proofCommitment = er.getProofCommitment();
+				proofResponse = er.getProofResponse();
+				schnorrFirstValue = er.getSchnorrValueA();
+				schnorrSecondValue = er.getSchnorrValueB();
+				verificationKey = er.getVerificationKey();
 			}
 
 			//concatenate to ( id | (firstValue|secondValue) | ((t)|(s)) )

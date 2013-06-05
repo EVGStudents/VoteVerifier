@@ -261,10 +261,6 @@ public class ParamImplTest {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
-
-		System.out.println("vk length from qr code: " + er.getVerificationKey().bitCount());
-		System.out.println("vk length from ballot: " + ebp.getBallots().getBallot().get(0).getVerificationKey().bitCount());
-
 		VerificationResult v = pi.vrfBallotInSet(er.getVerificationKey());
 		assertTrue(v.getResult());
 	}
