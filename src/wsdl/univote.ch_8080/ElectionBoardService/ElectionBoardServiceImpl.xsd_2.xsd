@@ -239,7 +239,7 @@
 	</xs:complexType>
 	<xs:complexType name="getMixedVerificationKeysResponse">
 		<xs:sequence>
-			<xs:element name="mixedVerificationKeys" type="ns1:mixedVerificationKeys"/>
+			<xs:element name="verificationKeys" type="ns1:verificationKeys"/>
 		</xs:sequence>
 	</xs:complexType>
 
