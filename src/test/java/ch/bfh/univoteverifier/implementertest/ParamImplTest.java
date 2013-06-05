@@ -154,27 +154,7 @@ public class ParamImplTest {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
-		String mah = "4lfTbadkitS1NOXSiDhLKrTUh1J=gdOupOzFHgexC4LdYRuV9PIzblQgHfLYNtlEW8i6Tjr1FVv6HJZ902PHeyG8vrkTCJJEODOdZJ7TFzo8WCIywtyqXcFF52n_sg70FNRSLZcEBY6lCcRWWzBJxdGnbBLpl11QGcJ25cG6RKP";
-		StringBuilder binary = new StringBuilder();
-		int bytec = 0;
-		for (byte b : mah.getBytes("UTF-8")) {
-			int val = b;
-			for (int i = 0; i < 8; i++) {
-				binary.append((val & 128) == 0 ? 0 : 1);
-				val <<= 1;
-			}
-			binary.append(' ');
-			bytec++;
-		}
-
-		System.out.println("TEST: " + Integer.toBinaryString((int) '4'));
-
-		System.out.println(bytec + "   ");
-		System.out.println(binary);
-
-		BigInteger vk = new BigInteger(1, mah.getBytes("UTF-8"));
-		System.out.println("VER KEY: " + vk);
-		VerificationResult v = pi.vrfBallotVerificationKey(vk);
+		VerificationResult v = pi.vrfBallotVerificationKey(er.getVerificationKey());
 		assertTrue(v.getResult());
 	}
 
@@ -281,6 +261,9 @@ public class ParamImplTest {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
+
+		System.out.println("vk length from qr code: " + er.getVerificationKey().bitCount());
+		System.out.println("vk length from ballot: " + ebp.getBallots().getBallot().get(0).getVerificationKey().bitCount());
 
 		VerificationResult v = pi.vrfBallotInSet(er.getVerificationKey());
 		assertTrue(v.getResult());

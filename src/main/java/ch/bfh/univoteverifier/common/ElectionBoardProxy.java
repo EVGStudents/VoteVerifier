@@ -69,7 +69,7 @@ public class ElectionBoardProxy {
 	/**
 	 * These instance variables store the data from the web services.
 	 */
-	private Map<BigInteger, Ballot> ballot;
+	private Ballot ballot;
 	private Ballots ballots;
 	private Map<String, BlindedGenerator> blindGen;
 	private DecodedVotes decodedVotes;
@@ -175,7 +175,7 @@ public class ElectionBoardProxy {
 		String eIDSeparator = "-" + eID;
 
 		//read the object from the XML file and store it in the relative object
-//		this.ballot = (Map<BigInteger, Ballot>) xstream.fromXML(new FileInputStream(dataPath + "SingleBallot" + eIDSeparator + EXT));
+		this.ballot = (Ballot) xstream.fromXML(new FileInputStream(dataPath + "SingleBallot" + eIDSeparator + EXT));
 		this.ballots = (Ballots) xstream.fromXML(new FileInputStream(dataPath + "Ballots" + eIDSeparator + EXT));
 		this.blindGen = (Map<String, BlindedGenerator>) xstream.fromXML(new FileInputStream(dataPath + "BlindedGenerator" + eIDSeparator + EXT));
 		this.decodedVotes = (DecodedVotes) xstream.fromXML(new FileInputStream(dataPath + "DecodedVotes" + eIDSeparator + EXT));
@@ -212,15 +212,19 @@ public class ElectionBoardProxy {
 	 * parameter.
 	 */
 	public Ballot getBallot(BigInteger verificationKey) throws ElectionBoardServiceFault {
-		if (ballot == null) {
-			ballot = new HashMap<>();
+		if (eb != null) {//when we test using local data, eb is null
+			ballot = eb.getBallot(eID, verificationKey);
+			return ballot;
+		} else {//so look in the ballots
+			for (Ballot b : getBallots().getBallot()) {
+				if (b.getVerificationKey().equals(verificationKey)) {
+					return ballot;
+				}
+			}
 		}
 
-		if (ballot.get(verificationKey) == null) {
-			ballot.put(verificationKey, eb.getBallot(eID, verificationKey));
-		}
-
-		return ballot.get(verificationKey);
+		//maybe change this - is not so good to return null
+		return null;
 	}
 
 	/**

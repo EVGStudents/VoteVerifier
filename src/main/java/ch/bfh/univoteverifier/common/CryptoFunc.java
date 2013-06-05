@@ -9,7 +9,6 @@
  */
 package ch.bfh.univoteverifier.common;
 
-import ch.bfh.univote.common.Choice;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -19,10 +18,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPublicKey;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.logging.Logger;
 import javax.xml.bind.DatatypeConverter;
 
 /**
@@ -32,7 +27,6 @@ import javax.xml.bind.DatatypeConverter;
  */
 public class CryptoFunc {
 
-	private static final Logger LOGGER = Logger.getLogger(CryptoFunc.class.getName());
 	private static final String HASH_256 = "sha-256";
 	private static final String HASH_1 = "sha-1";
 	private static final String ENCODING = "UTF-8";

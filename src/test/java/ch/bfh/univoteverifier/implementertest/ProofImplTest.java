@@ -15,8 +15,6 @@ import ch.bfh.univoteverifier.implementer.ProofImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

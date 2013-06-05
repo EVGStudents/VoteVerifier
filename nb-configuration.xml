@@ -15,5 +15,6 @@ Any value defined here will override the pom.xml file value but is only applicab
 -->
         <netbeans.compile.on.save>test</netbeans.compile.on.save>
         <org-netbeans-modules-maven-jaxws._5f_C_5f_ElectionBoardServiceImpl>http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_ElectionBoardServiceImpl>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_ElectionBoardServiceImpl_5f_1>http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_ElectionBoardServiceImpl_5f_1>
     </properties>
 </project-shared-configuration>
