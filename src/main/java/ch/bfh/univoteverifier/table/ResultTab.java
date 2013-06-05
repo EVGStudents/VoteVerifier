@@ -75,18 +75,17 @@ public class ResultTab extends JPanel {
      * process has finished.
      */
     public void completeVerification() {
-        tabHeader.remove(progressBar);
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 5;
-        c.gridy = 0;
-        c.weightx = .9;
-        c.insets = new Insets(4, 20, 4, 20);
-
-        tabHeader.add(processCompleted, c);
-
-        tabHeader.revalidate();
+//        tabHeader.remove(progressBar);
+//
+//        GridBagConstraints c = new GridBagConstraints();
+//        c.fill = GridBagConstraints.HORIZONTAL;
+//        c.gridx = 5;
+//        c.gridy = 0;
+//        c.weightx = .9;
+//        c.insets = new Insets(4, 20, 4, 20);
+//
+//        tabHeader.add(processCompleted, c);
+//        tabHeader.revalidate();
     }
 
     /**
@@ -263,7 +262,7 @@ public class ResultTab extends JPanel {
      * Add election results to the election result panel.
      */
     public void addElectionResults(Map<Choice, Integer> electionResult) {
-        LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY RESULT TAB");
+        LOGGER.log(Level.INFO, "ELECTION RESULTS RECEIVED BY RESULT TAB");
         candidateResultsPanel.addData(electionResult);
     }
 

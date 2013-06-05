@@ -125,7 +125,7 @@ public class ResultProcessorTest {
         String processID = "VSBFH1010101010";
         ResultProcessor rp = new ResultProcessor("TESTS");
         boolean vrfResult = true;
-        Report report = new Report(FailureCode.BALLOT_NOT_IN_SET);
+        Report report = new Report(FailureCode.NOT_YET_IMPLEMENTED);
         VerificationResult vr = new VerificationResult(VerificationType.SETUP_EM_CERT, vrfResult, processID, RunnerName.UNSET, ImplementerType.RSA, EntityType.CA);
         vr.setImplemented(false);
         vr.setReport(report);
