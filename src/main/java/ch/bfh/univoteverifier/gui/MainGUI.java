@@ -239,9 +239,22 @@ public class MainGUI extends JFrame {
                 tm.killThread(processID);
                 resultTabbedPane.completeVerification(processID);
             } else {
-                resultProccessor.showResultInGUI(ve);
+                String processID = ve.getProcessID();
+                if (resultsHaveValidThread(processID)) {
+                    resultProccessor.showResultInGUI(ve);
+                }
+
             }
         }
+    }
+
+    /**
+     * Check if the results that are coming in should be displayed. This
+     * requires that the process that they belong to is active, and no command
+     * to cancel it has been issued.
+     */
+    public boolean resultsHaveValidThread(String processID) {
+        return tm.hasThreadWithProcessID(processID);
     }
 
     /**

@@ -141,7 +141,6 @@ public class ResultTabbedPane extends JTabbedPane {
         }
 
 
-
         String thisProcessID = processID;
         String tabTitle = append + eID;
         ResultTab rt = new ResultTab(thisProcessID, individualVrf, numberOfVrfs);
@@ -150,13 +149,16 @@ public class ResultTabbedPane extends JTabbedPane {
         this.addTab(tabTitle, rt);
 
         int index = this.indexOfComponent(rt);
-        TabBackground tabPanel = new TabBackground(tabTitle, removeTabAction);
+        TabBackground tabBackgroundComponent = new TabBackground(tabTitle, removeTabAction, processID);
 
-        JPanel panel = ((JPanel) tabPanel);
+        JPanel panel = ((JPanel) tabBackgroundComponent);
         this.setTabComponentAt(index, panel);
         this.setSelectedIndex(index);
     }
 
+    /**
+     * Gets the tab with a given
+     */
     /**
      * Display and error that is specific to this election ID.
      *
@@ -171,7 +173,7 @@ public class ResultTabbedPane extends JTabbedPane {
     }
 
     /**
-     * Get the table with a given name.
+     * Get the result tab panel with a given name.
      *
      * @param eID the name of the table to find.
      * @return The table whose name is eID.

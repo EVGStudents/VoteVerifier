@@ -11,6 +11,7 @@
 package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.gui.ThreadManager;
+import ch.bfh.univoteverifier.table.ResultTab;
 import ch.bfh.univoteverifier.table.ResultTabbedPane;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -28,18 +29,18 @@ import javax.swing.JTabbedPane;
  */
 public class RemoveTabAction extends AbstractAction {
 
-    private JTabbedPane jtp;
+    private ResultTabbedPane rtp;
     private ThreadManager tm;
 
     /**
      * Create an instance of this class.
      *
-     * @param jtp JTabbedPane from which tabs will be removed.
+     * @param rtp JTabbedPane from which tabs will be removed.
      * @param tm ThreadManager to find the thread that will be stopped when a
      * tab is closed.
      */
-    public RemoveTabAction(JTabbedPane jtp, ThreadManager tm) {
-        this.jtp = jtp;
+    public RemoveTabAction(ResultTabbedPane rtp, ThreadManager tm) {
+        this.rtp = rtp;
         this.tm = tm;
     }
 
@@ -51,22 +52,15 @@ public class RemoveTabAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        String btnName = ((JButton) e.getSource()).getName();
-        int index = jtp.indexOfTab(btnName);
+        String processID = ((JButton) e.getSource()).getName();
+        tm.killThread(processID);
 
-        Component selected = jtp.getComponentAt(index);
-
-        if (selected != null) {
-            jtp.remove(selected);
+        ResultTab rt = rtp.getTabPaneByName(processID);
+        if (rt != null) {
+            int index = rtp.indexOfComponent(rt);
+            rtp.remove(rt);
+        } else {
+            Logger.getLogger(RemoveTabAction.class.getName()).log(Level.SEVERE, "Could not find tab to remove with processID: {0}", processID);
         }
-
-        JButton btn = (JButton) e.getSource();
-        String name = btn.getName();
-        Logger.getLogger(RemoveTabAction.class.getName()).log(Level.INFO, "Name of table to remove{0}", name);
-        if (name != null) {
-            ((ResultTabbedPane) jtp).removeTabPaneByName(name);
-        }
-        tm.killThread(name);
-
     }
 }
