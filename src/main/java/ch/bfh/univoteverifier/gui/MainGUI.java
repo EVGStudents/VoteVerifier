@@ -1,4 +1,4 @@
-/*
+ /*
  *
  *  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
  *   Bern University of Applied Sciences, Engineering and Information Technology,
@@ -124,8 +124,8 @@ public class MainGUI extends JFrame {
             List<String> eids = ebp.getElectionsID().getElectionId();
             eidList = new String[eids.size()];
             eids.toArray(eidList);
-        } catch (ElectionBoardServiceFault ex) {
-            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, "Problem contacting election board." + ex.getMessage(), ex);
         }
 
         return eidList;
@@ -195,9 +195,15 @@ public class MainGUI extends JFrame {
 
         topPanel = new TopPanel();
 
+        boolean networkUp = true;
         String[] eidList = getElectionIDList();
+        if (eidList == null) {
+            eidList = new String[3];
+            eidList[0] = "vsbfh-2013";
+            networkUp = false;
+        }
 
-        middlePanel = new MiddlePanel(resultTabbedPane, eidList, mm, tm);
+        middlePanel = new MiddlePanel(resultTabbedPane, eidList, mm, tm, networkUp);
         middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
         middlePanel.setBackground(GUIconstants.GREY);
 

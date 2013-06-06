@@ -55,7 +55,7 @@ public class MiddlePanel extends JPanel {
      * @param resultTabbedPane the content panel for verification results is
      * added into a scroll pane.
      */
-    public MiddlePanel(ResultTabbedPane resultTabbedPane, String[] eIDlist, MessengerManager mm, ThreadManager tm) {
+    public MiddlePanel(ResultTabbedPane resultTabbedPane, String[] eIDlist, MessengerManager mm, ThreadManager tm, boolean networkUp) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         buttonCreator = new ButtonCreator(this, mm, tm, eIDlist);
 
@@ -94,6 +94,12 @@ public class MiddlePanel extends JPanel {
         errorLabel = new JLabel();
         errorLabel.setPreferredSize(new Dimension(300, 100));
         errorLabel.setAlignmentX(SwingConstants.CENTER);
+        errorLabel.setForeground(Color.red);
+        if (!networkUp) {
+            String networkError = rb.getString("networkProblem");
+            errorLabel.setText(networkError);
+
+        }
 
         c = new GridBagConstraints();
         c.gridx = 0;
