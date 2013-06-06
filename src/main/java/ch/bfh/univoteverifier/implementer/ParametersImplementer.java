@@ -527,11 +527,15 @@ public class ParametersImplementer extends Implementer {
 		try {
 			Ballot qrCodeBallot = ebp.getBallot(verificationKey);
 
-			//check if the ballot belongs to the set of all ballots
-			for (Ballot b : ebp.getBallots().getBallot()) {
-				if (qrCodeBallot.equals(b)) {
-					r = true;
-					break;
+			//there is not ballot with this vk
+			if (qrCodeBallot != null) {
+				//check if the ballot belongs to the set of all ballots
+				for (Ballot b : ebp.getBallots().getBallot()) {
+					//check if the signature is equal
+					if (qrCodeBallot.getSignature().getFirstValue().equals(b.getSignature().getFirstValue()) && qrCodeBallot.getSignature().getSecondValue().equals(b.getSignature().getSecondValue())) {
+						r = true;
+						break;
+					}
 				}
 			}
 		} catch (ElectionBoardServiceFault ex) {

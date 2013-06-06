@@ -508,7 +508,7 @@ public class ProofImplementer extends Implementer {
 				rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
 			}
 
-			rep.setAdditionalInformation("The NIZKP is not implemented, so the following plausibility checks are performed: the size of the key for this mixer is the same as the list of key from the voters certificates.");
+			rep.setAdditionalInformation("The NIZKP is not implemented, so the following plausibility checks are performed:<br /> - the size of the mixed encrypted vote is the same as the ballot size<br /> - all the value are in G_q<br /> - there are any duplicates.");
 
 			v.setReport(rep);
 		}
