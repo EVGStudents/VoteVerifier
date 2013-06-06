@@ -24,6 +24,7 @@ import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -146,14 +147,27 @@ public class ParamImplTest {
 	}
 
 	/**
-	 * Test the verification key of a ballot.
+	 * Test the verification key of a ballot from a QR-Code.
 	 */
 	@Test
-	public void testBallotVerificationKey() {
+	public void testBallotVerificationKeyFromQR() throws UnsupportedEncodingException {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
 		VerificationResult v = pi.vrfBallotVerificationKey(er.getVerificationKey());
+		assertTrue(v.getResult());
+	}
+
+	/**
+	 * Test the verification key of a ballot from a ballot.
+	 *
+	 * @throws ElectionBoardServiceFault if there is problem with the public
+	 * board, such as a wrong parameter or a network connection problem.
+	 */
+	@Test
+	public void testBallotVerificationKeyFromBallot() throws ElectionBoardServiceFault {
+		Ballot b = ebp.getBallots().getBallot().get(0);
+		VerificationResult v = pi.vrfBallotVerificationKey(b.getVerificationKey());
 		assertTrue(v.getResult());
 	}
 
@@ -247,7 +261,6 @@ public class ParamImplTest {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
-
 		VerificationResult v = pi.vrfBallotInSet(er.getVerificationKey());
 		assertTrue(v.getResult());
 	}

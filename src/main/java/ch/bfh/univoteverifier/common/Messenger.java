@@ -93,9 +93,9 @@ public class Messenger {
      * @param String the message to send
      */
     public void sendElectionSpecError(Exception ex) {
-        LOGGER.log(Level.OFF, "EXCEPTION NAME: {0}", ex.toString());
+        LOGGER.log(Level.INFO, "EXCEPTION NAME: {0}", ex.toString());
         String exNameLong = ex.getClass().getName();
-        LOGGER.log(Level.OFF, "EXCEPTION NAME: {0}", exNameLong);
+        LOGGER.log(Level.INFO, "EXCEPTION NAME: {0}", exNameLong);
 
         Pattern pattern = Pattern.compile("[^/.]+$");
         Matcher match = pattern.matcher(exNameLong);
@@ -128,7 +128,7 @@ public class Messenger {
      *
      */
     public void sendVrfMsg(VerificationResult vr) {
-        LOGGER.log(Level.OFF, "SendVrfMessage, send with Messenger ID is : " + processID);
+        LOGGER.log(Level.INFO, "SendVrfMessage, send with Messenger ID is : " + processID);
         VerificationEvent ve = new VerificationEvent(vr, processID);
         ss.notifyListeners(ve);
     }

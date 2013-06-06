@@ -36,6 +36,7 @@ import ch.bfh.univote.common.PoliticalList;
 import ch.bfh.univote.common.Rule;
 import ch.bfh.univote.common.Signature;
 import ch.bfh.univote.common.SummationRule;
+import ch.bfh.univote.common.VerificationKeys;
 import ch.bfh.univote.common.VoterCertificates;
 import ch.bfh.univote.common.VoterSignature;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
@@ -141,14 +142,12 @@ public class RSAImplementer extends Implementer {
 		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 		v.setImplemented(false);
 
+		//create a report for the non-implemented
+		rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+		v.setReport(rep);
+
 		if (exc != null) {
 			rep = new Report(exc);
-			v.setReport(rep);
-		} else if (!v.isImplemented()) {
-			rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
-			v.setReport(rep);
-		} else if (!r) {
-			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
 			v.setReport(rep);
 		}
 
@@ -252,18 +251,14 @@ public class RSAImplementer extends Implementer {
 		//create the VerificationResult
 		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_CERT_M_CERT_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 		v.setImplemented(false);
+		//create a report for the non-implemented
+		rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+		v.setReport(rep);
 
 		if (exc != null) {
 			rep = new Report(exc);
 			v.setReport(rep);
-		} else if (!v.isImplemented()) {
-			rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
-			v.setReport(rep);
-		} else if (!r) {
-			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
-			v.setReport(rep);
 		}
-
 		return v;
 	}
 
@@ -889,12 +884,12 @@ public class RSAImplementer extends Implementer {
 
 		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.CA);
 		v.setImplemented(false);
+		//create a report for the non-implemented
+		rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+		v.setReport(rep);
 
 		if (exc != null) {
 			rep = new Report(exc);
-			v.setReport(rep);
-		} else if (!r) {
-			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
 			v.setReport(rep);
 		}
 
@@ -966,7 +961,7 @@ public class RSAImplementer extends Implementer {
 		Report rep;
 
 		try {
-			MixedVerificationKeys mk = ebp.getMixedVerificationKeys();
+			VerificationKeys mk = ebp.getMixedVerificationKeys();
 			Signature signature = mk.getSignature();
 
 			//concatenate to (id|(vk1|...|vkn))|timestamp
@@ -1022,13 +1017,12 @@ public class RSAImplementer extends Implementer {
 
 		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_LATE_NEW_VOTER_CERT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
 		v.setImplemented(false);
-
+		//create a report for the non-implemented
+		rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+		v.setReport(rep);
 
 		if (exc != null) {
 			rep = new Report(exc);
-			v.setReport(rep);
-		} else if (!r) {
-			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
 			v.setReport(rep);
 		}
 

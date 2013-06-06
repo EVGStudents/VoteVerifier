@@ -1,4 +1,4 @@
-/*
+ /*
  *
  *  Copyright (c) 2013 Berner Fachhochschule, Switzerland.
  *   Bern University of Applied Sciences, Engineering and Information Technology,
@@ -18,6 +18,8 @@ import ch.bfh.univoteverifier.table.ResultTabbedPane;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.MessengerManager;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.List;
@@ -73,11 +75,13 @@ public class MainGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(696, 400));
         JPanel splashPanel = new JPanel();
+        splashPanel.setLayout(new BorderLayout());
         splash = getSplashImage();
-        splashPanel.add(splash);
+        splashPanel.add(splash, BorderLayout.CENTER);
+        splashPanel.setBackground(Color.WHITE);
         JProgressBar jpb = new JProgressBar();
         jpb.setIndeterminate(true);
-        splashPanel.add(jpb);
+        splashPanel.add(jpb, BorderLayout.SOUTH);
         this.setContentPane(splashPanel);
         createContentPanel();
 
@@ -120,8 +124,8 @@ public class MainGUI extends JFrame {
             List<String> eids = ebp.getElectionsID().getElectionId();
             eidList = new String[eids.size()];
             eids.toArray(eidList);
-        } catch (ElectionBoardServiceFault ex) {
-            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, "Problem contacting election board." + ex.getMessage(), ex);
         }
 
         return eidList;
@@ -152,7 +156,7 @@ public class MainGUI extends JFrame {
      */
     private JLabel getSplashImage() {
         JLabel imgLabel = new JLabel();
-        java.net.URL img = VoteVerifier.class.getResource("/univoteTitle.jpeg");
+        java.net.URL img = VoteVerifier.class.getResource("/splash.jpeg");
         if (img != null) {
             ImageIcon logo = new ImageIcon(img);
             imgLabel = new JLabel(logo);
@@ -191,9 +195,15 @@ public class MainGUI extends JFrame {
 
         topPanel = new TopPanel();
 
+        boolean networkUp = true;
         String[] eidList = getElectionIDList();
+        if (eidList == null) {
+            eidList = new String[3];
+            eidList[0] = "vsbfh-2013";
+            networkUp = false;
+        }
 
-        middlePanel = new MiddlePanel(resultTabbedPane, eidList, mm, tm);
+        middlePanel = new MiddlePanel(resultTabbedPane, eidList, mm, tm, networkUp);
         middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
         middlePanel.setBackground(GUIconstants.GREY);
 
@@ -229,9 +239,22 @@ public class MainGUI extends JFrame {
                 tm.killThread(processID);
                 resultTabbedPane.completeVerification(processID);
             } else {
-                resultProccessor.showResultInGUI(ve);
+                String processID = ve.getProcessID();
+                if (resultsHaveValidThread(processID)) {
+                    resultProccessor.showResultInGUI(ve);
+                }
+
             }
         }
+    }
+
+    /**
+     * Check if the results that are coming in should be displayed. This
+     * requires that the process that they belong to is active, and no command
+     * to cancel it has been issued.
+     */
+    public boolean resultsHaveValidThread(String processID) {
+        return tm.hasThreadWithProcessID(processID);
     }
 
     /**

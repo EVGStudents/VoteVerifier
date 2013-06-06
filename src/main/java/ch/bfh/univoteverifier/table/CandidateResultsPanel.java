@@ -163,7 +163,7 @@ public class CandidateResultsPanel extends JPanel {
      * @param r The data to add.
      */
     public void addData(Map<Choice, Integer> electionResult) {
-        LOGGER.log(Level.OFF, "ELECTION RESULTS RECEIVED BY CANDIDATE RESULT PANEL");
+        LOGGER.log(Level.INFO, "ELECTION RESULTS RECEIVED BY CANDIDATE RESULT PANEL");
         for (Entry<Choice, Integer> e : electionResult.entrySet()) {
             Choice c = e.getKey();
             Integer count = e.getValue();

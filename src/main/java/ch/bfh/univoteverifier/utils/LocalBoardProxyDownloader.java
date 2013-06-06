@@ -9,6 +9,7 @@
  */
 package ch.bfh.univoteverifier.utils;
 
+import ch.bfh.univote.common.Ballot;
 import ch.bfh.univote.common.BlindedGenerator;
 import ch.bfh.univote.common.EncryptionKeyShare;
 import ch.bfh.univote.common.MixedEncryptedVotes;
@@ -51,7 +52,7 @@ public class LocalBoardProxyDownloader {
 		LocalBoardProxyDownloader lbpd = new LocalBoardProxyDownloader();
 
 		//Write all the objects to files
-//		lbpd.writeBallot();
+		lbpd.writeBallot();
 		lbpd.writeBallots();
 		lbpd.writeBlindedGenerator();
 		lbpd.writeDecodedVotes();
@@ -70,7 +71,7 @@ public class LocalBoardProxyDownloader {
 		lbpd.writeLatelyRegisteredVoterCerts();
 		lbpd.writeEncryptedVotes();
 		lbpd.writeMixedEncryptedVotesBy();
-//		lbpd.writeMixedVerificationKeys();
+		lbpd.writeMixedVerificationKeys();
 		lbpd.writeMixedVerificationKeysBy();
 		lbpd.writePartiallyDecrpytedVotes();
 //		lbpd.writeRootCertificate();
@@ -110,12 +111,9 @@ public class LocalBoardProxyDownloader {
 	 * Write a single ballot.
 	 */
 	public void writeBallot() throws ElectionBoardServiceFault {
-		QRCode qr = new QRCode(null);
-		File f = new File(this.getClass().getResource("/qrcodeGiu").getPath());
-		ElectionReceipt er = qr.decodeReceipt(f);
-		BigInteger verificationKey = er.getVerificationKey();
+		Ballot b = ebp.getBallots().getBallot().get(0);
 
-		realWrite(ebp.getBallot(verificationKey), "SingleBallot");
+		realWrite(b, "SingleBallot");
 
 
 	}

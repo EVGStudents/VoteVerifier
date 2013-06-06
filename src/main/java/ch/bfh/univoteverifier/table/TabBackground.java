@@ -29,7 +29,7 @@ public class TabBackground extends JPanel {
 
     private JLabel titleLabel;
 
-    public TabBackground(String title, RemoveTabAction removeTabAction) {
+    public TabBackground(String title, RemoveTabAction removeTabAction, String processID) {
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
         this.setOpaque(false);
         titleLabel = new JLabel(title);
@@ -37,7 +37,7 @@ public class TabBackground extends JPanel {
 
         JButton btnClose = new JButton("x");
         btnClose.setBorderPainted(true);
-        btnClose.setName(title);
+        btnClose.setName(processID);
         btnClose.setPreferredSize(new Dimension(17, 17));
         btnClose.setToolTipText("close this tab");
         btnClose.setUI(new BasicButtonUI());

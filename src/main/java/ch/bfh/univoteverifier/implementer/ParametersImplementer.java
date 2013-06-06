@@ -22,6 +22,7 @@ import ch.bfh.univote.common.MixedEncryptedVotes;
 import ch.bfh.univote.common.MixedVerificationKey;
 import ch.bfh.univote.common.MixedVerificationKeys;
 import ch.bfh.univote.common.PartiallyDecryptedVotes;
+import ch.bfh.univote.common.VerificationKeys;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
@@ -259,7 +260,7 @@ public class ParametersImplementer extends Implementer {
 		Report rep;
 
 		try {
-			MixedVerificationKeys vk = ebp.getMixedVerificationKeys();
+			VerificationKeys vk = ebp.getMixedVerificationKeys();
 
 			//get the verification key of the last mixer
 			List<String> mixerID = ebp.getElectionDefinition().getMixerId();
@@ -267,9 +268,9 @@ public class ParametersImplementer extends Implementer {
 			MixedVerificationKeys lastMixerKeys = ebp.getMixedVerificationKeysBy(lastMixer);
 
 			//check that vk' == vk_m
-			r = vk.equals(lastMixerKeys);
+			r = vk.getKey().equals(lastMixerKeys.getKey());
 
-		} catch (NullPointerException | ElectionBoardServiceFault ex) {
+		} catch (ElectionBoardServiceFault ex) {
 			exc = ex;
 		}
 
@@ -369,7 +370,7 @@ public class ParametersImplementer extends Implementer {
 		Report rep;
 
 		try {
-			MixedVerificationKeys mvk = ebp.getMixedVerificationKeys();
+			VerificationKeys mvk = ebp.getMixedVerificationKeys();
 
 			//check that vk belongs to VK'
 			for (BigInteger key : mvk.getKey()) {
@@ -473,11 +474,11 @@ public class ParametersImplementer extends Implementer {
 					BigInteger aValue = pdv.getVote().get(i);
 
 					//multiply with other tallier a value
-					aProducts = aProducts.multiply(aValue);
+					aProducts = aProducts.multiply(aValue).mod(elGamalP);
 				}
 
-				//decrypt
 				BigInteger m = bValue.multiply(aProducts).mod(elGamalP);
+
 
 				//compute G^-1
 				BigInteger mInverse;
@@ -487,11 +488,7 @@ public class ParametersImplementer extends Implementer {
 					mInverse = elGamalP.subtract(m).subtract(BigInteger.ONE);
 				}
 
-				System.out.println(mInverse);
-
-
-				//ToDo decode the vote
-
+//				System.out.println(mInverse);
 
 			}
 		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault ex) {
@@ -530,11 +527,15 @@ public class ParametersImplementer extends Implementer {
 		try {
 			Ballot qrCodeBallot = ebp.getBallot(verificationKey);
 
-			//check if the ballot belongs to the set of all ballots
-			for (Ballot b : ebp.getBallots().getBallot()) {
-				if (qrCodeBallot.equals(b)) {
-					r = true;
-					break;
+			//there is not ballot with this vk
+			if (qrCodeBallot != null) {
+				//check if the ballot belongs to the set of all ballots
+				for (Ballot b : ebp.getBallots().getBallot()) {
+					//check if the signature is equal
+					if (qrCodeBallot.getSignature().getFirstValue().equals(b.getSignature().getFirstValue()) && qrCodeBallot.getSignature().getSecondValue().equals(b.getSignature().getSecondValue())) {
+						r = true;
+						break;
+					}
 				}
 			}
 		} catch (ElectionBoardServiceFault ex) {
