@@ -408,11 +408,10 @@ public class ProofImplementer extends Implementer {
 				aValue = b.getEncryptedVote().getFirstValue();
 				verificationKey = b.getVerificationKey();
 			} else if (er != null) {
-				//ToDo check if these values are ok
-				t = new BigInteger(1, er.getProofCommitment().toByteArray());
-				s = new BigInteger(1, er.getProofResponse().toByteArray());
-				aValue = new BigInteger(1, er.getEncValueA().toByteArray());
-				verificationKey = new BigInteger(1, er.getVerificationKey().toByteArray());
+				t = er.getProofCommitment();
+				s = er.getProofResponse();
+				aValue = er.getEncValueA();
+				verificationKey = er.getVerificationKey();
 			}
 
 			//concatenate to atvk

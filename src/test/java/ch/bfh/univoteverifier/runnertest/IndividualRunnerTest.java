@@ -41,7 +41,6 @@ public class IndividualRunnerTest {
 	private final List<VerificationResult> mockList;
 	private final List<VerificationResult> realList;
 	private final ElectionBoardProxy ebp;
-	private final String eID;
 	private final RunnerName rn;
 
 	public IndividualRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException, InterruptedException {
@@ -49,7 +48,6 @@ public class IndividualRunnerTest {
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
 
-		eID = "vsbfh-2013";
 		ebp = new ElectionBoardProxy();
 		ir = new IndividualRunner(ebp, new Messenger(), er);
 		realList = ir.run();
@@ -62,8 +60,6 @@ public class IndividualRunnerTest {
 	/**
 	 * Build the mock list.
 	 *
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	private void buildMockList() {
 		mockList.add(new VerificationResult(VerificationType.SETUP_EM_CERT, true, ebp.getElectionID(), rn, ImplementerType.CERTIFICATE, EntityType.EM));

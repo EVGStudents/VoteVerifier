@@ -15,6 +15,7 @@ import ch.bfh.univote.common.BlindedGenerator;
 import ch.bfh.univote.common.Candidate;
 import ch.bfh.univote.common.Certificate;
 import ch.bfh.univote.common.Choice;
+import ch.bfh.univote.common.DecodedVote;
 import ch.bfh.univote.common.DecodedVoteEntry;
 import ch.bfh.univote.common.DecodedVotes;
 import ch.bfh.univote.common.ElectionData;
@@ -27,7 +28,6 @@ import ch.bfh.univote.common.EncryptedVotes;
 import ch.bfh.univote.common.EncryptionKey;
 import ch.bfh.univote.common.EncryptionKeyShare;
 import ch.bfh.univote.common.ForallRule;
-import ch.bfh.univote.common.LocalizedText;
 import ch.bfh.univote.common.MixedEncryptedVotes;
 import ch.bfh.univote.common.MixedVerificationKey;
 import ch.bfh.univote.common.MixedVerificationKeys;
@@ -38,7 +38,6 @@ import ch.bfh.univote.common.Signature;
 import ch.bfh.univote.common.SummationRule;
 import ch.bfh.univote.common.VerificationKeys;
 import ch.bfh.univote.common.VoterCertificates;
-import ch.bfh.univote.common.VoterSignature;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
@@ -55,13 +54,8 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.InvalidNameException;
 import javax.xml.ws.soap.SOAPFaultException;
 
 /**
@@ -328,7 +322,7 @@ public class RSAImplementer extends Implementer {
 			EncryptionKeyShare eks = ebp.getEncryptionKeyShare(tallierName);
 			Signature signature = eks.getSignature();
 
-			//concatenate to (id|y_j|t|s)|timestamp
+			//concatenate to (id|y_j|(t|s))|timestamp
 			sc.pushLeftDelim();
 
 			sc.pushObjectDelimiter(eks.getElectionId(), StringConcatenator.INNER_DELIMITER);
@@ -915,11 +909,25 @@ public class RSAImplementer extends Implementer {
 			MixedVerificationKeys mk = ebp.getMixedVerificationKeysBy(mixerName);
 			Signature signature = mk.getSignature();
 
-			//concatenate to (id|(vk1|...|vkn))|timestamp
+			//concatenate to (id|(vk1|...|vkn)|(()|()))|timestamp - WARNING the proof is empty.
 			sc.pushLeftDelim();
 
 			sc.pushObjectDelimiter(mk.getElectionId(), StringConcatenator.INNER_DELIMITER);
 			sc.pushList(mk.getKey(), true);
+
+			//empty proof
+			sc.pushLeftDelim();
+
+			sc.pushLeftDelim();
+			sc.pushRightDelim();
+
+			sc.pushInnerDelim();
+
+			sc.pushLeftDelim();
+			sc.pushRightDelim();
+
+			sc.pushRightDelim();
+			//end empty proof
 
 			sc.pushRightDelim();
 			sc.pushInnerDelim();
@@ -1052,11 +1060,23 @@ public class RSAImplementer extends Implementer {
 			for (MixedVerificationKey key : mvk) {
 				Signature signature = key.getSignature();
 
-				//concatenate to (id|vk)|timestamp - WARNING: The proof is not yet implemented, so we exclude it.
+				//concatenate to (id|vk|(()|()))|timestamp - WARNING: The proof is not yet implemented.
 				sc.pushLeftDelim();
 
 				sc.pushObjectDelimiter(key.getElectionId(), StringConcatenator.INNER_DELIMITER);
-				sc.pushObject(key.getKey());
+				sc.pushObjectDelimiter(key.getKey(), StringConcatenator.INNER_DELIMITER);
+
+				//empty proof
+				sc.pushLeftDelim();
+
+				sc.pushLeftDelim();
+				sc.pushRightDelim();
+				sc.pushInnerDelim();
+				sc.pushLeftDelim();
+				sc.pushRightDelim();
+
+				sc.pushRightDelim();
+				//end empty proof
 
 				sc.pushRightDelim();
 				sc.pushInnerDelim();
@@ -1432,16 +1452,7 @@ public class RSAImplementer extends Implementer {
 			sc.pushLeftDelim();
 			sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
 
-			sc.pushLeftDelim();
-			//for each partial decrypted vote
-			for (int i = 0; i < pdv.getVote().size(); i++) {
-				if (i > 0) {
-					sc.pushInnerDelim();
-				}
-
-				sc.pushObject(pdv.getVote().get(i));
-			}
-			sc.pushRightDelim();
+			sc.pushList(pdv.getVote(), true);
 
 			sc.pushInnerDelim();
 
@@ -1451,7 +1462,9 @@ public class RSAImplementer extends Implementer {
 			sc.pushInnerDelim();
 			sc.pushList(pdv.getProof().getResponse(), true);
 			sc.pushRightDelim();
+			//end proof
 
+			sc.pushRightDelim();
 			sc.pushInnerDelim();
 			sc.pushObject(signature.getTimestamp());
 
@@ -1505,19 +1518,21 @@ public class RSAImplementer extends Implementer {
 					sc.pushInnerDelim();
 				}
 
+				DecodedVote decVote = dv.getDecodedVote().get(i);
+
 				sc.pushLeftDelim();
 				//(cID|count)|(cID|count)|....|(cID|count)
 				for (int j = 0; j < dv.getDecodedVote().get(i).getEntry().size(); j++) {
-					DecodedVoteEntry dve = dv.getDecodedVote().get(i).getEntry().get(j);
+					DecodedVoteEntry dve = decVote.getEntry().get(j);
 
 					if (j > 0) {
 						sc.pushInnerDelim();
 					}
 
 					sc.pushLeftDelim();
-					sc.pushObject(dve.getCount());
-					sc.pushInnerDelim();
 					sc.pushObject(dve.getChoiceId());
+					sc.pushInnerDelim();
+					sc.pushObject(dve.getCount());
 					sc.pushRightDelim();
 				}
 				sc.pushRightDelim();
