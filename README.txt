@@ -1,6 +1,6 @@
-UniVerifier ${VERSION}
+VoteVerifier ${VERSION}
 
-UniVerifier is a verification software used to verify the
+VoteVerifier is a verification software used to verify the
 crytpographic data of an election publishd on the public
 bulletin board of the UniVote system.
 

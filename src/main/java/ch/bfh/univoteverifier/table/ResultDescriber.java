@@ -14,6 +14,7 @@ import ch.bfh.univoteverifier.common.Config;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,12 +32,14 @@ public class ResultDescriber {
      * @return The user-friendly text that describes a verification step.
      */
     public String getTextFromVrfCode(int code) {
-        String fileName = "src/main/resources/messages.properties";
+        //String fileName = "src/main/resources/messages.properties";
+        String fileName = "messages.properties";
         return getTextFromFile(fileName, code);
     }
 
     public String getTextFromFailureCode(int code) {
-        String fileName = "src/main/resources/failurecodes.properties";
+        //String fileName = "src/main/resources/failurecodes.properties";
+        String fileName = "failurecodes.properties";
         return getTextFromFile(fileName, code);
     }
 
@@ -49,25 +52,15 @@ public class ResultDescriber {
      */
     public String getTextFromFile(String fileName, int code) {
         String text = "";
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(fileName);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ResultDescriber.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         try {
             Properties prop;
             prop = new Properties();
-            prop.load(fis);
-            text = (String) prop.getProperty(String.valueOf(code));
+			InputStream is = Config.class.getClassLoader().getResourceAsStream(fileName);
+			prop.load(is);
+            text = prop.getProperty(String.valueOf(code));
         } catch (IOException ex) {
             Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            fis.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ResultDescriber.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return text;

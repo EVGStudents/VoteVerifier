@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ch.bfh.univote</groupId>
-    <artifactId>univerifier</artifactId>
+    <artifactId>voteverifier</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>UniVoteVerifier</name>
+    <name>VoteVerifier</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -82,7 +82,7 @@
     </dependencies>
 
     <build>
-        <finalName>UniVerifier-${version}</finalName>
+        <finalName>VoteVerifier-${version}</finalName>
         <resources>
             <resource>
                 <targetPath>META-INF</targetPath>
@@ -191,7 +191,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ch.bfh.univoteverifier.gui.UniVerifier</mainClass>
+                            <mainClass>ch.bfh.univoteverifier.gui.VoteVerifier</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
