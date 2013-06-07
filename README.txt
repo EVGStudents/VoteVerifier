@@ -1,4 +1,4 @@
-UniVerifier ${VERSION}
+UniVerifier 1.0
 
 UniVerifier is a verification software used to verify the
 crytpographic data of an election publishd on the public
