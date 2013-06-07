@@ -202,13 +202,13 @@ public class RSAImplTest {
 	}
 
 	/**
-	 * Test the result of vrfShuffledEncryptedVotesBySign().
+	 * Test the result of vrfMixedEncryptedVotesBySign().
 	 *
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
 	@Test
-	public void testShuffledEncVotesBySign() throws ElectionBoardServiceFault {
+	public void testMixedEncVotesBySign() throws ElectionBoardServiceFault {
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
 
 			VerificationResult vr = ri.vrfMixedEncryptedVotesBySign(mName);
@@ -282,15 +282,6 @@ public class RSAImplTest {
 	@Test
 	public void testLateRenewalOfRegSign() {
 		VerificationResult vr = ri.vrfLateRenewalOfRegistrationSign();
-		assertTrue(vr.getResult());
-	}
-
-	/**
-	 * Test the result of vrfLateRenewalOfRegistrationSign().
-	 */
-	@Test
-	public void testMixedVerificationKeys() {
-		VerificationResult vr = ri.vrfMixedVerificationKeysSign();
 		assertTrue(vr.getResult());
 	}
 }

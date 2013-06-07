@@ -479,7 +479,6 @@ public class ParametersImplementer extends Implementer {
 
 				BigInteger m = bValue.multiply(aProducts).mod(elGamalP);
 
-
 				//compute G^-1
 				BigInteger mInverse;
 				if (m.compareTo(elGamalQ) == -1 || m.compareTo(elGamalQ) == 0) {
@@ -488,8 +487,7 @@ public class ParametersImplementer extends Implementer {
 					mInverse = elGamalP.subtract(m).subtract(BigInteger.ONE);
 				}
 
-//				System.out.println(mInverse);
-
+				//decode the vote is missing but there is a problem with the computation of mInverse!
 			}
 		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault ex) {
 			exc = ex;
