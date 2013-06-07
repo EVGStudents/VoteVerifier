@@ -147,7 +147,7 @@ public class ElectionBoardProxy {
 	 */
 	public ElectionBoardProxy() throws FileNotFoundException {
 		//this eID must correspond to the suffix in the name of the XML file
-		this.eID = "vsbfh-2013";
+		this.eID = "risis-2013-1";
 		readElectionDataFromXML();
 	}
 
@@ -685,7 +685,7 @@ public class ElectionBoardProxy {
 	 * parameter.
 	 */
 	public X509Certificate getEACert() throws ElectionBoardServiceFault, CertificateException {
-		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getElectionAdministration().getValue(), true);
+		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getElectionAdministration().getValue(), false);
 
 		return c;
 	}

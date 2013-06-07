@@ -1,0 +1,30 @@
+<ch.bfh.univote.common.DecryptedVotes>
+  <electionId>risis-2013-1</electionId>
+  <vote>
+    <big-int>0</big-int>
+    <big-int>10</big-int>
+    <big-int>10</big-int>
+    <big-int>5</big-int>
+    <big-int>1</big-int>
+    <big-int>10</big-int>
+    <big-int>0</big-int>
+    <big-int>10</big-int>
+    <big-int>2</big-int>
+    <big-int>2</big-int>
+    <big-int>5</big-int>
+  </vote>
+  <signature>
+    <signerId>electionmanager</signerId>
+    <timestamp class="com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl">
+      <year>2013</year>
+      <month>5</month>
+      <day>16</day>
+      <timezone>0</timezone>
+      <hour>10</hour>
+      <minute>46</minute>
+      <second>15</second>
+      <fractionalSecond>0.000</fractionalSecond>
+    </timestamp>
+    <value>8126307155700499121133142423215378116464012576490663749158982782568702005088719578825465592211972892207319350451034351989847051086941022274760476231230159228530072147998320623894468925619480600123299984083677519055097924656374936796195597194365336682961581561596260721267693042040623866523655503629999264253</value>
+  </signature>
+</ch.bfh.univote.common.DecryptedVotes>

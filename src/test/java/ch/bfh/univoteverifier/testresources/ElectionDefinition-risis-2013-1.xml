@@ -1,0 +1,39 @@
+<ch.bfh.univote.common.ElectionDefinition>
+  <electionId>risis-2013-1</electionId>
+  <title>Generated Demo Election at Wed May 15 11:02:13 CEST 2013</title>
+  <keyLength>1024</keyLength>
+  <mixerId>
+    <string>mixerUlla</string>
+    <string>mixerFrigg</string>
+    <string>mixerBaldr</string>
+  </mixerId>
+  <tallierId>
+    <string>tallierUlla</string>
+    <string>tallierFrigg</string>
+    <string>tallierBaldr</string>
+  </tallierId>
+  <votingPhaseBegin class="com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl">
+    <year>2013</year>
+    <month>5</month>
+    <day>16</day>
+    <timezone>0</timezone>
+    <hour>10</hour>
+    <minute>45</minute>
+    <second>13</second>
+    <fractionalSecond>0.000</fractionalSecond>
+  </votingPhaseBegin>
+  <signature>
+    <signerId>election-admin</signerId>
+    <timestamp class="com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl">
+      <year>2013</year>
+      <month>5</month>
+      <day>15</day>
+      <timezone>0</timezone>
+      <hour>9</hour>
+      <minute>2</minute>
+      <second>13</second>
+      <fractionalSecond>0.000</fractionalSecond>
+    </timestamp>
+    <value>86741588377810074568234560984735211081863450900687035993881203497559943975740463188210783330499786188468340481705950336938420517316426081739178186858550956919225352315480925604665343922303774147566177901744976459050604156802025130804454018883781893991618519420777136226416927048610335047589748695792599923727</value>
+  </signature>
+</ch.bfh.univote.common.ElectionDefinition>
