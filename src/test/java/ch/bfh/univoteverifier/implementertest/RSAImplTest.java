@@ -33,7 +33,7 @@ public class RSAImplTest {
 	ElectionBoardProxy ebp;
 
 	public RSAImplTest() throws FileNotFoundException {
-		ebp = new ElectionBoardProxy();
+		ebp = new ElectionBoardProxy("risis-2013-1", true);
 		ri = new RSAImplementer(ebp, RunnerName.UNSET);
 	}
 

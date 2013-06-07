@@ -36,14 +36,19 @@ import static org.junit.Assert.*;
  */
 public class ParamImplTest {
 
-	private final ParametersImplementer pi;
+	private final ParametersImplementer pi, piQR;
 	private final BigInteger p, q, g;
 	private final BigInteger elQ, elG, elP;
-	private final ElectionBoardProxy ebp;
+	private final ElectionBoardProxy ebp, ebpQR;
 
 	public ParamImplTest() throws FileNotFoundException, ElectionBoardServiceFault {
-		ebp = new ElectionBoardProxy();
+		ebp = new ElectionBoardProxy("risis-2013-1", true);
 		pi = new ParametersImplementer(ebp, RunnerName.UNSET);
+
+		//create a board proxy for vsbfh, we only have the qr-code for vsbfh
+		ebpQR = new ElectionBoardProxy("vsbfh-2013", true);
+		piQR = new ParametersImplementer(ebpQR, RunnerName.UNSET);
+
 		//change the value of p,q and g - all the test must fail
 		p = Config.p.multiply(new BigInteger("2"));
 		q = Config.q.multiply(new BigInteger("2"));
@@ -154,7 +159,7 @@ public class ParamImplTest {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
-		VerificationResult v = pi.vrfBallotVerificationKey(er.getVerificationKey());
+		VerificationResult v = piQR.vrfBallotVerificationKey(er.getVerificationKey());
 		assertTrue(v.getResult());
 	}
 
@@ -167,6 +172,7 @@ public class ParamImplTest {
 	@Test
 	public void testBallotVerificationKeyFromBallot() throws ElectionBoardServiceFault {
 		Ballot b = ebp.getBallots().getBallot().get(0);
+		System.out.println("Ballot vk " + b.getVerificationKey());
 		VerificationResult v = pi.vrfBallotVerificationKey(b.getVerificationKey());
 		assertTrue(v.getResult());
 	}
@@ -261,7 +267,7 @@ public class ParamImplTest {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
-		VerificationResult v = pi.vrfBallotInSet(er.getVerificationKey());
+		VerificationResult v = piQR.vrfBallotInSet(er.getVerificationKey());
 		assertTrue(v.getResult());
 	}
 }

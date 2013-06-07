@@ -374,6 +374,7 @@ public class ParametersImplementer extends Implementer {
 
 			//check that vk belongs to VK'
 			for (BigInteger key : mvk.getKey()) {
+
 				if (key.equals(verificationKey)) {
 					r = true;
 					break;

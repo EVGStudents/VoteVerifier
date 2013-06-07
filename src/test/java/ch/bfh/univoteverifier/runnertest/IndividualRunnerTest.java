@@ -48,7 +48,7 @@ public class IndividualRunnerTest {
 		QRCode qrCode = new QRCode(new Messenger());
 		ElectionReceipt er = qrCode.decodeReceipt(qrCodeFile);
 
-		ebp = new ElectionBoardProxy();
+		ebp = new ElectionBoardProxy("risis-2013-1", true);
 		ir = new IndividualRunner(ebp, new Messenger(), er);
 		realList = ir.run();
 		mockList = new ArrayList<>();

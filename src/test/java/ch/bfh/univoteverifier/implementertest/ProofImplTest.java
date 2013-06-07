@@ -36,7 +36,7 @@ public class ProofImplTest {
 	ElectionBoardProxy ebp;
 
 	public ProofImplTest() throws FileNotFoundException {
-		ebp = new ElectionBoardProxy();
+		ebp = new ElectionBoardProxy("risis-2013-1", true);
 		pi = new ProofImplementer(ebp, RunnerName.UNSET);
 	}
 

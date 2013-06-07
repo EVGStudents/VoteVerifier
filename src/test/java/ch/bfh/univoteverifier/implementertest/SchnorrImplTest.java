@@ -35,7 +35,7 @@ public class SchnorrImplTest {
 	private final SchnorrImplementer si;
 
 	public SchnorrImplTest() throws FileNotFoundException {
-		ebp = new ElectionBoardProxy();
+		ebp = new ElectionBoardProxy("risis-2013-1", true);
 		si = new SchnorrImplementer(ebp, RunnerName.UNSET);
 	}
 
