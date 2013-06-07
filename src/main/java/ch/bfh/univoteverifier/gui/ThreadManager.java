@@ -35,31 +35,22 @@ public class ThreadManager {
         threadMap = new HashMap<>();
     }
 
+    /**
+     * Check if a thread with a given processID exists.
+     *
+     * @param processID The processID for which to check if a thread exists.
+     * @return true if there is a thread with the processID in the map.
+     */
     public boolean hasThreadWithProcessID(String processID) {
         return threadMap.containsKey(processID);
     }
 
-//    /**
-//     * End a thread, for example if a tab is closed, the verification process is
-//     * no longer needed.
-//     *
-//     * @param eID The election ID for which to end a thread.
-//     */
-//    public void killThread(String processID) {
-//        VerificationThread vtFound = null;
-//        LOGGER.log(Level.INFO, "Looking for thread with process ID {0}", processID);
-//        for (VerificationThread vtI : threads) {
-//            LOGGER.log(Level.INFO, "Iterated process ID {0}", vtI.getProcessID());
-//            if (vtI.getProcessID().equals(processID)) {
-//                vtFound = vtI;
-//            }
-//        }
-//        if (vtFound != null) {
-//            threads.remove(vtFound);
-//            vtFound.interrupt();
-//            LOGGER.log(Level.INFO, "INTERRUPTED THREAD {0}", vtFound.getProcessID());
-//        }
-//    }
+    /**
+     * End a thread, for example if a tab is closed, the verification process is
+     * no longer needed.
+     *
+     * @param eID The election ID for which to end a thread.
+     */
     public void killThread(String processID) {
         if (threadMap.containsKey(processID)) {
             VerificationThread vt = threadMap.remove(processID);
@@ -69,12 +60,21 @@ public class ThreadManager {
         }
     }
 
+    /**
+     * A new verification process has begun and its thread should be registered
+     * with this class.
+     *
+     * @param vt VerificationThread to register.
+     */
     public void addThread(VerificationThread vt) {
         LOGGER.log(Level.INFO, "THREAD REGISTERED!  Process ID: " + vt.getProcessID());
         String processID = vt.getProcessID();
         threadMap.put(processID, vt);
     }
 
+    /**
+     * Kill all the threads running. Used when the language is changed.
+     */
     public void killAllThreads() {
         Set keys = threadMap.keySet();
         String[] keyList = new String[keys.size()];
@@ -87,27 +87,4 @@ public class ThreadManager {
         }
 
     }
-    /**
-     * A new verification process has begun and its thread should be registered
-     * with this class.
-     *
-     * @param vt VerificationThread to register.
-     */
-//public void addThread(VerificationThread vt) {
-//        LOGGER.log(Level.INFO, "THREAD REGISTERED!  Process ID: " + vt.getProcessID());
-//        threads.add(vt);
-//    }
-    /**
-     * Kill all the threads running. Used when the language is changed.
-     */
-//public void killAllThreads() {
-//        if (threads.isEmpty()) {
-//            LOGGER.log(Level.INFO, "NO THREADS FOUND");
-//        }
-//        for (VerificationThread vtI : threads) {
-//            LOGGER.log(Level.INFO, "INTERRUPTED THREAD {0}", vtI.getProcessID());
-//            vtI.interrupt();
-//        }
-//        threads = new ArrayList<>();
-//    }
 }

@@ -39,8 +39,8 @@ public class SystemSetupRunnerTest {
 	private final RunnerName rn;
 
 	public SystemSetupRunnerTest() throws FileNotFoundException, InterruptedException {
-		eID = "vsbfh-2013";
-		ebp = new ElectionBoardProxy();
+		eID = "risis-2013-1";
+		ebp = new ElectionBoardProxy(eID, true);
 		ssr = new SystemSetupRunner(ebp, new Messenger());
 		realList = ssr.run();
 		mockList = new ArrayList<>();

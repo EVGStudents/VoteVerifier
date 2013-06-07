@@ -34,6 +34,17 @@ public class UniversalVerification extends Verification {
 		super(msgr, eID);
 	}
 
+	/**
+	 * Construct a universal verification with an election id.
+	 *
+	 * @param eID the ID of the election.
+	 * @param msgr the entity used to exchange messages with the GUI.
+	 * @param test if true use locally saved data, if false do nothing.
+	 */
+	public UniversalVerification(Messenger msgr, String eID, boolean test) {
+		super(msgr, eID, test);
+	}
+
 	@Override
 	protected void createRunners() {
 		SystemSetupRunner ssr = new SystemSetupRunner(ebproxy, msgr);

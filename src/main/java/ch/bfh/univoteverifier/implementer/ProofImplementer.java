@@ -408,11 +408,10 @@ public class ProofImplementer extends Implementer {
 				aValue = b.getEncryptedVote().getFirstValue();
 				verificationKey = b.getVerificationKey();
 			} else if (er != null) {
-				//ToDo check if these values are ok
-				t = new BigInteger(1, er.getProofCommitment().toByteArray());
-				s = new BigInteger(1, er.getProofResponse().toByteArray());
-				aValue = new BigInteger(1, er.getEncValueA().toByteArray());
-				verificationKey = new BigInteger(1, er.getVerificationKey().toByteArray());
+				t = er.getProofCommitment();
+				s = er.getProofResponse();
+				aValue = er.getEncValueA();
+				verificationKey = er.getVerificationKey();
 			}
 
 			//concatenate to atvk
@@ -566,7 +565,14 @@ public class ProofImplementer extends Implementer {
 			//compute the knowledge of discrete log for each element in the list
 			for (int i = 0; i < pdv.getVote().size(); i++) {
 				BigInteger commitment = pdv.getProof().getCommitment().get(i + 1);
-				BigInteger response = pdv.getProof().getResponse().get(i + 1);
+				BigInteger response;
+
+
+				if (pdv.getProof().getResponse().size() == 1) {
+					response = pdv.getProof().getResponse().get(0);
+				} else {
+					response = pdv.getProof().getResponse().get(i + 1);
+				}
 				BigInteger a_tallier = pdv.getVote().get(i);
 				BigInteger a_firstEncValue = mev.getVote().get(i).getFirstValue();
 

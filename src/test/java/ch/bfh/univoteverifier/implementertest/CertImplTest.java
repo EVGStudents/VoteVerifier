@@ -27,9 +27,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.InvalidNameException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -48,7 +45,7 @@ public class CertImplTest {
 	File cacert;
 
 	public CertImplTest() throws FileNotFoundException {
-		ebp = new ElectionBoardProxy();
+		ebp = new ElectionBoardProxy("risis-2013-1", true);
 		ci = new CertificatesImplementer(ebp, RunnerName.UNSET);
 
 		fBfh = new File(this.getClass().getResource("/www.bfh.ch").getPath());

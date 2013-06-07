@@ -43,12 +43,10 @@ public class CandidateResultsTableModel extends AbstractTableModel {
      * @param section The description of the section from which this
      * verification result was produced.
      */
-    public CandidateResultsTableModel(Entry<Choice, Integer> e) {
+    public CandidateResultsTableModel(String name, String value) {
         data = new ArrayList<>();
-        LOGGER.log(Level.INFO, "e.getKey().toString(): {0}", e.getKey().toString());
-        columnNames[0] = ((PoliticalList) e.getKey()).getTitle().get(0).getText();
-        columnNames[1] = e.getValue().toString();
-
+        columnNames[0] = name;
+        columnNames[1] = value;
     }
 
     /**

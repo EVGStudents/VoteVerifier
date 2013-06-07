@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
     <groupId>ch.bfh.univote</groupId>
     <artifactId>voteverifier</artifactId>
@@ -10,76 +10,76 @@
     <name>VoteVerifier</name>
     <url>http://maven.apache.org</url>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <izpack.maven.plugin.version>1.0-alpha-5</izpack.maven.plugin.version>
-        <izpack.standalone.compiler.version>4.3.5</izpack.standalone.compiler.version>
-    </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<izpack.maven.plugin.version>1.0-alpha-5</izpack.maven.plugin.version>
+		<izpack.standalone.compiler.version>4.3.5</izpack.standalone.compiler.version>
+	</properties>
 
-    <description>The UniVoteVerifier is used to verify the results of a election in the UniVote system.</description>
+	<description>The UniVoteVerifier is used to verify the results of a election in the UniVote system.</description>
 
-    <organization>
-        <name>BFH</name>
-        <url>http://www.bfh.ch</url>
-    </organization>
+	<organization>
+		<name>BFH</name>
+		<url>http://www.bfh.ch</url>
+	</organization>
 
-    <developers>
-        <developer>
-            <id>scalg1</id>
-            <name>Giuseppe Scalzi</name>
-            <email>scalg1@bfh.ch</email>
-            <organization>BFH</organization>
-            <organizationUrl>http://www.bfh.ch</organizationUrl>
-            <roles>
-                <role>developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>sprij1</id>
-            <name>Justin Springer</name>
-            <email>sprij1@bfh.ch</email>
-            <organization>BFH</organization>
-            <organizationUrl>http://www.bfh.ch</organizationUrl>
-            <roles>
-                <role>developer</role>
-            </roles>
-        </developer>
-    </developers>
+	<developers>
+		<developer>
+			<id>scalg1</id>
+			<name>Giuseppe Scalzi</name>
+			<email>scalg1@bfh.ch</email>
+			<organization>BFH</organization>
+			<organizationUrl>http://www.bfh.ch</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>sprij1</id>
+			<name>Justin Springer</name>
+			<email>sprij1@bfh.ch</email>
+			<organization>BFH</organization>
+			<organizationUrl>http://www.bfh.ch</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>webservices-rt</artifactId>
-            <version>1.4</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>core</artifactId>
-            <version>2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>javase</artifactId>
-            <version>1.7</version>
-        </dependency>
-        <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-            <version>1.2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.izpack</groupId>
-            <artifactId>izpack-standalone-compiler</artifactId>
-            <version>${izpack.standalone.compiler.version}</version>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>webservices-rt</artifactId>
+			<version>1.4</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.izpack</groupId>
+			<artifactId>izpack-standalone-compiler</artifactId>
+			<version>${izpack.standalone.compiler.version}</version>
+		</dependency>
+	</dependencies>
 
     <build>
         <finalName>VoteVerifier-${version}</finalName>

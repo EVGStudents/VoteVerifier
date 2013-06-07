@@ -142,13 +142,18 @@ public class ElectionBoardProxy {
 	 *
 	 * USE FOR TEST ONLY!
 	 *
+	 * @param electionID the electionID
+	 * @param test if true the local data will be used. If false do nothing.
 	 * @throws FileNotFoundException if the files where the election data
 	 * are stored cannot be found.
 	 */
-	public ElectionBoardProxy() throws FileNotFoundException {
+	public ElectionBoardProxy(String electionID, boolean test) throws FileNotFoundException {
 		//this eID must correspond to the suffix in the name of the XML file
-		this.eID = "vsbfh-2013";
-		readElectionDataFromXML();
+		this.eID = electionID;
+
+		if (test) {
+			readElectionDataFromXML();
+		}
 	}
 
 	/**

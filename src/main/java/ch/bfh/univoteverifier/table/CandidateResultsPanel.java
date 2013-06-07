@@ -20,6 +20,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -168,26 +169,35 @@ public class CandidateResultsPanel extends JPanel {
             Choice c = e.getKey();
             Integer count = e.getValue();
             if (c instanceof PoliticalList) {
-                //create new table
-                createNewTable(e);
+                String cellValue = e.getValue().toString();
+                String cellName = ((PoliticalList) e.getKey()).getTitle().get(0).getText();
+                createNewTable(cellName, cellValue);
                 PoliticalList pl = (PoliticalList) c;
             } else if (c instanceof Candidate) {
-                //add to existing table
-                activeTable.getTableModel().addEntry(e);
-                activeTable.revalidate();
-                Candidate can = (Candidate) c;
+                //RSIS election sends a list with out a political list first, create generic header in this case
+                if (activeTable == null) {
+                    String cellValue = e.getValue().toString();
+                    String cellName = "No political party";
+                    createNewTable(cellName, cellValue);
+                } else {
+                    //add to existing table
+                    activeTable.getTableModel().addEntry(e);
+                    activeTable.revalidate();
+                    Candidate can = (Candidate) c;
+                }
             }
         }
         this.revalidate();
         this.repaint();
     }
 
-    public void createNewTable(Entry<Choice, Integer> e) {
+    public void createNewTable(String cellName, String cellValue) {
         if (!resultsArrived) {
             resultsContent.remove(noResultsLabel);
             resultsArrived = !resultsArrived;
         }
-        CandidateResultsTableModel crtm = new CandidateResultsTableModel(e);
+
+        CandidateResultsTableModel crtm = new CandidateResultsTableModel(cellName, cellValue);
         activeTable = new CandidateResultsTable(crtm);
 
         JPanel tablePanel = new JPanel();

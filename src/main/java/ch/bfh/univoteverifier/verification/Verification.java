@@ -46,15 +46,32 @@ public abstract class Verification {
 	public Verification(Messenger msgr, String eID) {
 		this.eID = eID;
 
-		if (eID.equals("")) { //the election ID must be null only for the JUnit test.
+		this.ebproxy = new ElectionBoardProxy(eID);
+
+		runners = new ArrayList<>();
+		res = new ArrayList<>();
+		this.msgr = msgr;
+	}
+
+	/**
+	 * Construct a new abstract verification with a given election ID.
+	 *
+	 * @param msgr the Messenger used to manage the output
+	 * @param eID the ID of an election.
+	 * @param test if true use locally saved data, is false do nothing.
+	 *
+	 */
+	public Verification(Messenger msgr, String eID, boolean test) {
+		this.eID = eID;
+
+		if (test) {
 			try {
-				this.ebproxy = new ElectionBoardProxy();
+				this.ebproxy = new ElectionBoardProxy(eID, true);
 			} catch (FileNotFoundException ex) {
 				Logger.getLogger(Verification.class.getName()).log(Level.SEVERE, null, ex);
 			}
-		} else {
-			this.ebproxy = new ElectionBoardProxy(eID);
 		}
+
 		runners = new ArrayList<>();
 		res = new ArrayList<>();
 		this.msgr = msgr;

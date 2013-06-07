@@ -31,7 +31,7 @@ public class ResultsRunnerTest {
 	ResultsRunner rr;
 
 	public ResultsRunnerTest() throws FileNotFoundException {
-		rr = new ResultsRunner(new ElectionBoardProxy(), new Messenger());
+		rr = new ResultsRunner(new ElectionBoardProxy("vsbfh-2013", true), new Messenger());
 	}
 
 	/**

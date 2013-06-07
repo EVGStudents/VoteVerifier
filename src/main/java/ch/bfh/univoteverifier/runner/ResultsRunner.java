@@ -44,7 +44,7 @@ public class ResultsRunner extends Runner {
 	}
 
 	/**
-	 * Compute the result of an election
+	 * Compute the result of an election.
 	 *
 	 * @return a map of choices with the relative vote counts.
 	 */
