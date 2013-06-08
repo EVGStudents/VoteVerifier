@@ -11,7 +11,6 @@
 package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univote.election.ElectionBoardServiceFault;
-import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.IFileManager;
 import ch.bfh.univoteverifier.common.Messenger;
@@ -46,7 +45,6 @@ public class StartAction extends AbstractAction {
     private ElectionReceipt er;
     private VerificationThread vt;
     private ThreadManager tm;
-    private int counter = 0;
     private static final Logger LOGGER = Logger.getLogger(StartAction.class.getName());
 
     /**
@@ -87,12 +85,8 @@ public class StartAction extends AbstractAction {
         String msg = "";
         int uniqueness = (int) (System.currentTimeMillis() / 1000L);
 
-
-
         if (btnTxt.equals("btnUni")) {
-
             String eID = comboBox.getSelectedItem().toString();
-
             if (!checkIfValidEID(eID)) {
                 mm.getDefaultMessenger().sendSetupError(rb.getString("invalidEIDorNetworkProb"));
             } else {
@@ -121,7 +115,6 @@ public class StartAction extends AbstractAction {
                 }
             } else {
                 mm.getDefaultMessenger().sendSetupError(rb.getString("pleaseSelectFile"));
-
             }
             middlePanel.resetFileText();
         }
@@ -129,7 +122,10 @@ public class StartAction extends AbstractAction {
     }
 
     /**
-     * Check if the eID provided is valid
+     * Check if the eID provided is valid.
+     *
+     * @param eID the election ID to check the validity of.
+     * @return true if the election board has a matching election ID.
      */
     public boolean checkIfValidEID(String eID) {
         ElectionBoardProxy ebp = new ElectionBoardProxy(eID);

@@ -10,6 +10,7 @@
 package ch.bfh.univoteverifier.common;
 
 import java.util.logging.Formatter;
+import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
@@ -26,6 +27,6 @@ public final class LogFormatter extends Formatter {
      */
     @Override
     public String format(LogRecord record) {
-        return record.getMessage();
+        return record.getMessage() + LINE_SEPARATOR;
     }
 }

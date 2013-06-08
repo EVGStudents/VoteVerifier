@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JComponent;
 
 /**
+ * This class is responsible for changing which results are shown in the GUI.
  *
  * @author prinstin
  */
@@ -23,10 +24,18 @@ public class ToggleResultOrganizationAction implements ActionListener {
 
     private ResultTab rtp;
 
+    /*
+     * Create an instance of this class with a give ResultTab.
+     */
     public ToggleResultOrganizationAction(ResultTab rtp) {
         this.rtp = rtp;
     }
 
+    /**
+     * Designates what should be down when a given action is performed.
+     *
+     * @param e The object that has triggered this event.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String name = ((JComponent) e.getSource()).getName();

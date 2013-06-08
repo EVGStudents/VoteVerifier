@@ -128,7 +128,7 @@ public class Messenger {
      *
      */
     public void sendVrfMsg(VerificationResult vr) {
-        LOGGER.log(Level.INFO, "SendVrfMessage, send with Messenger ID is : " + processID);
+//        LOGGER.log(Level.INFO, "SendVrfMessage, send with Messenger ID is : " + processID);
         VerificationEvent ve = new VerificationEvent(vr, processID);
         ss.notifyListeners(ve);
     }

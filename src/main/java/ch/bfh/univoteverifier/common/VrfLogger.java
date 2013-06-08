@@ -24,24 +24,16 @@ import java.util.logging.SimpleFormatter;
  */
 public class VrfLogger {
 
-    static private FileHandler fileTxt;
-    static private LogFormatter formatter;
+    public static Logger getLoggerForClass(String className) {
+        Logger logger = Logger.getLogger(className);
 
-    /**
-     * Setup the logger with the custom formatter.
-     *
-     * @throws IOException
-     */
-    static public void setup() throws IOException {
-
-        // Get the global logger to configure it
-        Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-        logger.setLevel(Level.INFO);
-        fileTxt = new FileHandler("Logging.txt");
-
+        LogFormatter formatter;
         formatter = new LogFormatter();
-        fileTxt.setFormatter(formatter);
-        logger.addHandler(fileTxt);
+        VrfConsoleHandler consoleHandler = new VrfConsoleHandler();
+
+        consoleHandler.setFormatter(formatter);
+        logger.setUseParentHandlers(false);
+        logger.addHandler(consoleHandler);
+        return logger;
     }
 }

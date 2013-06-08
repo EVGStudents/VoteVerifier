@@ -111,10 +111,9 @@ public class ResultTabbedPane extends JTabbedPane {
      */
     public void addElectionResults(CandidateResultSet crs) {
 
-        LOGGER.log(Level.INFO, "ELECTION RESULTS RECEIVED BY TABBED PANE");
+//        LOGGER.log(Level.INFO, "ELECTION RESULTS RECEIVED BY TABBED PANE");
         if (!hasTabPane(crs.getProcessID())) {
             createNewTab(crs.getProcessID(), crs.getEID());
-
         }
         ResultTab rtp = getTabPaneByName(crs.getProcessID());
         Map<Choice, Integer> electionResults = crs.getElectionResult();
