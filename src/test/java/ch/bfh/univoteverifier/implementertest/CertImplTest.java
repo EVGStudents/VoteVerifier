@@ -45,7 +45,7 @@ public class CertImplTest {
 	File cacert;
 
 	public CertImplTest() throws FileNotFoundException {
-		ebp = new ElectionBoardProxy();
+		ebp = new ElectionBoardProxy("risis-2013-1", true);
 		ci = new CertificatesImplementer(ebp, RunnerName.UNSET);
 
 		fBfh = new File(this.getClass().getResource("/www.bfh.ch").getPath());

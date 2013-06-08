@@ -42,8 +42,8 @@ public class MixerTallierRunnerTest {
 	private final RunnerName rn;
 
 	public MixerTallierRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException, InterruptedException {
-		eID = "vsbfh-2013";
-		ebp = new ElectionBoardProxy();
+		eID = "risis-2013-1";
+		ebp = new ElectionBoardProxy(eID, true);
 		epr = new MixerTallierRunner(ebp, new Messenger());
 		realList = epr.run();
 		mockList = new ArrayList<>();

@@ -46,8 +46,8 @@ public class ElectionPeriodRunnerTest {
 	private final RunnerName rn;
 
 	public ElectionPeriodRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException, InterruptedException {
-		eID = "vsbfh-2013";
-		ebp = new ElectionBoardProxy();
+		eID = "risis-2013-1";
+		ebp = new ElectionBoardProxy(eID, true);
 		epr = new ElectionPeriodRunner(ebp, new Messenger());
 		realList = epr.run();
 		mockList = new ArrayList<>();

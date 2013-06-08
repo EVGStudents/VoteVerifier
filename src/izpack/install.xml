@@ -7,9 +7,9 @@
     </variables>
 
     <info>
-        <appname>UniVerifier</appname>
+        <appname>VoteVerifier</appname>
         <appversion>${version}</appversion>
-        <appsubpath>UniVerifier</appsubpath>
+        <appsubpath>VoteVerifier</appsubpath>
         <javaversion>1.7</javaversion>
         <authors>
             <author name= "Giuseppe Scalzi" email = "" />
@@ -45,23 +45,23 @@
     </panels>
 
     <packs>
-        <pack name="UniVerifier Core" required="yes">
+        <pack name="VoteVerifier Core" required="yes">
             <description>The core files needed for the application</description>
             <file src="../@{project.build.finalName}-jar-with-dependencies.jar" targetdir="$INSTALL_PATH" unpack="false" />
             <fileset dir="../../bin" targetdir="${INSTALL_PATH}" override="true"/>
-            <executable targetfile="${INSTALL_PATH}/univerifier.sh" stage="never">
+            <executable targetfile="${INSTALL_PATH}/voteverifier.sh" stage="never">
                 <os family="unix"/>
             </executable>
-            <executable targetfile="${INSTALL_PATH}/univerifier.command" stage="never">
+            <executable targetfile="${INSTALL_PATH}/voteverifier.command" stage="never">
                 <os family="unix"/>
             </executable>
-            <parsable targetfile="${INSTALL_PATH}/univerifier.bat">
+            <parsable targetfile="${INSTALL_PATH}/voteverifier.bat">
                 <os family="windows"/>
             </parsable>
-            <parsable targetfile="${INSTALL_PATH}/univerifier.sh" type="shell">
+            <parsable targetfile="${INSTALL_PATH}/voteverifier.sh" type="shell">
                 <os family="unix"/>
             </parsable>
-            <parsable targetfile="${INSTALL_PATH}/univerifier.command" type="shell">
+            <parsable targetfile="${INSTALL_PATH}/voteverifier.command" type="shell">
                 <os family="unix"/>
             </parsable>
         </pack>

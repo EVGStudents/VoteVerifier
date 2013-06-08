@@ -42,8 +42,8 @@ public class ElectionSetupRunnerTest {
 	private final RunnerName rn;
 
 	public ElectionSetupRunnerTest() throws FileNotFoundException, CertificateException, ElectionBoardServiceFault, InvalidNameException, InterruptedException {
-		eID = "vsbfh-2013";
-		ebp = new ElectionBoardProxy();
+		eID = "risis-2013-1";
+		ebp = new ElectionBoardProxy(eID, true);
 		esr = new ElectionSetupRunner(ebp, new Messenger());
 		realList = esr.run();
 		mockList = new ArrayList<>();

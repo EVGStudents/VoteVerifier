@@ -2,12 +2,12 @@
   <skipIfNotSupported/>
   <programGroup defaultName="BFH" location="application"/>
   <shortcut
-    name="Start UniVerifier"
-    target="$INSTALL_PATH\univerifier.bat"
+    name="Start VoteVerifier"
+    target="$INSTALL_PATH\voteverifier.bat"
     commandLine=""
     workingDirectory="$USER_HOME"
-    description="Starts the UniVerifier program"
-    iconFile="$INSTALL_PATH\univerifier.ico"
+    description="Starts the VoteVerifier program"
+    iconFile="$INSTALL_PATH\voteverifier.ico"
     iconIndex="0"
     initialState="normal"
     programGroup="yes"
