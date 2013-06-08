@@ -284,4 +284,13 @@ public class RSAImplTest {
 		VerificationResult vr = ri.vrfLateRenewalOfRegistrationSign();
 		assertTrue(vr.getResult());
 	}
+
+	/**
+	 * Test the result of vrfBallotSetSign().
+	 */
+	@Test
+	public void testBallotSetSign() {
+		VerificationResult vr = ri.vrfBallotsSetSign();
+		assertTrue(vr.getResult());
+	}
 }
