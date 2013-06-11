@@ -10,13 +10,11 @@
  */
 package ch.bfh.univoteverifier.gui;
 
-import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.listener.VerificationMessage;
 import ch.bfh.univoteverifier.listener.VerificationListener;
 import ch.bfh.univoteverifier.listener.VerificationEvent;
 import ch.bfh.univoteverifier.table.ResultTabbedPane;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.MessengerManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -86,7 +84,7 @@ public class MainGUI extends JFrame {
         createContentPanel();
 
         this.setJMenuBar(new VerificationMenuBar(this));
-        this.setTitle(rb.getString("windowTitle"));
+        this.setTitle("VoteVerifier");
         this.pack();
     }
 
