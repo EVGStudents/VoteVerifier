@@ -172,7 +172,6 @@ public class ParamImplTest {
 	@Test
 	public void testBallotVerificationKeyFromBallot() throws ElectionBoardServiceFault {
 		Ballot b = ebp.getBallots().getBallot().get(0);
-		System.out.println("Ballot vk " + b.getVerificationKey());
 		VerificationResult v = pi.vrfBallotVerificationKey(b.getVerificationKey());
 		assertTrue(v.getResult());
 	}

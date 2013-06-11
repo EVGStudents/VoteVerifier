@@ -9,9 +9,6 @@
  */
 package ch.bfh.univoteverifier.runner;
 
-import ch.bfh.univote.common.Ballot;
-import ch.bfh.univote.common.Proof;
-import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.implementer.ParametersImplementer;

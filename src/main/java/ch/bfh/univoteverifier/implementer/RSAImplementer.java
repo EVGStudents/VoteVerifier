@@ -1228,11 +1228,10 @@ public class RSAImplementer extends Implementer {
 			Ballots b = ebp.getBallots();
 			Signature signature = b.getSignature();
 
-			//concatenate to (id|ballots)|timestamp - ToDo change when we will have the getBallots method
+			//concatenate to (id|ballots)|timestamp
 			sc.pushLeftDelim();
 
 			sc.pushObjectDelimiter(b.getElectionId(), StringConcatenator.INNER_DELIMITER);
-			sc.pushObjectDelimiter(b.getBallotsState(), StringConcatenator.INNER_DELIMITER);
 
 			//for each ballot
 			sc.pushLeftDelim();
@@ -1243,6 +1242,10 @@ public class RSAImplementer extends Implementer {
 				}
 
 				sc.pushLeftDelim();
+				sc.pushObjectDelimiter(singleBallot.getElectionId(), StringConcatenator.INNER_DELIMITER);
+
+				//verification key
+				sc.pushObjectDelimiter(singleBallot.getVerificationKey(), StringConcatenator.INNER_DELIMITER);
 
 				//encrypted vote
 				sc.pushLeftDelim();
@@ -1252,8 +1255,12 @@ public class RSAImplementer extends Implementer {
 
 				sc.pushInnerDelim();
 
-				//verification key
-				sc.pushObject(singleBallot.getVerificationKey());
+				//proof
+				sc.pushLeftDelim();
+				sc.pushList(singleBallot.getProof().getCommitment(), true);
+				sc.pushInnerDelim();
+				sc.pushList(singleBallot.getProof().getResponse(), true);
+				sc.pushRightDelim();
 
 				sc.pushInnerDelim();
 
@@ -1261,16 +1268,6 @@ public class RSAImplementer extends Implementer {
 				sc.pushLeftDelim();
 				sc.pushObjectDelimiter(singleBallot.getSignature().getFirstValue(), StringConcatenator.INNER_DELIMITER);
 				sc.pushObject(singleBallot.getSignature().getSecondValue());
-				sc.pushRightDelim();
-
-				sc.pushInnerDelim();
-
-				//proof
-				sc.pushLeftDelim();
-				sc.pushList(singleBallot.getProof().getCommitment(), true);
-				sc.pushInnerDelim();
-				sc.pushList(singleBallot.getProof().getResponse(), true);
-
 				sc.pushRightDelim();
 
 				sc.pushRightDelim();
@@ -1285,7 +1282,7 @@ public class RSAImplementer extends Implementer {
 
 			//verifiy the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (CertificateException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
