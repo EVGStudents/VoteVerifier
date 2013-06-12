@@ -23,7 +23,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 /**
  * This is the information that is displayed in a tab of the TabbedPane.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class TabBackground extends JPanel {
 

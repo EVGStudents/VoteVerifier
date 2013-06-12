@@ -38,7 +38,7 @@ import javax.swing.border.EtchedBorder;
  * This panel contains the election results for the number of votes each
  * candidate received.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class CandidateResultsPanel extends JPanel {
 

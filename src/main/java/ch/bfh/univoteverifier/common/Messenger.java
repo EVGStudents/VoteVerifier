@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * many classes have a reference to this class, but there will be only one
  * instance of it
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class Messenger {
 

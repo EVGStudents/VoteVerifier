@@ -21,7 +21,7 @@ import static javax.swing.Action.NAME;
  * An Action that manages the action of clicking on the individual verification
  * button.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class SelectIndVrfAction extends AbstractAction {
 

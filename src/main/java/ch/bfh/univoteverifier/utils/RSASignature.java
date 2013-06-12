@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @author prinstin contains and generates parameters and contents of an RSA
+ * @author Justin Springer contains and generates parameters and contents of an RSA
  * signature
  */
 public class RSASignature {

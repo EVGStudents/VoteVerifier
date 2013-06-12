@@ -37,7 +37,7 @@ import javax.swing.SwingConstants;
 
 /**
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ButtonCreator {
 
@@ -216,7 +216,7 @@ public class ButtonCreator {
      * which is sent to the verification thread when individual verification is
      * selected.
      *
-     * @author prinstin
+     * @author Justin Springer
      */
     class FileManager implements IFileManager {
 

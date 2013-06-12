@@ -28,7 +28,7 @@ import javax.swing.border.EmptyBorder;
  * Create several panels within this class that contain images, buttons and
  * labels.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class TopPanel extends JPanel {
 

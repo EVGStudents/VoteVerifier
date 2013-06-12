@@ -21,7 +21,7 @@ import static javax.swing.Action.NAME;
  * An Action Class that manages the action of clicking on the universal
  * verification button.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class SelectUniVrfAction extends AbstractAction {
 

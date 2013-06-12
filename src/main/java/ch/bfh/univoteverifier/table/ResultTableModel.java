@@ -20,7 +20,7 @@ import javax.swing.table.AbstractTableModel;
  * This class defines a model for the information that is stored in the tables
  * for the results of verification groups.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ResultTableModel extends AbstractTableModel {
 

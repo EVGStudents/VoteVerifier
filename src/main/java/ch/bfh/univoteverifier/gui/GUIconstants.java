@@ -16,7 +16,7 @@ import java.util.Locale;
 /**
  * Create a static utility class which contains widely used variables.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class GUIconstants {
 

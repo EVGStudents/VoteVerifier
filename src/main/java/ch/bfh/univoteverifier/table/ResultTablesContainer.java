@@ -22,7 +22,7 @@ import javax.swing.JPanel;
  * This panel contains the various tables which belong to a given election
  * verification process.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ResultTablesContainer extends JPanel {
 

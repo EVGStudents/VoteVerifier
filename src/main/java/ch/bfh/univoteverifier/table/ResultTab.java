@@ -39,7 +39,7 @@ import javax.swing.JTextArea;
  * It has one main panel and can contain multiple tables. A Vertical scroll bar
  * is added.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ResultTab extends JPanel {
 

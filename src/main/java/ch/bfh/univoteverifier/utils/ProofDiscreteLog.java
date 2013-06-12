@@ -19,7 +19,7 @@ import java.security.NoSuchAlgorithmException;
  * This class contains the components of a zero knowledge proof and methods to
  * generate certain kinds of proofs. The class is used for tests
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ProofDiscreteLog {
 

@@ -38,7 +38,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  * Creates the main window of the GUI and generates the components needed to see
  * the GUI and operate the program
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class MainGUI extends JFrame {
 
@@ -216,7 +216,7 @@ public class MainGUI extends JFrame {
      * for the status messages for the console and verification parts of the
      * GUI.
      *
-     * @author prinstin
+     * @author Justin Springer
      */
     class StatusUpdate implements VerificationListener {
 

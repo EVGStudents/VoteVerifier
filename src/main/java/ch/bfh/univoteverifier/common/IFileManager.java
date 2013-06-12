@@ -16,7 +16,7 @@ import java.io.File;
  * in the GUI and holds a reference to a file expected to be QRCode and which is
  * sent to the verification thread when individual verification is selected.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public interface IFileManager {
 

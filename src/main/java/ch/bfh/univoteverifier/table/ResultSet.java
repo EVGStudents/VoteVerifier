@@ -25,7 +25,7 @@ import javax.swing.JLabel;
  * This helper class organizes the information that is printed in a result
  * table.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ResultSet {
 

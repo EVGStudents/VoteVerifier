@@ -15,7 +15,7 @@ import java.util.logging.LogRecord;
 /**
  * This class allows custom formatter settings to be implemented.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public final class LogFormatter extends Formatter {
 

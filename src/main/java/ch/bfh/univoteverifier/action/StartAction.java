@@ -33,7 +33,7 @@ import javax.swing.JComboBox;
 /**
  * An Action Class that manages the action of clicking on the start button.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class StartAction extends AbstractAction {
 

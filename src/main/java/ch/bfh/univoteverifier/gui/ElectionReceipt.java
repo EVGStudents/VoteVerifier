@@ -15,7 +15,7 @@ import java.math.BigInteger;
 
 /**
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ElectionReceipt {
 

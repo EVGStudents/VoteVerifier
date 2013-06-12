@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * Organizes the various threads that have been started which are responsible
  * for different elections being verified.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ThreadManager {
 

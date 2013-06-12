@@ -29,7 +29,7 @@ import javax.swing.border.EtchedBorder;
 
 /**
  *
- * @author prinstin
+ * @author Justin Springer
  *
  * creates the JPanel which is displayed in the middle of the GUI and contains
  * either input options for the user or displays the results of the verification

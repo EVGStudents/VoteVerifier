@@ -18,7 +18,7 @@ import javax.swing.JComponent;
 /**
  * This class is responsible for changing which results are shown in the GUI.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ToggleResultOrganizationAction implements ActionListener {
 

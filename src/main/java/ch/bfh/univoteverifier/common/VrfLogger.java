@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * Creates a logger that can use a custom formatter in order to present
  * verification output in a desirable format in the console.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class VrfLogger {
 

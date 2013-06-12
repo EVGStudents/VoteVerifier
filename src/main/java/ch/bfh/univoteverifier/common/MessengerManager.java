@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class MessengerManager {
 

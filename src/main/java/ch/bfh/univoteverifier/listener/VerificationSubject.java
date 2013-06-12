@@ -12,7 +12,7 @@ package ch.bfh.univoteverifier.listener;
 /**
  * makes up part of the observer pattern
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public interface VerificationSubject {
 

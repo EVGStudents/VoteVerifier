@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 /**
  * This class simply provides a point of departure when the program is started.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class VoteVerifier {
 

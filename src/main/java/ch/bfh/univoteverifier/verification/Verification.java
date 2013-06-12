@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 /**
  * This abstract class represent a verification.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public abstract class Verification {
 

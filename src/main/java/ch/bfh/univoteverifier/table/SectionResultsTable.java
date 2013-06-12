@@ -18,7 +18,7 @@ import javax.swing.table.TableColumn;
  * This class extends a JTable and uses a custom TableModel called
  * ResultTableModel.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class SectionResultsTable extends JTable {
 

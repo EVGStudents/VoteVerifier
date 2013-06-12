@@ -23,7 +23,7 @@ import javax.swing.JButton;
  * Action to remove a tab from the TabbedPane in the Verification panel (the
  * middle).
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class RemoveTabAction extends AbstractAction {
 

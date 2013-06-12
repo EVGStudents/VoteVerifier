@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ResourceBundleTest {
 

@@ -21,7 +21,7 @@ import javax.swing.JCheckBoxMenuItem;
  * time. It toggles the visibility of the console-like GUI text area for system
  * messages.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ShowConsoleAction extends AbstractAction {
 

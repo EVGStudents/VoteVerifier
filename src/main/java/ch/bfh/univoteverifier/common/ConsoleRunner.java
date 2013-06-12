@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  * Runs the program without in the terminal as the text only version in which
  * only one verification can run at a time.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ConsoleRunner {
 
@@ -205,7 +205,7 @@ public class ConsoleRunner {
      * for the status messages for the console and verification parts of the
      * GUI.
      *
-     * @author prinstin
+     * @author Justin Springer
      */
     class StatusUpdate implements VerificationListener {
 

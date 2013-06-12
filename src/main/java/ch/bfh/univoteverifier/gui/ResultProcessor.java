@@ -24,7 +24,7 @@ import javax.swing.ImageIcon;
  * This class handles the processing of the results that are received after a
  * verification is completed.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ResultProcessor {
 

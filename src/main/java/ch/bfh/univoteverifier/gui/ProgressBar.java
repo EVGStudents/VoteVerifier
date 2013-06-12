@@ -18,7 +18,7 @@ import javax.swing.JProgressBar;
  * Create a new progress bar to visualize the progress of the verification
  * process.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ProgressBar extends JPanel {
 

@@ -32,7 +32,7 @@ import javax.swing.event.ChangeListener;
  * results from various elections. It holds the tabbed panes in a list, and
  * implemented methods to append verification results to a given ResultTable.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ResultTabbedPane extends JTabbedPane {
 

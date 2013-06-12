@@ -17,7 +17,7 @@ import javax.swing.Action;
  * This class maintains a list of Actions and implements methods to add and
  * retrieve Actions.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class ActionManager {
 

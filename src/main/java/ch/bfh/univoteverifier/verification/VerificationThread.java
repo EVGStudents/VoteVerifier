@@ -16,7 +16,7 @@ import ch.bfh.univoteverifier.gui.ElectionReceipt;
  * This class represent a thread that is responsible to start a verification so
  * that the GUI won't be blocked by background operations
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class VerificationThread extends Thread {
 

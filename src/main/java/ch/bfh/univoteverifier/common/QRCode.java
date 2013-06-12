@@ -37,7 +37,7 @@ import javax.swing.ImageIcon;
  * The QRCode Class creates and decodes QRCodes and interprets the data stored
  * in an election receipt from the UniVote eVoting system.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class QRCode {
 

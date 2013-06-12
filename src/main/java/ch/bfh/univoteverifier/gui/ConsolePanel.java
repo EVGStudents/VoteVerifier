@@ -28,7 +28,7 @@ import javax.swing.event.ChangeListener;
 
 /**
  *
- * @author prinstin
+ * @author Justin Springer
  *
  * Creates that status panel which is shown at the bottom of the GUI and
  * optionally contains a console-like message area

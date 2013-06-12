@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 /**
  * An Action that manages the action of choosing a file.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class FileChooserAction extends AbstractAction {
 

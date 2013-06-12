@@ -8,7 +8,7 @@ import java.util.logging.ConsoleHandler;
 
 /**
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class VrfConsoleHandler extends ConsoleHandler {
 

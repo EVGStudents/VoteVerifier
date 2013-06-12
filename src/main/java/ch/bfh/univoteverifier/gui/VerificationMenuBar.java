@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
 /**
  * Create a menu bar for the only frame for this program.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class VerificationMenuBar extends JMenuBar {
 

@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  * This class takes the data from the table and renders it for display in the
  * table.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 class ResultCellRendererText extends DefaultTableCellRenderer {
 

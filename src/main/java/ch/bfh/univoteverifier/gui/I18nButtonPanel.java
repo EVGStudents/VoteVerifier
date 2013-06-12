@@ -23,7 +23,7 @@ import javax.swing.JPanel;
  * This Panel Class contains images representing the possible locales that are
  * available.
  *
- * @author prinstin
+ * @author Justin Springer
  */
 public class I18nButtonPanel extends JPanel {
 

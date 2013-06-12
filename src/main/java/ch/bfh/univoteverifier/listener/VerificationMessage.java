@@ -11,7 +11,7 @@ package ch.bfh.univoteverifier.listener;
 
 /**
  *
- * @author prinstin
+ * @author Justin Springer
  *
  * Enumerates the types of messages that the GUI receives
  */

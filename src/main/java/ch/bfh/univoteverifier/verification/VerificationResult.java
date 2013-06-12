@@ -19,7 +19,7 @@ import ch.bfh.univoteverifier.common.Report;
  *This class is a VerificationResult and it represent the result of a single
  * check (for example an RSA Signature). Here we can find some information like
  * the result or if the check is implemented or not.
- * @author prinstin
+ * @author Justin Springer
  */
 public class VerificationResult {
 
