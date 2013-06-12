@@ -5,7 +5,7 @@
  *   Research Institute for Security in the Information Society, E-Voting Group,
  *   Biel, Switzerland.
  *
- *   Project independent UniVoteVerifier.
+ *   Project independent VoteVerifier.
  *
  */
 package ch.bfh.univoteverifier.gui;
@@ -34,7 +34,7 @@ public class GUIconstants {
     public final static Color DARK_GREY = new Color(160, 160, 160);
     public final static Color BLUE = new Color(110, 110, 254);
     public static Locale loc = new Locale("EN");
-    public final static String ABOUT_TEXT = "UniVerifier\nProject independent verifier for UniVote."
+    public final static String ABOUT_TEXT = "VoteVerifier 1.0\nProject independent verifier for UniVote."
             + "\nCopyright (c) 2013 Berner Fachhochschule, Switzerland."
             + "\nBern University of Applied Sciences, Engineering and Information Technology,"
             + " \nResearch Institute for Security in the Information Society, E-Voting Group,"
