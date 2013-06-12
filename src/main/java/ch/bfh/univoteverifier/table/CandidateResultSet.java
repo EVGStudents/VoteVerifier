@@ -11,14 +11,8 @@
 package ch.bfh.univoteverifier.table;
 
 import ch.bfh.univote.common.Choice;
-import ch.bfh.univoteverifier.common.RunnerName;
-import ch.bfh.univoteverifier.common.VerificationType;
-import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 /**
  * This helper class organizes the information that is printed in a result

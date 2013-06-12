@@ -10,7 +10,6 @@
  */
 package ch.bfh.univoteverifier.table;
 
-import ch.bfh.univoteverifier.common.Report;
 import java.awt.Component;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -25,13 +24,10 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 class ResultCellRendererImage extends DefaultTableCellRenderer {
 
-    ResultDescriber rd;
-
     /**
      * Create an instance of this class.
      */
     public ResultCellRendererImage() {
-        rd = new ResultDescriber();
     }
 
     /**

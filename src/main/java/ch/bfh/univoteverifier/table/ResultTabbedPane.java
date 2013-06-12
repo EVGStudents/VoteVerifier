@@ -15,7 +15,6 @@ import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.action.RemoveTabAction;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.ThreadManager;
 import java.util.logging.Logger;

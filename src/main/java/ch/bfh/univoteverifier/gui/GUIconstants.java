@@ -10,17 +10,8 @@
  */
 package ch.bfh.univoteverifier.gui;
 
-import ch.bfh.univoteverifier.common.Config;
-import ch.bfh.univoteverifier.table.ResultDescriber;
 import java.awt.Color;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Locale;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Create a static utility class which contains widely used variables.
@@ -30,7 +21,6 @@ import java.util.logging.Logger;
 public class GUIconstants {
 
     public final static Color GREY = new Color(190, 190, 190);
-//    public final static Color GREY = Color.LIGHT_GRAY;
     public final static Color DARK_GREY = new Color(160, 160, 160);
     public final static Color BLUE = new Color(110, 110, 254);
     public static Locale loc = new Locale("EN");

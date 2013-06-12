@@ -13,13 +13,11 @@ package ch.bfh.univoteverifier.action;
 import ch.bfh.univoteverifier.gui.ThreadManager;
 import ch.bfh.univoteverifier.table.ResultTab;
 import ch.bfh.univoteverifier.table.ResultTabbedPane;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JTabbedPane;
 
 /**
  * Action to remove a tab from the TabbedPane in the Verification panel (the

@@ -12,9 +12,7 @@ package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.verification.VerificationThread;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,7 +27,6 @@ import java.util.logging.Logger;
  */
 public class ThreadManager {
 
-    private List<VerificationThread> threads;
     private Map<String, VerificationThread> threadMap;
     private static final Logger LOGGER = Logger.getLogger(ThreadManager.class.toString());
 
@@ -37,7 +34,6 @@ public class ThreadManager {
      * Create a new instance of this class.
      */
     public ThreadManager() {
-        threads = new ArrayList<>();
         threadMap = new HashMap<>();
     }
 
@@ -73,7 +69,7 @@ public class ThreadManager {
      * @param vt VerificationThread to register.
      */
     public void addThread(VerificationThread vt) {
-        LOGGER.log(Level.INFO, "THREAD REGISTERED!  Process ID: " + vt.getProcessID());
+//        LOGGER.log(Level.INFO, "THREAD REGISTERED!  Process ID: " + vt.getProcessID());
         String processID = vt.getProcessID();
         threadMap.put(processID, vt);
     }
@@ -88,7 +84,7 @@ public class ThreadManager {
 
         for (int i = 0; i < keyList.length; i++) {
             VerificationThread vt = threadMap.get(keyList[i]);
-            LOGGER.log(Level.INFO, "INTERRUPTED THREAD {0}", vt.getProcessID());
+//            LOGGER.log(Level.INFO, "INTERRUPTED THREAD {0}", vt.getProcessID());
             vt.interrupt();
         }
 

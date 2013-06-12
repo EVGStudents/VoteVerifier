@@ -10,7 +10,6 @@
  */
 package ch.bfh.univoteverifier.gui;
 
-import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.MessengerManager;
 import ch.bfh.univoteverifier.table.ResultTabbedPane;
 import java.awt.Color;
@@ -19,7 +18,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.io.File;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -42,7 +40,7 @@ import javax.swing.border.EtchedBorder;
  */
 public class MiddlePanel extends JPanel {
 
-    private JPanel tabPanel, backgroundPanel, welcomePanel, inputPanel, inputIndPanel, inputUniPanel;
+    private JPanel tabPanel, welcomePanel, inputPanel, inputIndPanel, inputUniPanel;
     private static final Logger LOGGER = Logger.getLogger(MiddlePanel.class.getName());
     private JLabel vrfDescLabel;
     private ResourceBundle rb;

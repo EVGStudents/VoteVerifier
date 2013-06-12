@@ -14,7 +14,6 @@ import ch.bfh.univoteverifier.action.ActionManager;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ResourceBundle;
@@ -34,8 +33,8 @@ import javax.swing.JOptionPane;
  */
 public class VerificationMenuBar extends JMenuBar {
 
-    ResourceBundle rb;
-    MainGUI mainGUI;
+    private ResourceBundle rb;
+    private MainGUI mainGUI;
 
     /**
      * Create an instance of this class.

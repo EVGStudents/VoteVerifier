@@ -18,7 +18,6 @@ import ch.bfh.univoteverifier.listener.VerificationEvent;
 import ch.bfh.univoteverifier.listener.VerificationListener;
 import ch.bfh.univoteverifier.listener.VerificationMessage;
 import ch.bfh.univoteverifier.table.ResultDescriber;
-import ch.bfh.univoteverifier.table.ResultSet;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import ch.bfh.univoteverifier.verification.VerificationThread;
 import java.io.File;
@@ -28,7 +27,6 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 
 /**
  * Runs the program without in the terminal as the text only version in which

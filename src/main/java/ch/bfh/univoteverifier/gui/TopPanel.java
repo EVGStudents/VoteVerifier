@@ -33,14 +33,12 @@ import javax.swing.border.EmptyBorder;
 public class TopPanel extends JPanel {
 
     private static final Logger LOGGER = Logger.getLogger(TopPanel.class.getName());
-    private ResourceBundle rb;
 
     /**
      * Create an instance of this panel class.
      *
      */
     public TopPanel() {
-        rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
         this.setBackground(Color.WHITE);
         this.setLayout(new GridLayout(1, 1));
 

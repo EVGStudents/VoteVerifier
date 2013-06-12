@@ -17,7 +17,6 @@ import ch.bfh.univoteverifier.action.SelectUniVrfAction;
 import ch.bfh.univoteverifier.action.ShowConsoleAction;
 import ch.bfh.univoteverifier.action.StartAction;
 import ch.bfh.univoteverifier.common.IFileManager;
-import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.MessengerManager;
 import java.awt.Color;
 import java.awt.Font;

@@ -10,7 +10,6 @@
  */
 package ch.bfh.univoteverifier.gui;
 
-import ch.bfh.univoteverifier.common.Report;
 import ch.bfh.univoteverifier.listener.VerificationEvent;
 import ch.bfh.univoteverifier.listener.VerificationMessage;
 import ch.bfh.univoteverifier.table.CandidateResultSet;
@@ -18,7 +17,6 @@ import ch.bfh.univoteverifier.table.ResultDescriber;
 import ch.bfh.univoteverifier.table.ResultSet;
 import ch.bfh.univoteverifier.table.ResultTabbedPane;
 import ch.bfh.univoteverifier.verification.VerificationResult;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
@@ -107,15 +105,15 @@ public class ResultProcessor {
         if (vr.getReport() != null && vr.getReport().getException() != null) {
             //If there is an exception
             img = warn;
-        } else if (!vr.isImplemented() && vr.getReport() != null && vr.getReport().getFailureCode() != null) {
-            //if not implemented and there is a failure code
+        } else if (!vr.getResult()) {
+            //if result false
+            img = fail;
+        } else if (vr.getResult() && !vr.isImplemented()) {
+            //if the result is true, but not implemented
             img = noImpl;
         } else if (vr.getResult() && vr.isImplemented()) {
             //if result true and it is implemented
             img = pass;
-        } else if (!vr.getResult() && vr.isImplemented()) {
-            //if result false and it is implemented
-            img = fail;
         }
         return img;
     }

@@ -12,7 +12,6 @@ package ch.bfh.univoteverifier.table;
 
 import javax.swing.JTable;
 import javax.swing.ToolTipManager;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
 /**
