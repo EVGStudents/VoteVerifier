@@ -20,7 +20,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -43,7 +42,6 @@ import javax.swing.border.EtchedBorder;
  */
 public class CandidateResultsPanel extends JPanel {
 
-    private ResultTableModel tableModel;
     private ArrayList<SectionResultsTable> tables;
     private static final Logger LOGGER = Logger.getLogger(ResultTablesContainer.class.getName());
     private CandidateResultsTable activeTable;

@@ -9,10 +9,8 @@
  */
 package ch.bfh.univoteverifier.action;
 
-import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.MessengerManager;
 import ch.bfh.univoteverifier.gui.GUIconstants;
-import ch.bfh.univoteverifier.gui.MainGUI;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;

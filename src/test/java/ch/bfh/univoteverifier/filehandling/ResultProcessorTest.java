@@ -99,7 +99,7 @@ public class ResultProcessorTest {
 
     @Test
     public void noImplWithFalseNoImpl() {
-        //Situation: VrfResult is false but not implemented      Expected: nonImplemented image
+        //Situation: VrfResult is false but not implemented      Expected: fail image
         String processID = "VSBFH1010101010";
         ResultProcessor rp = new ResultProcessor("TESTS");
         boolean vrfResult = false;
@@ -109,7 +109,7 @@ public class ResultProcessorTest {
         vr.setReport(report);
 
 
-        ImageIcon imgExpected = rp.getImplImage();
+        ImageIcon imgExpected = rp.getFailImage();
         ImageIcon imgGot = rp.getImage(vr);
 
         ResultSet rs = new ResultSet("textForVrfResult", imgExpected, vr, processID);

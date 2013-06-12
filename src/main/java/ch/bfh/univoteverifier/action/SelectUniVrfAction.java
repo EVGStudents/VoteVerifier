@@ -12,9 +12,7 @@ package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.MiddlePanel;
-import ch.bfh.univoteverifier.gui.TopPanel;
 import java.awt.event.ActionEvent;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;

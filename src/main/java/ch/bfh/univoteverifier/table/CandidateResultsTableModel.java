@@ -12,15 +12,9 @@ package ch.bfh.univoteverifier.table;
 
 import ch.bfh.univote.common.Candidate;
 import ch.bfh.univote.common.Choice;
-import ch.bfh.univote.common.PoliticalList;
-import ch.bfh.univoteverifier.gui.GUIconstants;
 import java.util.logging.Logger;
 import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.Locale;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import javax.swing.Icon;
 import javax.swing.table.AbstractTableModel;
 
 /**

@@ -9,12 +9,8 @@
  */
 package ch.bfh.univoteverifier.common;
 
-import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 /**
  * Creates a logger that can use a custom formatter in order to present

@@ -13,7 +13,6 @@ package ch.bfh.univoteverifier.table;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import java.util.ArrayList;
 import java.util.Formatter;
-import java.util.Locale;
 import javax.swing.Icon;
 import javax.swing.table.AbstractTableModel;
 

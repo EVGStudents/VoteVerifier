@@ -43,7 +43,6 @@ public class StartAction extends AbstractAction {
     private JComboBox comboBox;
     private IFileManager fm;
     private ElectionReceipt er;
-    private VerificationThread vt;
     private ThreadManager tm;
     private static final Logger LOGGER = Logger.getLogger(StartAction.class.getName());
 
@@ -84,7 +83,7 @@ public class StartAction extends AbstractAction {
         String btnTxt = middlePanel.getSelectedVrfType();
         String msg = "";
         int uniqueness = (int) (System.currentTimeMillis() / 1000L);
-
+        VerificationThread vt;
         if (btnTxt.equals("btnUni")) {
             String eID = comboBox.getSelectedItem().toString();
             if (!checkIfValidEID(eID)) {

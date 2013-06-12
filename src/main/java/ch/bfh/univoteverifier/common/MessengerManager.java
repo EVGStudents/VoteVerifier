@@ -9,12 +9,7 @@
  */
 package ch.bfh.univoteverifier.common;
 
-import ch.bfh.univoteverifier.gui.ThreadManager;
 import ch.bfh.univoteverifier.listener.VerificationListener;
-import ch.bfh.univoteverifier.verification.VerificationThread;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**

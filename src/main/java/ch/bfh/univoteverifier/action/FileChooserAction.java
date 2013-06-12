@@ -11,7 +11,6 @@
 package ch.bfh.univoteverifier.action;
 
 import ch.bfh.univoteverifier.common.IFileManager;
-import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.MessengerManager;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.MiddlePanel;
