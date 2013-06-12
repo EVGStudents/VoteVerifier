@@ -16,7 +16,7 @@
 		<izpack.standalone.compiler.version>4.3.5</izpack.standalone.compiler.version>
 	</properties>
 
-	<description>The UniVoteVerifier is used to verify the results of a election in the UniVote system.</description>
+	<description>The VoteVerifier is used to verify the results of a election in the UniVote system.</description>
 
 	<organization>
 		<name>BFH</name>
