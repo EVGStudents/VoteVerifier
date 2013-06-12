@@ -12,9 +12,7 @@ package ch.bfh.univoteverifier.implementer;
 import ch.bfh.univote.common.Ballot;
 import ch.bfh.univote.common.Ballots;
 import ch.bfh.univote.common.BlindedGenerator;
-import ch.bfh.univote.common.DecodedVotes;
 import ch.bfh.univote.common.ElectionGenerator;
-import ch.bfh.univote.common.EncryptedVote;
 import ch.bfh.univote.common.EncryptedVotes;
 import ch.bfh.univote.common.EncryptionKey;
 import ch.bfh.univote.common.EncryptionKeyShare;
@@ -24,7 +22,6 @@ import ch.bfh.univote.common.MixedVerificationKeys;
 import ch.bfh.univote.common.PartiallyDecryptedVotes;
 import ch.bfh.univote.common.VerificationKeys;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
-import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.FailureCode;
@@ -35,8 +32,6 @@ import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.ws.soap.SOAPFaultException;
 
 /**

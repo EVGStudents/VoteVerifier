@@ -12,7 +12,6 @@ package ch.bfh.univoteverifier.verification;
 import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
-import ch.bfh.univoteverifier.common.FailureCode;
 import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.Report;
 

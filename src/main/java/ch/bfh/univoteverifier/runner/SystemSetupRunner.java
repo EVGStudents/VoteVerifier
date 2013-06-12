@@ -9,7 +9,6 @@
  */
 package ch.bfh.univoteverifier.runner;
 
-import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.RunnerName;
@@ -18,10 +17,6 @@ import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
-import com.sun.xml.rpc.client.ClientTransportException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +29,6 @@ public class SystemSetupRunner extends Runner {
 
 	private final ParametersImplementer paramImpl;
 	private final CertificatesImplementer certImpl;
-	private final ElectionBoardProxy ebp;
 
 	/**
 	 * Construct an SystemSetupRunner with a given ElectionBoardProxy and
@@ -44,8 +38,7 @@ public class SystemSetupRunner extends Runner {
 	 * @param msgr the Messenger used to send the results.
 	 */
 	public SystemSetupRunner(ElectionBoardProxy ebp, Messenger msgr) {
-		super(RunnerName.SYSTEM_SETUP, msgr);
-		this.ebp = ebp;
+		super(ebp, RunnerName.SYSTEM_SETUP, msgr);
 
 		paramImpl = new ParametersImplementer(ebp, runnerName);
 		certImpl = new CertificatesImplementer(ebp, runnerName);

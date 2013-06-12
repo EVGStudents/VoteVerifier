@@ -34,7 +34,6 @@ public class ElectionSetupRunner extends Runner {
 	private final CertificatesImplementer certImpl;
 	private final ParametersImplementer prmImpl;
 	private final ProofImplementer proofImpl;
-	private final ElectionBoardProxy ebp;
 
 	/**
 	 * Construct an ElectionSetupRunner with a given ElectionBoardProxy and
@@ -44,8 +43,7 @@ public class ElectionSetupRunner extends Runner {
 	 * @param msgr the Messenger used to send the results.
 	 */
 	public ElectionSetupRunner(ElectionBoardProxy ebp, Messenger msgr) {
-		super(RunnerName.ELECTION_SETUP, msgr);
-		this.ebp = ebp;
+		super(ebp, RunnerName.ELECTION_SETUP, msgr);
 		rsaImpl = new RSAImplementer(ebp, runnerName);
 		certImpl = new CertificatesImplementer(ebp, runnerName);
 		prmImpl = new ParametersImplementer(ebp, runnerName);

@@ -30,7 +30,6 @@ public class MixerTallierRunner extends Runner {
 	private final RSAImplementer rsaImpl;
 	private final ProofImplementer proofImpl;
 	private final ParametersImplementer prmImpl;
-	private final ElectionBoardProxy ebp;
 
 	/**
 	 * Construct an MixerTallierRunner with a given ElectionBoardProxy.
@@ -39,8 +38,7 @@ public class MixerTallierRunner extends Runner {
 	 * @param msgr the Messenger used to send the results.
 	 */
 	public MixerTallierRunner(ElectionBoardProxy ebp, Messenger msgr) {
-		super(RunnerName.MIXING_TALLING, msgr);
-		this.ebp = ebp;
+		super(ebp, RunnerName.MIXING_TALLING, msgr);
 		rsaImpl = new RSAImplementer(ebp, runnerName);
 		proofImpl = new ProofImplementer(ebp, runnerName);
 		prmImpl = new ParametersImplementer(ebp, runnerName);

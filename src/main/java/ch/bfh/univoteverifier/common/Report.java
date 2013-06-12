@@ -10,7 +10,7 @@
 package ch.bfh.univoteverifier.common;
 
 /**
- * This class contains a report of a VerificationResult
+ * This class contains a report of a VerificationResult.
  *
  * @author Scalzi Giuseppe
  */
@@ -18,7 +18,6 @@ public class Report {
 
 	private final FailureCode fc;
 	private final Exception ex;
-	private String url;
 	private String additionalInformation;
 
 	/**
@@ -42,15 +41,6 @@ public class Report {
 	}
 
 	/**
-	 * Set the URL of a possible source of explanations for this Report.
-	 *
-	 * @param url the url of the source.
-	 */
-	public void setReportURL(String url) {
-		this.url = url;
-	}
-
-	/**
 	 * Set the additional information of this report, these can be for
 	 * example a longer explanation of the failure.
 	 *
@@ -67,15 +57,6 @@ public class Report {
 	 */
 	public FailureCode getFailureCode() {
 		return fc;
-	}
-
-	/**
-	 * Get the URL of a possible source of explanation.
-	 *
-	 * @return a String representing the URL.
-	 */
-	public String getUrl() {
-		return url;
 	}
 
 	/**

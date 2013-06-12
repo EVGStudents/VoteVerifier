@@ -31,7 +31,6 @@ public class ElectionPreparationRunner extends Runner {
 	private final RSAImplementer rsaImpl;
 	private final CertificatesImplementer certImpl;
 	private final ParametersImplementer prmImpl;
-	private final ElectionBoardProxy ebp;
 	private final ProofImplementer proofImpl;
 
 	/**
@@ -42,8 +41,7 @@ public class ElectionPreparationRunner extends Runner {
 	 * @param msgr the Messenger used to send the results.
 	 */
 	public ElectionPreparationRunner(ElectionBoardProxy ebp, Messenger gm) {
-		super(RunnerName.ELECTION_PREPARATION, gm);
-		this.ebp = ebp;
+		super(ebp, RunnerName.ELECTION_PREPARATION, gm);
 		rsaImpl = new RSAImplementer(ebp, runnerName);
 		certImpl = new CertificatesImplementer(ebp, runnerName);
 		prmImpl = new ParametersImplementer(ebp, runnerName);

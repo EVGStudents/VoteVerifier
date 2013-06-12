@@ -37,7 +37,6 @@ public class ElectionPeriodRunner extends Runner {
 
 	private final CertificatesImplementer certImpl;
 	private final RSAImplementer rsaImpl;
-	private final ElectionBoardProxy ebp;
 	private final ProofImplementer proofImpl;
 	private final ParametersImplementer prmImpl;
 	private final SchnorrImplementer schnImpl;
@@ -50,8 +49,7 @@ public class ElectionPeriodRunner extends Runner {
 	 * @param msgr the Messenger used to send the results.
 	 */
 	public ElectionPeriodRunner(ElectionBoardProxy ebp, Messenger msgr) {
-		super(RunnerName.ELECTION_PERIOD, msgr);
-		this.ebp = ebp;
+		super(ebp, RunnerName.ELECTION_PERIOD, msgr);
 		certImpl = new CertificatesImplementer(ebp, runnerName);
 		rsaImpl = new RSAImplementer(ebp, runnerName);
 		proofImpl = new ProofImplementer(ebp, runnerName);

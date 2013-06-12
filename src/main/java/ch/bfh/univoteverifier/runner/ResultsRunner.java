@@ -31,11 +31,9 @@ import java.util.Map;
 public class ResultsRunner extends Runner {
 
 	private Map<Choice, Integer> electionResult;
-	private final ElectionBoardProxy ebp;
 
 	public ResultsRunner(ElectionBoardProxy ebp, Messenger msgr) {
-		super(RunnerName.RESULT, msgr);
-		this.ebp = ebp;
+		super(ebp, RunnerName.RESULT, msgr);
 	}
 
 	@Override

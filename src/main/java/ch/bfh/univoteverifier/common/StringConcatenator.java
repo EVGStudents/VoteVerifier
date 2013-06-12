@@ -10,7 +10,6 @@
 package ch.bfh.univoteverifier.common;
 
 import ch.bfh.univote.common.LocalizedText;
-import ch.bfh.univote.common.Proof;
 import java.util.List;
 
 /**
