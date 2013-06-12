@@ -36,7 +36,6 @@ public class IndividualRunner extends Runner {
 	private final RSAImplementer rsaImpl;
 	private final SchnorrImplementer schnorrImpl;
 	private final ProofImplementer proofImpl;
-	private final ElectionBoardProxy ebp;
 
 	/**
 	 * Construct an IndividualRunner with a given ElectionBoardProxy and
@@ -46,9 +45,8 @@ public class IndividualRunner extends Runner {
 	 * @param msgr the Messenger used to send the results.
 	 */
 	public IndividualRunner(ElectionBoardProxy ebp, Messenger msgr, ElectionReceipt er) {
-		super(RunnerName.INDIVIDUAL, msgr);
+		super(ebp, RunnerName.INDIVIDUAL, msgr);
 		this.er = er;
-		this.ebp = ebp;
 
 		paramImpl = new ParametersImplementer(ebp, runnerName);
 		certImpl = new CertificatesImplementer(ebp, runnerName);

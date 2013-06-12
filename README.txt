@@ -1,4 +1,4 @@
-VoteVerifier ${VERSION}
+VoteVerifier 1.0
 
 VoteVerifier is a verification software used to verify the
 crytpographic data of an election publishd on the public

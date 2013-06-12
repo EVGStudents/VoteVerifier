@@ -9,13 +9,10 @@
  */
 package ch.bfh.univoteverifier.verification;
 
-import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.runner.IndividualRunner;
 import ch.bfh.univoteverifier.runner.ResultsRunner;
-import java.security.cert.CertificateException;
-import javax.naming.InvalidNameException;
 
 /**
  * This class is used to perform an individual verification.

@@ -10,6 +10,7 @@
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.Config;
+import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.verification.VerificationResult;
@@ -27,6 +28,7 @@ public abstract class Runner {
 	protected List<VerificationResult> partialResults;
 	protected final Messenger msgr;
 	protected final RunnerName runnerName;
+	protected final ElectionBoardProxy ebp;
 	protected final int SLEEP_TIME;
 
 	/**
@@ -34,8 +36,10 @@ public abstract class Runner {
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data.
 	 * @param runnerName the name of this runner.
+	 * @param msgr the Messenger used to send data to the GUI.
 	 */
-	public Runner(RunnerName runnerName, Messenger msgr) {
+	public Runner(ElectionBoardProxy ebp, RunnerName runnerName, Messenger msgr) {
+		this.ebp = ebp;
 		this.SLEEP_TIME = Config.sleepTime;
 		this.runnerName = runnerName;
 		this.partialResults = new ArrayList<>();
