@@ -4,7 +4,7 @@
  * Applied Sciences, Engineering and Information Technology, Research Institute
  * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
  *
- * Project Independant UniVoteVerifier.
+ * Project Independant VoteVerifier.
  *
  */
 package ch.bfh.univoteverifier.common;
