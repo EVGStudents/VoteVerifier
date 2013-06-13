@@ -18,6 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * This class queries a properties file for text that corresponds to a given
+ * code.
  *
  * @author Justin Springer
  */
@@ -35,6 +37,13 @@ public class ResultDescriber {
         return getTextFromFile(fileName, code);
     }
 
+    /**
+     * Turns the code into a text string that is shown in the GUI. This method
+     * queries the file failurecodes.properties
+     *
+     * @param code The int value which corresponds to a verification type.
+     * @return The user-friendly text that describes a verification step.
+     */
     public String getTextFromFailureCode(int code) {
         //String fileName = "src/main/resources/failurecodes.properties";
         String fileName = "failurecodes.properties";
@@ -54,8 +63,8 @@ public class ResultDescriber {
         try {
             Properties prop;
             prop = new Properties();
-			InputStream is = Config.class.getClassLoader().getResourceAsStream(fileName);
-			prop.load(is);
+            InputStream is = Config.class.getClassLoader().getResourceAsStream(fileName);
+            prop.load(is);
             text = prop.getProperty(String.valueOf(code));
         } catch (IOException ex) {
             Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);

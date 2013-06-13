@@ -28,15 +28,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
 /**
- *
- * @author Justin Springer
- *
- * creates the JPanel which is displayed in the middle of the GUI and contains
+ * Creates the JPanel which is displayed in the middle of the GUI and contains
  * either input options for the user or displays the results of the verification
  * process.
  *
- * @return a JPanel which is one of the three main container/structure panels
- *
+ * @author prinstin
  */
 public class MiddlePanel extends JPanel {
 
@@ -52,6 +48,12 @@ public class MiddlePanel extends JPanel {
      *
      * @param resultTabbedPane the content panel for verification results is
      * added into a scroll pane.
+     * @param eIDlist the list of the election IDs retrieved from the election
+     * board.
+     * @param mm MessengerManager the messenger manager for this program.
+     * @param tm The thread manager.
+     * @param networkUp true if a network connection was established with the
+     * election board.
      */
     public MiddlePanel(ResultTabbedPane resultTabbedPane, String[] eIDlist, MessengerManager mm, ThreadManager tm, boolean networkUp) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
@@ -122,6 +124,11 @@ public class MiddlePanel extends JPanel {
         this.add(resultTabbedPane);
     }
 
+    /**
+     * Create the input panel.
+     *
+     * @return JPanel with the input options to start a verification.
+     */
     public JPanel createInputPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(new EtchedBorder());
@@ -284,6 +291,11 @@ public class MiddlePanel extends JPanel {
         return vrfDescLabel.getText();
     }
 
+    /**
+     * Get the type of verification that is selected.
+     *
+     * @return String the name of the button selected.
+     */
     public String getSelectedVrfType() {
         if (buttonCreator.getUniBtn().isSelected()) {
             return "btnUni";

@@ -36,6 +36,7 @@ import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 
 /**
+ * Creates the buttons and other small GUI components.
  *
  * @author Justin Springer
  */
@@ -47,6 +48,14 @@ public class ButtonCreator {
     private JButton btnStart, btnFileSelector;
     private JRadioButton btnUni, btnInd;
 
+    /**
+     * Create an instance of this class.
+     *
+     * @param middlePanel The middle panel.
+     * @param mm a MessengerManager.
+     * @param tm a ThreadManager.
+     * @param eIDlist String the list of election IDs.
+     */
     public ButtonCreator(MiddlePanel middlePanel, MessengerManager mm, ThreadManager tm, String[] eIDlist) {
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
 
@@ -195,18 +204,38 @@ public class ButtonCreator {
         return panel;
     }
 
+    /**
+     * Get the comboBox
+     *
+     * @return JComboBox the combobox created by this class.
+     */
     public JComboBox getComboBox() {
         return comboBox;
     }
 
+    /**
+     * Get the button panel.
+     *
+     * @return JPanel which is the button panel.
+     */
     public JPanel getButtonPanel() {
         return buttonPanel;
     }
 
+    /**
+     * Get the button file selector.
+     *
+     * @return JButton The file selector button.
+     */
     public JButton getBtnFileSelector() {
         return btnFileSelector;
     }
 
+    /**
+     * Get the universal verification button
+     *
+     * @return JRadioButton the universal verification button.
+     */
     public JRadioButton getUniBtn() {
         return btnUni;
     }

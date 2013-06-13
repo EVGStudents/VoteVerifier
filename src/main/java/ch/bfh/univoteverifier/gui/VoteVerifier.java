@@ -11,10 +11,6 @@
 package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.common.ConsoleRunner;
-import ch.bfh.univoteverifier.common.LogFormatter;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class simply provides a point of departure when the program is started.
@@ -23,17 +19,12 @@ import java.util.logging.Logger;
  */
 public class VoteVerifier {
 
-    private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
-    LogFormatter logf = new LogFormatter();
-    ResourceBundle rb;
-
     /**
+     *
      * @param args To tell the command line verifier what to do and where to get
      * data. Usage: uvv [OPTION] [FILE] uvv -i /home/username/qrcode \t# Verify
      * a single election receipt from a QR code. uvv -u vsbfh-2013 \t\t# Verify
-     * the results from the election with ID vsbfh-2013
-     *
-     * Commands:\n"
+     * the results from the election with ID vsbfh-2013 * Commands:\n"
      *
      * -i, --individual [file] \tVerify an election receipt. -u, --universal
      * \"election id\"\tVerify an an entire election.
