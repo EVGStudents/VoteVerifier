@@ -90,6 +90,23 @@ public class ConsoleRunner {
         String result = getTextResultName(vr);
         String outputText = vrfType + " ............. " + result;
         LOGGER.log(Level.INFO, outputText);
+        Report report = ve.getVr().getReport();
+
+        if (report != null) {
+            String outputText2 = "";
+            if (report.getAdditionalInformation() != null) {
+                outputText2 += report.getAdditionalInformation();
+            }
+            if (report.getException() != null) {
+                outputText2 += report.getException();
+            }
+            if (report.getFailureCode() != null) {
+                outputText2 += report.getFailureCode();
+            }
+
+            LOGGER.log(Level.INFO, outputText2);
+
+        }
     }
 
     /**
@@ -198,6 +215,8 @@ public class ConsoleRunner {
         formatter.format(text, entityName);
         String outText = formatter.toString();
         return outText;
+
+
     }
 
     /**
