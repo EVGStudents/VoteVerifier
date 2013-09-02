@@ -16,7 +16,10 @@
 		<izpack.standalone.compiler.version>4.3.5</izpack.standalone.compiler.version>
 	</properties>
 
-	<description>The VoteVerifier is used to verify the results of a election in the UniVote system.</description>
+	<description>
+        The VoteVerifier is used to verify the results of a election in
+        the UniVote system.
+    </description>
 
 	<organization>
 		<name>BFH</name>
@@ -143,7 +146,7 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>univote.ch_8080/ElectionBoardService/ElectionBoardServiceImpl.wsdl</wsdlFile>
+                                <wsdlFile>univote.ch_8080/ElectionBoardService/ElectionBoardService.wsdl</wsdlFile>
                             </wsdlFiles>
                             <wsdlLocation>http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?wsdl</wsdlLocation>
                             <staleFile>${project.build.directory}/jaxws/stale/ElectionBoardServiceImpl.stale</staleFile>

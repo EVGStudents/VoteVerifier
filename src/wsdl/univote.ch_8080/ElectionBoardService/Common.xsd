@@ -1,16 +1,19 @@
-<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.2.0-1 (tags/2.2.0u1-7139; 2012-06-02T10:55:19+0000) JAXWS-RI/2.2.6-2 JAXWS/2.2 svn-revision#unknown. --><!--
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
 
    Copyright (c) 2012 Berner Fachhochschule, Switzerland.
    Bern University of Applied Sciences, Engineering and Information Technology,
    Research Institute for Security in the Information Society, E-Voting Group,
    Biel, Switzerland.
 
-   Project Univote.
+   Project UniVote.
 
    Distributable under GPL license.
    See terms of license at gnu.org.
 
---><xs:schema xmlns:tns="http://univote.bfh.ch/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://univote.bfh.ch/common">
+-->
+<xs:schema version="1.0" targetNamespace="http://univote.bfh.ch/common" xmlns:tns="http://univote.bfh.ch/common"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
 	<xs:complexType name="ballot">
 		<xs:sequence>
@@ -86,6 +89,12 @@
 		</xs:sequence>
 	</xs:complexType>
 
+	<xs:complexType name="knownElectionIds">
+		<xs:sequence>
+			<xs:element name="electionId" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
 	<xs:complexType name="electionData">
 		<xs:sequence>
 			<xs:element name="electionId" type="xs:string"/>
@@ -130,14 +139,6 @@
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="electionManagerInfo">
-		<xs:sequence>
-			<xs:element name="identifier" type="xs:string"/>
-			<xs:element name="certificate" type="tns:certificate"/>
-			<xs:element name="signature" type="tns:signature"/>
-		</xs:sequence>
-	</xs:complexType>
-
 	<xs:complexType name="electionOptions">
 		<xs:sequence>
 			<xs:element name="electionId" type="xs:string"/>
@@ -149,6 +150,7 @@
 
 	<xs:complexType name="electionSystemInfo">
 		<xs:sequence>
+			<xs:element name="electionId" type="xs:string"/>
 			<xs:element name="certificateAuthority" type="tns:certificate"/>
 			<xs:element name="electionAdministration" type="tns:certificate"/>
 			<xs:element name="electionManager" type="tns:certificate"/>
@@ -413,7 +415,6 @@
 
 	<xs:complexType name="signatureParameters">
 		<xs:sequence>
-			<xs:element name="electionId" type="xs:string"/>
 			<xs:element name="prime" type="xs:integer"/>
 			<xs:element name="groupOrder" type="xs:integer"/>
 			<xs:element name="generator" type="xs:integer"/>
@@ -432,7 +433,7 @@
 		</xs:complexContent>
 	</xs:complexType>
 
-	<xs:complexType name="tallyInfo">
+	<xs:complexType name="tallierInfo">
 		<xs:sequence>
 			<xs:element name="identifier" type="xs:string"/>
 			<xs:element name="endpointUrl" type="xs:string"/>
@@ -463,14 +464,6 @@
 			<xs:element name="mixerId" type="xs:string"/>
 			<xs:element name="electionId" type="xs:string"/>
 			<xs:element name="key" type="xs:integer" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="signature" type="tns:signature"/>
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="voterCertificate">
-		<xs:sequence>
-			<xs:element name="electionId" type="xs:string"/>
-			<xs:element name="certificate" type="tns:certificate"/>
 			<xs:element name="signature" type="tns:signature"/>
 		</xs:sequence>
 	</xs:complexType>

@@ -1,20 +1,24 @@
-<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.2.0-1 (tags/2.2.0u1-7139; 2012-06-02T10:55:19+0000) JAXWS-RI/2.2.6-2 JAXWS/2.2 svn-revision#unknown. --><!--
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
 
    Copyright (c) 2012 Berner Fachhochschule, Switzerland.
    Bern University of Applied Sciences, Engineering and Information Technology,
    Research Institute for Security in the Information Society, E-Voting Group,
    Biel, Switzerland.
 
-   Project Univote.
+   Project UniVote.
 
    Distributable under GPL license.
    See terms of license at gnu.org.
 
---><definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://univote.bfh.ch/election" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="ElectionBoardService" targetNamespace="http://univote.bfh.ch/election">
+-->
+<definitions name="ElectionBoardService" xmlns="http://schemas.xmlsoap.org/wsdl/"
+			 targetNamespace="http://univote.bfh.ch/election" xmlns:tns="http://univote.bfh.ch/election"
+			 xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
 
 	<types>
 		<xsd:schema>
-			<xsd:import namespace="http://univote.bfh.ch/election" schemaLocation="http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?xsd=2"/>
+			<xsd:import namespace="http://univote.bfh.ch/election" schemaLocation="ElectionBoardService.xsd"/>
 		</xsd:schema>
 	</types>
 
@@ -660,7 +664,7 @@
 
 	<service name="ElectionBoardService">
 		<port name="ElectionBoardPort" binding="tns:ElectionBoardPortBinding">
-			<soap:address location="http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl"/>
+			<soap:address location="REPLACE_WITH_ACTUAL_URL"/>
 		</port>
 	</service>
 
