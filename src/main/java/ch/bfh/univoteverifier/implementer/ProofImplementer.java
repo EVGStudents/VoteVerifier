@@ -480,9 +480,10 @@ public class ProofImplementer extends Implementer {
 
 			//plausibility check 3: different values
 			//remove the duplicates by creating a set
-			Set<BigInteger> uniqueVerificationKeys = new HashSet(mev.getVote());
+			Set<EncryptedVote> uniqueVerificationKeys = new HashSet<>(mev.getVote());
 
-			//if the size of the unique set of verification key is the same as the original verification key we don't have any duplicates
+			//if the size of the unique set of verification key is the same
+            //as the original verification key we don't have any duplicates
 			boolean differentValues = mev.getVote().size() == uniqueVerificationKeys.size();
 
 			r = size && valuesInG && differentValues;
@@ -524,7 +525,7 @@ public class ProofImplementer extends Implementer {
 	public VerificationResult vrfDecryptedVotesByProof(String tallierName) {
 		Exception exc = null;
 		boolean r = false;
-		Report rep;
+		Report rep = null;
 
 		try {
 
@@ -557,40 +558,57 @@ public class ProofImplementer extends Implementer {
 			//compute the c value
 			BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
 
-			//verify the first proof
-			r = knowledgeOfDiscreteLog(pdv.getProof().getCommitment().get(0), pdv.getProof().getResponse().get(0), c, elGamalG, eks.getKey(), elGamalP, false);
+			// verify proof(s) if implemented
+            // Eric Dubuis: Added this hack since proofs are missing in old versions.
+            if (!pdv.getProof().getCommitment().isEmpty()) {
+                //verify the first proof
+                r = knowledgeOfDiscreteLog(pdv.getProof().getCommitment().get(0),
+                    pdv.getProof().getResponse().get(0), c, elGamalG, eks.getKey(), elGamalP, false);
 
-			//compute the knowledge of discrete log for each element in the list
-			for (int i = 0; i < pdv.getVote().size(); i++) {
-				BigInteger commitment = pdv.getProof().getCommitment().get(i + 1);
-				BigInteger response;
+                //compute the knowledge of discrete log for each element in the list
+                for (int i = 0; i < pdv.getVote().size(); i++) {
+                    BigInteger commitment = pdv.getProof().getCommitment().get(i + 1);
+                    BigInteger response;
 
 
-				if (pdv.getProof().getResponse().size() == 1) {
-					response = pdv.getProof().getResponse().get(0);
-				} else {
-					response = pdv.getProof().getResponse().get(i + 1);
-				}
-				BigInteger a_tallier = pdv.getVote().get(i);
-				BigInteger a_firstEncValue = mev.getVote().get(i).getFirstValue();
+                    if (pdv.getProof().getResponse().size() == 1) {
+                        response = pdv.getProof().getResponse().get(0);
+                    } else {
+                        response = pdv.getProof().getResponse().get(i + 1);
+                    }
+                    BigInteger a_tallier = pdv.getVote().get(i);
+                    BigInteger a_firstEncValue = mev.getVote().get(i).getFirstValue();
 
-				//the computation of v and w for this proof, is a sequence of knowledge of discrete log
-				r = knowledgeOfDiscreteLog(commitment, response, c, a_firstEncValue, a_tallier, elGamalP, true);
+                    //the computation of v and w for this proof is a sequence of knowledge of discrete log
+                    r = knowledgeOfDiscreteLog(commitment, response, c, a_firstEncValue,
+                        a_tallier, elGamalP, true);
 
-				//if the result is false, break
-				if (!r) {
-					break;
-				}
-			}
+                    //if the result is false, break
+                    if (!r) {
+                        break;
+                    }
+                }
+            } else {
+                rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+            }
 
-		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault |
+            NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.MT_T_NIZKP_OF_X, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
+		VerificationResult v =
+            new VerificationResult(VerificationType.MT_T_NIZKP_OF_X, r, ebp.getElectionID(),
+                rn, it, EntityType.TALLIER);
 		v.setEntityName(tallierName);
 
-		if (exc != null) {
+        if (rep != null) {
+            // Eric Dubuis: Added this hack. Necessary as the class
+            // VerificationResult is completely broken. (Should be
+            // a value object, anyway.)
+            v.setReport(rep);
+            v.setImplemented(false);
+        } else if (exc != null) {
 			rep = new Report(exc);
 			v.setReport(rep);
 		} else if (!r) {

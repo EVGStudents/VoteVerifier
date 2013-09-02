@@ -658,7 +658,7 @@ public class ElectionBoardProxy {
 	 * parameter.
 	 */
 	public X509Certificate getCACert() throws CertificateException, ElectionBoardServiceFault {
-		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getCertificateAuthority().getValue(), true);
+		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getCertificateAuthority().getValue());
 
 		return c;
 	}
@@ -674,7 +674,7 @@ public class ElectionBoardProxy {
 	 * parameter.
 	 */
 	public X509Certificate getEMCert() throws CertificateException, ElectionBoardServiceFault {
-		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getElectionManager().getValue(), false);
+		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getElectionManager().getValue());
 
 		return c;
 	}
@@ -690,7 +690,7 @@ public class ElectionBoardProxy {
 	 * parameter.
 	 */
 	public X509Certificate getEACert() throws ElectionBoardServiceFault, CertificateException {
-		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getElectionAdministration().getValue(), true);
+		X509Certificate c = CryptoFunc.getX509Certificate(getElectionSystemInfo().getElectionAdministration().getValue());
 
 		return c;
 	}
@@ -712,7 +712,7 @@ public class ElectionBoardProxy {
 			int counter = 0;
 
 			for (Certificate cert : getElectionSystemInfo().getTallier()) {
-				X509Certificate xCert = CryptoFunc.getX509Certificate(cert.getValue(), true);
+				X509Certificate xCert = CryptoFunc.getX509Certificate(cert.getValue());
 				talliersCerts.put(getElectionDefinition().getTallierId().get(counter), xCert);
 				counter++;
 			}
@@ -738,7 +738,7 @@ public class ElectionBoardProxy {
 			int counter = 0;
 
 			for (Certificate cert : getElectionSystemInfo().getMixer()) {
-				X509Certificate xCert = CryptoFunc.getX509Certificate(cert.getValue(), true);
+				X509Certificate xCert = CryptoFunc.getX509Certificate(cert.getValue());
 				mixersCerts.put(getElectionDefinition().getMixerId().get(counter), xCert);
 				counter++;
 			}
@@ -781,7 +781,7 @@ public class ElectionBoardProxy {
 
 			//add voter certs
 			for (Certificate c : getVoterCerts().getCertificate()) {
-				allCert.add(CryptoFunc.getX509Certificate(c.getValue(), true));
+				allCert.add(CryptoFunc.getX509Certificate(c.getValue()));
 			}
 
 			//add lately registered voters certs - ToDo decommetn when it will be available

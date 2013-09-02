@@ -19,7 +19,6 @@ import ch.bfh.univoteverifier.action.StartAction;
 import ch.bfh.univoteverifier.common.IFileManager;
 import ch.bfh.univoteverifier.common.MessengerManager;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -40,9 +39,9 @@ import javax.swing.SwingConstants;
  *
  * @author Justin Springer
  */
-public class ButtonCreator {
+public final class ButtonCreator {
 
-    private JComboBox comboBox;
+    private JComboBox<String> comboBox;
     private JPanel buttonPanel;
     private ResourceBundle rb;
     private JButton btnStart, btnFileSelector;
@@ -113,11 +112,9 @@ public class ButtonCreator {
      * as the selection of previously used election IDs.
      */
     public void createComboBox(String[] eIDlist) {
-        comboBox = new JComboBox(eIDlist);
+        comboBox = new JComboBox<>(eIDlist);
         comboBox.setEditable(true);
         comboBox.setSelectedIndex(0);
-        comboBox.setSize(30, 50);
-        comboBox.setFont(new Font("Serif", Font.PLAIN, 10));
     }
 
     /**
@@ -209,7 +206,7 @@ public class ButtonCreator {
      *
      * @return JComboBox the combobox created by this class.
      */
-    public JComboBox getComboBox() {
+    public JComboBox<String> getComboBox() {
         return comboBox;
     }
 
@@ -247,9 +244,9 @@ public class ButtonCreator {
      *
      * @author Justin Springer
      */
-    class FileManager implements IFileManager {
+    private class FileManager implements IFileManager {
 
-        File file;
+        private File file;
 
         @Override
         public File getFile() {

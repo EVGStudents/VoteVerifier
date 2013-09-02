@@ -21,8 +21,8 @@ import ch.bfh.univoteverifier.implementer.SchnorrImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.io.FileNotFoundException;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import org.junit.Ignore;
 
 /**
  * This class test the behavior of the SchnorrImplementer.
@@ -48,7 +48,8 @@ public class SchnorrImplTest {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testSignatureVerificationFromBallot() throws ElectionBoardServiceFault {
 		Ballot b = ebp.getBallots().getBallot().get(0);
 		VerificationResult vr = si.vrfBallotSignature(b, null);
@@ -58,7 +59,8 @@ public class SchnorrImplTest {
 	/**
 	 * Test the result of vrfBallotSignature() using a data from a QR-Code.
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testSignatureVerificationFromQRCode() {
 		ElectionReceipt er;
 

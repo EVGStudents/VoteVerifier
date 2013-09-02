@@ -26,8 +26,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * This class test the behavior of the ParametersImplementer.
@@ -169,7 +172,8 @@ public class ParamImplTest {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testBallotVerificationKeyFromBallot() throws ElectionBoardServiceFault {
 		Ballot b = ebp.getBallots().getBallot().get(0);
 		VerificationResult v = pi.vrfBallotVerificationKey(b.getVerificationKey());
@@ -179,7 +183,8 @@ public class ParamImplTest {
 	/**
 	 * Test the votes.
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testVotes() {
 		VerificationResult v = pi.vrfVotes();
 		assertTrue(v.getResult());
@@ -236,7 +241,8 @@ public class ParamImplTest {
 	/**
 	 * Test the result of vrfMixedEncryptedVotes().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testMixedExncryptedVotes() {
 		VerificationResult v = pi.vrfMixedEncryptedVotes();
 		assertTrue(v.getResult());

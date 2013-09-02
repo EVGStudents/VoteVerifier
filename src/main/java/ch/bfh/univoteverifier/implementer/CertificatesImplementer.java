@@ -71,7 +71,10 @@ public class CertificatesImplementer extends Implementer {
 	 * @throws CertPathValidatorException if the certificate path doesn't
 	 * validate.
 	 */
-	public boolean vrfCert(List<X509Certificate> certList) throws CertificateException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, CertPathValidatorException {
+	public boolean vrfCert(List<X509Certificate> certList)
+        throws CertificateException, InvalidAlgorithmParameterException,
+        NoSuchAlgorithmException, CertPathValidatorException
+    {
 		CertificateFactory cf = CertificateFactory.getInstance("X.509");
 
 		//generate the certification path
@@ -113,7 +116,7 @@ public class CertificatesImplementer extends Implementer {
 			c.add(caCert);
 			r = vrfCert(c);
 		} catch (CertPathValidatorException ex) {
-			//we now that the certificate path verification has failed so the result is false
+			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
 		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
@@ -155,7 +158,7 @@ public class CertificatesImplementer extends Implementer {
 			c.add(emCert);
 			r = vrfCert(c);
 		} catch (CertPathValidatorException ex) {
-			//we now that the certificate path verification has failed so the result is false
+			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
 		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
@@ -169,7 +172,9 @@ public class CertificatesImplementer extends Implementer {
 			v.setReport(rep);
 		} else if (!r) {
 			rep = new Report(FailureCode.INVALID_CERTIFICATE);
-			rep.setAdditionalInformation(invalidCert.getMessage());
+            if (invalidCert != null) {
+                rep.setAdditionalInformation(invalidCert.getMessage());
+            }
 			v.setReport(rep);
 		}
 
@@ -195,7 +200,7 @@ public class CertificatesImplementer extends Implementer {
 			c.add(eaCert);
 			r = vrfCert(c);
 		} catch (CertPathValidatorException ex) {
-			//we now that the certificate path verification has failed so the result is false
+			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
 		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
@@ -236,7 +241,7 @@ public class CertificatesImplementer extends Implementer {
 			certPath.add(ebp.getTalliersCerts().get(tallierName));
 			r = vrfCert(certPath);
 		} catch (CertPathValidatorException ex) {
-			//we now that the certificate path verification has failed so the result is false
+			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
 		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
@@ -279,7 +284,7 @@ public class CertificatesImplementer extends Implementer {
 			certPath.add(ebp.getMixersCerts().get(mixerName));
 			r = vrfCert(certPath);
 		} catch (CertPathValidatorException ex) {
-			//we now that the certificate path verification has failed so the result is false
+			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
 		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
@@ -319,7 +324,7 @@ public class CertificatesImplementer extends Implementer {
 			VoterCertificates vc = ebp.getVoterCerts();
 
 			for (Certificate c : vc.getCertificate()) {
-				X509Certificate xCert = CryptoFunc.getX509Certificate(c.getValue(), false);
+				X509Certificate xCert = CryptoFunc.getX509Certificate(c.getValue());
 
 				//check the certificate path
 				List<X509Certificate> certPath = new ArrayList<>();
@@ -328,7 +333,7 @@ public class CertificatesImplementer extends Implementer {
 				r = vrfCert(certPath);
 			}
 		} catch (CertPathValidatorException ex) {
-			//we now that the certificate path verification has failed so the result is false
+			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
 			Logger.getLogger(this.getClass().getName()).log(Level.INFO, ex.getMessage());
@@ -367,16 +372,15 @@ public class CertificatesImplementer extends Implementer {
 		try {
 			List<Certificate> vc = ebp.getLatelyRegisteredVoterCerts();
 			for (Certificate c : vc) {
-				X509Certificate xCert = CryptoFunc.getX509Certificate(c.getValue(), false);
+				X509Certificate xCert = CryptoFunc.getX509Certificate(c.getValue());
 				//check the certificate path
 				List<X509Certificate> certPath = new ArrayList<>();
 				certPath.add(xCert);
 				certPath.add(ebp.getCACert());
 				r = vrfCert(certPath);
 			}
-
 		} catch (CertPathValidatorException ex) {
-			//we now that the certificate path verification has failed so the result is false
+			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
 		} catch (NullPointerException | SOAPFaultException | NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
@@ -391,7 +395,9 @@ public class CertificatesImplementer extends Implementer {
 			v.setReport(rep);
 		} else if (!r) {
 			rep = new Report(FailureCode.INVALID_CERTIFICATE);
-			rep.setAdditionalInformation(invalidCert.getMessage());
+            if (invalidCert != null) {
+                rep.setAdditionalInformation(invalidCert.getMessage());
+            }
 			v.setReport(rep);
 		}
 

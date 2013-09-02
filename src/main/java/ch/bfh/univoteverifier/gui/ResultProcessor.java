@@ -103,15 +103,15 @@ public class ResultProcessor {
         ImageIcon img = null;
 
         if (vr.getReport() != null && vr.getReport().getException() != null) {
-            //If there is an exception
+            //if there is an exception
             img = warn;
+        } else if (!vr.isImplemented()) {
+            //it seems that this test is not implemented
+            img = noImpl;
         } else if (!vr.getResult()) {
             //if result false
             img = fail;
-        } else if (vr.getResult() && !vr.isImplemented()) {
-            //if the result is true, but not implemented
-            img = noImpl;
-        } else if (vr.getResult() && vr.isImplemented()) {
+        }  else if (vr.getResult() && vr.isImplemented()) {
             //if result true and it is implemented
             img = pass;
         }

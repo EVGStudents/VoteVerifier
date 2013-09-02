@@ -10,19 +10,22 @@
 package ch.bfh.univoteverifier.verification;
 
 import ch.bfh.univoteverifier.common.EntityType;
-import ch.bfh.univoteverifier.common.RunnerName;
-import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.Report;
+import ch.bfh.univoteverifier.common.RunnerName;
+import ch.bfh.univoteverifier.common.VerificationType;
 
 /**
- * This class is a VerificationResult and it represent the result of a single
+ * This class is a VerificationResult. It represents the result of a single
  * check (for example an RSA Signature). Here we can find some information like
  * the result or if the check is implemented or not.
  *
  * @author Justin Springer
  */
 public class VerificationResult {
+    // TODO: Refactor this class. Should become a value object.
+    // Look at the constructor, watch the missing parameters for
+    // initialisating ALL fields...
 
     private final VerificationType v;
     private final RunnerName rn;

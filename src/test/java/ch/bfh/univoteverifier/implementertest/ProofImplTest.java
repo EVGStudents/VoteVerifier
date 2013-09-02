@@ -21,8 +21,9 @@ import ch.bfh.univoteverifier.implementer.ProofImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.io.FileNotFoundException;
+import static org.junit.Assert.assertTrue;
+import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * This class test the behavior of the ProofImplementer.
@@ -92,7 +93,8 @@ public class ProofImplTest {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testBallotProofFromBallot() throws ElectionBoardServiceFault {
 		Ballot b = ebp.getBallots().getBallot().get(0);
 		VerificationResult v = pi.vrfBallotProof(b, null);
@@ -103,7 +105,8 @@ public class ProofImplTest {
 	/**
 	 * Test the result of vrfBallotProof() by using values from the QR-Code.
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testBallotProofFromQRcode() {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
@@ -162,7 +165,8 @@ public class ProofImplTest {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testLateRenewalOfRegistrationProofBy() throws ElectionBoardServiceFault {
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
 			VerificationResult v = pi.vrfLateRenewalOfRegistrationProofBy(mName);

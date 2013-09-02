@@ -31,6 +31,9 @@ public class CryptoFunc {
 	private static final String HASH_1 = "sha-1";
 	private static final String ENCODING = "UTF-8";
 
+    // Eric Dubuis: Added constant that is used below.
+    private static final String BEGIN_CERTIFICATE_MARKER = "-----BEGIN CERTIFICATE-----";
+
 	/**
 	 * Compute the sha-256 hash of a given string.
 	 *
@@ -79,27 +82,33 @@ public class CryptoFunc {
 	 *
 	 * @param b the byte array that shall contain the data of a X509
 	 * certificate.
-	 * @param newLine if true, the byte array will be parsed and a "\n" will
-	 * be added after "-----BEGIN CERTIFICATE-----" and before "-----END
-	 * CERTIFICATE-----".
 	 * @return an X509 certificate.
-	 * @throws CertificateException if the certificate factory cannot found
-	 * the specified type.
+	 * @throws CertificateException if the certificate factory
+	 * of specified type cannot be found, or if the certificate cannot be created
 	 */
-	public static X509Certificate getX509Certificate(byte[] b, boolean newLine) throws CertificateException {
-		String bStr = new String(b);
+	public static X509Certificate getX509Certificate(byte[] b)
+        throws CertificateException
+    {
+        // Eric Dubuis: Added trim() to get rid of spurious white space at
+        // beginning and end of strings.
+		String bStr = new String(b).trim();
 
-		if (newLine) {
-			StringBuilder sb = new StringBuilder(bStr);
-			//insert after -----BEGIN CERTIFICATE-----
-			sb.insert(27, '\n');
-			//insert before -----END CERTIFICATE-----
-			sb.insert(sb.length() - 25, '\n');
-			bStr = sb.toString();
-		}
+        // Eric Dubuis: It seems that the "-----BEGIN CERTIFICATE-----"
+        // marker must be separated by a new line "\n” character from
+        // the subsequent bas64-encode certificate (and
+        // "-----END CERTIFICATE-----" marker).
+
+        if (bStr.charAt(BEGIN_CERTIFICATE_MARKER.length()) != '\n') {
+            // The character right after the begin certificate marker
+            // is NOT a '\n' character. Thus, let's insert it..
+            StringBuilder sb = new StringBuilder(bStr);
+            sb.insert(BEGIN_CERTIFICATE_MARKER.length(), '\n');
+            bStr = sb.toString();
+        }
 
 		InputStream is = new ByteArrayInputStream(bStr.getBytes());
-		X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(is);
+		X509Certificate cert = (X509Certificate)
+            CertificateFactory.getInstance("X.509").generateCertificate(is);
 
 		return cert;
 	}

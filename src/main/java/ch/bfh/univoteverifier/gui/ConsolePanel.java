@@ -14,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,9 +34,10 @@ import javax.swing.event.ChangeListener;
  * @author prinstin
  */
 public class ConsolePanel extends JPanel implements ChangeListener {
+    private static final long serialVersionUID = 1L;
 
     private ResourceBundle rb;
-    private HashMap textAreaText;
+    private Map<String, String> textAreaText;
     private JScrollPane scrollPane;
     private static final Logger LOGGER = Logger.getLogger(ConsolePanel.class.getName());
     private JTextArea textArea;
@@ -45,7 +47,7 @@ public class ConsolePanel extends JPanel implements ChangeListener {
      * Create an instance of the console panel class.
      */
     public ConsolePanel() {
-        textAreaText = new HashMap();
+        textAreaText = new HashMap<>();
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
 
         this.setLayout(new GridLayout(1, 1));
@@ -89,12 +91,13 @@ public class ConsolePanel extends JPanel implements ChangeListener {
         if (!textAreaText.containsKey(processID)) {
             textAreaText.put(processID, str);
         } else {
-            String currentText = (String) textAreaText.get(processID);
+            String currentText = textAreaText.get(processID);
             final String newText = currentText + "\n" + str;
             textAreaText.put(processID, newText);
             //If text must be displayed immediately
             if (processID.equals(currentTextKey)) {
                 SwingUtilities.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
                         textArea.setText(newText);
                         scrollPane.revalidate();
@@ -117,7 +120,7 @@ public class ConsolePanel extends JPanel implements ChangeListener {
      * @param newTextAreaName
      */
     private void toggleVisibleTextArea(String newTextAreaName) {
-        String newText = (String) textAreaText.get(newTextAreaName);
+        String newText = textAreaText.get(newTextAreaName);
         textArea.setText(newText);
     }
 
@@ -133,7 +136,7 @@ public class ConsolePanel extends JPanel implements ChangeListener {
         JTabbedPane sourceTabbedPane = (JTabbedPane) e.getSource();
         int index = sourceTabbedPane.getSelectedIndex();
         String processID = sourceTabbedPane.getTitleAt(index);
-        LOGGER.log(Level.INFO, "The component name is :" + processID);
+        LOGGER.log(Level.INFO, "The component name is: {0}", processID);
         toggleVisibleTextArea(processID);
     }
 }

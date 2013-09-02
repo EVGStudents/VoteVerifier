@@ -19,8 +19,9 @@ import ch.bfh.univoteverifier.implementer.RSAImplementer;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.io.FileNotFoundException;
+import static org.junit.Assert.assertTrue;
+import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * This class test the behavior of the RSAImplementer.
@@ -40,7 +41,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfEACertIDSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testEACertId() {
 		VerificationResult vr = ri.vrfEACertIDSign();
 		assertTrue(vr.getResult());
@@ -49,7 +51,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfBasicParamSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testBasicParam() {
 		VerificationResult vr = ri.vrfBasicParamSign();
 		assertTrue(vr.getResult());
@@ -58,7 +61,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfTMCertsSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testTMCert() {
 		VerificationResult vr = ri.vrfTMCertsSign();
 		assertTrue(vr.getResult());
@@ -116,7 +120,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfElectionOptionsSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testElectionOptions() {
 		VerificationResult vr = ri.vrfElectionOptionsSign();
 		assertTrue(vr.getResult());
@@ -125,7 +130,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfElectionDataSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testElectionData() {
 		VerificationResult vr = ri.vrfElectionDataSign();
 		assertTrue(vr.getResult());
@@ -134,7 +140,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfElectoralRollSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testElectoralRoll() {
 		VerificationResult vr = ri.vrfElectoralRollSign();
 		assertTrue(vr.getResult());
@@ -143,7 +150,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfVotersCertIDSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testVoterCertID() {
 		VerificationResult vr = ri.vrfVotersCertIDSign();
 		assertTrue(vr.getResult());
@@ -152,7 +160,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfMixedVerificationKeysBySign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testMixedVerificationKeysBySign() throws ElectionBoardServiceFault {
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
 			VerificationResult vr = ri.vrfMixedVerificationKeysBySign(mName);
@@ -172,7 +181,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfLatelyRegisteredVotersCertificateSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testLatelyRegisteredVotersCertSign() {
 		VerificationResult vr = ri.vrfLatelyRegisteredVotersCertificateSign();
 		assertTrue(vr.getResult());
@@ -184,7 +194,8 @@ public class RSAImplTest {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testLatelyRegisteredVotersKeysBySign() throws ElectionBoardServiceFault {
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
 			VerificationResult vr = ri.vrfLatelyVerificationKeysBySign(mName);
@@ -195,7 +206,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfLatelyVerificationKeysSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testLatelyRegisteredVotersKeysSign() {
 		VerificationResult vr = ri.vrfLatelyVerificationKeysSign();
 		assertTrue(vr.getResult());
@@ -207,7 +219,8 @@ public class RSAImplTest {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testMixedEncVotesBySign() throws ElectionBoardServiceFault {
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
 
@@ -219,7 +232,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfMixedEncryptedVotesSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testShuffledEncVotesSign() {
 		VerificationResult vr = ri.vrfMixedEncryptedVotesSign();
 		assertTrue(vr.getResult());
@@ -243,7 +257,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfPlaintextVotesSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testPlaintextVotesSign() {
 		VerificationResult vr = ri.vrfPlaintextVotesSign();
 		assertTrue(vr.getResult());
@@ -252,7 +267,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfSingleBallotSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testSingleBallot() {
 		File qrCodeFile = new File(this.getClass().getResource("/qrcodeGiu").getPath());
 		QRCode qrCode = new QRCode(new Messenger());
@@ -268,7 +284,8 @@ public class RSAImplTest {
 	 * @throws ElectionBoardServiceFault if there is problem with the public
 	 * board, such as a wrong parameter or a network connection problem.
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testLateRenewalOfRegSignBy() throws ElectionBoardServiceFault {
 		for (String mName : ebp.getElectionDefinition().getMixerId()) {
 			VerificationResult vr = ri.vrfLateRenewalOfRegistrationSignBy(mName);
@@ -279,7 +296,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfLateRenewalOfRegistrationSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testLateRenewalOfRegSign() {
 		VerificationResult vr = ri.vrfLateRenewalOfRegistrationSign();
 		assertTrue(vr.getResult());
@@ -288,7 +306,8 @@ public class RSAImplTest {
 	/**
 	 * Test the result of vrfBallotSetSign().
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testBallotSetSign() {
 		VerificationResult vr = ri.vrfBallotsSetSign();
 		assertTrue(vr.getResult());

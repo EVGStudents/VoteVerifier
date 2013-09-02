@@ -11,7 +11,6 @@
 package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.action.ActionManager;
-import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -27,7 +26,7 @@ import javax.swing.JPanel;
  */
 public class I18nButtonPanel extends JPanel {
 
-    private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
+    private static final long serialVersionUID = 1L;
 
     /**
      * Create the panel which hold the button with flag icons representing the
@@ -64,6 +63,5 @@ public class I18nButtonPanel extends JPanel {
         this.add(btnDe);
         this.add(btnFr);
         this.add(btnEn);
-
     }
 }

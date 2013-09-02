@@ -69,7 +69,6 @@ public class ConsoleRunner {
             runUniVrfConsole(msgr, args[1]);
         } else if (args[0].equals("-i")) {
             runIndVrfConsole(msgr, args[1]);
-
         }
     }
 

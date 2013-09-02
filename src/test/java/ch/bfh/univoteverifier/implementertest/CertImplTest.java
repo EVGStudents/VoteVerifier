@@ -27,8 +27,10 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * This class test the behavior of the CertificateImplementer.
@@ -65,9 +67,9 @@ public class CertImplTest {
 			byte[] bQuoVadisG = Files.readAllBytes(fQuoVadisG.toPath());
 			byte[] bQuoVadisRoot = Files.readAllBytes(fQuoVadisRoot.toPath());
 
-			certList.add(CryptoFunc.getX509Certificate(bBfh, false));
-			certList.add(CryptoFunc.getX509Certificate(bQuoVadisG, false));
-			certList.add(CryptoFunc.getX509Certificate(bQuoVadisRoot, false));
+			certList.add(CryptoFunc.getX509Certificate(bBfh));
+			certList.add(CryptoFunc.getX509Certificate(bQuoVadisG));
+			certList.add(CryptoFunc.getX509Certificate(bQuoVadisRoot));
 
 			assertTrue(ci.vrfCert(certList));
 		} catch (IOException | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | CertPathValidatorException ex) {
@@ -87,8 +89,8 @@ public class CertImplTest {
 			byte[] bBfh = Files.readAllBytes(fBfh.toPath());
 			byte[] bQuoVadisG = Files.readAllBytes(fQuoVadisG.toPath());
 
-			certList.add(CryptoFunc.getX509Certificate(bBfh, false));
-			certList.add(CryptoFunc.getX509Certificate(bQuoVadisG, false));
+			certList.add(CryptoFunc.getX509Certificate(bBfh));
+			certList.add(CryptoFunc.getX509Certificate(bQuoVadisG));
 
 			assertFalse(ci.vrfCert(certList));
 		} catch (IOException | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException ex) {
@@ -153,7 +155,8 @@ public class CertImplTest {
 	/**
 	 * Test the Voters certificates.
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testVotersCert() {
 		VerificationResult vr = ci.vrfVotersCertificate();
 		assertTrue(vr.getResult());
@@ -162,7 +165,8 @@ public class CertImplTest {
 	/**
 	 * Test the Lately registered voters certificates.
 	 */
-	@Test
+	//@Test
+    @Ignore
 	public void testLatelyVotersCerts() {
 		VerificationResult vr = ci.vrfLatelyRegisteredVotersCertificate();
 		assertTrue(vr.getResult());

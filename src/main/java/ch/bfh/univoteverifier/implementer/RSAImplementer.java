@@ -110,9 +110,6 @@ public class RSAImplementer extends Implementer {
 		Report rep;
 
 		try {
-			//get the certificte as a string
-			String eaCertStr = ebp.getCACert().toString();
-
 			//get the election id
 			String eID = ebp.getElectionDefinition().getElectionId();
 
