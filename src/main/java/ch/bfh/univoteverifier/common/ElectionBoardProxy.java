@@ -64,7 +64,8 @@ public class ElectionBoardProxy {
 
 	private final String eID;
 	private URL wsdlURL;
-	private static final Logger LOGGER = Logger.getLogger(ElectionBoardProxy.class.getName());
+	private static final Logger LOGGER =
+        Logger.getLogger(ElectionBoardProxy.class.getName());
 	private ElectionBoard eb;
 	/**
 	 * These instance variables store the data from the web services.
@@ -218,8 +219,15 @@ public class ElectionBoardProxy {
 	 */
 	public Ballot getBallot(BigInteger verificationKey) throws ElectionBoardServiceFault {
 		if (eb != null) {//when we test using local data, eb is null
-			ballot = eb.getBallot(eID, verificationKey);
-			return ballot;
+            // Eric Dubuis: Added try/catch clause to log exception.
+            try {
+                ballot = eb.getBallot(eID, verificationKey);
+                return ballot;
+            } catch (ElectionBoardServiceFault ex) {
+                LOGGER.log(Level.SEVERE, "Caught ElectionBoardServiceFault, message = {0}",
+                    ex.getMessage());
+                throw ex;
+            }
 		} else {//so look in the ballots
 			for (Ballot b : getBallots().getBallot()) {
 				if (b.getVerificationKey().equals(verificationKey)) {
