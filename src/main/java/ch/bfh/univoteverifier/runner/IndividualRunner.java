@@ -10,15 +10,15 @@
 package ch.bfh.univoteverifier.runner;
 
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
-import ch.bfh.univoteverifier.common.RunnerName;
-import ch.bfh.univoteverifier.implementer.ParametersImplementer;
-import ch.bfh.univoteverifier.verification.*;
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.implementer.CertificatesImplementer;
+import ch.bfh.univoteverifier.implementer.ParametersImplementer;
 import ch.bfh.univoteverifier.implementer.ProofImplementer;
 import ch.bfh.univoteverifier.implementer.RSAImplementer;
 import ch.bfh.univoteverifier.implementer.SchnorrImplementer;
+import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.util.Collections;
 import java.util.List;
 
