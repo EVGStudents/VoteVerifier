@@ -11,11 +11,8 @@
 package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.verification.VerificationThread;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -69,7 +66,6 @@ public class ThreadManager {
      * @param vt VerificationThread to register.
      */
     public void addThread(VerificationThread vt) {
-//        LOGGER.log(Level.INFO, "THREAD REGISTERED!  Process ID: " + vt.getProcessID());
         String processID = vt.getProcessID();
         threadMap.put(processID, vt);
     }
@@ -78,15 +74,9 @@ public class ThreadManager {
      * Kill all the threads running. Used when the language is changed.
      */
     public void killAllThreads() {
-        Set keys = threadMap.keySet();
-        String[] keyList = new String[keys.size()];
-        keys.toArray(keyList);
-
-        for (int i = 0; i < keyList.length; i++) {
-            VerificationThread vt = threadMap.get(keyList[i]);
-//            LOGGER.log(Level.INFO, "INTERRUPTED THREAD {0}", vt.getProcessID());
+        // Eric Dubuis: Simplified method.
+        for (VerificationThread vt : threadMap.values()) {
             vt.interrupt();
         }
-
     }
 }
