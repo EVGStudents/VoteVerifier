@@ -85,7 +85,7 @@
 	</dependencies>
 
     <build>
-        <finalName>VoteVerifier-${version}</finalName>
+        <finalName>VoteVerifier-${project.version}</finalName>
         <resources>
             <resource>
                 <targetPath>META-INF</targetPath>

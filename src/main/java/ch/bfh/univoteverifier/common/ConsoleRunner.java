@@ -41,11 +41,8 @@ public class ConsoleRunner {
     private Messenger msgr;
 
     /**
-     * Create an instance of this class which checks the parameters passed and
-     * starts the verification type the user entered.
-     *
-     * @param msgr Messenger to show messages in the console.
-     * @param args the arguments to pass to the program.
+     * Create an instance of this class and initialized the
+     * Messenger and ResourceBoundle.
      */
     public ConsoleRunner() {
         VerificationListener vl = new StatusUpdate();
@@ -85,7 +82,7 @@ public class ConsoleRunner {
         int code = vr.getVerificationType().getID();
         ResultDescriber rd = new ResultDescriber();
         String vrfType = rd.getTextFromVrfCode(code);
-        formatText(vrfType, vr.getEntityName());
+        vrfType = formatText(vrfType, vr.getEntityName());
         String result = getTextResultName(vr);
         String outputText = vrfType + " ............. " + result;
         LOGGER.log(Level.INFO, outputText);
@@ -203,9 +200,10 @@ public class ConsoleRunner {
     }
 
     /**
-     * Format the text with an appropriate amount of dots. I.e.
-     * Text...............
+     * Insert the entity name at position according the format specification.
      *
+     * @param text the format string
+     * @param entityName the entity name
      * @return The formatted text.
      */
     public String formatText(String text, String entityName) {
