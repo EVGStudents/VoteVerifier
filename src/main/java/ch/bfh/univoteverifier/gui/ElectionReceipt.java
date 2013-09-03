@@ -11,7 +11,9 @@
 package ch.bfh.univoteverifier.gui;
 
 import ch.bfh.univoteverifier.common.CryptoFunc;
+import ch.bfh.univoteverifier.common.QRCode;
 import java.math.BigInteger;
+import java.util.Map;
 
 /**
  * This is a helper class that contains the contents of an election receipt.
@@ -26,30 +28,29 @@ public class ElectionReceipt {
     /**
      * Create an instance of this helper class.
      *
-     * @param values The broken apart list of values from an election receipt.
+     * @param values a map of key/value pairss from an election receipt.
      */
-    public ElectionReceipt(String[][] values) {
+    public ElectionReceipt(Map<String, String> values) {
         populateVariables(values);
     }
 
     /**
      * Fill the instance variables with the values from the values array.
      *
-     * @param String[][] An array with the values from an election receipt.
+     * @param values An array with the values from an election receipt.
      */
-    private void populateVariables(String[][] values) {
-        eID = values[0][1];
-
-        encVa = CryptoFunc.decodeSpecialBase64(values[1][1]);
-        encVb = CryptoFunc.decodeSpecialBase64(values[2][1]);
-        vk = CryptoFunc.decodeSpecialBase64(values[3][1]);
-        pC = CryptoFunc.decodeSpecialBase64(values[4][1]);
-        pR = CryptoFunc.decodeSpecialBase64(values[5][1]);
-        vSA = CryptoFunc.decodeSpecialBase64(values[6][1]);
-        vSB = CryptoFunc.decodeSpecialBase64(values[7][1]);
-        sSId = values[8][1];
-        sT = values[9][1];
-        sV = CryptoFunc.decodeSpecialBase64(values[10][1]);
+    private void populateVariables(Map<String, String> values) {
+        eID = values.get(QRCode.eID);
+        encVa = CryptoFunc.decodeSpecialBase64(values.get(QRCode.encVa));
+        encVb = CryptoFunc.decodeSpecialBase64(values.get(QRCode.encVb));
+        vk = CryptoFunc.decodeSpecialBase64(values.get(QRCode.vk));
+        pC = CryptoFunc.decodeSpecialBase64(values.get(QRCode.pC));
+        pR = CryptoFunc.decodeSpecialBase64(values.get(QRCode.pR));
+        vSA = CryptoFunc.decodeSpecialBase64(values.get(QRCode.vSA));
+        vSB = CryptoFunc.decodeSpecialBase64(values.get(QRCode.vSB));
+        sSId = values.get(QRCode.sSId);
+        sT = values.get(QRCode.sT);
+        sV = CryptoFunc.decodeSpecialBase64(values.get(QRCode.sV));
     }
 
     /**

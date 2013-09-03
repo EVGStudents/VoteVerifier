@@ -13,12 +13,9 @@ package ch.bfh.univoteverifier.filehandling;
 import ch.bfh.univoteverifier.common.Messenger;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -35,7 +32,8 @@ public class ResourceBundleTest {
         Locale loc = new Locale("en");
         ResourceBundle rb = ResourceBundle.getBundle("error", loc);
         String resultStr = rb.getString("filenotfound");
-        assertTrue(0 == "The file was not found.".compareTo(resultStr));
+        assertNotNull(resultStr);
+        assertFalse(resultStr.isEmpty());
     }
 
     /**
@@ -45,18 +43,46 @@ public class ResourceBundleTest {
     public void GUIMessengerGetsKeyValue() {
         Messenger msrg = new Messenger();
         String resultStr = msrg.getMessageForKey("filenotfound");
-        assertTrue(0 == "The file was not found.".compareTo(resultStr));
+        assertNotNull(resultStr);
+        assertFalse(resultStr.isEmpty());
     }
 
     /**
      * Tests that class GUI Messenger returns appropriate value for a given key
-     * even if the locale is changed
+     * even if the locale is changed to DE
      */
     @Test
-    public void GUIMessengerGetsKeyValueIfLocaleChanged() {
+    public void GUIMessengerGetsKeyValueIfLocaleChangedToDe() {
         Messenger msrg = new Messenger();
         msrg.changeLocale("de");
         String resultStr = msrg.getMessageForKey("filenotfound");
-        assertTrue(0 == "Der Datei wurde nicht gefunden.".compareTo(resultStr));
+        assertNotNull(resultStr);
+        assertFalse(resultStr.isEmpty());
+    }
+
+    /**
+     * Tests that class GUI Messenger returns appropriate value for a given key
+     * even if the locale is changed tor FR
+     */
+    @Test
+    public void GUIMessengerGetsKeyValueIfLocaleChangedToFr() {
+        Messenger msrg = new Messenger();
+        msrg.changeLocale("fr");
+        String resultStr = msrg.getMessageForKey("filenotfound");
+        assertNotNull(resultStr);
+        assertFalse(resultStr.isEmpty());
+    }
+
+    /**
+     * Tests that class GUI Messenger returns appropriate value for a given key
+     * even if the locale is changed tor EN
+     */
+    @Test
+    public void GUIMessengerGetsKeyValueIfLocaleChangedToEn() {
+        Messenger msrg = new Messenger();
+        msrg.changeLocale("en");
+        String resultStr = msrg.getMessageForKey("filenotfound");
+        assertNotNull(resultStr);
+        assertFalse(resultStr.isEmpty());
     }
 }

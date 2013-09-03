@@ -12,14 +12,16 @@ package ch.bfh.univoteverifier.filehandling;
 
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.Messenger;
-import ch.bfh.univoteverifier.gui.MainGUI;
 import ch.bfh.univoteverifier.common.QRCode;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
+import ch.bfh.univoteverifier.gui.MainGUI;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Map;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -151,30 +153,30 @@ public class QRCodeTest {
                 .getResource("/qrcodeGiu").getPath());
         String decoded = qr.decode(file);
         String[] groupedCleaned = qr.groupAndCleanDecode(decoded);
-        String[][] results = qr.separateDataPairs(groupedCleaned);
+        Map<String, String> results = qr.separateDataPairs(groupedCleaned);
 
-        assertTrue(0 == results[0][0].compareTo("eID"));
-        assertTrue(0 == results[0][1].compareTo("vsbfh-2013"));
-        assertTrue(0 == results[1][0].compareTo("encVa"));
-        assertTrue(0 == results[1][1].compareTo("72w86v8UbkIKBaoN6sPQPSP1a7dQf2ivaiU91L5Orindc4XqfVVznFRegKiK2G3P3tYqjijaLdBQjZEJSU0lXVkDDCbl_fGOt=DxlXNNGgdUn_IfhSefshyNHFzYnOHDPlFeZwOmO91zFt3woxWjSwMI0UhbnezFgvrpXp5fuYY"));
-        assertTrue(0 == results[2][0].compareTo("encVb"));
-        assertTrue(0 == results[2][1].compareTo("A38NYQfzQSA=73rLcStNKQCatMgXJyJ0sMa9wjPLkz92oGoQERk4ItanwOEXyyKEIfpu2nwqRhuGKpn9GU39h2_myjliO04Egz1DiS1ZaO7RrjU7fKSMlXU1hQbHOHvyDAZXX9EqY1gBVpT=u=eMVCf6TI0OFf8P86pDni=MB8Y"));
-        assertTrue(0 == results[3][0].compareTo("vk"));
-        assertTrue(0 == results[3][1].compareTo("4lfTbadkitS1NOXSiDhLKrTUh1J=gdOupOzFHgexC4LdYRuV9PIzblQgHfLYNtlEW8i6Tjr1FVv6HJZ902PHeyG8vrkTCJJEODOdZJ7TFzo8WCIywtyqXcFF52n_sg70FNRSLZcEBY6lCcRWWzBJxdGnbBLpl11QGcJ25cG6RKP"));
-        assertTrue(0 == results[4][0].compareTo("pC"));
-        assertTrue(0 == results[4][1].compareTo("2Qz1K9y14qGzBRQqJ7gAyezta3bi7pHY7307sHQxDYVlF6aQlwJDABY16gIYZNnTo121Lt8SXKpsn_rhGgkSqQMGmPnUkieepqyPg9ulkwEAvKBK80dlxzEFvNfaw9_a0SRR2aKIgWhuvAouPHlN9FMzLexlNApbKTTHNQ7dvR"));
-        assertTrue(0 == results[5][0].compareTo("pR"));
-        assertTrue(0 == results[5][1].compareTo("B4YMumm5bLYnT6iYhrQJT6fcMyCOtqQJOMsNxyhncpLCYIkhEVumA4tbB5HitapQU7nVXP_ZrS51VacXbkGU6LZ_BHy3je_iZoMY=5FjLNppoOWitzzkToFkL=bhlIsnMHQhJizXSNAGpRLPTvkI7bhGb=FxousxxCx0=RGYH3"));
-        assertTrue(0 == results[6][0].compareTo("vSA"));
-        assertTrue(0 == results[6][1].compareTo("6rQltQyKPrzIAPaZnCBp0x2F0N2AC4g5JprF_R_Qycs"));
-        assertTrue(0 == results[7][0].compareTo("vSB"));
-        assertTrue(0 == results[7][1].compareTo("3x73szdurz40HjfaYTBF42ecyL9mN56wFTZDGF8a3FN"));
-        assertTrue(0 == results[8][0].compareTo("sSId"));
-        assertTrue(0 == results[8][1].compareTo("electionmanager"));
-        assertTrue(0 == results[9][0].compareTo("sT"));
-        assertTrue(0 == results[9][1].compareTo("2013-03-25T10:58:11.000Z"));
-        assertTrue(0 == results[10][0].compareTo("sV"));
-        assertTrue(0 == results[10][1].compareTo("ShZKrcEYQnsA2Ks352oLIUABAaglxmNsCaYIfKzM_tfRARyYPgNSxNLtNcaQf10VqEq57DArGrhvjLjJwmU5mfip3FRUqZ1hGNFxkqdYM8bLC0uhoiALyHVFkLu4etQG4Dp8RuJ5dmp5UTs0QcEHEIIQcd8_=J7iIeqRLAlcU6"));
+        assertTrue(results.containsKey("eID"));
+        assertEquals(results.get(QRCode.eID), ("vsbfh-2013"));
+        assertTrue(results.containsKey("encVa"));
+        assertEquals(results.get(QRCode.encVa), ("72w86v8UbkIKBaoN6sPQPSP1a7dQf2ivaiU91L5Orindc4XqfVVznFRegKiK2G3P3tYqjijaLdBQjZEJSU0lXVkDDCbl_fGOt=DxlXNNGgdUn_IfhSefshyNHFzYnOHDPlFeZwOmO91zFt3woxWjSwMI0UhbnezFgvrpXp5fuYY"));
+        assertTrue(results.containsKey("encVb"));
+        assertEquals(results.get(QRCode.encVb), ("A38NYQfzQSA=73rLcStNKQCatMgXJyJ0sMa9wjPLkz92oGoQERk4ItanwOEXyyKEIfpu2nwqRhuGKpn9GU39h2_myjliO04Egz1DiS1ZaO7RrjU7fKSMlXU1hQbHOHvyDAZXX9EqY1gBVpT=u=eMVCf6TI0OFf8P86pDni=MB8Y"));
+        assertTrue(results.containsKey("vk"));
+        assertEquals(results.get(QRCode.vk), ("4lfTbadkitS1NOXSiDhLKrTUh1J=gdOupOzFHgexC4LdYRuV9PIzblQgHfLYNtlEW8i6Tjr1FVv6HJZ902PHeyG8vrkTCJJEODOdZJ7TFzo8WCIywtyqXcFF52n_sg70FNRSLZcEBY6lCcRWWzBJxdGnbBLpl11QGcJ25cG6RKP"));
+        assertTrue(results.containsKey("pC"));
+        assertEquals(results.get(QRCode.pC), ("2Qz1K9y14qGzBRQqJ7gAyezta3bi7pHY7307sHQxDYVlF6aQlwJDABY16gIYZNnTo121Lt8SXKpsn_rhGgkSqQMGmPnUkieepqyPg9ulkwEAvKBK80dlxzEFvNfaw9_a0SRR2aKIgWhuvAouPHlN9FMzLexlNApbKTTHNQ7dvR"));
+        assertTrue(results.containsKey("pR"));
+        assertEquals(results.get(QRCode.pR), ("B4YMumm5bLYnT6iYhrQJT6fcMyCOtqQJOMsNxyhncpLCYIkhEVumA4tbB5HitapQU7nVXP_ZrS51VacXbkGU6LZ_BHy3je_iZoMY=5FjLNppoOWitzzkToFkL=bhlIsnMHQhJizXSNAGpRLPTvkI7bhGb=FxousxxCx0=RGYH3"));
+        assertTrue(results.containsKey("vSA"));
+        assertEquals(results.get(QRCode.vSA), ("6rQltQyKPrzIAPaZnCBp0x2F0N2AC4g5JprF_R_Qycs"));
+        assertTrue(results.containsKey("vSB"));
+        assertEquals(results.get(QRCode.vSB), ("3x73szdurz40HjfaYTBF42ecyL9mN56wFTZDGF8a3FN"));
+        assertTrue(results.containsKey("sSId"));
+        assertEquals(results.get(QRCode.sSId), ("electionmanager"));
+        assertTrue(results.containsKey("sT"));
+        assertEquals(results.get(QRCode.sT), ("2013-03-25T10:58:11.000Z"));
+        assertTrue(results.containsKey("sV"));
+        assertEquals(results.get(QRCode.sV), ("ShZKrcEYQnsA2Ks352oLIUABAaglxmNsCaYIfKzM_tfRARyYPgNSxNLtNcaQf10VqEq57DArGrhvjLjJwmU5mfip3FRUqZ1hGNFxkqdYM8bLC0uhoiALyHVFkLu4etQG4Dp8RuJ5dmp5UTs0QcEHEIIQcd8_=J7iIeqRLAlcU6"));
     }
 
     /**
