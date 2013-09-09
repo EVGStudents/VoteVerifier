@@ -1,8 +1,8 @@
 /**
  *
- * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
- * Applied Sciences, Engineering and Information Technology, Research Institute
- * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of Applied Sciences, Engineering and
+ * Information Technology, Research Institute for Security in the Information Society, E-Voting Group, Biel,
+ * Switzerland.
  *
  * Project independent VoteVerifier.
  *
@@ -78,8 +78,7 @@ public class RSAImplementer extends Implementer {
 	 * Verify a RSA signature.
 	 *
 	 * @param s the RSAPublicKey.
-	 * @param clearText the text that has to be hashed and compared with the
-	 * decrypted signature.
+	 * @param clearText the text that has to be hashed and compared with the decrypted signature.
 	 * @param signature the pre-computed signature from the board.
 	 * @return true if the signature is verified correctly otherwise not.
 	 */
@@ -95,14 +94,13 @@ public class RSAImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the signature of the election administrator certificate plus
-	 * the election ID.
+	 * Verify the signature of the election administrator certificate plus the election ID.
 	 *
 	 * Specification: 1.3.4, a.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws ElectionBoardServiceFault if there is problem with the public board, such as a wrong parameter or a
+	 * network connection problem.
 	 */
 	public VerificationResult vrfEACertIDSign() {
 		boolean r = false;
@@ -147,8 +145,7 @@ public class RSAImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the signature of the basic parameters (id, description, key
-	 * length, talliers and mixers) of an election.
+	 * Verify the signature of the basic parameters (id, description, key length, talliers and mixers) of an election.
 	 *
 	 * Specification: 1.3.4, b.
 	 *
@@ -202,8 +199,7 @@ public class RSAImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the signature of the talliers and mixers certificates with the
-	 * election id.
+	 * Verify the signature of the talliers and mixers certificates with the election id.
 	 *
 	 * Specification: 1.3.4, b.
 	 *
@@ -555,6 +551,7 @@ public class RSAImplementer extends Implementer {
 				} else if (c instanceof Candidate) {
 					Candidate can = (Candidate) c;
 
+					sc.pushObjectDelimiter(can.getChoiceId(), StringConcatenator.INNER_DELIMITER);
 					sc.pushObjectDelimiter(can.getNumber(), StringConcatenator.INNER_DELIMITER);
 					sc.pushObjectDelimiter(can.getLastName(), StringConcatenator.INNER_DELIMITER);
 					sc.pushObjectDelimiter(can.getFirstName(), StringConcatenator.INNER_DELIMITER);
@@ -605,7 +602,6 @@ public class RSAImplementer extends Implementer {
 					lowerBound = ((ForallRule) ru).getLowerBound();
 					upperBound = ((ForallRule) ru).getUpperBound();
 				}
-
 				//array for the choices
 				sc.pushLeftDelim();
 				for (int f = 0; f < ru.getChoiceId().size(); f++) {
@@ -629,6 +625,7 @@ public class RSAImplementer extends Implementer {
 			sc.pushObject(signature.getTimestamp());
 
 			String res = sc.pullAll();
+			System.out.println(res);
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEACert().getPublicKey(), res, signature.getValue());
@@ -853,8 +850,7 @@ public class RSAImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the signature of the set of Voters certificates with the
-	 * election ID.
+	 * Verify the signature of the set of Voters certificates with the election ID.
 	 *
 	 * Specification: 1.3.5, c.
 	 *
@@ -888,8 +884,7 @@ public class RSAImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the signature of the set of verification keys mixed by a given
-	 * mixer.
+	 * Verify the signature of the set of verification keys mixed by a given mixer.
 	 *
 	 * @param mixerName the name of the mixer.
 	 *
@@ -1001,8 +996,7 @@ public class RSAImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the signature of the election ID with the late registered
-	 * voter certificate.
+	 * Verify the signature of the election ID with the late registered voter certificate.
 	 *
 	 * Specification: 1.3.6, a.
 	 *
@@ -1035,9 +1029,8 @@ public class RSAImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the signature of the lately verification keys with the proof.
-	 * The proof is not included in the signature computation because is not
-	 * yet available.
+	 * Verify the signature of the lately verification keys with the proof. The proof is not included in the signature
+	 * computation because is not yet available.
 	 *
 	 * Specification: 1.3.6, a.
 	 *
@@ -1109,8 +1102,7 @@ public class RSAImplementer extends Implementer {
 
 	/**
 	 *
-	 * Verify the signature of the verification keys of the lately mixed
-	 * verification set.
+	 * Verify the signature of the verification keys of the lately mixed verification set.
 	 *
 	 * Specification: 1.3.6, a.
 	 *
@@ -1166,9 +1158,8 @@ public class RSAImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the signature of the late renewal of registration keys with
-	 * the proof. The proof is not included in the signature computation
-	 * because is not yet available.
+	 * Verify the signature of the late renewal of registration keys with the proof. The proof is not included in the
+	 * signature computation because is not yet available.
 	 *
 	 * Specification: 1.3.6, b.
 	 *
@@ -1298,8 +1289,7 @@ public class RSAImplementer extends Implementer {
 
 	/**
 	 *
-	 * Verify the signature of the shuffled encrypted votes for a given
-	 * mixer.
+	 * Verify the signature of the shuffled encrypted votes for a given mixer.
 	 *
 	 * Specification: 1.3.7, a.
 	 *
