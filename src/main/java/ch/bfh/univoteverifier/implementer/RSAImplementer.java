@@ -84,10 +84,14 @@ public class RSAImplementer extends Implementer {
 	 */
 	public boolean vrfRSASign(RSAPublicKey pubKey, String clearText, BigInteger signature) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		BigInteger hash = CryptoFunc.sha256(clearText);
-
+		String ha = hash.toString(10);
+		String pk = pubKey.getPublicExponent().toString(10);
+		String mod = pubKey.getModulus().toString(10);
+		String sig = signature.toString(10);
 		//compute signature^e mod s, this must be equal to the hash we have computed
 		BigInteger decSign = signature.modPow(pubKey.getPublicExponent(), pubKey.getModulus());
 
+		String decsig = decSign.toString(10);
 		boolean result = decSign.equals(hash);
 
 		return result;
@@ -551,7 +555,6 @@ public class RSAImplementer extends Implementer {
 				} else if (c instanceof Candidate) {
 					Candidate can = (Candidate) c;
 
-					sc.pushObjectDelimiter(can.getChoiceId(), StringConcatenator.INNER_DELIMITER);
 					sc.pushObjectDelimiter(can.getNumber(), StringConcatenator.INNER_DELIMITER);
 					sc.pushObjectDelimiter(can.getLastName(), StringConcatenator.INNER_DELIMITER);
 					sc.pushObjectDelimiter(can.getFirstName(), StringConcatenator.INNER_DELIMITER);
@@ -625,7 +628,6 @@ public class RSAImplementer extends Implementer {
 			sc.pushObject(signature.getTimestamp());
 
 			String res = sc.pullAll();
-			System.out.println(res);
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEACert().getPublicKey(), res, signature.getValue());
@@ -864,19 +866,42 @@ public class RSAImplementer extends Implementer {
 		try {
 			VoterCertificates vc = ebp.getVoterCerts();
 			Signature signature = vc.getSignature();
-			//ToDo - concatenation of certificate?
-		} catch (ElectionBoardServiceFault ex) {
+			sc.pushLeftDelim();
+			sc.pushObjectDelimiter(vc.getElectionId(), StringConcatenator.INNER_DELIMITER);
+			
+			
+
+			//for all certs
+			sc.pushLeftDelim();
+			for (int k = 0; k < vc.getCertificate().size(); k++) {
+				if (k > 0) {
+					sc.pushInnerDelim();
+				}
+
+				Certificate cert = vc.getCertificate().get(k);
+				sc.pushObject(new BigInteger(cert.getValue()));
+			}
+			sc.pushRightDelim();
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushObject(signature.getTimestamp());
+
+			String res = sc.pullAll();
+			
+			//verify the signature
+			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
+		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.CA);
-		v.setImplemented(false);
-		//create a report for the non-implemented
-		rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
-		v.setReport(rep);
+		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+
 
 		if (exc != null) {
 			rep = new Report(exc);
+			v.setReport(rep);
+		} else if (!r) {
+			rep = new Report(FailureCode.INVALID_RSA_SIGNATURE);
 			v.setReport(rep);
 		}
 
