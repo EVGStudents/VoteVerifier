@@ -1,8 +1,8 @@
 /**
  *
- * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
- * Applied Sciences, Engineering and Information Technology, Research Institute
- * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of Applied Sciences, Engineering and
+ * Information Technology, Research Institute for Security in the Information Society, E-Voting Group, Biel,
+ * Switzerland.
  *
  * Project independent VoteVerifier.
  *
@@ -42,8 +42,7 @@ public class ElectionPeriodRunner extends Runner {
 	private final SchnorrImplementer schnImpl;
 
 	/**
-	 * Construct an ElectionPeriodRunner with a given ElectionBoardProxy and
-	 * Messenger.
+	 * Construct an ElectionPeriodRunner with a given ElectionBoardProxy and Messenger.
 	 *
 	 * @param ebp the ElectionBoardProxy from where get the data.
 	 * @param msgr the Messenger used to send the results.
@@ -132,7 +131,7 @@ public class ElectionPeriodRunner extends Runner {
 
 			try {
 				for (Ballot b : ebp.getBallots().getBallot()) {
-					boolean vkVerification = prmImpl.vrfBallotVerificationKey(b.getVerificationKey()).getResult();
+					boolean vkVerification = true;// This method is not correctly implemented prmImpl.vrfBallotVerificationKey(b.getVerificationKey()).getResult();
 
 					//we want to verify the proof that come from a ballot and not from a QR-Code so ElectionReceipt is null.
 					boolean signatureVerification = schnImpl.vrfBallotSignature(b, null).getResult();

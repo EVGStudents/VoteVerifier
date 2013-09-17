@@ -1,8 +1,8 @@
 /**
  *
- * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
- * Applied Sciences, Engineering and Information Technology, Research Institute
- * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of Applied Sciences, Engineering and
+ * Information Technology, Research Institute for Security in the Information Society, E-Voting Group, Biel,
+ * Switzerland.
  *
  * Project independent VoteVerifier.
  *
@@ -49,37 +49,32 @@ public class SchnorrImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the given Schnorr's signature against the hash we have
-	 * computed.
+	 * Verify the given Schnorr's signature against the hash we have computed.
 	 *
 	 *
-	 * @param verificationKey the public key we must use to verify the
-	 * signature.
+	 * @param verificationKey the public key we must use to verify the signature.
 	 * @param message the message to be verified.
 	 * @param a the first value of a valid Schnorr signature.
 	 * @param b the second value of a valid Schnorr signature.
 	 * @param gen the chose generator.
 	 * @return true if the verification succeed, false otherwise
-	 * @throws NoSuchAlgorithmException if the hash function used in this
-	 * method does not find the algorithm.
-	 * @throws UnsupportedEncodingException if the hash function used in
-	 * this method does not find the encoding.
+	 * @throws NoSuchAlgorithmException if the hash function used in this method does not find the algorithm.
+	 * @throws UnsupportedEncodingException if the hash function used in this method does not find the encoding.
 	 */
 	public boolean vrfSchnorrSign(BigInteger verificationKey, String message, BigInteger a, BigInteger b, BigInteger gen) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
 		//compute r = g^b * vk^a mod p
 		BigInteger r = gen.modPow(b, p).multiply(verificationKey.modPow(a, p)).mod(p);
 
-		//concatenate clear text with r: (m|r)
-		sc.pushLeftDelim();
+		//concatenate clear text with r: m|r
+
 		sc.pushObjectDelimiter(message, StringConcatenator.INNER_DELIMITER);
 		sc.pushObject(r);
-		sc.pushRightDelim();
 
 		String concat = sc.pullAll();
 
 		//hashResult = sha-256(concat) mod q => this must be equal to a
-		BigInteger hashResult = CryptoFunc.sha256(concat).mod(q);
+		BigInteger hashResult = CryptoFunc.sha256(concat);
 
 		//return the result of hashResult == a
 		return hashResult.equals(a);
@@ -113,12 +108,11 @@ public class SchnorrImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the signature of the given Ballot or of the given
-	 * ElectionReceipt.
+	 * Verify the signature of the given Ballot or of the given ElectionReceipt.
 	 *
 	 * @param b the Ballot we want to verify the signature.
-	 * @param er the ElectionReceipt that contains the necessary data.
-	 * generator instead of the normal generator g from the config file
+	 * @param er the ElectionReceipt that contains the necessary data. generator instead of the normal generator g from
+	 * the config file
 	 * @return a VerificationResult.
 	 */
 	public VerificationResult vrfBallotSignature(Ballot b, ElectionReceipt er) {
@@ -175,6 +169,7 @@ public class SchnorrImplementer extends Implementer {
 			sc.pushRightDelim();
 
 			String res = sc.pullAll();
+			System.out.println(res);
 
 			r = vrfSchnorrSign(verificationKey, res, schnorrFirstValue, schnorrSecondValue, ebp.getElectionData().getElectionGenerator());
 		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | UnsupportedEncodingException ex) {

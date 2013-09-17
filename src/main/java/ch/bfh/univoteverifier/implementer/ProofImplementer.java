@@ -1,8 +1,8 @@
 /**
  *
- * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
- * Applied Sciences, Engineering and Information Technology, Research Institute
- * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of Applied Sciences, Engineering and
+ * Information Technology, Research Institute for Security in the Information Society, E-Voting Group, Biel,
+ * Switzerland.
  *
  * Project independent VoteVerifier.
  *
@@ -47,8 +47,7 @@ import javax.xml.ws.soap.SOAPFaultException;
 public class ProofImplementer extends Implementer {
 
 	/**
-	 * Construct a new ProofImplementer with a given ElectionBoardProxy and
-	 * RunnerName.
+	 * Construct a new ProofImplementer with a given ElectionBoardProxy and RunnerName.
 	 *
 	 * @param ebp the ElectionBoardProxy used to download the data.
 	 * @param rn the RunnerName who used this implementer.
@@ -66,8 +65,8 @@ public class ProofImplementer extends Implementer {
 	 * @param paramV the parameter used to compute v.
 	 * @param paramW the parameter used to compute w.
 	 * @param prime the prime number used for modulo operations.
-	 * @param vExponentSign the sign of the exponent for the computation of
-	 * v, if true the "-" will be used, "+" if false.
+	 * @param vExponentSign the sign of the exponent for the computation of v, if true the "-" will be used, "+" if
+	 * false.
 	 * @return true if the prover knows the discrete log, false otherwise.
 	 */
 	public boolean knowledgeOfDiscreteLog(BigInteger t, BigInteger s, BigInteger c, BigInteger paramV, BigInteger paramW, BigInteger prime, boolean vExponentSign) {
@@ -95,8 +94,7 @@ public class ProofImplementer extends Implementer {
 	 * @param paramW1 the parameter used to compute the first value of w.
 	 * @param paramW2 the parameter used to compute the second value of w.
 	 * @param prime the prime number used for modulo operations.
-	 * @return true if the prover has verified the equality, false
-	 * otherwise.
+	 * @return true if the prover has verified the equality, false otherwise.
 	 */
 	public boolean equalityOfDiscreteLog(Proof proof, BigInteger c, BigInteger paramV1, BigInteger paramV2, BigInteger paramW1, BigInteger paramW2, BigInteger prime) {
 
@@ -115,8 +113,7 @@ public class ProofImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the NIZKP of the Distributed Key Generation by the given
-	 * tallier.
+	 * Verify the NIZKP of the Distributed Key Generation by the given tallier.
 	 *
 	 * Specification: 1.3.4, d.
 	 *
@@ -178,9 +175,8 @@ public class ProofImplementer extends Implementer {
 	 * Specification: 1.3.4, e.
 	 *
 	 * @param mixerName the name of the mixer.
-	 * @param previousMixerName the name of the previous mixer in order to
-	 * get the previous generator. Use "schnorr_generator" as name to get
-	 * the Schnorr public generator.
+	 * @param previousMixerName the name of the previous mixer in order to get the previous generator. Use
+	 * "schnorr_generator" as name to get the Schnorr public generator.
 	 *
 	 * @return a VerificationResult.
 	 */
@@ -238,9 +234,8 @@ public class ProofImplementer extends Implementer {
 	}
 
 	/**
-	 * Check the Wikström proof verification keys by the given mixer.
-	 * WARNING: some plausibility check are performed instead of the proof,
-	 * which isn't available.
+	 * Check the Wikström proof verification keys by the given mixer. WARNING: some plausibility check are performed
+	 * instead of the proof, which isn't available.
 	 *
 	 * Specification: 1.3.5, d.
 	 *
@@ -414,12 +409,14 @@ public class ProofImplementer extends Implementer {
 
 			//concatenate to atvk
 			sc.pushObject(aValue);
+			sc.pushInnerDelim();
 			sc.pushObject(t);
+			sc.pushInnerDelim();
 			sc.pushObject(verificationKey);
 
 			String res = sc.pullAll();
 
-			BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
+			BigInteger c = CryptoFunc.sha256(res);
 
 			r = knowledgeOfDiscreteLog(t, s, c, elGamalG, aValue, elGamalP, false);
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException | ElectionBoardServiceFault ex) {
@@ -440,9 +437,8 @@ public class ProofImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify the NIZKP of the shuffled encrypted votes. WARNING: the proof
-	 * is not yet implemented, so some plausibility checks will be performed
-	 * instead of the real proof.
+	 * Verify the NIZKP of the shuffled encrypted votes. WARNING: the proof is not yet implemented, so some plausibility
+	 * checks will be performed instead of the real proof.
 	 *
 	 * Specification: 1.3.7, a.
 	 *
@@ -483,7 +479,7 @@ public class ProofImplementer extends Implementer {
 			Set<EncryptedVote> uniqueVerificationKeys = new HashSet<>(mev.getVote());
 
 			//if the size of the unique set of verification key is the same
-            //as the original verification key we don't have any duplicates
+			//as the original verification key we don't have any duplicates
 			boolean differentValues = mev.getVote().size() == uniqueVerificationKeys.size();
 
 			r = size && valuesInG && differentValues;
@@ -559,56 +555,56 @@ public class ProofImplementer extends Implementer {
 			BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
 
 			// verify proof(s) if implemented
-            // Eric Dubuis: Added this hack since proofs are missing in old versions.
-            if (!pdv.getProof().getCommitment().isEmpty()) {
-                //verify the first proof
-                r = knowledgeOfDiscreteLog(pdv.getProof().getCommitment().get(0),
-                    pdv.getProof().getResponse().get(0), c, elGamalG, eks.getKey(), elGamalP, false);
+			// Eric Dubuis: Added this hack since proofs are missing in old versions.
+			if (!pdv.getProof().getCommitment().isEmpty()) {
+				//verify the first proof
+				r = knowledgeOfDiscreteLog(pdv.getProof().getCommitment().get(0),
+						pdv.getProof().getResponse().get(0), c, elGamalG, eks.getKey(), elGamalP, false);
 
-                //compute the knowledge of discrete log for each element in the list
-                for (int i = 0; i < pdv.getVote().size(); i++) {
-                    BigInteger commitment = pdv.getProof().getCommitment().get(i + 1);
-                    BigInteger response;
+				//compute the knowledge of discrete log for each element in the list
+				for (int i = 0; i < pdv.getVote().size(); i++) {
+					BigInteger commitment = pdv.getProof().getCommitment().get(i + 1);
+					BigInteger response;
 
 
-                    if (pdv.getProof().getResponse().size() == 1) {
-                        response = pdv.getProof().getResponse().get(0);
-                    } else {
-                        response = pdv.getProof().getResponse().get(i + 1);
-                    }
-                    BigInteger a_tallier = pdv.getVote().get(i);
-                    BigInteger a_firstEncValue = mev.getVote().get(i).getFirstValue();
+					if (pdv.getProof().getResponse().size() == 1) {
+						response = pdv.getProof().getResponse().get(0);
+					} else {
+						response = pdv.getProof().getResponse().get(i + 1);
+					}
+					BigInteger a_tallier = pdv.getVote().get(i);
+					BigInteger a_firstEncValue = mev.getVote().get(i).getFirstValue();
 
-                    //the computation of v and w for this proof is a sequence of knowledge of discrete log
-                    r = knowledgeOfDiscreteLog(commitment, response, c, a_firstEncValue,
-                        a_tallier, elGamalP, true);
+					//the computation of v and w for this proof is a sequence of knowledge of discrete log
+					r = knowledgeOfDiscreteLog(commitment, response, c, a_firstEncValue,
+							a_tallier, elGamalP, true);
 
-                    //if the result is false, break
-                    if (!r) {
-                        break;
-                    }
-                }
-            } else {
-                rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
-            }
+					//if the result is false, break
+					if (!r) {
+						break;
+					}
+				}
+			} else {
+				rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
+			}
 
 		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault |
-            NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+				NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			exc = ex;
 		}
 
 		VerificationResult v =
-            new VerificationResult(VerificationType.MT_T_NIZKP_OF_X, r, ebp.getElectionID(),
-                rn, it, EntityType.TALLIER);
+				new VerificationResult(VerificationType.MT_T_NIZKP_OF_X, r, ebp.getElectionID(),
+				rn, it, EntityType.TALLIER);
 		v.setEntityName(tallierName);
 
-        if (rep != null) {
-            // Eric Dubuis: Added this hack. Necessary as the class
-            // VerificationResult is completely broken. (Should be
-            // a value object, anyway.)
-            v.setReport(rep);
-            v.setImplemented(false);
-        } else if (exc != null) {
+		if (rep != null) {
+			// Eric Dubuis: Added this hack. Necessary as the class
+			// VerificationResult is completely broken. (Should be
+			// a value object, anyway.)
+			v.setReport(rep);
+			v.setImplemented(false);
+		} else if (exc != null) {
 			rep = new Report(exc);
 			v.setReport(rep);
 		} else if (!r) {

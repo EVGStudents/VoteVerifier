@@ -84,6 +84,7 @@ public class RSAImplementer extends Implementer {
 	 */
 	public boolean vrfRSASign(RSAPublicKey pubKey, String clearText, BigInteger signature) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		BigInteger hash = CryptoFunc.sha256(clearText);
+		//TODO Remove
 		String ha = hash.toString(10);
 		String pk = pubKey.getPublicExponent().toString(10);
 		String mod = pubKey.getModulus().toString(10);
@@ -868,8 +869,8 @@ public class RSAImplementer extends Implementer {
 			Signature signature = vc.getSignature();
 			sc.pushLeftDelim();
 			sc.pushObjectDelimiter(vc.getElectionId(), StringConcatenator.INNER_DELIMITER);
-			
-			
+
+
 
 			//for all certs
 			sc.pushLeftDelim();
@@ -887,7 +888,7 @@ public class RSAImplementer extends Implementer {
 			sc.pushObject(signature.getTimestamp());
 
 			String res = sc.pullAll();
-			
+
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
 		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
@@ -931,6 +932,7 @@ public class RSAImplementer extends Implementer {
 
 			sc.pushObjectDelimiter(mk.getElectionId(), StringConcatenator.INNER_DELIMITER);
 			sc.pushList(mk.getKey(), true);
+			sc.pushInnerDelim();
 
 			//empty proof
 			sc.pushLeftDelim();
@@ -1083,13 +1085,9 @@ public class RSAImplementer extends Implementer {
 
 				//empty proof
 				sc.pushLeftDelim();
-
-				sc.pushLeftDelim();
-				sc.pushRightDelim();
+				sc.pushList(key.getProof().getCommitment(), true);
 				sc.pushInnerDelim();
-				sc.pushLeftDelim();
-				sc.pushRightDelim();
-
+				sc.pushList(key.getProof().getResponse(), true);
 				sc.pushRightDelim();
 				//end empty proof
 
@@ -1146,7 +1144,7 @@ public class RSAImplementer extends Implementer {
 			for (MixedVerificationKey key : mk) {
 				Signature signature = key.getSignature();
 
-				//concatenate to (id|key)|timestamp - ToDo look for the Voter identiy
+				//concatenate to (id|voterId|key)|timestamp - ToDo look for the Voter identiy
 				sc.pushLeftDelim();
 
 				sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
