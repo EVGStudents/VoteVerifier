@@ -49,7 +49,7 @@ public class ElectionPreparationRunnerTest {
 		ebp = new ElectionBoardProxy(eID, true);
 		epr = new ElectionPreparationRunner(ebp, new Messenger());
 		realList = epr.run();
-		mockList = new ArrayList<>();
+		mockList = new ArrayList<VerificationResult>();
 		rn = RunnerName.ELECTION_PREPARATION;
 
 		buildMockList();

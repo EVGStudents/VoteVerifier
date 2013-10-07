@@ -32,7 +32,6 @@ import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.math.BigInteger;
 import java.util.List;
-import javax.xml.ws.soap.SOAPFaultException;
 
 /**
  * This class is used to check the validity of the parameters, like ElGamal,
@@ -312,11 +311,12 @@ public class ParametersImplementer extends Implementer {
 				}
 
 			}
-		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY, r, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -419,7 +419,7 @@ public class ParametersImplementer extends Implementer {
 			//check if the two set correspond
 			r = mev.getVote().equals(lastMixerEncVotes.getVote());
 
-		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
@@ -485,11 +485,12 @@ public class ParametersImplementer extends Implementer {
 
 				//decode the vote is missing but there is a problem with the computation of mInverse!
 			}
-		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES, false, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES, false, ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (exc != null) {
 			rep = new Report(exc);

@@ -54,7 +54,7 @@ public class IndividualRunnerTest {
 		ebp = new ElectionBoardProxy("vsbfh-2013", true);
 		ir = new IndividualRunner(ebp, new Messenger(), er);
 		realList = ir.run();
-		mockList = new ArrayList<>();
+		mockList = new ArrayList<VerificationResult>();
 		rn = RunnerName.INDIVIDUAL;
 
 		buildMockList();

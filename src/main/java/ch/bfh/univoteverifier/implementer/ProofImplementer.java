@@ -31,13 +31,10 @@ import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
 import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import ch.bfh.univoteverifier.verification.VerificationResult;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.xml.ws.soap.SOAPFaultException;
 
 /**
  * This class contains all the methods that need a NIZKP verification.
@@ -151,11 +148,13 @@ public class ProofImplementer extends Implementer {
 			//c = H(y_j|t|tallierName) mod Q
 			BigInteger c = CryptoFunc.sha256(res).mod(elGamalQ);
 			r = knowledgeOfDiscreteLog(t, s, c, elGamalG, y_j, elGamalP, false);
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X, r,
+            ebp.getElectionID(), rn, it, EntityType.TALLIER);
 		v.setEntityName(tallierName);
 
 		if (exc != null) {
@@ -215,11 +214,13 @@ public class ProofImplementer extends Implementer {
 
 			r = knowledgeOfDiscreteLog(t, s, c, previous_g_k, g_k, Config.p, false);
 
-		} catch (ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA, r,
+            ebp.getElectionID(), rn, it, EntityType.MIXER);
 		v.setEntityName(mixerName);
 
 		if (exc != null) {
@@ -317,22 +318,27 @@ public class ProofImplementer extends Implementer {
 			List<MixedVerificationKey> mvk = ebp.getLatelyMixedVerificationKeysBy(mixerName);
 
 
-			//this proof is not yet implemented - but the equalityOfDiscreteLog() method should do the  computation for this kind of proof
+			//this proof is not yet implemented - but the equalityOfDiscreteLog() method should
+            //do the  computation for this kind of proof
 
-			//plausibility check instead - check that vk_i belongs to VK (lately mixed verification keys of late registration)
+			//plausibility check instead - check that vk_i belongs to VK
+            //(lately mixed verification keys of late registration)
 			List<MixedVerificationKey> allMvk = ebp.getLateyMixedVerificationKeys();
 
 			r = mvk.size() == allMvk.size();
 
-		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF, r,
+            ebp.getElectionID(), rn, it, EntityType.MIXER);
 		v.setEntityName(mixerName);
 		v.setImplemented(false);
 
 		if (exc != null) {
+            // TODO Check (non-) usage of 'rep' (due1)
 			rep = new Report(exc);
 			v.setReport(new Report(FailureCode.INVALID_NIZKP));
 		} else if (!v.isImplemented()) {
@@ -419,11 +425,13 @@ public class ProofImplementer extends Implementer {
 			BigInteger c = CryptoFunc.sha256(res);
 
 			r = knowledgeOfDiscreteLog(t, s, c, elGamalG, aValue, elGamalP, false);
-		} catch (NoSuchAlgorithmException | UnsupportedEncodingException | ElectionBoardServiceFault ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.SINGLE_BALLOT_PROOF, r, ebp.getElectionID(), rn, it, EntityType.VOTERS);
+		VerificationResult v =
+            new VerificationResult(VerificationType.SINGLE_BALLOT_PROOF, r,
+            ebp.getElectionID(), rn, it, EntityType.VOTERS);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -476,18 +484,20 @@ public class ProofImplementer extends Implementer {
 
 			//plausibility check 3: different values
 			//remove the duplicates by creating a set
-			Set<EncryptedVote> uniqueVerificationKeys = new HashSet<>(mev.getVote());
+			Set<EncryptedVote> uniqueVerificationKeys = new HashSet<EncryptedVote>(mev.getVote());
 
 			//if the size of the unique set of verification key is the same
 			//as the original verification key we don't have any duplicates
 			boolean differentValues = mev.getVote().size() == uniqueVerificationKeys.size();
 
 			r = size && valuesInG && differentValues;
-		} catch (NullPointerException | ElectionBoardServiceFault ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		VerificationResult v =
+            new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET, r,
+            ebp.getElectionID(), rn, it, EntityType.MIXER);
 		v.setEntityName(mixerName);
 		v.setImplemented(false);
 
@@ -588,8 +598,7 @@ public class ProofImplementer extends Implementer {
 				rep = new Report(FailureCode.NOT_YET_IMPLEMENTED);
 			}
 
-		} catch (NullPointerException | SOAPFaultException | ElectionBoardServiceFault |
-				NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 

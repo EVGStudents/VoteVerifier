@@ -1,0 +1,60 @@
+Downloads
+
+    This page gives you easy access to the ready-to-be-used
+VoteVerifier program as well as to its source code. A few
+remarks are in place.
+
+    * The source code is provided on a "as-is" basis.
+
+    * The source code is Java 1.7.
+
+    * The source code is
+      given in various file formats.
+
+    * We use Maven as the build system.
+
+    * Download and unpack the source code of the
+      project. This results in a self-contained
+      file tree.
+
+[]
+
+
+* Installer for this Version
+
+    We provide an easy-to-use installer for this program.
+Download the installer JAR file and then execute it. To
+execute the installer, double-click on the installer file
+and follow the instruction dialogs. Alternatively, or if
+the execution of JAR files is not enabled on your system,
+open a command window and execute the the command
+<<<java -jar>>> <filename> in the directory where the
+downloaded JAR file resides. To download the installer,
+follow this link:
+
+    * {{{./download/voteverifier-1.0-SNAPSHOT-installer.jar}Vote
+    Verifier Installer (jar)}}
+
+[]
+
+* Binary for this Version
+
+    Follow this link:
+
+    * {{{./download/voteverifier-1.0-SNAPSHOT-jar-with-dependencies.jar}Vote
+        Verifier Binary (jar)}}
+
+[]
+
+* Download Links for the Source Code of this Version
+
+    Choose your preferred file format:
+
+    * {{{./download/voteverifier-1.0-SNAPSHOT-src.tar.bz2}Vote Verifier Sources (bz2)}}
+
+    * {{{./download/voteverifier-1.0-SNAPSHOT-src.tar.gz}Vote Verifier Sources (gz)}}
+
+    * {{{./download/voteverifier-1.0-SNAPSHOT-src.zip}Vote Verifier Sources (zip)}}
+
+[]
+

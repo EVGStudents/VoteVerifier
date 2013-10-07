@@ -9,11 +9,11 @@
  */
 package ch.bfh.univoteverifier.verification;
 
-import ch.bfh.univoteverifier.listener.VerificationSubject;
-import ch.bfh.univoteverifier.runner.Runner;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
+import ch.bfh.univoteverifier.listener.VerificationSubject;
 import ch.bfh.univoteverifier.runner.ResultsRunner;
+import ch.bfh.univoteverifier.runner.Runner;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,8 +48,8 @@ public abstract class Verification {
 
 		this.ebproxy = new ElectionBoardProxy(eID);
 
-		runners = new ArrayList<>();
-		res = new ArrayList<>();
+		runners = new ArrayList<Runner>();
+		res = new ArrayList<VerificationResult>();
 		this.msgr = msgr;
 	}
 
@@ -72,8 +72,8 @@ public abstract class Verification {
 			}
 		}
 
-		runners = new ArrayList<>();
-		res = new ArrayList<>();
+		runners = new ArrayList<Runner>();
+		res = new ArrayList<VerificationResult>();
 		this.msgr = msgr;
 	}
 

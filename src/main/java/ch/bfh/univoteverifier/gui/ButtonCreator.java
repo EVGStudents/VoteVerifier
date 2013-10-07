@@ -41,7 +41,7 @@ import javax.swing.SwingConstants;
  */
 public final class ButtonCreator {
 
-    private JComboBox<String> comboBox;
+    private JComboBox comboBox;
     private JPanel buttonPanel;
     private ResourceBundle rb;
     private JButton btnStart, btnFileSelector;
@@ -112,7 +112,7 @@ public final class ButtonCreator {
      * as the selection of previously used election IDs.
      */
     public void createComboBox(String[] eIDlist) {
-        comboBox = new JComboBox<>(eIDlist);
+        comboBox = new JComboBox(eIDlist);
         comboBox.setEditable(true);
         comboBox.setSelectedIndex(0);
     }
@@ -206,7 +206,7 @@ public final class ButtonCreator {
      *
      * @return JComboBox the combobox created by this class.
      */
-    public JComboBox<String> getComboBox() {
+    public JComboBox getComboBox() {
         return comboBox;
     }
 

@@ -47,7 +47,7 @@ public class ConsolePanel extends JPanel implements ChangeListener {
      * Create an instance of the console panel class.
      */
     public ConsolePanel() {
-        textAreaText = new HashMap<>();
+        textAreaText = new HashMap<String, String>();
         rb = ResourceBundle.getBundle("error", GUIconstants.getLocale());
 
         this.setLayout(new GridLayout(1, 1));

@@ -31,7 +31,7 @@ public class ThreadManager {
      * Create a new instance of this class.
      */
     public ThreadManager() {
-        threadMap = new HashMap<>();
+        threadMap = new HashMap<String, VerificationThread>();
     }
 
     /**

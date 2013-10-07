@@ -267,7 +267,7 @@ public class ElectionBoardProxy {
 	 */
 	public BlindedGenerator getBlindedGenerator(String mixerID) throws ElectionBoardServiceFault {
 		if (blindGen == null) {
-			blindGen = new HashMap<>();
+			blindGen = new HashMap<String, BlindedGenerator>();
 		}
 
 		if (blindGen.get(mixerID) == null) {
@@ -432,7 +432,7 @@ public class ElectionBoardProxy {
 	 */
 	public EncryptionKeyShare getEncryptionKeyShare(String tallierID) throws ElectionBoardServiceFault {
 		if (encKeyShare == null) {
-			encKeyShare = new HashMap<>();
+			encKeyShare = new HashMap<String, EncryptionKeyShare>();
 		}
 
 		if (encKeyShare.get(tallierID) == null) {
@@ -485,7 +485,7 @@ public class ElectionBoardProxy {
 	 */
 	public List<MixedVerificationKey> getLatelyMixedVerificationKeysBy(String mixerID) throws ElectionBoardServiceFault {
 		if (latelyMixVerKeyBy == null) {
-			latelyMixVerKeyBy = new HashMap<>();
+			latelyMixVerKeyBy = new HashMap<String, List<MixedVerificationKey>>();
 		}
 
 		if (latelyMixVerKeyBy.get(mixerID) == null) {
@@ -538,7 +538,7 @@ public class ElectionBoardProxy {
 	 */
 	public MixedEncryptedVotes getMixedEncryptedVotesBy(String mixerID) throws ElectionBoardServiceFault {
 		if (mixEncVotesBy == null) {
-			mixEncVotesBy = new HashMap<>();
+			mixEncVotesBy = new HashMap<String, MixedEncryptedVotes>();
 		}
 
 		if (mixEncVotesBy.get(mixerID) == null) {
@@ -575,7 +575,7 @@ public class ElectionBoardProxy {
 	 */
 	public MixedVerificationKeys getMixedVerificationKeysBy(String mixerID) throws ElectionBoardServiceFault {
 		if (mixVerKeyBy == null) {
-			mixVerKeyBy = new HashMap<>();
+			mixVerKeyBy = new HashMap<String, MixedVerificationKeys>();
 		}
 
 
@@ -597,7 +597,7 @@ public class ElectionBoardProxy {
 	 */
 	public PartiallyDecryptedVotes getPartiallyDecryptedVotes(String tallierID) throws ElectionBoardServiceFault {
 		if (parDecVotes == null) {
-			parDecVotes = new HashMap<>();
+			parDecVotes = new HashMap<String, PartiallyDecryptedVotes>();
 		}
 
 		if (parDecVotes.get(tallierID) == null) {
@@ -716,7 +716,7 @@ public class ElectionBoardProxy {
 	 */
 	public Map<String, X509Certificate> getTalliersCerts() throws ElectionBoardServiceFault, CertificateException {
 		if (talliersCerts == null) {
-			talliersCerts = new HashMap<>();
+			talliersCerts = new HashMap<String, X509Certificate>();
 			int counter = 0;
 
 			for (Certificate cert : getElectionSystemInfo().getTallier()) {
@@ -742,7 +742,7 @@ public class ElectionBoardProxy {
 	 */
 	public Map<String, X509Certificate> getMixersCerts() throws ElectionBoardServiceFault, CertificateException {
 		if (mixersCerts == null) {
-			mixersCerts = new HashMap<>();
+			mixersCerts = new HashMap<String, X509Certificate>();
 			int counter = 0;
 
 			for (Certificate cert : getElectionSystemInfo().getMixer()) {
@@ -783,9 +783,10 @@ public class ElectionBoardProxy {
 	 */
 	public List<X509Certificate> getRevokedCertificates() throws ElectionBoardServiceFault, CertificateException {
 		if (revokedCertificates == null) {
-			List<X509Certificate> allCert = new ArrayList<>();
-			revokedCertificates = new ArrayList<>();
-			Map<X500Principal, List<X509Certificate>> certsPerVoter = new HashMap<>();
+			List<X509Certificate> allCert = new ArrayList<X509Certificate>();
+			revokedCertificates = new ArrayList<X509Certificate>();
+			Map<X500Principal, List<X509Certificate>> certsPerVoter =
+                new HashMap<X500Principal, List<X509Certificate>>();
 
 			//add voter certs
 			for (Certificate c : getVoterCerts().getCertificate()) {

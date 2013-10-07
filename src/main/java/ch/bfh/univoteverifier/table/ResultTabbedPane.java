@@ -17,12 +17,12 @@ import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.gui.GUIconstants;
 import ch.bfh.univoteverifier.gui.ThreadManager;
-import java.util.logging.Logger;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeListener;
@@ -64,7 +64,7 @@ public class ResultTabbedPane extends JTabbedPane {
 
         removeTabAction = new RemoveTabAction(this, tm);
         this.setBackground(Color.WHITE);
-        resultsPanels = new ArrayList<>();
+        resultsPanels = new ArrayList<ResultTab>();
     }
 
     /**

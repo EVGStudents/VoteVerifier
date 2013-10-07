@@ -13,7 +13,6 @@ import ch.bfh.univoteverifier.gui.ElectionReceipt;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.MultiFormatReader;
-import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
@@ -110,8 +109,10 @@ public class QRCode {
             msgr.sendSetupError("This file is not a valid QR Code");
         } catch (FileNotFoundException ex) {
             msgr.sendSetupError("This file could not be read");
-        } catch (NotFoundException | IOException ex) {
+        } catch (IOException ex) {
             msgr.sendSetupError("This file is not a valid QR Code");
+        } catch (Exception ex) {
+            msgr.sendSetupError("There is an error reading the file");
         }
         return returnStr;
     }
@@ -195,7 +196,7 @@ public class QRCode {
      * system.
      */
     public Map<String, String> separateDataPairs(String[] pairs) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<String, String>();
         Pattern pattern = Pattern.compile(":");
         for (int i = 0; i < pairs.length; i++) {
             String[] split = pattern.split(pairs[i], 2);

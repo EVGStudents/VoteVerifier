@@ -9,7 +9,6 @@
  */
 package ch.bfh.univoteverifier.runner;
 
-import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
@@ -97,7 +96,7 @@ public class MixerTallierRunner extends Runner {
 			partialResults.add(v8);
 			Thread.sleep(SLEEP_TIME);
 
-		} catch (com.sun.xml.ws.client.ClientTransportException | ElectionBoardServiceFault ex) {
+		} catch (Exception ex) {
 			msgr.sendElectionSpecError(ex);
 		}
 

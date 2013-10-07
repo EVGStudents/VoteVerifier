@@ -1,0 +1,19 @@
+<shortcuts>
+  <skipIfNotSupported/>
+  <programGroup defaultName="BFH" location="application"/>
+  <shortcut
+    name="Start VoteVerifier"
+    target="$INSTALL_PATH/voteverifier.sh"
+    commandLine=""
+    workingDirectory="$USER_HOME"
+    description="Starts the VoteVerifier program"
+    iconFile="$INSTALL_PATH/voteverifier.ico"
+    iconIndex="0"
+    initialState="normal"
+    programGroup="yes"
+    desktop="yes"
+    applications="yes"
+    startMenu="no"
+    startup="no">
+  </shortcut>
+</shortcuts>

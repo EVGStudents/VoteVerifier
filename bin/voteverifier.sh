@@ -1,5 +1,5 @@
 #!/bin/sh
-# Batch file for running the VoteVerifier application, Java 7 on Linux assumed
+# Batch file for running the VoteVerifier application, Java 6 or 7 on Linux assumed
 #
 
 # Define installation location. Installer assumed
@@ -11,7 +11,7 @@ JARFILE=$INSTALL_DIR/VoteVerifier-%{VERSION}-jar-with-dependencies.jar
 # Set current directory to INSTALL_DIR
 cd $INSTALL_DIR
 
-# Determine JAVA_HOME
+# Determine JAVA_HOME (Java 6 or 7 assumed)
 if [ -z "$JAVA_HOME" ] ; then
 	JAVA_HOME=`/usr/libexec/java_home`
 fi

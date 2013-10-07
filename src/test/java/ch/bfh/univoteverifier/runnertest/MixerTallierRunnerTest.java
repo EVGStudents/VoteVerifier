@@ -49,7 +49,7 @@ public class MixerTallierRunnerTest {
 		ebp = new ElectionBoardProxy(eID, true);
 		epr = new MixerTallierRunner(ebp, new Messenger());
 		realList = epr.run();
-		mockList = new ArrayList<>();
+		mockList = new ArrayList<VerificationResult>();
 		rn = RunnerName.MIXING_TALLING;
 		buildMockList();
 	}

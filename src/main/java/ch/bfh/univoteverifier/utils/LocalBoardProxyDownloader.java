@@ -133,7 +133,7 @@ public class LocalBoardProxyDownloader {
 	 * parameter.
 	 */
 	public void writeBlindedGenerator() throws ElectionBoardServiceFault {
-		Map<String, BlindedGenerator> blindGen = new HashMap<>();
+		Map<String, BlindedGenerator> blindGen = new HashMap<String, BlindedGenerator>();
 
 		for (String mixerID : mixerIdentifier) {
 			blindGen.put(mixerID, ebp.getBlindedGenerator(mixerID));
@@ -249,7 +249,7 @@ public class LocalBoardProxyDownloader {
 	 * parameter.
 	 */
 	public void writeEncryptionKeyShare() throws ElectionBoardServiceFault {
-		Map<String, EncryptionKeyShare> encKeyShareBy = new HashMap<>();
+		Map<String, EncryptionKeyShare> encKeyShareBy = new HashMap<String, EncryptionKeyShare>();
 
 		for (String tallierID : tallierIdentifier) {
 			encKeyShareBy.put(tallierID, ebp.getEncryptionKeyShare(tallierID));
@@ -288,7 +288,8 @@ public class LocalBoardProxyDownloader {
 	 * parameter.
 	 */
 	public void writeLatelyMixedVerificationKeysBy() throws ElectionBoardServiceFault {
-		Map<String, List<MixedVerificationKey>> latelyMixedVerKeyBy = new HashMap<>();
+		Map<String, List<MixedVerificationKey>> latelyMixedVerKeyBy =
+            new HashMap<String, List<MixedVerificationKey>>();
 
 		for (String mixerID : mixerIdentifier) {
 			latelyMixedVerKeyBy.put(mixerID, ebp.getLatelyMixedVerificationKeysBy(mixerID));
@@ -327,7 +328,7 @@ public class LocalBoardProxyDownloader {
 	 * parameter.
 	 */
 	public void writeMixedEncryptedVotesBy() throws ElectionBoardServiceFault {
-		Map<String, MixedEncryptedVotes> mixEncVotesBy = new HashMap<>();
+		Map<String, MixedEncryptedVotes> mixEncVotesBy = new HashMap<String, MixedEncryptedVotes>();
 
 		for (String mixerID : mixerIdentifier) {
 			mixEncVotesBy.put(mixerID, ebp.getMixedEncryptedVotesBy(mixerID));
@@ -355,7 +356,7 @@ public class LocalBoardProxyDownloader {
 	 * parameter.
 	 */
 	public void writeMixedVerificationKeysBy() throws ElectionBoardServiceFault {
-		Map<String, MixedVerificationKeys> mixVerKeysBy = new HashMap<>();
+		Map<String, MixedVerificationKeys> mixVerKeysBy = new HashMap<String, MixedVerificationKeys>();
 
 		for (String mixerID : mixerIdentifier) {
 			mixVerKeysBy.put(mixerID, ebp.getMixedVerificationKeysBy(mixerID));
@@ -372,7 +373,7 @@ public class LocalBoardProxyDownloader {
 	 * parameter.
 	 */
 	public void writePartiallyDecrpytedVotes() throws ElectionBoardServiceFault {
-		Map<String, PartiallyDecryptedVotes> parDecVotes = new HashMap<>();
+		Map<String, PartiallyDecryptedVotes> parDecVotes = new HashMap<String, PartiallyDecryptedVotes>();
 
 		for (String tallierID : tallierIdentifier) {
 			parDecVotes.put(tallierID, ebp.getPartiallyDecryptedVotes(tallierID));

@@ -9,7 +9,6 @@
  */
 package ch.bfh.univoteverifier.verificationtest;
 
-import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.Messenger;
@@ -23,8 +22,8 @@ import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * This class test the behavior of an IndividualVerification.
@@ -45,7 +44,7 @@ public class IndividualVerificationTester {
 		eID = "vsbfh-2013";
 		v = new IndividualVerification(new Messenger(), "", er);
 		realList = v.runVerification();
-		mockList = new ArrayList<>();
+		mockList = new ArrayList<VerificationResult>();
 		buildMockList();
 	}
 

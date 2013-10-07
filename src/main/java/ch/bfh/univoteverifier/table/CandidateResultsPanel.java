@@ -74,7 +74,6 @@ public class CandidateResultsPanel extends JPanel {
         resultsContent.add(noResultsLabel);
 
         this.add(resultsContent);
-        ArrayList<ResultSet> data = new ArrayList<>();
     }
 
     public JScrollPane createScrollPanel() {

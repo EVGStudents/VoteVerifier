@@ -51,7 +51,7 @@ public class ElectionPeriodRunnerTest {
 		ebp = new ElectionBoardProxy(eID, true);
 		epr = new ElectionPeriodRunner(ebp, new Messenger());
 		realList = epr.run();
-		mockList = new ArrayList<>();
+		mockList = new ArrayList<VerificationResult>();
 		rn = RunnerName.ELECTION_PERIOD;
 
 		buildMockList();

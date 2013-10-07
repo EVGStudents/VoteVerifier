@@ -74,6 +74,7 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="PREVIOUS"/>
 			<xs:enumeration value="NEW"/>
+			<xs:enumeration value="UNDEF"/>
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -89,9 +90,24 @@
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="knownElectionIds">
+	<xs:complexType name="decodedVotes">
 		<xs:sequence>
-			<xs:element name="electionId" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="electionId" type="xs:string"/>
+			<xs:element name="decodedVote" type="tns:decodedVote" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="signature" type="tns:signature"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="decodedVote">
+		<xs:sequence>
+			<xs:element name="entry" type="tns:decodedVoteEntry" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="decodedVoteEntry">
+		<xs:sequence>
+			<xs:element name="choiceId" type="xs:int"/>
+			<xs:element name="count" type="xs:int"/>
 		</xs:sequence>
 	</xs:complexType>
 
@@ -242,6 +258,12 @@
 		</xs:complexContent>
 	</xs:complexType>
 
+	<xs:complexType name="knownElectionIds">
+		<xs:sequence>
+			<xs:element name="electionId" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
 	<xs:simpleType name="languageCode">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="DE"/>
@@ -332,27 +354,6 @@
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="decodedVotes">
-		<xs:sequence>
-			<xs:element name="electionId" type="xs:string"/>
-			<xs:element name="decodedVote" type="tns:decodedVote" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="signature" type="tns:signature"/>
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="decodedVote">
-		<xs:sequence>
-			<xs:element name="entry" type="tns:decodedVoteEntry" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="decodedVoteEntry">
-		<xs:sequence>
-			<xs:element name="choiceId" type="xs:int"/>
-			<xs:element name="count" type="xs:int"/>
-		</xs:sequence>
-	</xs:complexType>
-
 	<xs:complexType name="politicalList">
 		<xs:complexContent>
 			<xs:extension base="tns:choice">
@@ -402,6 +403,7 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="M"/>
 			<xs:enumeration value="F"/>
+			<xs:enumeration value="UNDEF"/>
 		</xs:restriction>
 	</xs:simpleType>
 

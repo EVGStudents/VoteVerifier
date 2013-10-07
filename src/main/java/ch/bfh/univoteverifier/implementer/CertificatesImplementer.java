@@ -11,7 +11,6 @@ package ch.bfh.univoteverifier.implementer;
 
 import ch.bfh.univote.common.Certificate;
 import ch.bfh.univote.common.VoterCertificates;
-import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
@@ -36,7 +35,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.ws.soap.SOAPFaultException;
 
 /**
  * This class is used to check X509 certificates.
@@ -112,14 +110,14 @@ public class CertificatesImplementer extends Implementer {
 
 		try {
 			X509Certificate caCert = ebp.getCACert();
-			List<X509Certificate> c = new ArrayList<>();
+			List<X509Certificate> c = new ArrayList<X509Certificate>();
 			c.add(caCert);
 			r = vrfCert(c);
 		} catch (CertPathValidatorException ex) {
 			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
-		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
@@ -154,14 +152,14 @@ public class CertificatesImplementer extends Implementer {
 
 		try {
 			X509Certificate emCert = ebp.getEMCert();
-			List<X509Certificate> c = new ArrayList<>();
+			List<X509Certificate> c = new ArrayList<X509Certificate>();
 			c.add(emCert);
 			r = vrfCert(c);
 		} catch (CertPathValidatorException ex) {
 			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
-		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
@@ -196,14 +194,14 @@ public class CertificatesImplementer extends Implementer {
 
 		try {
 			X509Certificate eaCert = ebp.getEACert();
-			List<X509Certificate> c = new ArrayList<>();
+			List<X509Certificate> c = new ArrayList<X509Certificate>();
 			c.add(eaCert);
 			r = vrfCert(c);
 		} catch (CertPathValidatorException ex) {
 			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
-		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
@@ -237,14 +235,14 @@ public class CertificatesImplementer extends Implementer {
 
 		//check the certificate path
 		try {
-			List<X509Certificate> certPath = new ArrayList<>();
+			List<X509Certificate> certPath = new ArrayList<X509Certificate>();
 			certPath.add(ebp.getTalliersCerts().get(tallierName));
 			r = vrfCert(certPath);
 		} catch (CertPathValidatorException ex) {
 			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
-		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
@@ -280,14 +278,14 @@ public class CertificatesImplementer extends Implementer {
 
 		//check the certificate path
 		try {
-			List<X509Certificate> certPath = new ArrayList<>();
+			List<X509Certificate> certPath = new ArrayList<X509Certificate>();
 			certPath.add(ebp.getMixersCerts().get(mixerName));
 			r = vrfCert(certPath);
 		} catch (CertPathValidatorException ex) {
 			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
-		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
@@ -327,7 +325,7 @@ public class CertificatesImplementer extends Implementer {
 				X509Certificate xCert = CryptoFunc.getX509Certificate(c.getValue());
 
 				//check the certificate path
-				List<X509Certificate> certPath = new ArrayList<>();
+				List<X509Certificate> certPath = new ArrayList<X509Certificate>();
 				certPath.add(xCert);
 				certPath.add(ebp.getCACert());
 				r = vrfCert(certPath);
@@ -337,12 +335,13 @@ public class CertificatesImplementer extends Implementer {
 			r = false;
 			invalidCert = ex;
 			Logger.getLogger(this.getClass().getName()).log(Level.INFO, ex.getMessage());
-		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
 		//create a VerificationResult and then set the entity name to the one we have
-		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT, r, ebp.getElectionID(), rn, it, EntityType.CA);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -374,7 +373,7 @@ public class CertificatesImplementer extends Implementer {
 			for (Certificate c : vc) {
 				X509Certificate xCert = CryptoFunc.getX509Certificate(c.getValue());
 				//check the certificate path
-				List<X509Certificate> certPath = new ArrayList<>();
+				List<X509Certificate> certPath = new ArrayList<X509Certificate>();
 				certPath.add(xCert);
 				certPath.add(ebp.getCACert());
 				r = vrfCert(certPath);
@@ -383,7 +382,7 @@ public class CertificatesImplementer extends Implementer {
 			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
-		} catch (NullPointerException | SOAPFaultException | NoSuchAlgorithmException | ElectionBoardServiceFault | CertificateException | InvalidAlgorithmParameterException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 

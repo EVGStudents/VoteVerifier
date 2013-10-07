@@ -10,7 +10,7 @@
         <appname>VoteVerifier</appname>
         <appversion>${version}</appversion>
         <appsubpath>VoteVerifier</appsubpath>
-        <javaversion>1.7</javaversion>
+        <javaversion>1.6</javaversion>
         <authors>
             <author name= "Giuseppe Scalzi" email = "" />
             <author name= "Justin Springer" email = "" />

@@ -10,7 +10,6 @@
 package ch.bfh.univoteverifier.implementer;
 
 import ch.bfh.univote.common.Ballot;
-import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.Config;
 import ch.bfh.univoteverifier.common.CryptoFunc;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
@@ -171,12 +170,15 @@ public class SchnorrImplementer extends Implementer {
 			String res = sc.pullAll();
 			System.out.println(res);
 
-			r = vrfSchnorrSign(verificationKey, res, schnorrFirstValue, schnorrSecondValue, ebp.getElectionData().getElectionGenerator());
-		} catch (NoSuchAlgorithmException | ElectionBoardServiceFault | UnsupportedEncodingException ex) {
+			r = vrfSchnorrSign(verificationKey, res, schnorrFirstValue, schnorrSecondValue,
+                ebp.getElectionData().getElectionGenerator());
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.SINGLE_BALLOT_SCHNORR_SIGN, r, ebp.getElectionID(), rn, it, EntityType.VOTERS);
+		VerificationResult v =
+            new VerificationResult(VerificationType.SINGLE_BALLOT_SCHNORR_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.VOTERS);
 
 		if (exc != null) {
 			rep = new Report(exc);

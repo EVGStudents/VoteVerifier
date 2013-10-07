@@ -13,7 +13,6 @@ import ch.bfh.univote.common.Choice;
 import ch.bfh.univote.common.DecryptedVotes;
 import ch.bfh.univote.common.ForallRule;
 import ch.bfh.univote.common.Rule;
-import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
@@ -47,7 +46,7 @@ public class ResultsRunner extends Runner {
 	 * @return a map of choices with the relative vote counts.
 	 */
 	public Map<Choice, Integer> runResults() {
-		electionResult = new LinkedHashMap<>();
+		electionResult = new LinkedHashMap<Choice, Integer>();
 
 		try {
 			DecryptedVotes dv = ebp.getDecryptedVotes();
@@ -76,7 +75,8 @@ public class ResultsRunner extends Runner {
 								int bitPerChoice = (int) Math.floor(Math.log(fra.getUpperBound()) / Math.log(2)) + 1;
 
 								//perform an AND in order to get only the value we need (vote count for this choice id)
-								BigInteger maxValuePerChoice = (new BigInteger("2")).pow(bitPerChoice).subtract(BigInteger.ONE);
+								BigInteger maxValuePerChoice =
+                                    (new BigInteger("2")).pow(bitPerChoice).subtract(BigInteger.ONE);
 								BigInteger choiceVoteCount = vote.and(maxValuePerChoice);
 								//now we do not need the value anymore, so shift right
 								vote = vote.shiftRight(bitPerChoice);
@@ -98,7 +98,7 @@ public class ResultsRunner extends Runner {
 				}
 			}
 
-		} catch (com.sun.xml.ws.client.ClientTransportException | ElectionBoardServiceFault ex) {
+		} catch (Exception ex) {
 			msgr.sendElectionSpecError(ex);
 		}
 

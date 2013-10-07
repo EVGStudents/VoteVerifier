@@ -12,9 +12,10 @@ package ch.bfh.univoteverifier.table;
 
 import ch.bfh.univote.common.Candidate;
 import ch.bfh.univote.common.Choice;
-import java.util.logging.Logger;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -25,7 +26,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class CandidateResultsTableModel extends AbstractTableModel {
 
-    private ArrayList<Entry> data;
+    private List<Entry<Choice, Integer>> data;
     private String[] columnNames = new String[2];
     private static final Logger LOGGER = Logger.getLogger(CandidateResultsTableModel.class.toString());
 
@@ -38,7 +39,7 @@ public class CandidateResultsTableModel extends AbstractTableModel {
      * verification result was produced.
      */
     public CandidateResultsTableModel(String name, String value) {
-        data = new ArrayList<>();
+        data = new ArrayList<Entry<Choice, Integer>>();
         columnNames[0] = name;
         columnNames[1] = value;
     }
@@ -132,9 +133,8 @@ public class CandidateResultsTableModel extends AbstractTableModel {
      *
      * @param r The ResultPair object containing a name and image.
      */
-    public void addEntry(Entry e) {
+    public void addEntry(Entry<Choice, Integer> e) {
         data.add(e);
-        int row = data.size();
         fireTableDataChanged();
     }
 

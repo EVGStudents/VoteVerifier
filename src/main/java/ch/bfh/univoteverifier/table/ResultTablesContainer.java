@@ -35,7 +35,7 @@ public class ResultTablesContainer extends JPanel {
      */
     public ResultTablesContainer() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        tables = new ArrayList<>();
+        tables = new ArrayList<SectionResultsTable>();
     }
 
     /**
@@ -90,7 +90,7 @@ public class ResultTablesContainer extends JPanel {
      */
     public void addTable(ResultSet r) {
         JPanel tablePanel = createTablePanel();
-        ArrayList<ResultSet> data = new ArrayList<>();
+        ArrayList<ResultSet> data = new ArrayList<ResultSet>();
         data.add(r);
 
         masterTableModel = new ResultTableModel(data);

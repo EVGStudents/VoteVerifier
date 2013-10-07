@@ -53,10 +53,8 @@ import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
-import javax.xml.ws.soap.SOAPFaultException;
 
 /**
  * This class contains all the methods that need a RSA Verification.
@@ -129,11 +127,13 @@ public class RSAImplementer extends Implementer {
 			BigInteger signature = new BigInteger("1");
 
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature);
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_SETUP_EA_CERT_ID_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EM);
 		v.setImplemented(false);
 
 		//create a report for the non-implemented
@@ -185,12 +185,14 @@ public class RSAImplementer extends Implementer {
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEACert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
 		//create the VerificationResult
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_SETUP_BASICS_PARAMS_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -285,12 +287,14 @@ public class RSAImplementer extends Implementer {
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
 		//create the VerificationResult
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_ELGAMAL_PARAMS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_SETUP_ELGAMAL_PARAMS_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -342,11 +346,13 @@ public class RSAImplementer extends Implementer {
 			//verifiy the signature
 			RSAPublicKey tallierPubKey = (RSAPublicKey) ebp.getTalliersCerts().get(tallierName).getPublicKey();
 			r = vrfRSASign(tallierPubKey, res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X_SIGN, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_SETUP_T_NIZKP_OF_X_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.TALLIER);
 		v.setEntityName(tallierName);
 
 		if (exc != null) {
@@ -388,11 +394,13 @@ public class RSAImplementer extends Implementer {
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_SETUP_T_PUBLIC_KEY_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -443,11 +451,13 @@ public class RSAImplementer extends Implementer {
 			//verify the signature
 			RSAPublicKey mixerPubKey = (RSAPublicKey) ebp.getMixersCerts().get(mixerName).getPublicKey();
 			r = vrfRSASign(mixerPubKey, res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_SETUP_M_NIZKP_OF_ALPHA_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.MIXER);
 		v.setEntityName(mixerName);
 
 		if (exc != null) {
@@ -488,12 +498,14 @@ public class RSAImplementer extends Implementer {
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_SETUP_ANON_GEN_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_SETUP_ANON_GEN_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -632,11 +644,13 @@ public class RSAImplementer extends Implementer {
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEACert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_C_AND_R_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_PREP_C_AND_R_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -787,11 +801,13 @@ public class RSAImplementer extends Implementer {
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_EDATA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_PREP_EDATA_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -834,11 +850,13 @@ public class RSAImplementer extends Implementer {
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEACert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_ELECTORAL_ROLL_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_PREP_ELECTORAL_ROLL_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EA);
 
 
 		if (exc != null) {
@@ -891,11 +909,13 @@ public class RSAImplementer extends Implementer {
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_PREP_VOTERS_CERT_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EM);
 
 
 		if (exc != null) {
@@ -957,11 +977,13 @@ public class RSAImplementer extends Implementer {
 			//verify the signature
 			RSAPublicKey mixerPubKey = (RSAPublicKey) ebp.getMixersCerts().get(mixerName).getPublicKey();
 			r = vrfRSASign(mixerPubKey, res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_PREP_M_PUB_VER_KEYS_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.MIXER);
 		v.setEntityName(mixerName);
 
 		if (exc != null) {
@@ -1005,11 +1027,13 @@ public class RSAImplementer extends Implementer {
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | NullPointerException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_PREP_PUB_VER_KEYS_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -1105,11 +1129,13 @@ public class RSAImplementer extends Implementer {
 					break;
 				}
 			}
-		} catch (CertificateException | NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_PERIOD_M_NIZKP_EQUALITY_NEW_VRF_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.MIXER);
 		v.setEntityName(mixerName);
 
 		if (exc != null) {
@@ -1163,11 +1189,13 @@ public class RSAImplementer extends Implementer {
 					break;
 				}
 			}
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_PERIOD_NEW_VER_KEY_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -1293,11 +1321,13 @@ public class RSAImplementer extends Implementer {
 
 			//verifiy the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.EL_PERIOD_BALLOT_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.EL_PERIOD_BALLOT_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -1358,11 +1388,13 @@ public class RSAImplementer extends Implementer {
 			//verifiy the signature
 			RSAPublicKey mixerPubKey = (RSAPublicKey) ebp.getMixersCerts().get(mixerName).getPublicKey();
 			r = vrfRSASign(mixerPubKey, res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET_SIGN, r, ebp.getElectionID(), rn, it, EntityType.MIXER);
+		VerificationResult v =
+            new VerificationResult(VerificationType.MT_M_ENC_VOTES_SET_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.MIXER);
 		v.setEntityName(mixerName);
 
 		if (exc != null) {
@@ -1421,11 +1453,13 @@ public class RSAImplementer extends Implementer {
 
 			//verifiy the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEACert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | NullPointerException | SOAPFaultException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.MT_ENC_VOTES_ID_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EA);
+		VerificationResult v =
+            new VerificationResult(VerificationType.MT_ENC_VOTES_ID_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EA);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -1480,11 +1514,13 @@ public class RSAImplementer extends Implementer {
 			//verify the signature
 			RSAPublicKey tallierPubKey = (RSAPublicKey) ebp.getTalliersCerts().get(tallierName).getPublicKey();
 			r = vrfRSASign(tallierPubKey, res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.MT_T_NIZKP_OF_X_SIGN, r, ebp.getElectionID(), rn, it, EntityType.TALLIER);
+		VerificationResult v =
+            new VerificationResult(VerificationType.MT_T_NIZKP_OF_X_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.TALLIER);
 		v.setEntityName(tallierName);
 
 		if (exc != null) {
@@ -1554,11 +1590,13 @@ public class RSAImplementer extends Implementer {
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.MT_VALID_PLAINTEXT_VOTES_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EM);
 
 		if (exc != null) {
 			rep = new Report(exc);
@@ -1619,11 +1657,13 @@ public class RSAImplementer extends Implementer {
 			String res = sc.pullAll();
 
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signatureValue);
-		} catch (CertificateException | ElectionBoardServiceFault | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			exc = ex;
 		}
 
-		VerificationResult v = new VerificationResult(VerificationType.SINGLE_BALLOT_RSA_SIGN, r, ebp.getElectionID(), rn, it, EntityType.EM);
+		VerificationResult v =
+            new VerificationResult(VerificationType.SINGLE_BALLOT_RSA_SIGN, r,
+            ebp.getElectionID(), rn, it, EntityType.EM);
 
 
 		if (exc != null) {

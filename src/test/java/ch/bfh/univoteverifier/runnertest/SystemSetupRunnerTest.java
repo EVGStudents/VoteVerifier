@@ -14,15 +14,17 @@ import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.Messenger;
-import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.common.RunnerName;
 import ch.bfh.univoteverifier.common.VerificationType;
+import ch.bfh.univoteverifier.runner.SystemSetupRunner;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Test the runner of the system setup.
@@ -43,7 +45,7 @@ public class SystemSetupRunnerTest {
 		ebp = new ElectionBoardProxy(eID, true);
 		ssr = new SystemSetupRunner(ebp, new Messenger());
 		realList = ssr.run();
-		mockList = new ArrayList<>();
+		mockList = new ArrayList<VerificationResult>();
 		rn = RunnerName.SYSTEM_SETUP;
 
 		buildMockList();

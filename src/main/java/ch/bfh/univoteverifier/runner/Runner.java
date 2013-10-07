@@ -42,7 +42,7 @@ public abstract class Runner {
 		this.ebp = ebp;
 		this.SLEEP_TIME = Config.sleepTime;
 		this.runnerName = runnerName;
-		this.partialResults = new ArrayList<>();
+		this.partialResults = new ArrayList<VerificationResult>();
 		this.msgr = msgr;
 	}
 

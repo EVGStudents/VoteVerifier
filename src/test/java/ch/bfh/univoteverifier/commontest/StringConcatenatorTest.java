@@ -14,8 +14,8 @@ import ch.bfh.univoteverifier.common.StringConcatenator;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Test the string concatenator used to concatenate the strings.
@@ -110,7 +110,7 @@ public class StringConcatenatorTest {
 	 */
 	@Test
 	public void pushListObject() {
-		List<BigInteger> bi = new ArrayList<>();
+		List<BigInteger> bi = new ArrayList<BigInteger>();
 		bi.add(new BigInteger("134536454634534"));
 		bi.add(new BigInteger("454634534"));
 		bi.add(new BigInteger("134536534"));
@@ -132,7 +132,7 @@ public class StringConcatenatorTest {
 	 */
 	@Test
 	public void pushListSimple() {
-		List<BigInteger> bi = new ArrayList<>();
+		List<BigInteger> bi = new ArrayList<BigInteger>();
 		bi.add(new BigInteger("1"));
 
 		sc.pushList(bi, true);
@@ -145,7 +145,7 @@ public class StringConcatenatorTest {
 	 */
 	@Test
 	public void pushListObjectTwo() {
-		List<BigInteger> bi = new ArrayList<>();
+		List<BigInteger> bi = new ArrayList<BigInteger>();
 		bi.add(new BigInteger("1"));
 		bi.add(new BigInteger("1"));
 
@@ -159,7 +159,7 @@ public class StringConcatenatorTest {
 	 */
 	@Test
 	public void pushListObjectEmpty() {
-		List<BigInteger> bi = new ArrayList<>();
+		List<BigInteger> bi = new ArrayList<BigInteger>();
 
 		sc.pushList(bi, true);
 
@@ -171,7 +171,7 @@ public class StringConcatenatorTest {
 	 */
 	@Test
 	public void pushListWithoutSeparators() {
-		List<BigInteger> bi = new ArrayList<>();
+		List<BigInteger> bi = new ArrayList<BigInteger>();
 		bi.add(new BigInteger("8458347593847978797879871"));
 		bi.add(new BigInteger("445363641"));
 
@@ -185,8 +185,8 @@ public class StringConcatenatorTest {
 	 */
 	@Test
 	public void pushProof() {
-		List<BigInteger> commit = new ArrayList<>();
-		List<BigInteger> response = new ArrayList<>();
+		List<BigInteger> commit = new ArrayList<BigInteger>();
+		List<BigInteger> response = new ArrayList<BigInteger>();
 
 		commit.add(new BigInteger("435355"));
 		commit.add(new BigInteger("7657623"));

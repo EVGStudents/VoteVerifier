@@ -10,29 +10,21 @@
  */
 package ch.bfh.univoteverifier.verificationtest;
 
-import ch.bfh.univote.common.Candidate;
-import ch.bfh.univote.common.Choice;
-import ch.bfh.univote.common.PoliticalList;
 import ch.bfh.univote.election.ElectionBoardServiceFault;
 import ch.bfh.univoteverifier.common.ElectionBoardProxy;
 import ch.bfh.univoteverifier.common.EntityType;
 import ch.bfh.univoteverifier.common.ImplementerType;
 import ch.bfh.univoteverifier.common.Messenger;
 import ch.bfh.univoteverifier.common.RunnerName;
-import ch.bfh.univoteverifier.verification.UniversalVerification;
-import ch.bfh.univoteverifier.verification.Verification;
 import ch.bfh.univoteverifier.common.VerificationType;
+import ch.bfh.univoteverifier.verification.UniversalVerification;
 import ch.bfh.univoteverifier.verification.VerificationResult;
 import java.io.FileNotFoundException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * This class test the behavior of a UniversalVerification.
@@ -52,7 +44,7 @@ public class UniversalVerificationTester {
 		v = new UniversalVerification(new Messenger(), eID, true);
 		realList = v.runVerification();
 
-		mockList = new ArrayList<>();
+		mockList = new ArrayList<VerificationResult>();
 		buildMockList();
 	}
 
