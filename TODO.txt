@@ -1,0 +1,14 @@
+* Election Definition 
+	In der Spezifikation fehlen Start und Endzeit, welche in der Univote Implementation verwendet werden.
+	
+* Election Data
+	In der UnivoteImplemenation fehlt die EA im Election Data
+	
+* VoterCertificates(2Kreuze)
+	Da stimmt was noch nicht mit der Einbindung von byte[] in die Signatur. Reto muss das nochmals genauer anschauen.
+
+* Certificates for latley registred voters 
+	Der Verifier macht einen in der Spezifikation nicht geforderten Test auf das CA Zertifikat.
+
+* New VerificationKey(2Kreuze) 
+	In der UnivoteImplementation wurde vergessen, diese abschliessend vom EM zu signieren.	

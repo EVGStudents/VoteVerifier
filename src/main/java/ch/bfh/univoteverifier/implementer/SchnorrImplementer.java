@@ -168,7 +168,6 @@ public class SchnorrImplementer extends Implementer {
 			sc.pushRightDelim();
 
 			String res = sc.pullAll();
-			System.out.println(res);
 
 			r = vrfSchnorrSign(verificationKey, res, schnorrFirstValue, schnorrSecondValue,
                 ebp.getElectionData().getElectionGenerator());

@@ -1267,7 +1267,7 @@ public class RSAImplementer extends Implementer {
 			Ballots b = ebp.getBallots();
 			Signature signature = b.getSignature();
 
-			//concatenate to (id|ballots)|timestamp
+			//concatenate to (id|ballotsstate|ballots)|timestamp
 			sc.pushLeftDelim();
 
 			sc.pushObjectDelimiter(b.getElectionId(), StringConcatenator.INNER_DELIMITER);
@@ -1358,7 +1358,7 @@ public class RSAImplementer extends Implementer {
 			MixedEncryptedVotes mev = ebp.getMixedEncryptedVotesBy(mixerName);
 			Signature signature = mev.getSignature();
 
-			//concatenate to (id|((firstValue|secondValue)|.......|(nfirstValue|nSecondValue)))|timestamp - WARNING :the proof is not implemented
+			//concatenate to (id|((firstValue|secondValue)|.......|(nfirstValue|nSecondValue))(()|()))|timestamp - WARNING :the proof is not implemented
 			sc.pushLeftDelim();
 			sc.pushObjectDelimiter(ebp.getElectionID(), StringConcatenator.INNER_DELIMITER);
 
@@ -1377,6 +1377,15 @@ public class RSAImplementer extends Implementer {
 				sc.pushObject(e.getSecondValue());
 				sc.pushRightDelim();
 			}
+			sc.pushRightDelim();
+			//Empty proof
+			sc.pushInnerDelim();
+			sc.pushLeftDelim();
+			sc.pushLeftDelim();
+			sc.pushRightDelim();
+			sc.pushInnerDelim();
+			sc.pushLeftDelim();
+			sc.pushRightDelim();
 			sc.pushRightDelim();
 
 			sc.pushRightDelim();
@@ -1587,6 +1596,7 @@ public class RSAImplementer extends Implementer {
 			sc.pushObject(signature.getTimestamp());
 
 			String res = sc.pullAll();
+			System.out.println(res);
 
 			//verify the signature
 			r = vrfRSASign((RSAPublicKey) ebp.getEMCert().getPublicKey(), res, signature.getValue());

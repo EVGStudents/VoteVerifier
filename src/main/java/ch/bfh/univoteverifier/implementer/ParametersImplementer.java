@@ -1,8 +1,8 @@
 /**
  *
- * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of
- * Applied Sciences, Engineering and Information Technology, Research Institute
- * for Security in the Information Society, E-Voting Group, Biel, Switzerland.
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland. Bern University of Applied Sciences, Engineering and
+ * Information Technology, Research Institute for Security in the Information Society, E-Voting Group, Biel,
+ * Switzerland.
  *
  * Project independent VoteVerifier.
  *
@@ -34,8 +34,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * This class is used to check the validity of the parameters, like ElGamal,
- * Schnorr or other things, like encryption key.
+ * This class is used to check the validity of the parameters, like ElGamal, Schnorr or other things, like encryption
+ * key.
  *
  * @author Scalzi Giuseppe
  */
@@ -54,8 +54,8 @@ public class ParametersImplementer extends Implementer {
 	}
 
 	/**
-	 * Check if the parameters for the Schnorr's signature scheme are
-	 * corrects by reading them from the configuration file.
+	 * Check if the parameters for the Schnorr's signature scheme are corrects by reading them from the configuration
+	 * file.
 	 *
 	 * Specification: 1.3.1.
 	 *
@@ -152,8 +152,7 @@ public class ParametersImplementer extends Implementer {
 	}
 
 	/**
-	 * Check that the distributed key of each mixer y_j, correspond to the
-	 * general distribution key y.
+	 * Check that the distributed key of each mixer y_j, correspond to the general distribution key y.
 	 *
 	 * Specification: 1.3.4, d.
 	 *
@@ -199,8 +198,7 @@ public class ParametersImplementer extends Implementer {
 	}
 
 	/**
-	 * Check that the election generator g is equal to the blinded generator
-	 * of the last mixer.
+	 * Check that the election generator g is equal to the blinded generator of the last mixer.
 	 *
 	 * Specification: 1.3.4, e.
 	 *
@@ -241,8 +239,7 @@ public class ParametersImplementer extends Implementer {
 	}
 
 	/**
-	 * Check the set of public mixed verification keys against the set of
-	 * public keys of last mixer.
+	 * Check the set of public mixed verification keys against the set of public keys of last mixer.
 	 *
 	 * Specification: 1.3.5, d.
 	 *
@@ -282,8 +279,8 @@ public class ParametersImplementer extends Implementer {
 	}
 
 	/**
-	 * Check the set of lately mixed verification keys against the set of
-	 * public lately mixed verification keys of last mixer.
+	 * Check the set of lately mixed verification keys against the set of public lately mixed verification keys of last
+	 * mixer.
 	 *
 	 * Specification: 1.3.6, a.
 	 *
@@ -330,9 +327,8 @@ public class ParametersImplementer extends Implementer {
 	}
 
 	/**
-	 * Check the set of late renewal of registration mixed verification keys
-	 * against the set of public late renewal verification keys of last
-	 * mixer.
+	 * Check the set of late renewal of registration mixed verification keys against the set of public late renewal
+	 * verification keys of last mixer.
 	 *
 	 * Specification: 1.3.6, b.
 	 *
@@ -350,13 +346,12 @@ public class ParametersImplementer extends Implementer {
 	}
 
 	/**
-	 * Check the verification key of a ballot by performing some checks,
-	 * like if the key belong to the set of verification keys.
+	 * Check the verification key of a ballot by performing some checks, like if the key belong to the set of
+	 * verification keys.
 	 *
 	 * Specification: 1.3.6, d.
 	 *
-	 * @param b the Ballot where we can find the verification key to be
-	 * verified.
+	 * @param b the Ballot where we can find the verification key to be verified.
 	 * @return true if the checks have been successfully executed.
 	 */
 	public VerificationResult vrfBallotVerificationKey(BigInteger verificationKey) {
@@ -397,8 +392,7 @@ public class ParametersImplementer extends Implementer {
 	}
 
 	/**
-	 * Check the set of mixed encrypted votes against the one of the last
-	 * mixer.
+	 * Check the set of mixed encrypted votes against the one of the last mixer.
 	 *
 	 * Specification: 1.3.7, a.
 	 *
@@ -417,7 +411,7 @@ public class ParametersImplementer extends Implementer {
 			MixedEncryptedVotes lastMixerEncVotes = ebp.getMixedEncryptedVotesBy(mixersName.get(mixersName.size() - 1));
 
 			//check if the two set correspond
-			r = mev.getVote().equals(lastMixerEncVotes.getVote());
+			r = EncryptedVoteListEquals.equals(mev.getVote(), lastMixerEncVotes.getVote());
 
 		} catch (Exception ex) {
 			exc = ex;
@@ -442,8 +436,8 @@ public class ParametersImplementer extends Implementer {
 	 * Specification: 1.3.7, b.
 	 *
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws ElectionBoardServiceFault if there is problem with the public board, such as a wrong parameter or a
+	 * network connection problem.
 	 */
 	public VerificationResult vrfVotes() {
 		Exception exc = null;
@@ -504,15 +498,14 @@ public class ParametersImplementer extends Implementer {
 	}
 
 	/**
-	 * Verify that a ballot from a verification key belongs to the set of
-	 * all ballots.
+	 * Verify that a ballot from a verification key belongs to the set of all ballots.
 	 *
 	 * Specification: individual verification.
 	 *
 	 * @param verificationKey the verification key of the ballot.
 	 * @return a VerificationResult.
-	 * @throws ElectionBoardServiceFault if there is problem with the public
-	 * board, such as a wrong parameter or a network connection problem.
+	 * @throws ElectionBoardServiceFault if there is problem with the public board, such as a wrong parameter or a
+	 * network connection problem.
 	 */
 	public VerificationResult vrfBallotInSet(BigInteger verificationKey) {
 		Exception exc = null;
