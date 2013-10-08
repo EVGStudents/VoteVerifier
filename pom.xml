@@ -4,7 +4,7 @@
 
     <groupId>ch.bfh.univote</groupId>
     <artifactId>voteverifier</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT-demo</version>
     <packaging>jar</packaging>
 
     <name>VoteVerifier</name>
@@ -17,7 +17,7 @@
 	</properties>
 
 	<description>
-        The VoteVerifier is used to verify the results of a election in
+        The VoteVerifier is used to verify the results of an election in
         the UniVote system.
     </description>
 
@@ -176,43 +176,6 @@
 					</execution>
 				</executions>
 			</plugin>
-            <!--
-            <plugin>
-                <groupId>org.jvnet.jax-ws-commons</groupId>
-                <artifactId>jaxws-maven-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlFiles>
-                                <wsdlFile>univote.ch_8080/ElectionBoardService/ElectionBoardService.wsdl</wsdlFile>
-                            </wsdlFiles>
-                            <wsdlLocation>http://univote.ch:8080/ElectionBoardService/ElectionBoardServiceImpl?wsdl</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/ElectionBoardServiceImpl.stale</staleFile>
-                        </configuration>
-                        <id>wsimport-generate-ElectionBoardServiceImpl</id>
-                        <phase>generate-sources</phase>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.xml</groupId>
-                        <artifactId>webservices-api</artifactId>
-                        <version>1.4</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <sourceDestDir>${project.build.directory}/generated-sources/jaxws-import/</sourceDestDir>
-                    <xnocompile>true</xnocompile>
-                    <verbose>true</verbose>
-                    <extension>true</extension>
-                    <catalog>${basedir}/src/jax-ws-catalog.xml</catalog>
-                </configuration>
-            </plugin>
-            -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -297,8 +260,8 @@
                     <!-- optional -->
                     <workingDirectory>${project.build.directory}</workingDirectory>
                     <arguments>
-                        <argument>VoteVerifier-${project.version}-installer.jar</argument>
-                        <argument>VoteVerifier-${project.version}-installer.app</argument>
+                        <argument>voteverifier-${project.version}-installer.jar</argument>
+                        <argument>voteverifier-${project.version}-installer.app</argument>
                     </arguments>
                 </configuration>
             </plugin>
@@ -345,11 +308,11 @@
 									<directory>${project.build.directory}</directory>
 									<filtering>false</filtering>
 									<includes>
-										<include>VoteVerifier-${project.version}-src.tar.bz2</include>
-										<include>VoteVerifier-${project.version}-src.tar.gz</include>
-										<include>VoteVerifier-${project.version}-src.zip</include>
-										<include>VoteVerifier-${project.version}-jar-with-dependencies.jar</include>
-										<include>VoteVerifier-${project.version}-installer.jar</include>
+										<include>voteverifier-${project.version}-src.tar.bz2</include>
+										<include>voteverifier-${project.version}-src.tar.gz</include>
+										<include>voteverifier-${project.version}-src.zip</include>
+										<include>voteverifier-${project.version}-jar-with-dependencies.jar</include>
+										<include>voteverifier-${project.version}-installer.jar</include>
 									</includes>
 								</resource>
                             </resources>
@@ -397,15 +360,6 @@
 					</reportPlugins>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
         </plugins>
 		<extensions>
 			<extension>

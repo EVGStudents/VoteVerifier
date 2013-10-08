@@ -1,0 +1,24 @@
+VoteVerifier 1.x
+================
+
+All software of VoteVerifier is copyright:
+
+ * Copyright (c) 2013 Berner Fachhochschule, Switzerland.
+ * Bern University of Applied Sciences, Engineering and Information Technology,
+ * Research Institute for Security in the Information Society, E-Voting Group,
+ * Biel, Switzerland.
+ *
+ * Project independent VoteVerifier.
+ *
+ * Giuseppe Scalzi
+ * Justin Springer
+ *
+ * Distributable under GNU General Public License (GPL) V3,
+ * see: http://www.gnu.org/licenses/
+ *
+
+
+Other Software Dependcies and Respective Licenses:
+--------------------------------------------------
+
+See dependencies in pom.xml and their respective licenses.

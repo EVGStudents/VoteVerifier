@@ -6,7 +6,5 @@ of an election of UniBoard.
 
     To can either download the source files (to
 be provided), a JAR file with the compiled binaries (to be
-provided), a JAR file for an installer (to be provided) or
-you can simply click the web-start button to launch
-the application (requires that Java 1.7+ is installed
-in your computer).
+provided) or a JAR file for an installer (recommended).
+The source files are also provided.

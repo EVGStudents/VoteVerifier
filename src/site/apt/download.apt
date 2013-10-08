@@ -32,7 +32,7 @@ open a command window and execute the the command
 downloaded JAR file resides. To download the installer,
 follow this link:
 
-    * {{{./download/voteverifier-1.0-SNAPSHOT-installer.jar}Vote
+    * {{{./download/voteverifier-1.1-SNAPSHOT-installer.jar}Vote
     Verifier Installer (jar)}}
 
 []
@@ -41,7 +41,7 @@ follow this link:
 
     Follow this link:
 
-    * {{{./download/voteverifier-1.0-SNAPSHOT-jar-with-dependencies.jar}Vote
+    * {{{./download/voteverifier-1.1-SNAPSHOT-jar-with-dependencies.jar}Vote
         Verifier Binary (jar)}}
 
 []
@@ -50,11 +50,11 @@ follow this link:
 
     Choose your preferred file format:
 
-    * {{{./download/voteverifier-1.0-SNAPSHOT-src.tar.bz2}Vote Verifier Sources (bz2)}}
+    * {{{./download/voteverifier-1.1-SNAPSHOT-src.tar.bz2}Vote Verifier Sources (bz2)}}
 
-    * {{{./download/voteverifier-1.0-SNAPSHOT-src.tar.gz}Vote Verifier Sources (gz)}}
+    * {{{./download/voteverifier-1.1-SNAPSHOT-src.tar.gz}Vote Verifier Sources (gz)}}
 
-    * {{{./download/voteverifier-1.0-SNAPSHOT-src.zip}Vote Verifier Sources (zip)}}
+    * {{{./download/voteverifier-1.1-SNAPSHOT-src.zip}Vote Verifier Sources (zip)}}
 
 []
 
