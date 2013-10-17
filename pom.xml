@@ -369,7 +369,6 @@
 			</extension>
 		</extensions>
     </build>
-    <!--
     <reporting>
         <plugins>
             <plugin>
@@ -387,5 +386,4 @@
             </plugin>
         </plugins>
     </reporting>
-    -->
 </project>
