@@ -33,7 +33,7 @@ public class QRCodeTest {
      * Test that the QR code can be read from a path on the computer.
      */
     @Test
-    public void QRCodeDecodesElectionInfo() throws IOException {
+    public void QRCodeDecodesElectionInfo() throws Exception {
         Messenger msgr = new Messenger();
         QRCode qr = new QRCode(msgr);
         File file = new File(MainGUI.class
@@ -47,7 +47,7 @@ public class QRCodeTest {
      * test that the QR code can be read from a path on the computer
      */
     @Test
-    public void bracketsRemovedFromString() throws IOException {
+    public void bracketsRemovedFromString() throws Exception {
         Messenger msgr = new Messenger();
         QRCode qr = new QRCode(msgr);
         File file = new File(MainGUI.class
@@ -93,7 +93,7 @@ public class QRCodeTest {
     }
 
     @Test
-    public void dataGroupedAndCleaned() throws IOException {
+    public void dataGroupedAndCleaned() throws Exception {
         Messenger msgr = new Messenger();
         QRCode qr = new QRCode(msgr);
         File file = new File(MainGUI.class
@@ -128,14 +128,14 @@ public class QRCodeTest {
     }
 
     @Test
-    public void removeSlashAndQuotes() throws IOException {
+    public void removeSlashAndQuotes() throws Exception {
         Messenger msgr = new Messenger();
         QRCode qr = new QRCode(msgr);
         File file = new File(MainGUI.class
                 .getResource("/qrcodeGiu").getPath());
         String str = qr.decode(file);
         String expected = "{eID:vsbfh-2013,encVa:72w86v8UbkIKBaoN6sPQPSP1a7dQf2ivaiU91L5Orindc4XqfVVznFRegKiK2G3P3tYqjijaLdBQjZEJSU0lXVkDDCbl_fGOt=DxlXNNGgdUn_IfhSefshyNHFzYnOHDPlFeZwOmO91zFt3woxWjSwMI0UhbnezFgvrpXp5fuYY,encVb:A38NYQfzQSA=73rLcStNKQCatMgXJyJ0sMa9wjPLkz92oGoQERk4ItanwOEXyyKEIfpu2nwqRhuGKpn9GU39h2_myjliO04Egz1DiS1ZaO7RrjU7fKSMlXU1hQbHOHvyDAZXX9EqY1gBVpT=u=eMVCf6TI0OFf8P86pDni=MB8Y,vk:4lfTbadkitS1NOXSiDhLKrTUh1J=gdOupOzFHgexC4LdYRuV9PIzblQgHfLYNtlEW8i6Tjr1FVv6HJZ902PHeyG8vrkTCJJEODOdZJ7TFzo8WCIywtyqXcFF52n_sg70FNRSLZcEBY6lCcRWWzBJxdGnbBLpl11QGcJ25cG6RKP,pC:2Qz1K9y14qGzBRQqJ7gAyezta3bi7pHY7307sHQxDYVlF6aQlwJDABY16gIYZNnTo121Lt8SXKpsn_rhGgkSqQMGmPnUkieepqyPg9ulkwEAvKBK80dlxzEFvNfaw9_a0SRR2aKIgWhuvAouPHlN9FMzLexlNApbKTTHNQ7dvR,pR:B4YMumm5bLYnT6iYhrQJT6fcMyCOtqQJOMsNxyhncpLCYIkhEVumA4tbB5HitapQU7nVXP_ZrS51VacXbkGU6LZ_BHy3je_iZoMY=5FjLNppoOWitzzkToFkL=bhlIsnMHQhJizXSNAGpRLPTvkI7bhGb=FxousxxCx0=RGYH3,vSA:6rQltQyKPrzIAPaZnCBp0x2F0N2AC4g5JprF_R_Qycs,vSB:3x73szdurz40HjfaYTBF42ecyL9mN56wFTZDGF8a3FN,sSId:electionmanager,sT:2013-03-25T10:58:11.000Z,sV:ShZKrcEYQnsA2Ks352oLIUABAaglxmNsCaYIfKzM_tfRARyYPgNSxNLtNcaQf10VqEq57DArGrhvjLjJwmU5mfip3FRUqZ1hGNFxkqdYM8bLC0uhoiALyHVFkLu4etQG4Dp8RuJ5dmp5UTs0QcEHEIIQcd8_=J7iIeqRLAlcU6}";
-        String cleaned = qr.removeSlashAndQuotes(str);
+        String cleaned = qr.removeQuotes(str);
         assertTrue(0 == cleaned.compareTo(expected));
     }
 
@@ -146,7 +146,7 @@ public class QRCodeTest {
      * @throws IOException
      */
     @Test
-    public void separateDataPairs() throws IOException {
+    public void separateDataPairs() throws Exception {
         Messenger msgr = new Messenger();
         QRCode qr = new QRCode(msgr);
         File file = new File(MainGUI.class

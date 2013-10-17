@@ -94,7 +94,7 @@ public class QRCode {
      * @return a string of the value represented by the QRCode
      * @throws IOException if the file cannot be opened, an exception is thrown
      */
-    public String decode(File filename) {
+    public String decode(File filename) throws Exception {
         String returnStr = "";
         try {
             FileInputStream fis = new FileInputStream(filename);
@@ -107,12 +107,16 @@ public class QRCode {
             returnStr = result.toString();
         } catch (NullPointerException ex) {
             msgr.sendSetupError("This file is not a valid QR Code");
+            throw ex;
         } catch (FileNotFoundException ex) {
             msgr.sendSetupError("This file could not be read");
+            throw ex;
         } catch (IOException ex) {
             msgr.sendSetupError("This file is not a valid QR Code");
+            throw ex;
         } catch (Exception ex) {
             msgr.sendSetupError("There is an error reading the file");
+            throw ex;
         }
         return returnStr;
     }
@@ -126,13 +130,14 @@ public class QRCode {
      * it
      */
     public ElectionReceipt decodeReceipt(File filename) throws RuntimeException {
-        String decoded = decode(filename);
-        if (decoded.length() > 0) {
+        String decoded = "";
+        try {
+            decoded = decode(filename);
             String[] groupedCleaned = groupAndCleanDecode(decoded);
             Map<String, String> results = separateDataPairs(groupedCleaned);
             return new ElectionReceipt(results);
-        } else {
-            throw new RuntimeException("An error occured while processing this file");
+        } catch (Exception ex) {
+            throw new RuntimeException("An error occured while processing this file: " + ex.getMessage());
         }
     }
 
@@ -149,12 +154,12 @@ public class QRCode {
     }
 
     /**
-     * Parse out slashes and quotes from a string.
+     * Parse out quotes from a string.
      *
-     * @param str The String from which to remove slashes and quotes.
-     * @return the String with the slashes and quotes removed.
+     * @param str The string from which to remove quotes.
+     * @return the string with the quotes removed.
      */
-    public String removeSlashAndQuotes(String str) {
+    public String removeQuotes(String str) {
         str = str.replace("\"", "");
         return str;
     }
@@ -183,7 +188,7 @@ public class QRCode {
      */
     public String[] groupAndCleanDecode(String str) {
         str = removeBrackets(str);
-        str = removeSlashAndQuotes(str);
+        str = removeQuotes(str);
         return groupReceiptData(str);
     }
 

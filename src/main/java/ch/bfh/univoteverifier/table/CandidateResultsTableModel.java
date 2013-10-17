@@ -15,7 +15,6 @@ import ch.bfh.univote.common.Choice;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -28,7 +27,6 @@ public class CandidateResultsTableModel extends AbstractTableModel {
 
     private List<Entry<Choice, Integer>> data;
     private String[] columnNames = new String[2];
-    private static final Logger LOGGER = Logger.getLogger(CandidateResultsTableModel.class.toString());
 
     /**
      * Create an instance of this ResultTableModel.
