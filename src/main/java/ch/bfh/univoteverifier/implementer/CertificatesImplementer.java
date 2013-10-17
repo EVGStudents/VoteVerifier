@@ -33,8 +33,6 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class is used to check X509 certificates.
@@ -334,7 +332,7 @@ public class CertificatesImplementer extends Implementer {
 			//we know that the certificate path verification has failed so the result is false
 			r = false;
 			invalidCert = ex;
-			Logger.getLogger(this.getClass().getName()).log(Level.INFO, ex.getMessage());
+			//Logger.getLogger(this.getClass().getName()).log(Level.INFO, ex.getMessage());
 		} catch (Exception ex) {
 			exc = ex;
 		}
